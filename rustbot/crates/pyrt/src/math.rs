@@ -73,6 +73,9 @@ fn logarithm(value: &Value, decimal: bool) -> PyResult<f64> {
 
 /// Built-in round, distinct from math's integer-valued ceil and floor.
 pub fn round(value: &Value, ndigits: Option<&Value>) -> PyResult<Value> {
+    if let Some(result) = crate::numeric_objects::round(value, ndigits) {
+        return result;
+    }
     let ndigits = ndigits.filter(|v| !matches!(v, Value::None));
     let digits = ndigits.map(Value::as_int).transpose()?;
     match value {

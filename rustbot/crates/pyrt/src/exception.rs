@@ -34,6 +34,7 @@ constructors! {
     unbound_local_error => "UnboundLocalError",
     import_error => "ImportError",
     stop_iteration => "StopIteration",
+    runtime_error => "RuntimeError",
 }
 
 impl fmt::Display for PyExc {

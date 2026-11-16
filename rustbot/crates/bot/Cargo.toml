@@ -10,3 +10,5 @@ trace = []
 
 [dependencies]
 pyrt = { path = "../pyrt" }
+num-bigint.workspace = true
+num-traits.workspace = true

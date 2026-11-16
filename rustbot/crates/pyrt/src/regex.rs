@@ -23,9 +23,20 @@ fn as_str(v: &Value) -> PyResult<&str> {
         .ok_or_else(|| PyExc::type_error("expected string"))
 }
 fn as_int(v: &Value) -> PyResult<i64> {
-    v.as_i64()
-        .or_else(|| v.as_bool().map(i64::from))
-        .ok_or_else(|| PyExc::type_error("integer argument expected"))
+    if let Some(value) = v.as_i64().or_else(|| v.as_bool().map(i64::from)) {
+        return Ok(value);
+    }
+    if let Some(number) = v.as_number() {
+        let text = number.to_string();
+        if text
+            .trim_start_matches('-')
+            .chars()
+            .all(|c| c.is_ascii_digit())
+        {
+            return Err(PyExc::overflow_error("integer does not fit in Py_ssize_t"));
+        }
+    }
+    Err(PyExc::type_error("integer argument expected"))
 }
 fn positions(text: &str) -> Vec<usize> {
     text.char_indices()
@@ -242,6 +253,9 @@ fn translate(pattern: &str, flags: i64) -> PyResult<(String, i64)> {
             "ASCII and UNICODE flags are incompatible",
         ));
     }
+    if i32::try_from(flags).is_err() {
+        return Err(PyExc::overflow_error("regex flags do not fit in a C int"));
+    }
     let mut ascii = flags & 256 != 0;
     let mut global_unicode = flags & 32 != 0;
     let mut p = pattern;
@@ -380,6 +394,9 @@ fn translate(pattern: &str, flags: i64) -> PyResult<(String, i64)> {
                 if name.chars().all(|c| c.is_ascii_digit()) {
                     out.push_str(&format!("(?({name})"));
                 } else {
+                    if !group_names.iter().any(|(existing, _)| existing == &name) {
+                        return Err(pattern_error("unknown conditional group name"));
+                    }
                     out.push_str(&format!("(?(<{name}>)"));
                 }
                 continue;
@@ -759,11 +776,29 @@ fn translate(pattern: &str, flags: i64) -> PyResult<(String, i64)> {
                 class_source.clear();
             } else if c == ']' && in_class && !class_first {
                 validate_class_ranges(&class_source)?;
-                if ignorecase && !ascii && class_contains_i(&class_source) {
-                    out.push_str("iIİı");
-                }
-                if ignorecase && ascii {
-                    out.push_str(&ascii_class_extras(&class_source));
+                let extras = if ignorecase && !ascii && class_contains_i(&class_source) {
+                    "iIİı".to_owned()
+                } else if ignorecase && ascii {
+                    ascii_class_extras(&class_source)
+                } else {
+                    String::new()
+                };
+                // A final unescaped hyphen is a literal in Python; appending
+                // folded characters after it would turn it into a range.
+                let trailing_hyphen = class_source.ends_with('-')
+                    && class_source[..class_source.len() - 1]
+                        .chars()
+                        .rev()
+                        .take_while(|c| *c == '\\')
+                        .count()
+                        % 2
+                        == 0;
+                if trailing_hyphen && !extras.is_empty() && out.ends_with('-') {
+                    out.pop();
+                    out.push_str(&extras);
+                    out.push('-');
+                } else {
+                    out.push_str(&extras);
                 }
                 in_class = false;
             } else if c != '^' || !class_source.is_empty() {
@@ -882,6 +917,7 @@ pub struct CompiledPattern {
     translated: String,
     regex: Regex,
     order: Option<GroupOrder>,
+    simple_match_at_reversed_bounds: bool,
     fullmatch: OnceCell<Regex>,
     nonempty_at_origin: OnceCell<Regex>,
 }
@@ -947,6 +983,11 @@ pub fn compile_pattern(pattern: &str, flags: i64) -> PyResult<Rc<CompiledPattern
         translated,
         regex,
         order,
+        // For assertion-free patterns, a match at pos > endpos can only
+        // consume zero characters; Python still permits such a match.
+        simple_match_at_reversed_bounds: flags & 64 == 0
+            && !pattern.contains(['\\', '^', '$'])
+            && !pattern.contains("(?"),
         fullmatch: OnceCell::new(),
         nonempty_at_origin: OnceCell::new(),
     });
@@ -1202,6 +1243,11 @@ pub fn run_compiled(compiled: &CompiledPattern, method: &str, args: &[Value]) ->
         norm(as_int(&args[2])?)
     } else {
         len
+    };
+    let end = if method == "match" && start > end && compiled.simple_match_at_reversed_bounds {
+        start
+    } else {
+        end
     };
     let input = &text[..pos[end]];
     if method == "search" || method == "match" || method == "fullmatch" {
@@ -1459,6 +1505,9 @@ mod tests {
         let compiled = compile_pattern(".*?", 0).unwrap();
         let mut spans = Vec::new();
         let result = sub_with(&compiled, "😀a", 3, |matched| {
+            // A replacement may compile patterns recursively without borrowing the cache.
+            let nested = compile_pattern("a", 0)?;
+            assert_eq!(nested.group_count(), 0);
             spans.push(matched["$match"]["span"].clone());
             Ok(Some("-".to_owned()))
         })
@@ -1497,6 +1546,15 @@ mod tests {
         assert_eq!(result["$match"]["span"], json!([0, 2]));
     }
     #[test]
+    fn atomic_and_possessive_patterns_do_not_backtrack() {
+        for pattern in ["a++a", "a*+a", "a{1,3}+a", "(?>a+)a"] {
+            let case = json!({"pattern":pattern,"method":"search","args":["aaa"]});
+            assert_eq!(run_case(&case).unwrap(), Value::Null, "{pattern}");
+        }
+        let case = json!({"pattern":"a+a","method":"search","args":["aaa"]});
+        assert_eq!(run_case(&case).unwrap()["$match"]["span"], json!([0, 3]));
+    }
+    #[test]
     fn python_group_name_validation() {
         for pattern in [
             r"(?P<1a>x)",
@@ -1517,6 +1575,12 @@ mod tests {
     fn lookbehind_literal_alternatives_require_equal_width() {
         let bad = json!({"pattern":r"(?<=ab|c)b","method":"search","args":["cb"]});
         assert_eq!(run_case(&bad).unwrap_err().kind, "PatternError");
+        for pattern in [r"(?<=(a)\1)b", r"(?<=(?P<a>a)(?P=a))b"] {
+            assert_eq!(
+                compile_pattern(pattern, 0).unwrap_err().kind,
+                "PatternError"
+            );
+        }
         let good = json!({"pattern":r"(?<=ab|cd)e","method":"search","args":["cde"]});
         assert_eq!(run_case(&good).unwrap()["$match"]["span"], json!([2, 3]));
         let verbose = json!({"pattern":r"(?x)(?<=a |b)c","method":"search","args":["bc"]});
@@ -1542,6 +1606,17 @@ mod tests {
         }
     }
     #[test]
+    fn integer_argument_bounds_and_unknown_flag_bits() {
+        let flags = json!({"pattern":"a","flags":2147483648u64,"method":"search","args":["a"]});
+        assert_eq!(run_case(&flags).unwrap_err().kind, "OverflowError");
+        let unknown = json!({"pattern":"a","flags":512,"method":"search","args":["a"]});
+        assert_eq!(run_case(&unknown).unwrap()["$match"]["span"], json!([0, 1]));
+        let pos = json!({"pattern":"a","method":"search","args":["a",u64::MAX]});
+        assert_eq!(run_case(&pos).unwrap_err().kind, "OverflowError");
+        let float = json!({"pattern":"a","method":"search","args":["a",1.0]});
+        assert_eq!(run_case(&float).unwrap_err().kind, "TypeError");
+    }
+    #[test]
     fn adjacent_global_flags_and_verbose_prefix() {
         for pattern in ["(?i)(?m)a", "(?x) # note\n (?i)a"] {
             let case = json!({"pattern":pattern,"method":"search","args":["A"]});
@@ -1563,6 +1638,10 @@ mod tests {
             );
             let ascii = json!({"pattern":pattern,"flags":258,"method":"findall","args":["iIİı"]});
             assert_eq!(run_case(&ascii).unwrap(), json!(["i", "I"]), "{pattern}");
+        }
+        for flags in [2, 258] {
+            let case = json!({"pattern":"[a-z'’-]","flags":flags,"method":"findall","args":["-i"]});
+            assert_eq!(run_case(&case).unwrap(), json!(["-", "i"]));
         }
         let case = json!({"pattern":"[a-z]","flags":258,"method":"findall","args":["ſKkK"]});
         assert_eq!(run_case(&case).unwrap(), json!(["k", "K"]));
@@ -1644,6 +1723,21 @@ mod tests {
         assert_eq!(run_case(&case).unwrap(), json!("Ia\u{0}"));
         let case = json!({"pattern":"a","method":"sub","args":[r"\400","z"]});
         assert_eq!(run_case(&case).unwrap_err().kind, "PatternError");
+    }
+    #[test]
+    fn match_reversed_bounds_allows_empty_assertion_free_patterns() {
+        for pattern in ["", "a*", "(a?)"] {
+            let case = json!({"pattern":pattern,"method":"match","args":["abc",3,1]});
+            assert_eq!(
+                run_case(&case).unwrap()["$match"]["span"],
+                json!([3, 3]),
+                "{pattern}"
+            );
+            let case = json!({"pattern":pattern,"method":"search","args":["abc",3,1]});
+            assert_eq!(run_case(&case).unwrap(), Value::Null);
+        }
+        let assertion = json!({"pattern":r"\Z","method":"match","args":["abc",3,1]});
+        assert_eq!(run_case(&assertion).unwrap(), Value::Null);
     }
     #[test]
     fn match_slices_and_captures() {

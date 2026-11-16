@@ -654,6 +654,17 @@ fn slice_indices(
 }
 pub fn slice(value: &Value, start: Option<i64>, stop: Option<i64>, step: i64) -> PyResult<Value> {
     match value {
+        Value::Object(o) if o.as_any().is::<crate::bytes::BytesObject>() => {
+            crate::bytes::slice(value, start, stop, step)
+        }
+        Value::Object(o) if o.as_any().is::<crate::protocols::RangeObject>() => {
+            crate::protocols::slice_range(
+                value,
+                start.map(Into::into),
+                stop.map(Into::into),
+                step.into(),
+            )
+        }
         Value::Str(s) => Ok(Value::Str(s.slice(start, stop, step)?)),
         Value::List(_) | Value::Tuple(_) => {
             let values = value.sequence()?;
@@ -769,4 +780,94 @@ pub fn delslice(
         target.remove(i);
     }
     Ok(())
+}
+
+/// Unpack a compiled assignment target. Fixed unpacking probes exactly one
+/// element beyond the target count; starred targets consume the remaining input.
+pub fn unpack(
+    rt: &mut crate::runtime::Runtime,
+    value: &Value,
+    before: usize,
+    after: usize,
+    starred: bool,
+) -> PyResult<Vec<Value>> {
+    fn next(rt: &mut crate::runtime::Runtime, iterator: &Value) -> PyResult<Option<Value>> {
+        match rt.next(iterator) {
+            Err(error) if error.kind == "StopIteration" => Ok(None),
+            result => result,
+        }
+    }
+    let expected = before
+        .checked_add(after)
+        .ok_or_else(|| PyExc::overflow_error("unpack target count too large"))?;
+    let iterator = rt.iter(value).map_err(|error| {
+        if error.kind == "TypeError"
+            && matches!(
+                value,
+                Value::None
+                    | Value::Bool(_)
+                    | Value::Int(_)
+                    | Value::Float(_)
+                    | Value::Date(_)
+                    | Value::DateTime(_)
+                    | Value::Opaque { .. }
+            )
+        {
+            PyExc::type_error(format!(
+                "cannot unpack non-iterable {} object",
+                value.type_name()
+            ))
+        } else {
+            error
+        }
+    })?;
+    let mut values = Vec::new();
+    if !starred {
+        for _ in 0..expected {
+            let Some(value) = next(rt, &iterator)? else {
+                return Err(PyExc::value_error(format!(
+                    "not enough values to unpack (expected {expected}, got {})",
+                    values.len()
+                )));
+            };
+            values.push(value);
+        }
+        if next(rt, &iterator)?.is_some() {
+            let known_length = match value {
+                Value::List(values) => Some(values.borrow().len()),
+                Value::Tuple(values) => Some(values.len()),
+                Value::Dict(values) => Some(values.borrow().len()),
+                _ => None,
+            };
+            return Err(PyExc::value_error(if let Some(length) = known_length {
+                format!("too many values to unpack (expected {expected}, got {length})")
+            } else {
+                format!("too many values to unpack (expected {expected})")
+            }));
+        }
+        return Ok(values);
+    }
+    for _ in 0..before {
+        let Some(value) = next(rt, &iterator)? else {
+            return Err(PyExc::value_error(format!(
+                "not enough values to unpack (expected at least {expected}, got {})",
+                values.len()
+            )));
+        };
+        values.push(value);
+    }
+    let mut rest = Vec::new();
+    while let Some(value) = next(rt, &iterator)? {
+        rest.push(value);
+    }
+    if rest.len() < after {
+        return Err(PyExc::value_error(format!(
+            "not enough values to unpack (expected at least {expected}, got {})",
+            before + rest.len()
+        )));
+    }
+    let tail = rest.split_off(rest.len() - after);
+    values.push(Value::list(rest));
+    values.extend(tail);
+    Ok(values)
 }

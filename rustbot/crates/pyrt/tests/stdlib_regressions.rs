@@ -310,3 +310,228 @@ fn callable_regex_replacements_are_lazy_and_respect_count_and_errors() {
     assert_eq!(*seen.borrow(), 2);
     assert_eq!(rt.random.snapshot(), json!({"global":4,"instances":[]}));
 }
+
+#[test]
+fn difflib_matches_cpython_ties_junk_unicode_and_autojunk_threshold() {
+    let mut rt = runtime();
+    let difflib = rt.import("difflib").unwrap();
+    let class = rt.getattr(&difflib, "SequenceMatcher").unwrap();
+    for (a, b, expected) in [
+        ("tide", "diet", 0.25),
+        ("diet", "tide", 0.5),
+        ("abxcd", "abcd", 0.8888888888888888),
+        ("é😀abc", "é😀axc", 0.8),
+    ] {
+        let matcher = rt
+            .call(
+                &class,
+                CallArgs::new(vec![Value::None, Value::from(a), Value::from(b)]),
+            )
+            .unwrap();
+        assert!(matches!(call(&mut rt,&matcher,"ratio",vec![]),Value::Float(x) if x == expected));
+    }
+    let a = "a".repeat(200);
+    let b = format!("b{a}");
+    for (autojunk, expected) in [(true, 0.0), (false, 0.9975062344139651)] {
+        let matcher = rt
+            .call(
+                &class,
+                CallArgs::new(vec![
+                    Value::None,
+                    Value::from(a.clone()),
+                    Value::from(b.clone()),
+                    Value::Bool(autojunk),
+                ]),
+            )
+            .unwrap();
+        assert!(matches!(call(&mut rt,&matcher,"ratio",vec![]),Value::Float(x) if x == expected));
+        assert!(
+            matches!(call(&mut rt,&matcher,"quick_ratio",vec![]),Value::Float(x) if x == 0.9975062344139651)
+        );
+    }
+    let junk = NativeFunction::value("space", |_, args| {
+        Ok(Value::Bool(args.positional[0].as_str()? == " "))
+    });
+    let matcher = rt
+        .call(
+            &class,
+            CallArgs::new(vec![
+                junk,
+                Value::from("private Thread currentThread;"),
+                Value::from("private volatile Thread currentThread;"),
+            ]),
+        )
+        .unwrap();
+    assert!(
+        matches!(call(&mut rt,&matcher,"ratio",vec![]),Value::Float(x) if x == 0.8656716417910447)
+    );
+    assert_eq!(
+        canon_json(&call(&mut rt, &matcher, "get_matching_blocks", vec![])).unwrap(),
+        json!([{"$tuple":[0,0,8]},{"$tuple":[8,17,21]},{"$tuple":[29,38,0]}])
+    );
+}
+
+#[test]
+fn hashlib_sha1_consumes_encoded_bytes_and_preserves_copy_state() {
+    let mut rt = runtime();
+    let hashlib = rt.import("hashlib").unwrap();
+    let encoded = call(
+        &mut rt,
+        &Value::from("abc"),
+        "encode",
+        vec![Value::from("utf-8")],
+    );
+    let hash = call(&mut rt, &hashlib, "sha1", vec![encoded]);
+    assert_eq!(
+        call(&mut rt, &hash, "hexdigest", vec![]).as_str().unwrap(),
+        "a9993e364706816aba3e25717850c26c9cd0d89d"
+    );
+    let digest = call(&mut rt, &hash, "digest", vec![]);
+    assert_eq!(
+        &pyrt::bytes::bytes(&digest).unwrap()[..6],
+        &[0xa9, 0x99, 0x3e, 0x36, 0x47, 0x06]
+    );
+    let copied = call(&mut rt, &hash, "copy", vec![]);
+    call(
+        &mut rt,
+        &copied,
+        "update",
+        vec![pyrt::bytes::BytesObject::value(vec![b'd'])],
+    );
+    assert_eq!(
+        call(&mut rt, &copied, "hexdigest", vec![])
+            .as_str()
+            .unwrap(),
+        "81fe8bfe87576c3ecb22426f8e57847382917acf"
+    );
+    assert_eq!(
+        call(&mut rt, &hash, "hexdigest", vec![]).as_str().unwrap(),
+        "a9993e364706816aba3e25717850c26c9cd0d89d"
+    );
+}
+
+fn evaluate_ast(rt: &mut Runtime, node: &Value, operators: &Value) -> pyrt::PyResult<Value> {
+    match node.type_name() {
+        "Expression" => {
+            let body = rt.getattr(node, "body")?;
+            evaluate_ast(rt, &body, operators)
+        }
+        "Constant" => rt.getattr(node, "value"),
+        "UnaryOp" => {
+            let op = rt.getattr(node, "op")?;
+            let operand = rt.getattr(node, "operand")?;
+            let value = evaluate_ast(rt, &operand, operators)?;
+            if op.type_name() == "USub" {
+                pyrt::ops::neg(&value)
+            } else {
+                pyrt::ops::pos(&value)
+            }
+        }
+        "BinOp" => {
+            let left = rt.getattr(node, "left")?;
+            let right = rt.getattr(node, "right")?;
+            let op = rt.getattr(node, "op")?;
+            let left = evaluate_ast(rt, &left, operators)?;
+            let right = evaluate_ast(rt, &right, operators)?;
+            let kind = rt.builtin("type")?;
+            let class = rt.call(&kind, CallArgs::new(vec![op]))?;
+            let function = operators.dict_get(&class)?;
+            rt.call(&function, CallArgs::new(vec![left, right]))
+        }
+        _ => Err(pyrt::PyExc::value_error("not arithmetic")),
+    }
+}
+
+#[test]
+fn ast_arithmetic_nodes_support_operator_class_keys_and_python_precedence() {
+    let mut rt = runtime();
+    let ast = rt.import("ast").unwrap();
+    let operator = rt.import("operator").unwrap();
+    let functions = Value::dict();
+    for (node, method) in [
+        ("Add", "add"),
+        ("Sub", "sub"),
+        ("Mult", "mul"),
+        ("Div", "truediv"),
+        ("Mod", "mod"),
+        ("Pow", "pow"),
+    ] {
+        let class = rt.getattr(&ast, node).unwrap();
+        let method = rt.getattr(&operator, method).unwrap();
+        functions.dict_set(class, method).unwrap();
+    }
+    let parse = rt.getattr(&ast, "parse").unwrap();
+    for (expression, expected) in [
+        ("-2**2", Value::from(-4_i64)),
+        ("2**-2", Value::Float(0.25)),
+        ("2**3**2", Value::from(512_i64)),
+        ("(2+3)*4", Value::from(20_i64)),
+        ("3/8", Value::Float(0.375)),
+    ] {
+        let mut args = CallArgs::new(vec![Value::from(expression)]);
+        args.keyword("mode".into(), Value::from("eval")).unwrap();
+        let tree = rt.call(&parse, args).unwrap();
+        assert!(
+            evaluate_ast(&mut rt, &tree, &functions)
+                .unwrap()
+                .equals(&expected)
+                .unwrap()
+        );
+        let class = rt.getattr(&ast, "Expression").unwrap();
+        let isinstance = rt.builtin("isinstance").unwrap();
+        assert!(matches!(
+            rt.call(&isinstance, CallArgs::new(vec![tree, class]))
+                .unwrap(),
+            Value::Bool(true)
+        ));
+    }
+    for expression in ["01+2", "1+", "(1+2", "1\n+2", "1e+"] {
+        let mut args = CallArgs::new(vec![Value::from(expression)]);
+        args.keyword("mode".into(), Value::from("eval")).unwrap();
+        assert_eq!(rt.call(&parse, args).unwrap_err().kind, "SyntaxError");
+    }
+}
+
+#[test]
+fn json_preserves_plain_dollar_keys_float_spellings_order_and_hooks() {
+    let mut rt = runtime();
+    let json_module = rt.import("json").unwrap();
+    let encoded = call(
+        &mut rt,
+        &json_module,
+        "loads",
+        vec![Value::from(
+            r#"{"$float":"literal","a":[1,-0.0,NaN,Infinity],"é":"😀"}"#,
+        )],
+    );
+    let text = call(&mut rt, &json_module, "dumps", vec![encoded.clone()]);
+    assert_eq!(
+        text.as_str().unwrap(),
+        r#"{"$float": "literal", "a": [1, -0.0, NaN, Infinity], "\u00e9": "\ud83d\ude00"}"#
+    );
+    let dumps = rt.getattr(&json_module, "dumps").unwrap();
+    let mut args = CallArgs::new(vec![encoded]);
+    args.keyword("ensure_ascii".into(), Value::Bool(false))
+        .unwrap();
+    args.keyword("indent".into(), Value::from(2_i64)).unwrap();
+    let pretty = rt.call(&dumps, args).unwrap();
+    assert!(pretty.as_str().unwrap().contains("\n  \"é\": \"😀\"\n}"));
+    let parse_int = NativeFunction::value("integer", |_, args| {
+        Ok(Value::from(format!("int:{}", args.positional[0].as_str()?)))
+    });
+    let loads = rt.getattr(&json_module, "loads").unwrap();
+    let mut args = CallArgs::new(vec![Value::from("[123,1.5]")]);
+    args.keyword("parse_int".into(), parse_int).unwrap();
+    assert_eq!(
+        canon_json(&rt.call(&loads, args).unwrap()).unwrap(),
+        json!(["int:123",{"$float":"1.5"}])
+    );
+    for source in ["[1,]", "{\"a\":1,}", "01", "true false", "\"bad\\x\""] {
+        assert_eq!(
+            rt.call(&loads, CallArgs::new(vec![Value::from(source)]))
+                .unwrap_err()
+                .kind,
+            "JSONDecodeError"
+        );
+    }
+}

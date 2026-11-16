@@ -9,6 +9,7 @@ use num_traits::{Signed, ToPrimitive};
 use serde_json::{Value as Json, json};
 use std::any::Any;
 use std::cell::RefCell;
+use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
 
 pub fn register(runtime: &mut Runtime) {
@@ -21,9 +22,1439 @@ pub fn register(runtime: &mut Runtime) {
         ("random", init_random),
         ("datetime", init_datetime),
         ("re", init_re),
+        ("difflib", init_difflib),
+        ("hashlib", init_hashlib),
+        ("operator", init_operator),
+        ("ast", init_ast),
+        ("json", init_json),
     ] {
         runtime.register_module(name, init);
     }
+}
+
+struct JsonOptions {
+    ascii: bool,
+    allow_nan: bool,
+    sort_keys: bool,
+    skip_keys: bool,
+    indent: Option<String>,
+    item_separator: String,
+    key_separator: String,
+    default: Value,
+    check_circular: bool,
+}
+
+fn json_quote(text: &str, ascii: bool) -> String {
+    let quoted = serde_json::to_string(text).expect("JSON string serialization");
+    if !ascii {
+        return quoted;
+    }
+    let mut result = String::new();
+    for c in quoted.chars() {
+        if c.is_ascii() {
+            result.push(c);
+        } else {
+            for word in c.encode_utf16(&mut [0; 2]) {
+                result.push_str(&format!("\\u{word:04x}"));
+            }
+        }
+    }
+    result
+}
+
+fn json_float(value: f64, options: &JsonOptions) -> PyResult<String> {
+    if value.is_finite() {
+        return Ok(crate::float_repr(value));
+    }
+    if !options.allow_nan {
+        return Err(PyExc::value_error(
+            "Out of range float values are not JSON compliant",
+        ));
+    }
+    Ok(if value.is_nan() {
+        "NaN"
+    } else if value.is_sign_negative() {
+        "-Infinity"
+    } else {
+        "Infinity"
+    }
+    .into())
+}
+
+fn json_encode(
+    runtime: &mut Runtime,
+    value: &Value,
+    options: &JsonOptions,
+    active: &mut HashSet<(u8, usize)>,
+    depth: usize,
+) -> PyResult<String> {
+    if depth > 200 {
+        return Err(PyExc::recursion_error(
+            "maximum recursion depth exceeded while encoding a JSON object",
+        ));
+    }
+    match value {
+        Value::None => return Ok("null".into()),
+        Value::Bool(b) => return Ok(if *b { "true" } else { "false" }.into()),
+        Value::Int(n) => return Ok(n.to_string()),
+        Value::Float(f) => return json_float(*f, options),
+        Value::Str(s) => return Ok(json_quote(s.as_str(), options.ascii)),
+        _ => (),
+    }
+    let (id, mapping, sequence) = match value {
+        Value::List(v) => (
+            Some((0, Rc::as_ptr(v) as usize)),
+            None,
+            Some(v.borrow().clone()),
+        ),
+        Value::Tuple(v) => (Some((1, v.as_ptr() as usize)), None, Some(v.to_vec())),
+        Value::Dict(v) => (
+            Some((2, Rc::as_ptr(v) as usize)),
+            Some(v.borrow().clone()),
+            None,
+        ),
+        _ => (None, None, None),
+    };
+    if let Some(id) = id.filter(|_| options.check_circular)
+        && !active.insert(id)
+    {
+        return Err(PyExc::value_error("Circular reference detected"));
+    }
+    let result = if let Some(mut mapping) = mapping {
+        if options.sort_keys {
+            // Keep Python comparison errors rather than imposing an arbitrary
+            // ordering on dictionaries containing mixed incomparable key types.
+            let mut error = None;
+            mapping.sort_by(|(a, _), (b, _)| match crate::ops::compare(a, b) {
+                Ok(Some(o)) => o,
+                Ok(None) => std::cmp::Ordering::Equal,
+                Err(e) => {
+                    error = Some(e);
+                    std::cmp::Ordering::Equal
+                }
+            });
+            if let Some(error) = error {
+                return Err(error);
+            }
+        }
+        let mut items = Vec::new();
+        for (key, value) in mapping {
+            let key = match key {
+                Value::Str(s) => s.as_str().into(),
+                Value::None => "null".into(),
+                Value::Bool(b) => if b { "true" } else { "false" }.into(),
+                Value::Int(n) => n.to_string(),
+                Value::Float(f) => json_float(f, options)?,
+                _ if options.skip_keys => continue,
+                _ => {
+                    return Err(PyExc::type_error(
+                        "keys must be str, int, float, bool or None",
+                    ));
+                }
+            };
+            items.push(format!(
+                "{}{}{}",
+                json_quote(&key, options.ascii),
+                options.key_separator,
+                json_encode(runtime, &value, options, active, depth + 1)?
+            ));
+        }
+        json_join(&items, '{', '}', options, depth)
+    } else if let Some(sequence) = sequence {
+        let items = sequence
+            .iter()
+            .map(|v| json_encode(runtime, v, options, active, depth + 1))
+            .collect::<PyResult<Vec<_>>>()?;
+        json_join(&items, '[', ']', options, depth)
+    } else if !matches!(options.default, Value::None) {
+        let replacement = runtime.call(&options.default, CallArgs::new(vec![value.clone()]))?;
+        json_encode(runtime, &replacement, options, active, depth + 1)?
+    } else {
+        return Err(PyExc::type_error(format!(
+            "Object of type {} is not JSON serializable",
+            value.type_name()
+        )));
+    };
+    if let Some(id) = id.filter(|_| options.check_circular) {
+        active.remove(&id);
+    }
+    Ok(result)
+}
+
+fn json_join(
+    items: &[String],
+    open: char,
+    close: char,
+    options: &JsonOptions,
+    depth: usize,
+) -> String {
+    if items.is_empty() {
+        return format!("{open}{close}");
+    }
+    if let Some(indent) = &options.indent {
+        let prefix = indent.repeat(depth + 1);
+        format!(
+            "{open}\n{prefix}{}\n{}{close}",
+            items.join(&format!("{}\n{prefix}", options.item_separator)),
+            indent.repeat(depth)
+        )
+    } else {
+        format!("{open}{}{close}", items.join(&options.item_separator))
+    }
+}
+
+fn json_error(message: &str, position: usize) -> PyExc {
+    PyExc {
+        kind: "JSONDecodeError",
+        message: format!("{message}: char {position}"),
+    }
+}
+
+struct JsonParser<'a> {
+    text: &'a str,
+    at: usize,
+    hooks: &'a [Value],
+}
+
+impl JsonParser<'_> {
+    fn whitespace(&mut self) {
+        while self
+            .text
+            .as_bytes()
+            .get(self.at)
+            .is_some_and(|b| b" \t\r\n".contains(b))
+        {
+            self.at += 1;
+        }
+    }
+    fn string(&mut self) -> PyResult<String> {
+        let start = self.at;
+        self.at += 1;
+        let mut escaped = false;
+        while let Some(&c) = self.text.as_bytes().get(self.at) {
+            self.at += 1;
+            if c == b'"' && !escaped {
+                return serde_json::from_str(&self.text[start..self.at])
+                    .map_err(|_| json_error("Invalid string escape", start));
+            }
+            escaped = c == b'\\' && !escaped;
+        }
+        Err(json_error("Unterminated string", start))
+    }
+    fn value(&mut self, runtime: &mut Runtime, depth: usize) -> PyResult<Value> {
+        if depth > 200 {
+            return Err(PyExc::recursion_error(
+                "maximum recursion depth exceeded while decoding a JSON object",
+            ));
+        }
+        self.whitespace();
+        let start = self.at;
+        let Some(&first) = self.text.as_bytes().get(start) else {
+            return Err(json_error("Expecting value", start));
+        };
+        if first == b'"' {
+            return Ok(Value::from(self.string()?));
+        }
+        if first == b'[' {
+            self.at += 1;
+            self.whitespace();
+            let mut items = Vec::new();
+            if self.text.as_bytes().get(self.at) == Some(&b']') {
+                self.at += 1;
+                return Ok(Value::list(items));
+            }
+            loop {
+                items.push(self.value(runtime, depth + 1)?);
+                self.whitespace();
+                match self.text.as_bytes().get(self.at) {
+                    Some(b']') => {
+                        self.at += 1;
+                        break;
+                    }
+                    Some(b',') => self.at += 1,
+                    _ => return Err(json_error("Expecting ',' delimiter", self.at)),
+                }
+            }
+            return Ok(Value::list(items));
+        }
+        if first == b'{' {
+            self.at += 1;
+            self.whitespace();
+            let dict = Value::dict();
+            let mut pairs = Vec::new();
+            if self.text.as_bytes().get(self.at) == Some(&b'}') {
+                self.at += 1;
+            } else {
+                loop {
+                    self.whitespace();
+                    if self.text.as_bytes().get(self.at) != Some(&b'"') {
+                        return Err(json_error(
+                            "Expecting property name enclosed in double quotes",
+                            self.at,
+                        ));
+                    }
+                    let key = Value::from(self.string()?);
+                    self.whitespace();
+                    if self.text.as_bytes().get(self.at) != Some(&b':') {
+                        return Err(json_error("Expecting ':' delimiter", self.at));
+                    }
+                    self.at += 1;
+                    let value = self.value(runtime, depth + 1)?;
+                    dict.dict_set(key.clone(), value.clone())?;
+                    pairs.push(Value::tuple(vec![key, value]));
+                    self.whitespace();
+                    match self.text.as_bytes().get(self.at) {
+                        Some(b'}') => {
+                            self.at += 1;
+                            break;
+                        }
+                        Some(b',') => self.at += 1,
+                        _ => return Err(json_error("Expecting ',' delimiter", self.at)),
+                    }
+                }
+            }
+            if !matches!(self.hooks[4], Value::None) {
+                return runtime.call(&self.hooks[4], CallArgs::new(vec![Value::list(pairs)]));
+            }
+            if !matches!(self.hooks[0], Value::None) {
+                return runtime.call(&self.hooks[0], CallArgs::new(vec![dict]));
+            }
+            return Ok(dict);
+        }
+        for (literal, value) in [
+            ("true", Value::Bool(true)),
+            ("false", Value::Bool(false)),
+            ("null", Value::None),
+        ] {
+            if self.text[start..].starts_with(literal) {
+                self.at += literal.len();
+                return Ok(value);
+            }
+        }
+        for (literal, value) in [
+            ("NaN", f64::NAN),
+            ("Infinity", f64::INFINITY),
+            ("-Infinity", f64::NEG_INFINITY),
+        ] {
+            if self.text[start..].starts_with(literal) {
+                self.at += literal.len();
+                return if matches!(self.hooks[3], Value::None) {
+                    Ok(Value::Float(value))
+                } else {
+                    runtime.call(&self.hooks[3], CallArgs::new(vec![Value::from(literal)]))
+                };
+            }
+        }
+        if first == b'-' {
+            self.at += 1;
+        }
+        if self.text.as_bytes().get(self.at) == Some(&b'0') {
+            self.at += 1;
+        } else {
+            while self
+                .text
+                .as_bytes()
+                .get(self.at)
+                .is_some_and(u8::is_ascii_digit)
+            {
+                self.at += 1;
+            }
+        }
+        if self.at == start || self.at == start + usize::from(first == b'-') {
+            return Err(json_error("Expecting value", start));
+        }
+        let mut float = false;
+        if self.text.as_bytes().get(self.at) == Some(&b'.')
+            && self
+                .text
+                .as_bytes()
+                .get(self.at + 1)
+                .is_some_and(u8::is_ascii_digit)
+        {
+            float = true;
+            self.at += 1;
+            while self
+                .text
+                .as_bytes()
+                .get(self.at)
+                .is_some_and(u8::is_ascii_digit)
+            {
+                self.at += 1;
+            }
+        }
+        if self
+            .text
+            .as_bytes()
+            .get(self.at)
+            .is_some_and(|c| matches!(c, b'e' | b'E'))
+        {
+            let mut end = self.at + 1;
+            if self
+                .text
+                .as_bytes()
+                .get(end)
+                .is_some_and(|c| matches!(c, b'+' | b'-'))
+            {
+                end += 1;
+            }
+            if self
+                .text
+                .as_bytes()
+                .get(end)
+                .is_some_and(u8::is_ascii_digit)
+            {
+                float = true;
+                self.at = end + 1;
+                while self
+                    .text
+                    .as_bytes()
+                    .get(self.at)
+                    .is_some_and(u8::is_ascii_digit)
+                {
+                    self.at += 1;
+                }
+            }
+        }
+        let literal = &self.text[start..self.at];
+        let hook = &self.hooks[if float { 1 } else { 2 }];
+        if !matches!(hook, Value::None) {
+            return runtime.call(hook, CallArgs::new(vec![Value::from(literal)]));
+        }
+        if float {
+            Ok(Value::Float(
+                literal
+                    .parse()
+                    .map_err(|_| json_error("Invalid number", start))?,
+            ))
+        } else {
+            Ok(Value::Int(
+                literal
+                    .parse()
+                    .map_err(|_| json_error("Invalid number", start))?,
+            ))
+        }
+    }
+}
+
+fn init_json(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
+    set(
+        runtime,
+        module,
+        "dumps",
+        function("json.dumps", |runtime, args| {
+            if args.positional.len() > 1 {
+                return Err(PyExc::type_error("dumps takes 1 positional argument"));
+            }
+            let args = bind(
+                args,
+                &[
+                    "obj",
+                    "skipkeys",
+                    "ensure_ascii",
+                    "check_circular",
+                    "allow_nan",
+                    "cls",
+                    "indent",
+                    "separators",
+                    "default",
+                    "sort_keys",
+                ],
+                1,
+                vec![
+                    Value::Bool(false),
+                    Value::Bool(true),
+                    Value::Bool(true),
+                    Value::Bool(true),
+                    Value::None,
+                    Value::None,
+                    Value::None,
+                    Value::None,
+                    Value::Bool(false),
+                ],
+            )?;
+            if !matches!(args[5], Value::None) {
+                return Err(PyExc::not_implemented_error("custom JSON encoder class"));
+            }
+            let indent = match &args[6] {
+                Value::None => None,
+                Value::Str(s) => Some(s.as_str().into()),
+                _ => Some(" ".repeat(integer(&args[6])?.max(0) as usize)),
+            };
+            let (item_separator, key_separator) = if matches!(args[7], Value::None) {
+                (
+                    if indent.is_some() { "," } else { ", " }.into(),
+                    ": ".into(),
+                )
+            } else {
+                let separators = args[7].sequence()?;
+                if separators.len() != 2 {
+                    return Err(PyExc::value_error("separators must contain two strings"));
+                }
+                (
+                    separators[0].as_str()?.into(),
+                    separators[1].as_str()?.into(),
+                )
+            };
+            let options = JsonOptions {
+                ascii: args[2].is_truthy(),
+                allow_nan: args[4].is_truthy(),
+                sort_keys: args[9].is_truthy(),
+                skip_keys: args[1].is_truthy(),
+                indent,
+                item_separator,
+                key_separator,
+                default: args[8].clone(),
+                check_circular: args[3].is_truthy(),
+            };
+            Ok(Value::from(json_encode(
+                runtime,
+                &args[0],
+                &options,
+                &mut HashSet::new(),
+                0,
+            )?))
+        }),
+    )?;
+    set(
+        runtime,
+        module,
+        "loads",
+        function("json.loads", |runtime, args| {
+            if args.positional.len() > 1 {
+                return Err(PyExc::type_error("loads takes 1 positional argument"));
+            }
+            let args = bind(
+                args,
+                &[
+                    "s",
+                    "cls",
+                    "object_hook",
+                    "parse_float",
+                    "parse_int",
+                    "parse_constant",
+                    "object_pairs_hook",
+                ],
+                1,
+                vec![Value::None; 6],
+            )?;
+            if !matches!(args[1], Value::None) {
+                return Err(PyExc::not_implemented_error("custom JSON decoder class"));
+            }
+            let text = if let Value::Str(s) = &args[0] {
+                if s.as_str().starts_with('\u{feff}') {
+                    return Err(json_error("Unexpected UTF-8 BOM", 0));
+                }
+                s.as_str().to_owned()
+            } else {
+                let bytes = crate::bytes::bytes(&args[0])?;
+                let bytes = bytes.strip_prefix(&[0xef, 0xbb, 0xbf]).unwrap_or(&bytes);
+                String::from_utf8(bytes.to_vec()).map_err(|_| PyExc {
+                    kind: "UnicodeDecodeError",
+                    message: "invalid UTF-8 JSON input".into(),
+                })?
+            };
+            let mut parser = JsonParser {
+                text: &text,
+                at: 0,
+                hooks: &args[2..],
+            };
+            let value = parser.value(runtime, 0)?;
+            parser.whitespace();
+            if parser.at != text.len() {
+                return Err(json_error("Extra data", parser.at));
+            }
+            Ok(value)
+        }),
+    )?;
+    Ok(())
+}
+
+#[derive(Clone, Debug)]
+struct MatcherData {
+    a: Vec<char>,
+    b: Vec<char>,
+    b2j: HashMap<char, Vec<usize>>,
+    junk: HashSet<char>,
+    isjunk: Value,
+    autojunk: bool,
+}
+
+impl MatcherData {
+    fn chain_b(&mut self, runtime: &mut Runtime) -> PyResult<()> {
+        self.b2j.clear();
+        self.junk.clear();
+        let mut order = Vec::new();
+        for (index, c) in self.b.iter().copied().enumerate() {
+            if !self.b2j.contains_key(&c) {
+                order.push(c);
+            }
+            self.b2j.entry(c).or_default().push(index);
+        }
+        if !matches!(self.isjunk, Value::None) {
+            for c in order {
+                if runtime
+                    .call(
+                        &self.isjunk,
+                        CallArgs::new(vec![Value::from(c.to_string())]),
+                    )?
+                    .is_truthy()
+                {
+                    self.junk.insert(c);
+                    self.b2j.remove(&c);
+                }
+            }
+        }
+        if self.autojunk && self.b.len() >= 200 {
+            let threshold = self.b.len() / 100 + 1;
+            self.b2j.retain(|_, indices| indices.len() <= threshold);
+        }
+        Ok(())
+    }
+    fn longest(&self, alo: usize, ahi: usize, blo: usize, bhi: usize) -> (usize, usize, usize) {
+        let (mut ai, mut bi, mut size) = (alo, blo, 0);
+        let mut previous = HashMap::new();
+        for i in alo..ahi {
+            let mut current = HashMap::new();
+            if let Some(indices) = self.b2j.get(&self.a[i]) {
+                for j in indices
+                    .iter()
+                    .copied()
+                    .filter(|j| *j >= blo)
+                    .take_while(|j| *j < bhi)
+                {
+                    let length = j
+                        .checked_sub(1)
+                        .and_then(|j| previous.get(&j))
+                        .copied()
+                        .unwrap_or(0)
+                        + 1;
+                    current.insert(j, length);
+                    if length > size {
+                        ai = i + 1 - length;
+                        bi = j + 1 - length;
+                        size = length;
+                    }
+                }
+            }
+            previous = current;
+        }
+        for junk in [false, true] {
+            while ai > alo
+                && bi > blo
+                && self.junk.contains(&self.b[bi - 1]) == junk
+                && self.a[ai - 1] == self.b[bi - 1]
+            {
+                ai -= 1;
+                bi -= 1;
+                size += 1;
+            }
+            while ai + size < ahi
+                && bi + size < bhi
+                && self.junk.contains(&self.b[bi + size]) == junk
+                && self.a[ai + size] == self.b[bi + size]
+            {
+                size += 1;
+            }
+        }
+        (ai, bi, size)
+    }
+    fn blocks(&self) -> Vec<(usize, usize, usize)> {
+        let mut queue = vec![(0, self.a.len(), 0, self.b.len())];
+        let mut blocks = Vec::new();
+        while let Some((alo, ahi, blo, bhi)) = queue.pop() {
+            let (ai, bi, size) = self.longest(alo, ahi, blo, bhi);
+            if size == 0 {
+                continue;
+            }
+            blocks.push((ai, bi, size));
+            if alo < ai && blo < bi {
+                queue.push((alo, ai, blo, bi));
+            }
+            if ai + size < ahi && bi + size < bhi {
+                queue.push((ai + size, ahi, bi + size, bhi));
+            }
+        }
+        blocks.sort_unstable();
+        let mut collapsed: Vec<(usize, usize, usize)> = Vec::new();
+        for (a, b, n) in blocks {
+            if let Some(last) = collapsed.last_mut()
+                && last.0 + last.2 == a
+                && last.1 + last.2 == b
+            {
+                last.2 += n;
+            } else {
+                collapsed.push((a, b, n));
+            }
+        }
+        collapsed.push((self.a.len(), self.b.len(), 0));
+        collapsed
+    }
+    fn ratio(&self, matches: usize) -> f64 {
+        let length = self.a.len() + self.b.len();
+        if length == 0 {
+            1.0
+        } else {
+            2.0 * matches as f64 / length as f64
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+struct SequenceMatcherObject(Rc<RefCell<MatcherData>>);
+
+fn block_value((a, b, size): (usize, usize, usize)) -> Value {
+    Value::tuple(vec![Value::from(a), Value::from(b), Value::from(size)])
+}
+
+impl PyObject for SequenceMatcherObject {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+    fn type_name(&self) -> &str {
+        "SequenceMatcher"
+    }
+    fn get_attr(&self, _: &mut Runtime, name: &str) -> PyResult<Value> {
+        if ![
+            "ratio",
+            "quick_ratio",
+            "real_quick_ratio",
+            "find_longest_match",
+            "get_matching_blocks",
+            "get_opcodes",
+            "set_seqs",
+            "set_seq1",
+            "set_seq2",
+        ]
+        .contains(&name)
+        {
+            return Err(PyExc::attribute_error(format!(
+                "SequenceMatcher has no attribute '{name}'"
+            )));
+        }
+        let data = self.0.clone();
+        let name = name.to_owned();
+        Ok(function(
+            &format!("SequenceMatcher.{name}"),
+            move |runtime, args| {
+                if name.starts_with("set_seq") {
+                    let names = if name == "set_seqs" {
+                        &["a", "b"][..]
+                    } else if name == "set_seq1" {
+                        &["a"][..]
+                    } else {
+                        &["b"][..]
+                    };
+                    let args = bind(args, names, names.len(), vec![])?;
+                    let mut replacement = data.borrow().clone();
+                    if name != "set_seq2" {
+                        replacement.a = args[0].as_str()?.chars().collect();
+                    }
+                    if name != "set_seq1" {
+                        replacement.b = args[usize::from(name == "set_seqs")]
+                            .as_str()?
+                            .chars()
+                            .collect();
+                        replacement.chain_b(runtime)?;
+                    }
+                    *data.borrow_mut() = replacement;
+                    return Ok(Value::None);
+                }
+                let data = data.borrow();
+                if name == "find_longest_match" {
+                    let args = bind(
+                        args,
+                        &["alo", "ahi", "blo", "bhi"],
+                        0,
+                        vec![
+                            Value::from(0_i64),
+                            Value::from(data.a.len()),
+                            Value::from(0_i64),
+                            Value::from(data.b.len()),
+                        ],
+                    )?;
+                    let bounds = args
+                        .iter()
+                        .map(|v| {
+                            v.as_int()?
+                                .to_usize()
+                                .ok_or_else(|| PyExc::index_error("sequence index out of range"))
+                        })
+                        .collect::<PyResult<Vec<_>>>()?;
+                    if bounds[1] > data.a.len() || bounds[3] > data.b.len() {
+                        return Err(PyExc::index_error("sequence index out of range"));
+                    }
+                    return Ok(block_value(
+                        data.longest(bounds[0], bounds[1], bounds[2], bounds[3]),
+                    ));
+                }
+                args.reject_keywords()?;
+                args.arity(0, 0)?;
+                match name.as_str() {
+                    "ratio" => Ok(Value::Float(
+                        data.ratio(data.blocks().iter().map(|b| b.2).sum()),
+                    )),
+                    "real_quick_ratio" => {
+                        Ok(Value::Float(data.ratio(data.a.len().min(data.b.len()))))
+                    }
+                    "quick_ratio" => {
+                        let mut available = HashMap::<char, usize>::new();
+                        for c in &data.b {
+                            *available.entry(*c).or_default() += 1;
+                        }
+                        let mut matches = 0;
+                        for c in &data.a {
+                            if let Some(count) = available.get_mut(c)
+                                && *count != 0
+                            {
+                                *count -= 1;
+                                matches += 1;
+                            }
+                        }
+                        Ok(Value::Float(data.ratio(matches)))
+                    }
+                    "get_matching_blocks" => Ok(Value::list(
+                        data.blocks().into_iter().map(block_value).collect(),
+                    )),
+                    "get_opcodes" => {
+                        let mut result = Vec::new();
+                        let (mut i, mut j) = (0, 0);
+                        for (ai, bj, size) in data.blocks() {
+                            let tag = if i < ai && j < bj {
+                                Some("replace")
+                            } else if i < ai {
+                                Some("delete")
+                            } else if j < bj {
+                                Some("insert")
+                            } else {
+                                None
+                            };
+                            if let Some(tag) = tag {
+                                result.push(Value::tuple(vec![
+                                    Value::from(tag),
+                                    Value::from(i),
+                                    Value::from(ai),
+                                    Value::from(j),
+                                    Value::from(bj),
+                                ]));
+                            }
+                            if size != 0 {
+                                result.push(Value::tuple(vec![
+                                    Value::from("equal"),
+                                    Value::from(ai),
+                                    Value::from(ai + size),
+                                    Value::from(bj),
+                                    Value::from(bj + size),
+                                ]));
+                            }
+                            i = ai + size;
+                            j = bj + size;
+                        }
+                        Ok(Value::list(result))
+                    }
+                    _ => unreachable!(),
+                }
+            },
+        ))
+    }
+}
+
+fn init_difflib(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
+    set(
+        runtime,
+        module,
+        "SequenceMatcher",
+        NativeType::value(
+            "SequenceMatcher",
+            "difflib",
+            |v| matches!(v, Value::Object(o) if o.as_any().is::<SequenceMatcherObject>()),
+            |runtime, args| {
+                let args = bind(
+                    args,
+                    &["isjunk", "a", "b", "autojunk"],
+                    0,
+                    vec![
+                        Value::None,
+                        Value::from(""),
+                        Value::from(""),
+                        Value::Bool(true),
+                    ],
+                )?;
+                let mut data = MatcherData {
+                    a: args[1].as_str()?.chars().collect(),
+                    b: args[2].as_str()?.chars().collect(),
+                    b2j: HashMap::new(),
+                    junk: HashSet::new(),
+                    isjunk: args[0].clone(),
+                    autojunk: args[3].is_truthy(),
+                };
+                data.chain_b(runtime)?;
+                Ok(Value::Object(Rc::new(SequenceMatcherObject(Rc::new(
+                    RefCell::new(data),
+                )))))
+            },
+        ),
+    )?;
+    Ok(())
+}
+
+#[derive(Clone, Debug)]
+struct HashObject(Rc<RefCell<sha1::Sha1>>);
+
+impl PyObject for HashObject {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+    fn type_name(&self) -> &str {
+        "HASH"
+    }
+    fn get_attr(&self, _: &mut Runtime, name: &str) -> PyResult<Value> {
+        use sha1::Digest;
+        match name {
+            "name" => return Ok(Value::from("sha1")),
+            "digest_size" => return Ok(Value::from(20_i64)),
+            "block_size" => return Ok(Value::from(64_i64)),
+            _ => (),
+        }
+        if !["update", "digest", "hexdigest", "copy"].contains(&name) {
+            return Err(PyExc::attribute_error(format!(
+                "HASH has no attribute '{name}'"
+            )));
+        }
+        let hash = self.0.clone();
+        let name = name.to_owned();
+        Ok(function(&format!("HASH.{name}"), move |_, args| {
+            args.reject_keywords()?;
+            args.arity(usize::from(name == "update"), usize::from(name == "update"))?;
+            match name.as_str() {
+                "update" => {
+                    hash.borrow_mut()
+                        .update(crate::bytes::bytes(&args.positional[0])?);
+                    Ok(Value::None)
+                }
+                "copy" => Ok(Value::Object(Rc::new(HashObject(Rc::new(RefCell::new(
+                    hash.borrow().clone(),
+                )))))),
+                "digest" => Ok(crate::bytes::BytesObject::value(
+                    hash.borrow().clone().finalize().to_vec(),
+                )),
+                _ => Ok(Value::from(
+                    hash.borrow()
+                        .clone()
+                        .finalize()
+                        .iter()
+                        .map(|b| format!("{b:02x}"))
+                        .collect::<String>(),
+                )),
+            }
+        }))
+    }
+}
+
+fn init_hashlib(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
+    set(
+        runtime,
+        module,
+        "sha1",
+        function("hashlib.sha1", |_, args| {
+            use sha1::Digest;
+            if args.positional.len() > 1 {
+                return Err(PyExc::type_error(
+                    "sha1() takes at most 1 positional argument",
+                ));
+            }
+            let args = bind(
+                args,
+                &["string", "usedforsecurity"],
+                0,
+                vec![crate::bytes::BytesObject::value(vec![]), Value::Bool(true)],
+            )?;
+            let mut hash = sha1::Sha1::new();
+            hash.update(crate::bytes::bytes(&args[0])?);
+            Ok(Value::Object(Rc::new(HashObject(Rc::new(RefCell::new(
+                hash,
+            ))))))
+        }),
+    )?;
+    Ok(())
+}
+
+fn init_operator(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
+    for name in [
+        "add", "sub", "mul", "truediv", "floordiv", "mod", "pow", "pos", "neg", "invert",
+    ] {
+        set(
+            runtime,
+            module,
+            name,
+            function(&format!("operator.{name}"), move |_, args| {
+                args.reject_keywords()?;
+                let unary = ["pos", "neg", "invert"].contains(&name);
+                args.arity(if unary { 1 } else { 2 }, if unary { 1 } else { 2 })?;
+                let a = &args.positional[0];
+                if unary {
+                    return match name {
+                        "pos" => crate::ops::pos(a),
+                        "neg" => crate::ops::neg(a),
+                        _ => crate::ops::invert(a),
+                    };
+                }
+                let b = &args.positional[1];
+                match name {
+                    "add" => crate::ops::add(a, b),
+                    "sub" => crate::ops::sub(a, b),
+                    "mul" => crate::ops::mul(a, b),
+                    "truediv" => crate::ops::true_div(a, b),
+                    "floordiv" => crate::ops::floor_div(a, b),
+                    "mod" => crate::ops::modulo(a, b),
+                    "pow" => crate::ops::power(a, b),
+                    _ => unreachable!(),
+                }
+            }),
+        )?;
+    }
+    Ok(())
+}
+
+#[derive(Clone, Debug)]
+struct AstObject {
+    kind: &'static str,
+    fields: Value,
+}
+
+impl PyObject for AstObject {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+    fn type_name(&self) -> &str {
+        self.kind
+    }
+    fn repr(&self) -> PyResult<String> {
+        Ok(format!("<ast.{} object at 0x0>", self.kind))
+    }
+    fn hash(&self) -> PyResult<i64> {
+        Ok((self as *const Self as usize).rotate_right(4) as i64)
+    }
+    fn get_attr(&self, runtime: &mut Runtime, name: &str) -> PyResult<Value> {
+        if name == "__class__" {
+            let module = runtime.import("ast")?;
+            return runtime.getattr(&module, self.kind);
+        }
+        if name == "__dict__" {
+            return Ok(self.fields.clone());
+        }
+        if name == "_fields" {
+            return Ok(Value::tuple(
+                ast_fields(self.kind)
+                    .iter()
+                    .map(|n| Value::from(*n))
+                    .collect(),
+            ));
+        }
+        self.fields.dict_get(&Value::from(name)).map_err(|_| {
+            PyExc::attribute_error(format!("'{}' object has no attribute '{name}'", self.kind))
+        })
+    }
+    fn set_attr(&self, name: &str, value: Value) -> PyResult<()> {
+        self.fields.dict_set(Value::from(name), value)
+    }
+}
+
+fn ast_fields(kind: &str) -> &'static [&'static str] {
+    match kind {
+        "Expression" => &["body"],
+        "Constant" => &["value", "kind"],
+        "BinOp" => &["left", "op", "right"],
+        "UnaryOp" => &["op", "operand"],
+        "Name" => &["id", "ctx"],
+        _ => &[],
+    }
+}
+
+fn ast_node(kind: &'static str, fields: Vec<(&str, Value)>) -> PyResult<Value> {
+    let dict = Value::dict();
+    for (name, value) in fields {
+        dict.dict_set(Value::from(name), value)?;
+    }
+    Ok(Value::Object(Rc::new(AstObject { kind, fields: dict })))
+}
+
+fn syntax_error() -> PyExc {
+    PyExc {
+        kind: "SyntaxError",
+        message: "invalid syntax".into(),
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+enum ExprToken {
+    Number(String),
+    Name(String),
+    Symbol(char),
+    Power,
+    FloorDiv,
+    Newline,
+    End,
+}
+
+fn expression_tokens(source: &str) -> PyResult<Vec<ExprToken>> {
+    let chars: Vec<_> = source.chars().collect();
+    let (mut i, mut parentheses) = (0, 0_usize);
+    let mut tokens = Vec::new();
+    while i < chars.len() {
+        let c = chars[i];
+        if c.is_whitespace() {
+            if c == '\n' && parentheses == 0 {
+                tokens.push(ExprToken::Newline);
+            }
+            i += 1;
+            continue;
+        }
+        if c.is_ascii_digit() || c == '.' {
+            let start = i;
+            let hexadecimal = c == '0' && chars.get(i + 1).is_some_and(|c| "xXoObB".contains(*c));
+            i += 1;
+            while i < chars.len()
+                && (chars[i].is_ascii_alphanumeric()
+                    || matches!(chars[i], '.' | '_')
+                    || !hexadecimal
+                        && matches!(chars[i], '+' | '-')
+                        && matches!(chars[i - 1], 'e' | 'E'))
+            {
+                i += 1;
+            }
+            tokens.push(ExprToken::Number(chars[start..i].iter().collect()));
+            continue;
+        }
+        if c == '_' || c.is_alphabetic() {
+            let start = i;
+            i += 1;
+            while i < chars.len() && (chars[i] == '_' || chars[i].is_alphanumeric()) {
+                i += 1;
+            }
+            tokens.push(ExprToken::Name(chars[start..i].iter().collect()));
+            continue;
+        }
+        if c == '*' && chars.get(i + 1) == Some(&'*') {
+            tokens.push(ExprToken::Power);
+            i += 2;
+            continue;
+        }
+        if c == '/' && chars.get(i + 1) == Some(&'/') {
+            tokens.push(ExprToken::FloorDiv);
+            i += 2;
+            continue;
+        }
+        if c == '(' {
+            parentheses += 1;
+        }
+        if c == ')' {
+            parentheses = parentheses.checked_sub(1).ok_or_else(syntax_error)?;
+        }
+        if "+-*/%@()~".contains(c) {
+            tokens.push(ExprToken::Symbol(c));
+            i += 1;
+            continue;
+        }
+        return Err(syntax_error());
+    }
+    if parentheses != 0 {
+        return Err(syntax_error());
+    }
+    tokens.push(ExprToken::End);
+    Ok(tokens)
+}
+
+struct ExpressionParser {
+    tokens: Vec<ExprToken>,
+    at: usize,
+    depth: usize,
+}
+
+impl ExpressionParser {
+    fn sum(&mut self) -> PyResult<Value> {
+        let mut left = self.product()?;
+        while let ExprToken::Symbol(op @ ('+' | '-')) = self.tokens[self.at] {
+            self.at += 1;
+            let right = self.product()?;
+            left = ast_node(
+                "BinOp",
+                vec![
+                    ("left", left),
+                    (
+                        "op",
+                        ast_node(if op == '+' { "Add" } else { "Sub" }, vec![])?,
+                    ),
+                    ("right", right),
+                ],
+            )?;
+        }
+        Ok(left)
+    }
+    fn product(&mut self) -> PyResult<Value> {
+        let mut left = self.factor()?;
+        loop {
+            let kind = match self.tokens[self.at] {
+                ExprToken::Symbol('*') => "Mult",
+                ExprToken::Symbol('/') => "Div",
+                ExprToken::Symbol('%') => "Mod",
+                ExprToken::Symbol('@') => "MatMult",
+                ExprToken::FloorDiv => "FloorDiv",
+                _ => break,
+            };
+            self.at += 1;
+            let right = self.factor()?;
+            left = ast_node(
+                "BinOp",
+                vec![
+                    ("left", left),
+                    ("op", ast_node(kind, vec![])?),
+                    ("right", right),
+                ],
+            )?;
+        }
+        Ok(left)
+    }
+    fn factor(&mut self) -> PyResult<Value> {
+        self.depth += 1;
+        if self.depth > 200 {
+            return Err(PyExc::recursion_error(
+                "maximum recursion depth exceeded during ast construction",
+            ));
+        }
+        let result = if let ExprToken::Symbol(op @ ('+' | '-' | '~')) = self.tokens[self.at] {
+            self.at += 1;
+            let operand = self.factor()?;
+            ast_node(
+                "UnaryOp",
+                vec![
+                    (
+                        "op",
+                        ast_node(
+                            match op {
+                                '+' => "UAdd",
+                                '-' => "USub",
+                                _ => "Invert",
+                            },
+                            vec![],
+                        )?,
+                    ),
+                    ("operand", operand),
+                ],
+            )
+        } else {
+            let atom = self.atom()?;
+            if self.tokens[self.at] == ExprToken::Power {
+                self.at += 1;
+                let exponent = self.factor()?;
+                ast_node(
+                    "BinOp",
+                    vec![
+                        ("left", atom),
+                        ("op", ast_node("Pow", vec![])?),
+                        ("right", exponent),
+                    ],
+                )
+            } else {
+                Ok(atom)
+            }
+        };
+        self.depth -= 1;
+        result
+    }
+    fn atom(&mut self) -> PyResult<Value> {
+        let token = self.tokens[self.at].clone();
+        match token {
+            ExprToken::Number(raw) => {
+                self.at += 1;
+                if raw.starts_with('_') || raw.ends_with('_') || raw.contains("__") {
+                    return Err(syntax_error());
+                }
+                let clean = raw.replace('_', "");
+                let value = if clean.len() >= 2
+                    && clean.starts_with('0')
+                    && "xXoObB".contains(clean.as_bytes()[1] as char)
+                {
+                    let radix = match clean.as_bytes()[1] {
+                        b'x' | b'X' => 16,
+                        b'o' | b'O' => 8,
+                        _ => 2,
+                    };
+                    Value::Int(
+                        num_bigint::BigInt::parse_bytes(&clean.as_bytes()[2..], radix)
+                            .ok_or_else(syntax_error)?,
+                    )
+                } else if clean.contains(['.', 'e', 'E']) {
+                    Value::Float(clean.parse::<f64>().map_err(|_| syntax_error())?)
+                } else {
+                    if clean.len() > 1 && clean.starts_with('0') && clean.chars().any(|c| c != '0')
+                    {
+                        return Err(syntax_error());
+                    }
+                    Value::Int(clean.parse().map_err(|_| syntax_error())?)
+                };
+                ast_node("Constant", vec![("value", value), ("kind", Value::None)])
+            }
+            ExprToken::Name(name) => {
+                self.at += 1;
+                match name.as_str() {
+                    "True" | "False" | "None" => ast_node(
+                        "Constant",
+                        vec![
+                            (
+                                "value",
+                                match name.as_str() {
+                                    "True" => Value::Bool(true),
+                                    "False" => Value::Bool(false),
+                                    _ => Value::None,
+                                },
+                            ),
+                            ("kind", Value::None),
+                        ],
+                    ),
+                    _ => ast_node(
+                        "Name",
+                        vec![
+                            ("id", Value::from(name)),
+                            ("ctx", ast_node("Load", vec![])?),
+                        ],
+                    ),
+                }
+            }
+            ExprToken::Symbol('(') => {
+                self.at += 1;
+                let value = self.sum()?;
+                if self.tokens[self.at] != ExprToken::Symbol(')') {
+                    return Err(syntax_error());
+                }
+                self.at += 1;
+                Ok(value)
+            }
+            _ => Err(syntax_error()),
+        }
+    }
+}
+
+fn init_ast(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
+    for name in [
+        "AST",
+        "expr",
+        "operator",
+        "unaryop",
+        "Expression",
+        "Constant",
+        "BinOp",
+        "UnaryOp",
+        "Name",
+        "Load",
+        "Add",
+        "Sub",
+        "Mult",
+        "Div",
+        "FloorDiv",
+        "Mod",
+        "Pow",
+        "MatMult",
+        "UAdd",
+        "USub",
+        "Invert",
+        "Not",
+    ] {
+        let class = NativeType::value(
+            name,
+            "ast",
+            move |value| {
+                let Value::Object(object) = value else {
+                    return false;
+                };
+                let Some(node) = object.as_any().downcast_ref::<AstObject>() else {
+                    return false;
+                };
+                name == "AST"
+                    || name == node.kind
+                    || name == "expr"
+                        && ["Constant", "BinOp", "UnaryOp", "Name"].contains(&node.kind)
+                    || name == "operator"
+                        && [
+                            "Add", "Sub", "Mult", "Div", "FloorDiv", "Mod", "Pow", "MatMult",
+                        ]
+                        .contains(&node.kind)
+                    || name == "unaryop" && ["UAdd", "USub", "Invert", "Not"].contains(&node.kind)
+            },
+            move |_, args| {
+                let fields = ast_fields(name);
+                if args.positional.len() > fields.len() {
+                    return Err(PyExc::type_error(
+                        "AST constructor has too many positional arguments",
+                    ));
+                }
+                let node = ast_node(
+                    name,
+                    args.positional
+                        .into_iter()
+                        .enumerate()
+                        .map(|(i, v)| (fields[i], v))
+                        .collect(),
+                )?;
+                if let Value::Object(object) = &node {
+                    for (key, value) in args.keywords {
+                        object.set_attr(&key, value)?;
+                    }
+                }
+                Ok(node)
+            },
+        );
+        set(runtime, module, name, class)?;
+    }
+    set(
+        runtime,
+        module,
+        "parse",
+        function("ast.parse", |_, args| {
+            let args = bind(
+                args,
+                &[
+                    "source",
+                    "filename",
+                    "mode",
+                    "type_comments",
+                    "feature_version",
+                    "optimize",
+                ],
+                1,
+                vec![
+                    Value::from("<unknown>"),
+                    Value::from("exec"),
+                    Value::Bool(false),
+                    Value::None,
+                    Value::from(-1_i64),
+                ],
+            )?;
+            if args[2].as_str()? != "eval" {
+                return Err(PyExc::not_implemented_error(
+                    "AST statement parsing; only arithmetic eval expressions are supported",
+                ));
+            }
+            let source = if let Value::Str(s) = &args[0] {
+                s.as_str().to_owned()
+            } else {
+                String::from_utf8(crate::bytes::bytes(&args[0])?).map_err(|_| syntax_error())?
+            };
+            let mut parser = ExpressionParser {
+                tokens: expression_tokens(&source)?,
+                at: 0,
+                depth: 0,
+            };
+            let body = parser.sum()?;
+            while parser.tokens[parser.at] == ExprToken::Newline {
+                parser.at += 1;
+            }
+            if parser.tokens[parser.at] != ExprToken::End {
+                return Err(syntax_error());
+            }
+            ast_node("Expression", vec![("body", body)])
+        }),
+    )?;
+    Ok(())
 }
 
 fn set(runtime: &mut Runtime, module: &Value, name: &str, value: Value) -> PyResult<()> {
@@ -1845,19 +3276,7 @@ fn init_re(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
     ] {
         set(runtime, module, name, Value::from(flag as i64))?;
     }
-    let error = NativeType::value(
-        "PatternError",
-        "re",
-        |v| v.type_name() == "PatternError",
-        |_, args| {
-            args.reject_keywords()?;
-            args.arity(1, 3)?;
-            Ok(Value::Opaque {
-                text: args.positional[0].as_str()?.into(),
-                type_name: "PatternError".into(),
-            })
-        },
-    );
+    let error = crate::exceptions::exception_type(runtime, "PatternError")?;
     set(runtime, module, "error", error.clone())?;
     set(runtime, module, "PatternError", error)?;
     set(

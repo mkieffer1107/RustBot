@@ -165,6 +165,7 @@ pub struct NativeFunction {
     pub name: String,
     pub qualname: String,
     pub module: String,
+    pub attrs: Value,
     body: Rc<NativeBody>,
 }
 
@@ -194,6 +195,22 @@ impl NativeFunction {
             name,
             qualname,
             module,
+            attrs: Value::dict(),
+            body: Rc::new(body),
+        }))
+    }
+    pub fn qualified_with_attrs(
+        name: String,
+        qualname: String,
+        module: String,
+        attrs: Value,
+        body: impl Fn(&mut Runtime, CallArgs) -> PyResult<Value> + 'static,
+    ) -> Value {
+        Value::Object(Rc::new(Self {
+            name,
+            qualname,
+            module,
+            attrs,
             body: Rc::new(body),
         }))
     }
@@ -206,6 +223,10 @@ impl PyObject for NativeFunction {
     fn type_name(&self) -> &str {
         "function"
     }
+    fn hash(&self) -> PyResult<i64> {
+        let h = ((self as *const Self as usize).rotate_right(4)) as i64;
+        Ok(if h == -1 { -2 } else { h })
+    }
     fn repr(&self) -> PyResult<String> {
         Ok(format!("<function {} at 0x0>", self.qualname))
     }
@@ -216,12 +237,42 @@ impl PyObject for NativeFunction {
         true
     }
     fn get_attr(&self, _runtime: &mut Runtime, name: &str) -> PyResult<Value> {
+        if name == "__dict__" {
+            return Ok(self.attrs.clone());
+        }
+        if let Ok(value) = self.attrs.dict_get(&Value::from(name)) {
+            return Ok(value);
+        }
         match name {
             "__name__" => Ok(Value::from(self.name.clone())),
             "__qualname__" => Ok(Value::from(self.qualname.clone())),
             "__module__" => Ok(Value::from(self.module.clone())),
+            "__doc__" | "__defaults__" | "__kwdefaults__" => Ok(Value::None),
+            "__annotations__" => {
+                let value = Value::dict();
+                self.attrs.dict_set(Value::from(name), value.clone())?;
+                Ok(value)
+            }
             _ => Err(PyExc::attribute_error("function attribute not found")),
         }
+    }
+    fn set_attr(&self, name: &str, value: Value) -> PyResult<()> {
+        if matches!(name, "__name__" | "__qualname__") && !matches!(value, Value::Str(_)) {
+            return Err(PyExc::type_error(
+                "function name must be set to a string object",
+            ));
+        }
+        if name == "__defaults__" && !matches!(value, Value::Tuple(_) | Value::None) {
+            return Err(PyExc::type_error(
+                "__defaults__ must be set to a tuple object",
+            ));
+        }
+        if matches!(name, "__kwdefaults__" | "__annotations__")
+            && !matches!(value, Value::Dict(_) | Value::None)
+        {
+            return Err(PyExc::type_error("function attribute must be a dict"));
+        }
+        self.attrs.dict_set(Value::from(name), value)
     }
 }
 
@@ -273,6 +324,10 @@ impl PyObject for NativeType {
     }
     fn type_name(&self) -> &str {
         "type"
+    }
+    fn hash(&self) -> PyResult<i64> {
+        let h = ((self as *const Self as usize).rotate_right(4)) as i64;
+        Ok(if h == -1 { -2 } else { h })
     }
     fn repr(&self) -> PyResult<String> {
         Ok(if self.module == "builtins" {

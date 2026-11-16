@@ -249,6 +249,11 @@ fn number_text(text: &str) -> String {
 }
 
 pub fn int(value: &Value, base: Option<&Value>) -> PyResult<Value> {
+    if base.is_none()
+        && let Some(value) = crate::numeric_objects::to_int(value)
+    {
+        return value.map(Value::Int);
+    }
     if base.is_none() {
         match value {
             Value::Int(n) => return Ok(Value::Int(n.clone())),
@@ -323,6 +328,9 @@ pub fn int(value: &Value, base: Option<&Value>) -> PyResult<Value> {
 }
 
 pub fn float(value: &Value) -> PyResult<Value> {
+    if let Some(value) = crate::numeric_objects::to_float(value) {
+        return value.map(Value::Float);
+    }
     if let Value::Str(s) = value {
         let text = number_text(s.as_str());
         let text = text.trim();
@@ -559,6 +567,9 @@ pub fn call(rt: &mut Runtime, name: &str, mut args: CallArgs) -> PyResult<Value>
         "abs" => {
             args.reject_keywords()?;
             args.arity(1, 1)?;
+            if let Some(value) = crate::numeric_objects::unary("abs", &args.positional[0]) {
+                return value;
+            }
             match &args.positional[0] {
                 Value::Int(n) => Ok(Value::Int(n.abs())),
                 Value::Bool(b) => Ok(Value::from(i64::from(*b))),
@@ -665,6 +676,13 @@ pub fn call(rt: &mut Runtime, name: &str, mut args: CallArgs) -> PyResult<Value>
         "type" => {
             args.reject_keywords()?;
             args.arity(1, 1)?;
+            if let Value::Object(o) = &args.positional[0] {
+                match o.get_attr(rt, "__class__") {
+                    Ok(class) => return Ok(class),
+                    Err(e) if e.kind == "AttributeError" => {}
+                    Err(e) => return Err(e),
+                }
+            }
             rt.builtin(args.positional[0].type_name())
         }
         "getattr" | "hasattr" => {

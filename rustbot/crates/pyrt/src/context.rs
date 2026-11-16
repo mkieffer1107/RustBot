@@ -7,10 +7,11 @@ use std::rc::Rc;
 
 pub type RandomHandle = Rc<RefCell<PyRandom>>;
 
+#[derive(Clone)]
 pub struct RandomContext {
     seed: BigInt,
     global: RandomHandle,
-    instances: Vec<RandomHandle>,
+    instances: Rc<RefCell<Vec<RandomHandle>>>,
 }
 
 impl RandomContext {
@@ -18,7 +19,7 @@ impl RandomContext {
         Self {
             global: Rc::new(RefCell::new(PyRandom::from_int(&seed))),
             seed,
-            instances: Vec::new(),
+            instances: Rc::new(RefCell::new(Vec::new())),
         }
     }
 
@@ -29,14 +30,16 @@ impl RandomContext {
     /// Explicitly seeded instances use PyRandom constructors directly. Only
     /// Random() / Random(None) advance this creation-order counter.
     pub fn new_unseeded(&mut self) -> RandomHandle {
-        let seed = format!("{}:{}", self.seed, self.instances.len());
+        let mut instances = self.instances.borrow_mut();
+        let seed = format!("{}:{}", self.seed, instances.len());
         let random = Rc::new(RefCell::new(PyRandom::from_str(&seed)));
-        self.instances.push(random.clone());
+        instances.push(random.clone());
         random
     }
 
     pub fn instance(&self, index: usize) -> PyResult<RandomHandle> {
         self.instances
+            .borrow()
             .get(index)
             .cloned()
             .ok_or_else(|| PyExc::index_error("random instance does not exist"))
@@ -47,6 +50,7 @@ impl RandomContext {
         let mut opaque = global.state_is_opaque();
         let counts: Vec<_> = self
             .instances
+            .borrow()
             .iter()
             .map(|v| {
                 let v = v.borrow();
@@ -88,7 +92,7 @@ impl RandomContext {
                     .ok_or_else(|| PyExc::value_error("invalid instance RNG count"))
             })
             .collect::<PyResult<_>>()?;
-        if counts.len() < self.instances.len() {
+        if counts.len() < self.instances.borrow().len() {
             return Err(PyExc::value_error(
                 "snapshot predates existing random instances; load a fresh conversation",
             ));
@@ -96,13 +100,13 @@ impl RandomContext {
         let mut global = PyRandom::from_int(&self.seed);
         global.advance(global_count);
         *self.global.borrow_mut() = global;
-        while self.instances.len() < counts.len() {
+        while self.instances.borrow().len() < counts.len() {
             self.new_unseeded();
         }
         for (i, count) in counts.into_iter().enumerate() {
             let mut random = PyRandom::from_str(&format!("{}:{i}", self.seed));
             random.advance(count);
-            *self.instances[i].borrow_mut() = random;
+            *self.instances.borrow()[i].borrow_mut() = random;
         }
         Ok(())
     }

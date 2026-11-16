@@ -22,6 +22,12 @@ fn unsupported(op: &str, a: &Value, b: &Value) -> PyExc {
 }
 
 pub fn add(a: &Value, b: &Value) -> PyResult<Value> {
+    if let Some(value) = crate::numeric_objects::binary("add", a, b) {
+        return value;
+    }
+    if let Some(value) = crate::stdlib::temporal_binary("+", a, b) {
+        return value;
+    }
     if integers(a, b) {
         return Ok(Value::Int(a.as_int()? + b.as_int()?));
     }
@@ -45,6 +51,17 @@ pub fn add(a: &Value, b: &Value) -> PyResult<Value> {
 }
 
 pub fn sub(a: &Value, b: &Value) -> PyResult<Value> {
+    if let Some(value) = crate::numeric_objects::binary("sub", a, b) {
+        return value;
+    }
+    if let Some(value) = crate::stdlib::temporal_binary("-", a, b) {
+        return value;
+    }
+    if matches!(a, Value::Set(_) | Value::FrozenSet(_))
+        && matches!(b, Value::Set(_) | Value::FrozenSet(_))
+    {
+        return crate::containers::call_method(a, "difference", std::slice::from_ref(b));
+    }
     if integers(a, b) {
         return Ok(Value::Int(a.as_int()? - b.as_int()?));
     }
@@ -110,6 +127,9 @@ fn repetition(sequence: &Value, count: &Value) -> PyResult<Value> {
 }
 
 pub fn mul(a: &Value, b: &Value) -> PyResult<Value> {
+    if let Some(value) = crate::numeric_objects::binary("mul", a, b) {
+        return value;
+    }
     if integers(a, b) {
         return Ok(Value::Int(a.as_int()? * b.as_int()?));
     }
@@ -250,6 +270,9 @@ pub fn int_ratio_to_float(numerator: &BigInt, denominator: &BigInt) -> PyResult<
 }
 
 pub fn true_div(a: &Value, b: &Value) -> PyResult<Value> {
+    if let Some(value) = crate::numeric_objects::binary("truediv", a, b) {
+        return value;
+    }
     if integers(a, b) {
         return Ok(Value::Float(int_ratio_to_float(
             &a.as_int()?,
@@ -267,6 +290,7 @@ pub fn true_div(a: &Value, b: &Value) -> PyResult<Value> {
 }
 
 pub fn divmod(a: &Value, b: &Value) -> PyResult<Value> {
+    if let Some(value)=crate::numeric_objects::binary("divmod",a,b){return value;}
     if integers(a, b) {
         let (q, r) = int_divmod(a.as_int()?, b.as_int()?)?;
         return Ok(Value::tuple(vec![Value::Int(q), Value::Int(r)]));
@@ -279,6 +303,9 @@ pub fn divmod(a: &Value, b: &Value) -> PyResult<Value> {
 }
 
 pub fn power(a: &Value, b: &Value) -> PyResult<Value> {
+    if let Some(value) = crate::numeric_objects::binary("pow", a, b) {
+        return value;
+    }
     if integers(a, b) {
         let (base, exponent) = (a.as_int()?, b.as_int()?);
         if !exponent.is_negative() {
@@ -410,6 +437,9 @@ pub fn pow_mod(a: &Value, b: &Value, modulus: &Value) -> PyResult<Value> {
 }
 
 pub fn pos(value: &Value) -> PyResult<Value> {
+    if let Some(value) = crate::numeric_objects::unary("pos", value) {
+        return value;
+    }
     match value {
         Value::Int(_) | Value::Bool(_) => Ok(Value::Int(value.as_int()?)),
         Value::Float(_) => Ok(value.clone()),
@@ -431,6 +461,9 @@ pub fn invert(value: &Value) -> PyResult<Value> {
 }
 
 pub fn floor_div(a: &Value, b: &Value) -> PyResult<Value> {
+    if let Some(value) = crate::numeric_objects::binary("floordiv", a, b) {
+        return value;
+    }
     if integers(a, b) {
         return Ok(Value::Int(int_divmod(a.as_int()?, b.as_int()?)?.0));
     }
@@ -441,6 +474,12 @@ pub fn floor_div(a: &Value, b: &Value) -> PyResult<Value> {
 }
 
 pub fn modulo(a: &Value, b: &Value) -> PyResult<Value> {
+    if let Some(value) = crate::numeric_objects::binary("mod", a, b) {
+        return value;
+    }
+    if let Value::Str(template) = a {
+        return crate::formatting::percent(template.as_str(), b).map(Value::from);
+    }
     if integers(a, b) {
         return Ok(Value::Int(int_divmod(a.as_int()?, b.as_int()?)?.1));
     }
@@ -450,7 +489,76 @@ pub fn modulo(a: &Value, b: &Value) -> PyResult<Value> {
     Err(unsupported("%", a, b))
 }
 
+/// Augmented assignment returns the original mutable container when Python
+/// mutates in place; scalar and immutable sequence operands use binary operators.
+pub fn inplace(
+    rt: &mut crate::runtime::Runtime,
+    op: &str,
+    a: &Value,
+    b: &Value,
+) -> PyResult<Value> {
+    let op = op.strip_suffix('=').unwrap_or(op);
+    if let Value::List(list) = a {
+        if op == "+" {
+            if a.is_identical(b) {
+                let copied = list.borrow().clone();
+                list.borrow_mut().extend(copied);
+            } else {
+                let iterator = rt.iter(b)?;
+                loop {
+                    let value = match rt.next(&iterator) {
+                        Err(error) if error.kind == "StopIteration" => None,
+                        value => value?,
+                    };
+                    let Some(value) = value else {
+                        break;
+                    };
+                    list.borrow_mut().push(value);
+                }
+            }
+            return Ok(a.clone());
+        }
+        if op == "*" {
+            let Value::List(repeated) = mul(a, b)? else {
+                unreachable!("list repetition returns list");
+            };
+            *list.borrow_mut() = repeated.borrow().clone();
+            return Ok(a.clone());
+        }
+    }
+    if matches!(a, Value::Set(_)) && matches!(op, "|" | "&" | "^" | "-") {
+        if !matches!(b, Value::Set(_) | Value::FrozenSet(_)) {
+            return Err(unsupported(&format!("{op}="), a, b));
+        }
+        let method = match op {
+            "|" => "update",
+            "&" => "intersection_update",
+            "^" => "symmetric_difference_update",
+            "-" => "difference_update",
+            _ => unreachable!(),
+        };
+        crate::containers::call_method(a, method, std::slice::from_ref(b))?;
+        return Ok(a.clone());
+    }
+    match op {
+        "+" => add(a, b),
+        "-" => sub(a, b),
+        "*" => mul(a, b),
+        "/" => true_div(a, b),
+        "//" => floor_div(a, b),
+        "%" => modulo(a, b),
+        "**" => power(a, b),
+        "|" | "&" | "^" | "<<" | ">>" => bitwise(op, a, b),
+        _ => Err(PyExc::value_error(format!(
+            "unknown augmented assignment operator '{op}'"
+        ))),
+    }
+}
+
 pub fn neg(v: &Value) -> PyResult<Value> {
+    if let Some(value) = crate::numeric_objects::unary("neg", v) {
+        return value;
+    }
     match v {
         Value::Bool(_) | Value::Int(_) => Ok(Value::Int(-v.as_int()?)),
         Value::Float(x) => Ok(Value::Float(-x)),
@@ -459,6 +567,17 @@ pub fn neg(v: &Value) -> PyResult<Value> {
 }
 
 pub fn bitwise(op: &str, a: &Value, b: &Value) -> PyResult<Value> {
+    if matches!(a, Value::Set(_) | Value::FrozenSet(_))
+        && matches!(b, Value::Set(_) | Value::FrozenSet(_))
+    {
+        let method = match op {
+            "&" => "intersection",
+            "|" => "union",
+            "^" => "symmetric_difference",
+            _ => return Err(unsupported(op, a, b)),
+        };
+        return crate::containers::call_method(a, method, std::slice::from_ref(b));
+    }
     let (left, right) = (a.as_int()?, b.as_int()?);
     let value = match op {
         "&" => left & right,
@@ -495,6 +614,26 @@ pub fn bitwise(op: &str, a: &Value, b: &Value) -> PyResult<Value> {
 
 /// Partial ordering keeps NaNs unordered and compares large integers exactly.
 pub fn compare(a: &Value, b: &Value) -> PyResult<Option<Ordering>> {
+    if let Some(order) = crate::numeric_objects::compare(a, b) {
+        return order.map(Some);
+    }
+    if let Some(order) = crate::stdlib::temporal_compare(a, b) {
+        return order.map(Some);
+    }
+    if matches!(a, Value::Set(_) | Value::FrozenSet(_))
+        && matches!(b, Value::Set(_) | Value::FrozenSet(_))
+    {
+        if a.equals(b)? {
+            return Ok(Some(Ordering::Equal));
+        }
+        if crate::containers::call_method(a, "issubset", std::slice::from_ref(b))?.is_truthy() {
+            return Ok(Some(Ordering::Less));
+        }
+        if crate::containers::call_method(a, "issuperset", std::slice::from_ref(b))?.is_truthy() {
+            return Ok(Some(Ordering::Greater));
+        }
+        return Ok(None);
+    }
     if integers(a, b) {
         return Ok(Some(a.as_int()?.cmp(&b.as_int()?)));
     }
@@ -544,6 +683,9 @@ fn compare_int_float(integer: &BigInt, float: f64) -> PyResult<Option<Ordering>>
 }
 
 pub fn getitem(sequence: &Value, index: &Value) -> PyResult<Value> {
+    if let Value::Object(o) = sequence {
+        return o.get_item(index);
+    }
     if matches!(sequence, Value::Dict(_)) {
         return sequence.dict_get(index);
     }
@@ -571,6 +713,7 @@ pub fn getitem(sequence: &Value, index: &Value) -> PyResult<Value> {
 
 pub fn contains(container: &Value, item: &Value) -> PyResult<bool> {
     match container {
+        Value::Object(o) => o.contains(item),
         Value::Str(s) => Ok(s.as_str().contains(item.as_str()?)),
         Value::Set(s) | Value::FrozenSet(s) => s.contains(item),
         Value::Dict(_) => match container.dict_get(item) {
