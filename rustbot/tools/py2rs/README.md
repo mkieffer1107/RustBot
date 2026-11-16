@@ -36,7 +36,9 @@ Each emitted file exposes an `INIT: pyrt::runtime::ModuleInit` function pointer,
 Metadata includes source/module paths, the `INIT` symbol, named functions with
 their Rust scope IDs, and trace spans taken from compiled CPython code objects.
 Decorators use `co_firstlineno` and the final nonempty `co_lines()` line, matching
-the checks' source contract.
+the checks' source contract. Trace hooks also retain a stable identity for each
+code object: two generator expressions can have identical displayed spans while
+remaining distinct calls.
 
 Functions retain Python argument binding, definition-time mutable defaults,
 closure cells, global/nonlocal writes, short-circuit evaluation and exception
@@ -44,6 +46,11 @@ flow. Comprehensions use native callbacks and isolated frames. Generator
 expressions and supported generator functions execute lazily; generator bodies
 use native Rust resumable control flow. Unsupported suspension constructs,
 asynchronous code and lazy annotation namespaces fail explicitly.
+
+Large pure list, tuple and dict literals become validated tagged data literals,
+decoded into fresh native values on each evaluation. This reduces Rust syntax
+without changing shared-reference behavior. Set literals retain native table
+construction, including CPython's bulk-copy step for folded constant sets.
 
 Run the small compiled differential fixtures with:
 

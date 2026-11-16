@@ -254,7 +254,7 @@ class Compiler:
                 elif isinstance(op, ast.Is): test = f"{left}.is_identical(&{right})"
                 elif isinstance(op, ast.IsNot): test = f"!{left}.is_identical(&{right})"
                 elif isinstance(op, (ast.In, ast.NotIn)):
-                    test = f"pyrt::ops::contains(&{right}, &{left})?"
+                    test = f"pyrt::ops::contains_rt(rt, &{right}, &{left})?"
                     if isinstance(op, ast.NotIn): test = "!" + test
                 else:
                     relation = {ast.Lt: "o.is_lt()", ast.LtE: "!o.is_gt()", ast.Gt: "o.is_gt()", ast.GtE: "!o.is_lt()"}.get(type(op))

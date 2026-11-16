@@ -90,7 +90,7 @@ let flow = (|| -> PyResult<__Flow> {
 
 let __v_87 = { let __callable_88 = { let __v_90 = { let __callable_91 = frame.load(rt, "str")?; let mut __args_92 = CallArgs::default(); let __v_93 = { let mut __v_94 = frame.load(rt, "text")?; if !__v_94.is_truthy() { __v_94 = Value::from(""); } __v_94 }; __args_92.positional.push(__v_93); rt.call(&__callable_91, __args_92)? }; rt.getattr(&__v_90, "strip")? }; let mut __args_89 = CallArgs::default(); rt.call(&__callable_88, __args_89)? };
 frame.store("line", __v_87.clone())?;
-let __v_95 = { let mut __v_96 = { let __v_97 = frame.load(rt, "line")?; Value::Bool(!__v_97.is_truthy()) }; if !__v_96.is_truthy() { __v_96 = { let mut __v_98 = Value::from("?"); let mut __matched_99 = true; if __matched_99 { let __v_100 = frame.load(rt, "line")?; __matched_99 = pyrt::ops::contains(&__v_100, &__v_98)?; } Value::Bool(__matched_99) }; } __v_96 }; if __v_95.is_truthy() {
+let __v_95 = { let mut __v_96 = { let __v_97 = frame.load(rt, "line")?; Value::Bool(!__v_97.is_truthy()) }; if !__v_96.is_truthy() { __v_96 = { let mut __v_98 = Value::from("?"); let mut __matched_99 = true; if __matched_99 { let __v_100 = frame.load(rt, "line")?; __matched_99 = pyrt::ops::contains_rt(rt, &__v_100, &__v_98)?; } Value::Bool(__matched_99) }; } __v_96 }; if __v_95.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 

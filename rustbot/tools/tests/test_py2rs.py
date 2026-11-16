@@ -222,6 +222,14 @@ def constant_sets():
             list({True, 1, 2.0, 2, -0.0, 0, 10000000000000000000000}),
             list({1 + 2, 4, 5}), list({'a', 'b'}),
             list({'a', 'b', *['c', 'd', 'e']})]
+
+def generator_membership():
+    values = (record(x) for x in range(4))
+    found = 2 in values
+    missing = 3 not in values
+    exhausted = 0 in values
+    split_contraction = 1 in (len(piece) for piece in ('don', 't'))
+    return found, missing, exhausted, split_contraction, counter
 '''
 
 
@@ -301,6 +309,9 @@ fn main(){for line in io::stdin().lock().lines(){let case:serde_json::Value=serd
 
     def test_compact_literal_data_preserves_types_keys_and_mutable_freshness(self):
         self.check_cases([("literal_table", ()), ("literal_freshness", ())])
+
+    def test_generator_membership_consumes_lazily_and_stops_on_match(self):
+        self.check_cases([("generator_membership", ())])
 
     def test_constant_set_folding_preserves_cpython_table_order(self):
         # Python's hash secret is selected at process startup; pin the oracle

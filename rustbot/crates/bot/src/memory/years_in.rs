@@ -100,7 +100,7 @@ return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-let __v_189 = { let mut __v_190 = frame.load(rt, "low")?; let mut __matched_191 = true; if __matched_191 { let __v_192 = frame.load(rt, "THE_JOB_NOUNS")?; __matched_191 = pyrt::ops::contains(&__v_192, &__v_190)?; } Value::Bool(__matched_191) }; if __v_189.is_truthy() {
+let __v_189 = { let mut __v_190 = frame.load(rt, "low")?; let mut __matched_191 = true; if __matched_191 { let __v_192 = frame.load(rt, "THE_JOB_NOUNS")?; __matched_191 = pyrt::ops::contains_rt(rt, &__v_192, &__v_190)?; } Value::Bool(__matched_191) }; if __v_189.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(true)));
 } else {
 
@@ -138,7 +138,7 @@ return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-let __v_237 = { let mut __v_238 = { let mut __v_239 = frame.load(rt, "a")?; let mut __matched_240 = true; if __matched_240 { let __v_241 = frame.load(rt, "b")?; __matched_240 = pyrt::ops::contains(&__v_241, &__v_239)?; } Value::Bool(__matched_240) }; if !__v_238.is_truthy() { __v_238 = { let mut __v_242 = frame.load(rt, "b")?; let mut __matched_243 = true; if __matched_243 { let __v_244 = frame.load(rt, "a")?; __matched_243 = pyrt::ops::contains(&__v_244, &__v_242)?; } Value::Bool(__matched_243) }; } __v_238 }; if __v_237.is_truthy() {
+let __v_237 = { let mut __v_238 = { let mut __v_239 = frame.load(rt, "a")?; let mut __matched_240 = true; if __matched_240 { let __v_241 = frame.load(rt, "b")?; __matched_240 = pyrt::ops::contains_rt(rt, &__v_241, &__v_239)?; } Value::Bool(__matched_240) }; if !__v_238.is_truthy() { __v_238 = { let mut __v_242 = frame.load(rt, "b")?; let mut __matched_243 = true; if __matched_243 { let __v_244 = frame.load(rt, "a")?; __matched_243 = pyrt::ops::contains_rt(rt, &__v_244, &__v_242)?; } Value::Bool(__matched_243) }; } __v_238 }; if __v_237.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(true)));
 } else {
 
@@ -216,7 +216,7 @@ return Ok(__Flow::Return({ let mut __items_344 = Vec::new(); let __v_345 = Value
 }
 let __v_348 = { let __callable_349 = { let __v_351 = frame.load(rt, "text")?; rt.getattr(&__v_351, "strip")? }; let mut __args_350 = CallArgs::default(); rt.call(&__callable_349, __args_350)? };
 frame.store("said", __v_348.clone())?;
-let __v_352 = { let mut __v_353 = { let __v_354 = frame.load(rt, "said")?; Value::Bool(!__v_354.is_truthy()) }; if !__v_353.is_truthy() { __v_353 = { let mut __v_355 = Value::from("?"); let mut __matched_356 = true; if __matched_356 { let __v_357 = frame.load(rt, "said")?; __matched_356 = pyrt::ops::contains(&__v_357, &__v_355)?; } Value::Bool(__matched_356) }; } __v_353 }; if __v_352.is_truthy() {
+let __v_352 = { let mut __v_353 = { let __v_354 = frame.load(rt, "said")?; Value::Bool(!__v_354.is_truthy()) }; if !__v_353.is_truthy() { __v_353 = { let mut __v_355 = Value::from("?"); let mut __matched_356 = true; if __matched_356 { let __v_357 = frame.load(rt, "said")?; __matched_356 = pyrt::ops::contains_rt(rt, &__v_357, &__v_355)?; } Value::Bool(__matched_356) }; } __v_353 }; if __v_352.is_truthy() {
 return Ok(__Flow::Return({ let mut __items_358 = Vec::new(); let __v_359 = Value::from(""); __items_358.push(__v_359); let __v_360 = Value::Int("0".parse().expect("integer literal")); __items_358.push(__v_360); let __v_361 = Value::from("years"); __items_358.push(__v_361); Value::tuple(__items_358) }));
 } else {
 
@@ -279,7 +279,7 @@ return Ok(__Flow::Return({ let __callable_481 = frame.load(rt, "int")?; let mut 
 } else {
 
 }
-let __v_484 = { let mut __v_485 = frame.load(rt, "low")?; let mut __matched_486 = true; if __matched_486 { let __v_487 = frame.load(rt, "_NUMBERS")?; __matched_486 = pyrt::ops::contains(&__v_487, &__v_485)?; } Value::Bool(__matched_486) }; if __v_484.is_truthy() {
+let __v_484 = { let mut __v_485 = frame.load(rt, "low")?; let mut __matched_486 = true; if __matched_486 { let __v_487 = frame.load(rt, "_NUMBERS")?; __matched_486 = pyrt::ops::contains_rt(rt, &__v_487, &__v_485)?; } Value::Bool(__matched_486) }; if __v_484.is_truthy() {
 return Ok(__Flow::Return({ let __callable_488 = { let __v_490 = frame.load(rt, "_NUMBERS")?; rt.getattr(&__v_490, "index")? }; let mut __args_489 = CallArgs::default(); let __v_491 = frame.load(rt, "low")?; __args_489.positional.push(__v_491); rt.call(&__callable_488, __args_489)? }));
 } else {
 
@@ -343,7 +343,7 @@ let frame = Frame::function(closure, &["word"], &[], &[], signature.bind(args)?)
 rt.trace_call_code("bot/memory/years_in.py", 161, 163, "_with_an", 10);
 let flow = (|| -> PyResult<__Flow> {
 
-return Ok(__Flow::Return({ let __v_569 = { let __v_571 = { let mut __v_572 = { let __callable_574 = { let __v_576 = { let __v_577 = frame.load(rt, "word")?; let __v_579 = Value::Int("1".parse().expect("integer literal")); let __index_580 = if matches!(__v_579, Value::None) { None } else { let n = __v_579.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_577, None, __index_580, 1_i64)? }; rt.getattr(&__v_576, "lower")? }; let mut __args_575 = CallArgs::default(); rt.call(&__callable_574, __args_575)? }; let mut __matched_573 = true; if __matched_573 { let __v_581 = Value::from("aeiou"); __matched_573 = pyrt::ops::contains(&__v_581, &__v_572)?; } Value::Bool(__matched_573) }; if __v_571.is_truthy() { Value::from("an ") } else { Value::from("a ") } }; let __v_570 = frame.load(rt, "word")?; pyrt::ops::add(&__v_569, &__v_570)? }));
+return Ok(__Flow::Return({ let __v_569 = { let __v_571 = { let mut __v_572 = { let __callable_574 = { let __v_576 = { let __v_577 = frame.load(rt, "word")?; let __v_579 = Value::Int("1".parse().expect("integer literal")); let __index_580 = if matches!(__v_579, Value::None) { None } else { let n = __v_579.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_577, None, __index_580, 1_i64)? }; rt.getattr(&__v_576, "lower")? }; let mut __args_575 = CallArgs::default(); rt.call(&__callable_574, __args_575)? }; let mut __matched_573 = true; if __matched_573 { let __v_581 = Value::from("aeiou"); __matched_573 = pyrt::ops::contains_rt(rt, &__v_581, &__v_572)?; } Value::Bool(__matched_573) }; if __v_571.is_truthy() { Value::from("an ") } else { Value::from("a ") } }; let __v_570 = frame.load(rt, "word")?; pyrt::ops::add(&__v_569, &__v_570)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -469,7 +469,7 @@ return Ok(__Flow::Continue);
 } else {
 
 }
-let __v_813 = { let mut __v_814 = frame.load(rt, "relation")?; let mut __matched_815 = true; if __matched_815 { let __v_816 = frame.load(rt, "fits")?; __matched_815 = pyrt::ops::contains(&__v_816, &__v_814)?; } Value::Bool(__matched_815) }; if __v_813.is_truthy() {
+let __v_813 = { let mut __v_814 = frame.load(rt, "relation")?; let mut __matched_815 = true; if __matched_815 { let __v_816 = frame.load(rt, "fits")?; __matched_815 = pyrt::ops::contains_rt(rt, &__v_816, &__v_814)?; } Value::Bool(__matched_815) }; if __v_813.is_truthy() {
 return Ok(__Flow::Return({ let mut __items_817 = Vec::new(); let __v_818 = frame.load(rt, "relation")?; __items_817.push(__v_818); let __v_819 = frame.load(rt, "job")?; __items_817.push(__v_819); Value::tuple(__items_817) }));
 } else {
 
@@ -546,7 +546,7 @@ return Ok(__Flow::Return(Value::from("")));
 }
 let __v_946 = { let __callable_947 = { let __v_949 = frame.load(rt, "text")?; rt.getattr(&__v_949, "strip")? }; let mut __args_948 = CallArgs::default(); rt.call(&__callable_947, __args_948)? };
 frame.store("said", __v_946.clone())?;
-let __v_950 = { let mut __v_951 = { let __v_952 = frame.load(rt, "said")?; Value::Bool(!__v_952.is_truthy()) }; if !__v_951.is_truthy() { __v_951 = { let mut __v_953 = Value::from("?"); let mut __matched_954 = true; if __matched_954 { let __v_955 = frame.load(rt, "said")?; __matched_954 = pyrt::ops::contains(&__v_955, &__v_953)?; } Value::Bool(__matched_954) }; } __v_951 }; if __v_950.is_truthy() {
+let __v_950 = { let mut __v_951 = { let __v_952 = frame.load(rt, "said")?; Value::Bool(!__v_952.is_truthy()) }; if !__v_951.is_truthy() { __v_951 = { let mut __v_953 = Value::from("?"); let mut __matched_954 = true; if __matched_954 { let __v_955 = frame.load(rt, "said")?; __matched_954 = pyrt::ops::contains_rt(rt, &__v_955, &__v_953)?; } Value::Bool(__matched_954) }; } __v_951 }; if __v_950.is_truthy() {
 return Ok(__Flow::Return(Value::from("")));
 } else {
 
@@ -582,7 +582,7 @@ let __v_1022 = { let __callable_1023 = frame.load(rt, "_the_count")?; let mut __
 frame.store("count", __v_1022.clone())?;
 let __v_1030 = { let __callable_1031 = { let __v_1033 = frame.load(rt, "unit")?; rt.getattr(&__v_1033, "startswith")? }; let mut __args_1032 = CallArgs::default(); let __v_1034 = { let mut __items_1035 = Vec::new(); let __v_1036 = Value::from("month"); __items_1035.push(__v_1036); let __v_1037 = Value::from("mnth"); __items_1035.push(__v_1037); Value::tuple(__items_1035) }; __args_1032.positional.push(__v_1034); rt.call(&__callable_1031, __args_1032)? };
 frame.store("months", __v_1030.clone())?;
-let __v_1038 = { let mut __v_1039 = { let __v_1040 = frame.load(rt, "count")?; Value::Bool(!__v_1040.is_truthy()) }; if __v_1039.is_truthy() { __v_1039 = { let mut __v_1041 = { let __callable_1043 = { let __v_1045 = { let mut __v_1046 = { let __callable_1047 = { let __v_1049 = frame.load(rt, "match")?; rt.getattr(&__v_1049, "group")? }; let mut __args_1048 = CallArgs::default(); let __v_1050 = Value::from("count"); __args_1048.positional.push(__v_1050); rt.call(&__callable_1047, __args_1048)? }; if !__v_1046.is_truthy() { __v_1046 = Value::from(""); } __v_1046 }; rt.getattr(&__v_1045, "lower")? }; let mut __args_1044 = CallArgs::default(); rt.call(&__callable_1043, __args_1044)? }; let mut __matched_1042 = true; if __matched_1042 { let __v_1051 = { let mut __items_1052 = Vec::new(); let __v_1053 = Value::from("years"); __items_1052.push(__v_1053); Value::tuple(__items_1052) }; __matched_1042 = !pyrt::ops::contains(&__v_1051, &__v_1041)?; } Value::Bool(__matched_1042) }; } __v_1039 }; if __v_1038.is_truthy() {
+let __v_1038 = { let mut __v_1039 = { let __v_1040 = frame.load(rt, "count")?; Value::Bool(!__v_1040.is_truthy()) }; if __v_1039.is_truthy() { __v_1039 = { let mut __v_1041 = { let __callable_1043 = { let __v_1045 = { let mut __v_1046 = { let __callable_1047 = { let __v_1049 = frame.load(rt, "match")?; rt.getattr(&__v_1049, "group")? }; let mut __args_1048 = CallArgs::default(); let __v_1050 = Value::from("count"); __args_1048.positional.push(__v_1050); rt.call(&__callable_1047, __args_1048)? }; if !__v_1046.is_truthy() { __v_1046 = Value::from(""); } __v_1046 }; rt.getattr(&__v_1045, "lower")? }; let mut __args_1044 = CallArgs::default(); rt.call(&__callable_1043, __args_1044)? }; let mut __matched_1042 = true; if __matched_1042 { let __v_1051 = { let mut __items_1052 = Vec::new(); let __v_1053 = Value::from("years"); __items_1052.push(__v_1053); Value::tuple(__items_1052) }; __matched_1042 = !pyrt::ops::contains_rt(rt, &__v_1051, &__v_1041)?; } Value::Bool(__matched_1042) }; } __v_1039 }; if __v_1038.is_truthy() {
 return Ok(__Flow::Return(Value::from("")));
 } else {
 

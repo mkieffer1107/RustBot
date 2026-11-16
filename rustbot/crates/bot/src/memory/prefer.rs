@@ -209,7 +209,7 @@ return Ok(__Flow::Return(Value::from("")));
 let mut __broke_345 = false; let __v_347 = frame.load(rt, "words")?; let __iter_348 = rt.iter(&__v_347)?;
 while let Some(__v_349) = rt.next(&__iter_348)? { frame.store("word", __v_349)?;
 let __flow_346 = (|| -> PyResult<__Flow> {
-let __v_350 = { let mut __v_351 = frame.load(rt, "word")?; let mut __matched_352 = true; if __matched_352 { let __v_353 = frame.load(rt, "POINTS_BACK")?; __matched_352 = pyrt::ops::contains(&__v_353, &__v_351)?; } Value::Bool(__matched_352) }; if __v_350.is_truthy() {
+let __v_350 = { let mut __v_351 = frame.load(rt, "word")?; let mut __matched_352 = true; if __matched_352 { let __v_353 = frame.load(rt, "POINTS_BACK")?; __matched_352 = pyrt::ops::contains_rt(rt, &__v_353, &__v_351)?; } Value::Bool(__matched_352) }; if __v_350.is_truthy() {
 return Ok(__Flow::Return(Value::from("")));
 } else {
 

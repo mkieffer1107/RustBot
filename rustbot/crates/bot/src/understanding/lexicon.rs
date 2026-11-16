@@ -218,12 +218,12 @@ let frame = Frame::function(closure, &["word"], &[], &[], signature.bind(args)?)
 rt.trace_call_code("bot/understanding/lexicon.py", 1785, 1801, "is_a_laugh", 4);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_600 = { let mut __v_601 = frame.load(rt, "word")?; let mut __matched_602 = true; if __matched_602 { let __v_603 = frame.load(rt, "NOT_A_LAUGH")?; __matched_602 = pyrt::ops::contains(&__v_603, &__v_601)?; } Value::Bool(__matched_602) }; if __v_600.is_truthy() {
+let __v_600 = { let mut __v_601 = frame.load(rt, "word")?; let mut __matched_602 = true; if __matched_602 { let __v_603 = frame.load(rt, "NOT_A_LAUGH")?; __matched_602 = pyrt::ops::contains_rt(rt, &__v_603, &__v_601)?; } Value::Bool(__matched_602) }; if __v_600.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-let __v_604 = { let mut __v_605 = frame.load(rt, "word")?; let mut __matched_606 = true; if __matched_606 { let __v_607 = frame.load(rt, "LAUGHTER")?; __matched_606 = pyrt::ops::contains(&__v_607, &__v_605)?; } Value::Bool(__matched_606) }; if __v_604.is_truthy() {
+let __v_604 = { let mut __v_605 = frame.load(rt, "word")?; let mut __matched_606 = true; if __matched_606 { let __v_607 = frame.load(rt, "LAUGHTER")?; __matched_606 = pyrt::ops::contains_rt(rt, &__v_607, &__v_605)?; } Value::Bool(__matched_606) }; if __v_604.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(true)));
 } else {
 
@@ -266,7 +266,7 @@ let __flow_656 = (|| -> PyResult<__Flow> {
 let mut __broke_660 = false; let __v_662 = { let __callable_665 = { let __v_667 = frame.load(rt, "table")?; rt.getattr(&__v_667, "items")? }; let mut __args_666 = CallArgs::default(); rt.call(&__callable_665, __args_666)? }; let __iter_663 = rt.iter(&__v_662)?;
 while let Some(__v_664) = rt.next(&__iter_663)? { let __unpack_668 = pyrt::containers::unpack(rt, &__v_664, 2, 0, false)?; frame.store("name", __unpack_668[0].clone())?; frame.store("value", __unpack_668[1].clone())?;
 let __flow_661 = (|| -> PyResult<__Flow> {
-let __v_669 = { let mut __v_670 = { let __callable_671 = { let __v_673 = frame.load(rt, "name")?; rt.getattr(&__v_673, "startswith")? }; let mut __args_672 = CallArgs::default(); let __v_674 = Value::from("_"); __args_672.positional.push(__v_674); rt.call(&__callable_671, __args_672)? }; if !__v_670.is_truthy() { __v_670 = { let mut __v_675 = Value::from("MISSPELLING"); let mut __matched_676 = true; if __matched_676 { let __v_677 = frame.load(rt, "name")?; __matched_676 = pyrt::ops::contains(&__v_677, &__v_675)?; } Value::Bool(__matched_676) }; } __v_670 }; if __v_669.is_truthy() {
+let __v_669 = { let mut __v_670 = { let __callable_671 = { let __v_673 = frame.load(rt, "name")?; rt.getattr(&__v_673, "startswith")? }; let mut __args_672 = CallArgs::default(); let __v_674 = Value::from("_"); __args_672.positional.push(__v_674); rt.call(&__callable_671, __args_672)? }; if !__v_670.is_truthy() { __v_670 = { let mut __v_675 = Value::from("MISSPELLING"); let mut __matched_676 = true; if __matched_676 { let __v_677 = frame.load(rt, "name")?; __matched_676 = pyrt::ops::contains_rt(rt, &__v_677, &__v_675)?; } Value::Bool(__matched_676) }; } __v_670 }; if __v_669.is_truthy() {
 return Ok(__Flow::Continue);
 } else {
 

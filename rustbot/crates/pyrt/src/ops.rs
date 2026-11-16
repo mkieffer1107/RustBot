@@ -761,6 +761,112 @@ pub fn contains(container: &Value, item: &Value) -> PyResult<bool> {
     }
 }
 
+/// Runtime-aware Python membership. Native containers retain their optimized
+/// paths; iterators are consumed incrementally and stop at the first match.
+pub fn contains_rt(
+    rt: &mut crate::runtime::Runtime,
+    container: &Value,
+    item: &Value,
+) -> PyResult<bool> {
+    let Value::Object(object) = container else {
+        return contains(container, item);
+    };
+    if object.as_any().is::<crate::classes::InstanceObject>() {
+        // Python special methods are looked up on the class, not the instance
+        // dictionary or __getattr__. Calling the descriptor with self also
+        // preserves a present-but-None __contains__ as an error.
+        let class = rt.getattr(container, "__class__")?;
+        match rt.getattr(&class, "__contains__") {
+            Ok(method) => {
+                if matches!(method, Value::None) {
+                    return Err(PyExc::type_error(format!(
+                        "'{}' object is not a container",
+                        container.type_name()
+                    )));
+                }
+                return rt
+                    .call(
+                        &method,
+                        crate::object::CallArgs::new(vec![container.clone(), item.clone()]),
+                    )
+                    .map(|v| v.is_truthy());
+            }
+            Err(error) if error.kind == "AttributeError" => {}
+            Err(error) => return Err(error),
+        }
+        // A class with only __getitem__ is an iterable sequence in Python.
+        match rt.getattr(&class, "__iter__") {
+            Ok(method) => {
+                let iterator = rt.call(
+                    &method,
+                    crate::object::CallArgs::new(vec![container.clone()]),
+                )?;
+                if !matches!(&iterator,Value::Object(value) if value.is_iterator()) {
+                    return Err(PyExc::type_error("iter() returned non-iterator"));
+                }
+                return contains_iter(rt, &iterator, item);
+            }
+            Err(error) if error.kind == "AttributeError" => {}
+            Err(error) => return Err(error),
+        }
+        match rt.getattr(&class, "__getitem__") {
+            Ok(method) => {
+                let mut index = BigInt::zero();
+                loop {
+                    let value = match rt.call(
+                        &method,
+                        crate::object::CallArgs::new(vec![
+                            container.clone(),
+                            Value::Int(index.clone()),
+                        ]),
+                    ) {
+                        Ok(value) => value,
+                        Err(error) if matches!(error.kind, "IndexError" | "StopIteration") => {
+                            return Ok(false);
+                        }
+                        Err(error) => return Err(error),
+                    };
+                    if value.is_identical(item) || value.equals(item)? {
+                        return Ok(true);
+                    }
+                    index += 1;
+                }
+            }
+            Err(error) if error.kind == "AttributeError" => {
+                return Err(PyExc::type_error(format!(
+                    "argument of type '{}' is not iterable",
+                    container.type_name()
+                )));
+            }
+            Err(error) => return Err(error),
+        }
+    }
+    if object.is_iterator() {
+        return contains_iter(rt, container, item);
+    }
+    // Range and dict-view objects have optimized contains implementations.
+    if object.as_any().is::<crate::protocols::RangeObject>()
+        || object.as_any().is::<crate::protocols::ViewObject>()
+        || object.as_any().is::<crate::bytes::BytesObject>()
+    {
+        return object.contains(item);
+    }
+    let iterator = rt.iter(container)?;
+    contains_iter(rt, &iterator, item)
+}
+fn contains_iter(
+    rt: &mut crate::runtime::Runtime,
+    iterator: &Value,
+    item: &Value,
+) -> PyResult<bool> {
+    while let Some(value) = rt.next(iterator)? {
+        if value.is_identical(item) || value.equals(item)? {
+            return Ok(true);
+        }
+    }
+    Ok(false)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -845,6 +951,98 @@ mod tests {
                 .sequence()
                 .unwrap()
                 .is_empty()
+        );
+    }
+}
+
+#[cfg(test)]
+mod contains_runtime_tests {
+    use super::*;
+    use crate::{
+        object::{CallArgs, IteratorObject, NativeFunction},
+        runtime::Runtime,
+    };
+    use std::{cell::Cell, rc::Rc};
+
+    #[test]
+    fn membership_consumes_iterators_lazily_and_propagates_errors() {
+        let mut runtime = Runtime::default();
+        let count = Rc::new(Cell::new(0));
+        let observed = count.clone();
+        let iter = IteratorObject::value(move |_| {
+            let n = observed.get();
+            observed.set(n + 1);
+            if n == 4 {
+                Err(PyExc::value_error("failure"))
+            } else {
+                Ok(Some(Value::from(n as i64)))
+            }
+        });
+        assert!(contains_rt(&mut runtime, &iter, &Value::from(1i64)).unwrap());
+        assert_eq!(count.get(), 2);
+        assert_eq!(
+            runtime.next(&iter).unwrap().unwrap().as_int().unwrap(),
+            BigInt::from(2)
+        );
+        assert_eq!(
+            contains_rt(&mut runtime, &iter, &Value::from(8i64))
+                .unwrap_err()
+                .kind,
+            "ValueError"
+        );
+        assert_eq!(count.get(), 5);
+        let empty = IteratorObject::from_values(vec![]);
+        assert!(!contains_rt(&mut runtime, &empty, &Value::from(1i64)).unwrap());
+        let bytes = crate::bytes::BytesObject::value(b"abc".to_vec());
+        let needle = crate::bytes::BytesObject::value(b"bc".to_vec());
+        assert!(contains_rt(&mut runtime, &bytes, &needle).unwrap());
+    }
+    #[test]
+    fn membership_uses_class_special_methods_and_getitem_fallback() {
+        let mut rt = Runtime::default();
+        let namespace = Value::dict();
+        let contains = NativeFunction::value("__contains__", |_, args| {
+            assert_eq!(args.positional.len(), 2);
+            Err(PyExc::type_error("method raised"))
+        });
+        namespace
+            .dict_set(Value::from("__contains__"), contains)
+            .unwrap();
+        let class = crate::classes::create("C", "test", vec![], namespace, &rt).unwrap();
+        let instance = rt.call(&class, CallArgs::default()).unwrap();
+        assert_eq!(
+            contains_rt(&mut rt, &instance, &Value::from(1i64))
+                .unwrap_err()
+                .message,
+            "method raised"
+        );
+        let namespace = Value::dict();
+        let getitem = NativeFunction::value("__getitem__", |_, args| {
+            let i = args.positional[1].as_int()?;
+            if i == BigInt::from(2) {
+                Err(PyExc::index_error("end"))
+            } else {
+                Ok(Value::Int(i))
+            }
+        });
+        namespace
+            .dict_set(Value::from("__getitem__"), getitem)
+            .unwrap();
+        let class = crate::classes::create("Seq", "test", vec![], namespace, &rt).unwrap();
+        let instance = rt.call(&class, CallArgs::default()).unwrap();
+        assert!(contains_rt(&mut rt, &instance, &Value::from(1i64)).unwrap());
+        assert!(!contains_rt(&mut rt, &instance, &Value::from(9i64)).unwrap());
+        let namespace = Value::dict();
+        namespace
+            .dict_set(Value::from("__contains__"), Value::None)
+            .unwrap();
+        let class = crate::classes::create("NoneContains", "test", vec![], namespace, &rt).unwrap();
+        let instance = rt.call(&class, CallArgs::default()).unwrap();
+        assert_eq!(
+            contains_rt(&mut rt, &instance, &Value::from(1i64))
+                .unwrap_err()
+                .kind,
+            "TypeError"
         );
     }
 }

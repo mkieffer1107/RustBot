@@ -102,7 +102,7 @@ let flow = (|| -> PyResult<__Flow> {
 
 let __v_165 = { let __callable_166 = frame.load(rt, "_flat")?; let mut __args_167 = CallArgs::default(); let __v_168 = frame.load(rt, "answer")?; __args_167.positional.push(__v_168); rt.call(&__callable_166, __args_167)? };
 frame.store("flat", __v_165.clone())?;
-let __v_169 = { let mut __v_170 = frame.load(rt, "flat")?; let mut __matched_171 = true; if __matched_171 { let __v_172 = frame.load(rt, "_OUR_SHORT_LINES")?; __matched_171 = pyrt::ops::contains(&__v_172, &__v_170)?; } Value::Bool(__matched_171) }; if __v_169.is_truthy() {
+let __v_169 = { let mut __v_170 = frame.load(rt, "flat")?; let mut __matched_171 = true; if __matched_171 { let __v_172 = frame.load(rt, "_OUR_SHORT_LINES")?; __matched_171 = pyrt::ops::contains_rt(rt, &__v_172, &__v_170)?; } Value::Bool(__matched_171) }; if __v_169.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(true)));
 } else {
 
@@ -256,7 +256,7 @@ return Ok(__Flow::Continue);
 } else {
 
 }
-let __v_380 = { let __v_381 = { let mut __v_382 = Value::from(": "); let mut __matched_383 = true; if __matched_383 { let __v_384 = frame.load(rt, "said")?; __matched_383 = pyrt::ops::contains(&__v_384, &__v_382)?; } Value::Bool(__matched_383) }; if __v_381.is_truthy() { { let __callable_385 = { let __v_387 = { let __v_388 = { let __callable_390 = { let __v_392 = frame.load(rt, "said")?; rt.getattr(&__v_392, "rsplit")? }; let mut __args_391 = CallArgs::default(); let __v_393 = Value::from(": "); __args_391.positional.push(__v_393); let __v_394 = Value::Int("1".parse().expect("integer literal")); __args_391.positional.push(__v_394); rt.call(&__callable_390, __args_391)? }; let __v_389 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::getitem(&__v_388, &__v_389)? }; rt.getattr(&__v_387, "strip")? }; let mut __args_386 = CallArgs::default(); rt.call(&__callable_385, __args_386)? } } else { Value::from("") } };
+let __v_380 = { let __v_381 = { let mut __v_382 = Value::from(": "); let mut __matched_383 = true; if __matched_383 { let __v_384 = frame.load(rt, "said")?; __matched_383 = pyrt::ops::contains_rt(rt, &__v_384, &__v_382)?; } Value::Bool(__matched_383) }; if __v_381.is_truthy() { { let __callable_385 = { let __v_387 = { let __v_388 = { let __callable_390 = { let __v_392 = frame.load(rt, "said")?; rt.getattr(&__v_392, "rsplit")? }; let mut __args_391 = CallArgs::default(); let __v_393 = Value::from(": "); __args_391.positional.push(__v_393); let __v_394 = Value::Int("1".parse().expect("integer literal")); __args_391.positional.push(__v_394); rt.call(&__callable_390, __args_391)? }; let __v_389 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::getitem(&__v_388, &__v_389)? }; rt.getattr(&__v_387, "strip")? }; let mut __args_386 = CallArgs::default(); rt.call(&__callable_385, __args_386)? } } else { Value::from("") } };
 frame.store("after", __v_380.clone())?;
 let mut __broke_395 = false; let __v_397 = { let mut __items_400 = Vec::new(); let __v_401 = frame.load(rt, "after")?; __items_400.push(__v_401); let __v_402 = frame.load(rt, "said")?; __items_400.push(__v_402); Value::tuple(__items_400) }; let __iter_398 = rt.iter(&__v_397)?;
 while let Some(__v_399) = rt.next(&__iter_398)? { frame.store("piece", __v_399)?;
