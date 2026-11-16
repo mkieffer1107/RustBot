@@ -39,4 +39,6 @@ Native conversations use a loaded parent and per-record Unix forks to preserve
 module/RNG isolation. The shared session resets memory and restores post-import
 global random state for the Space semantics. WASM integration is deferred until
 native parity is established. Local corpus generation and full checks are
-authorized by root `AGENTS.md`; protected check/reference sources stay unchanged.
+authorized by root `AGENTS.md`. The official Python source remains unchanged;
+the scoped, user-authorized recorder identity correction is documented there
+and in `agent/PROGRESS.md`.

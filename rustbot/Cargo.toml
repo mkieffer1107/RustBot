@@ -1,5 +1,6 @@
 [workspace]
 members = ["crates/pyrt", "crates/bot", "crates/cli"]
+exclude = ["vendor/fancy-regex"]
 resolver = "2"
 
 [workspace.package]
@@ -15,6 +16,9 @@ sha2 = "0.10"
 sha1 = "0.10"
 fancy-regex = "0.16"
 libc = "0.2"
+
+[patch.crates-io]
+fancy-regex = { path = "vendor/fancy-regex" }
 
 [profile.release]
 lto = "thin"
