@@ -1,0 +1,9 @@
+/reference/pybot/
+/reference/smoltalkbench/
+/agent/goldens/
+/agent/runs/
+target/
+__pycache__/
+*.sif
+.venv/
+node_modules/
