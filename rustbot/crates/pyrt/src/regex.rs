@@ -206,7 +206,7 @@ fn match_json(c: &Captures<'_>, re: &Regex, pos: &[usize]) -> Value {
     let lastgroup = last.and_then(|i| names.get(i).copied().flatten());
     json!({"$match":{"span":[codepoint(m.start(),pos),codepoint(m.end(),pos)],"groups":groups,"spans":spans,"groupdict":dict,"lastindex":last,"lastgroup":lastgroup}})
 }
-fn replacement(template: &str, c: &Captures<'_>, re: &Regex) -> PyResult<String> {
+fn replacement(template: &str, c: Option<&Captures<'_>>, re: &Regex) -> PyResult<String> {
     let mut out = String::new();
     let mut chars = template.chars().peekable();
     while let Some(ch) = chars.next() {
@@ -234,12 +234,12 @@ fn replacement(template: &str, c: &Captures<'_>, re: &Regex) -> PyResult<String>
                     if i >= re.captures_len() {
                         return Err(pattern_error("invalid group reference"));
                     }
-                    c.get(i)
+                    c.and_then(|captures| captures.get(i))
                 } else {
                     if !re.capture_names().flatten().any(|n| n == name) {
                         return Err(PyExc::index_error("unknown group name"));
                     }
-                    c.name(&name)
+                    c.and_then(|captures| captures.name(&name))
                 };
                 if let Some(g) = group {
                     out.push_str(g.as_str());
@@ -253,7 +253,7 @@ fn replacement(template: &str, c: &Captures<'_>, re: &Regex) -> PyResult<String>
                 if idx >= re.captures_len() {
                     return Err(pattern_error("invalid group reference"));
                 }
-                if let Some(g) = c.get(idx) {
+                if let Some(g) = c.and_then(|captures| captures.get(idx)) {
                     out.push_str(g.as_str());
                 }
             }
@@ -331,6 +331,10 @@ pub fn run_case(case: &Value) -> PyResult<Value> {
     } else {
         0
     };
+    if is_sub && args[0].get("$callable").and_then(Value::as_array).is_none() {
+        // CPython validates templates even when no substitution is performed.
+        replacement(as_str(&args[0])?, None, &re)?;
+    }
     if limit < 0 {
         return if method == "sub" {
             Ok(json!(text))
@@ -345,6 +349,8 @@ pub fn run_case(case: &Value) -> PyResult<Value> {
     } else {
         return Ok(json!([]));
     };
+    let mut nonempty_at_origin = None;
+    let mut previous_was_empty = false;
     let mut tail = 0;
     let mut count = 0usize;
     let mut items = Vec::new();
@@ -353,7 +359,20 @@ pub fn run_case(case: &Value) -> PyResult<Value> {
         if limit > 0 && count >= limit as usize {
             break;
         }
-        let Some(c) = re.captures_from_pos(input, at).map_err(re_error)? else {
+        // After an empty match, Python retries at the same position, forbidding
+        // another empty match there while permitting a nonempty alternative.
+        // Fancy-regex's \G anchors to captures_from_pos's search origin.
+        let active = if previous_was_empty {
+            if nonempty_at_origin.is_none() {
+                let translated = translate(pattern, flags)?;
+                nonempty_at_origin =
+                    Some(Regex::new(&format!(r"(?:{translated})(?!\G)")).map_err(re_error)?);
+            }
+            nonempty_at_origin.as_ref().unwrap()
+        } else {
+            &re
+        };
+        let Some(c) = active.captures_from_pos(input, at).map_err(re_error)? else {
             break;
         };
         let m = c.get(0).unwrap();
@@ -382,20 +401,17 @@ pub fn run_case(case: &Value) -> PyResult<Value> {
                         output.push_str(as_str(v)?);
                     }
                 } else {
-                    output.push_str(&replacement(as_str(repl)?, &c, &re)?);
+                    output.push_str(&replacement(as_str(repl)?, Some(&c), &re)?);
                 }
                 tail = m.end();
             }
             _ => unreachable!(),
         }
         count += 1;
-        if m.start() == m.end() {
-            if m.end() == input.len() {
-                break;
-            }
-            at = m.end() + input[m.end()..].chars().next().unwrap().len_utf8();
-        } else {
-            at = m.end();
+        previous_was_empty = m.start() == m.end();
+        at = m.end();
+        if previous_was_empty && at == input.len() {
+            break;
         }
     }
     match method {
@@ -441,6 +457,70 @@ mod tests {
         let result = run_case(&case).unwrap();
         assert_eq!(result[0]["$match"]["span"], json!([1, 1]));
         assert_eq!(result[1]["$match"]["span"], json!([2, 2]));
+    }
+    #[test]
+    fn nonempty_alternatives_follow_empty_matches() {
+        for (pattern, text) in [
+            (".*?", "a"),
+            (".*?", "😀"),
+            ("(?:|a)", "a"),
+            ("(?:|😀)", "😀"),
+        ] {
+            let findall = json!({"pattern":pattern,"method":"findall","args":[text]});
+            assert_eq!(run_case(&findall).unwrap(), json!(["", text, ""]));
+            let finditer = json!({"pattern":pattern,"method":"finditer","args":[text]});
+            let matches = run_case(&finditer).unwrap();
+            let spans: Vec<_> = matches
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|m| m["$match"]["span"].clone())
+                .collect();
+            assert_eq!(spans, vec![json!([0, 0]), json!([0, 1]), json!([1, 1])]);
+            let split = json!({"pattern":pattern,"method":"split","args":[text]});
+            assert_eq!(run_case(&split).unwrap(), json!(["", "", "", ""]));
+            let sub = json!({"pattern":pattern,"method":"sub","args":["-",text]});
+            assert_eq!(run_case(&sub).unwrap(), json!("---"));
+            let subn = json!({"pattern":pattern,"method":"subn","args":["-",text]});
+            assert_eq!(run_case(&subn).unwrap(), json!({"$tuple":["---",3]}));
+        }
+        let empty = json!({"pattern":".*?","method":"findall","args":[""]});
+        assert_eq!(run_case(&empty).unwrap(), json!([""]));
+        let later = json!({"pattern":"(?:|a)","method":"findall","args":["😀"]});
+        assert_eq!(run_case(&later).unwrap(), json!(["", ""]));
+        let slice = json!({"pattern":".*?","method":"finditer","args":["x😀aZ",1,3]});
+        let matches = run_case(&slice).unwrap();
+        let spans: Vec<_> = matches
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|m| m["$match"]["span"].clone())
+            .collect();
+        assert_eq!(
+            spans,
+            vec![
+                json!([1, 1]),
+                json!([1, 2]),
+                json!([2, 2]),
+                json!([2, 3]),
+                json!([3, 3])
+            ]
+        );
+    }
+    #[test]
+    fn invalid_replacements_raise_without_matches() {
+        for (template, kind) in [
+            (r"\2", "PatternError"),
+            (r"\g<missing>", "IndexError"),
+            (r"\q", "PatternError"),
+        ] {
+            for count in [0, -1] {
+                let case = json!({"pattern":"(a)","method":"sub","args":[template,"z",count]});
+                assert_eq!(run_case(&case).unwrap_err().kind, kind);
+            }
+        }
+        let case = json!({"pattern":"a","method":"sub","args":[42,"z"]});
+        assert_eq!(run_case(&case).unwrap_err().kind, "TypeError");
     }
     #[test]
     fn match_slices_and_captures() {

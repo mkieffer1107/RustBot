@@ -28,3 +28,8 @@ next step.
 - Added `rustbot/tools/progress.py`: native generated file/function/span presence, WASM wrapper presence, and combined unique translations without counting shared Rust twice. Bootstrap files and placeholder macros are excluded. Counts measure presence, not acceptance parity. Current native/unique translation count remains 0/527; WASM not started.
 - Validation: tooling fixture tests 3/3 PASS, including real trace JSON shapes and progress scaffolding exclusion. Native build remains passing. Updated native README with build/smoke/progress commands and runtime limitations. M1 acceptance still depends on G0 goldens; no milestone marked complete.
 - Exact next step: continue M2 regex empty-match correctness and frozen datetime/calendar primitives, then remaining inventory builtins/stdlib; merge runtime traces into inventory when supplied. Run all heavy gates and the harness self-test only on the compute host.
+
+### 2026-11-16 11:36 EST — M2 regex iteration correction
+- M1 static inventory/progress tooling is committed as `f6c0fab`. Fixed Python's empty/nonempty regex alternation at the same position using a lazily compiled nonempty-at-origin variant. Substitution templates are now validated even when there are no matches or count is negative.
+- Validation: 6 focused regex tests PASS; a limited 148-case CPython differential panel PASS; Clippy PASS for the regex layer. This fixes the previously documented empty-match iteration and no-match replacement validation gaps. Other regex gaps remain and G1 has not run.
+- Exact next step: commit frozen datetime/calendar, math and RNG-context work after single-crate checks, then continue the remaining M2 inventory semantics. Translation count unchanged at 0/527 native/unique; no WASM work.
