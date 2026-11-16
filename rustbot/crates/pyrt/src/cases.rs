@@ -246,12 +246,7 @@ fn random_op(random: &mut PyRandom, name: &str, args: &[Value]) -> PyResult<Valu
             } else {
                 Some(state[2].as_float()?)
             };
-            random.setstate(&RandomState {
-                version,
-                words: mt,
-                index,
-                gauss_next,
-            })?;
+            random.setstate(&RandomState::from_raw(version, mt, index, gauss_next))?;
             Ok(Value::None)
         }
         _ => Err(PyExc::attribute_error(format!(

@@ -32,26 +32,76 @@ use crate::{PyExc, PyResult};
 use num_bigint::{BigInt, BigUint};
 use num_traits::{One, Signed, Zero};
 use sha2::{Digest, Sha512};
-use std::collections::HashSet;
+use std::cell::RefCell;
+use std::collections::{HashSet, VecDeque};
+use std::rc::Rc;
 
 const N: usize = 624;
 
 /// The Python `getstate()` tuple, with the internal tuple split into typed fields.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug)]
 pub struct RandomState {
     pub version: i64,
     pub words: [u32; N],
     pub index: usize,
     pub gauss_next: Option<f64>,
+    // Cloning a returned state preserves its Python-object identity. The token
+    // is runtime bookkeeping only and is absent from raw tuple serialization.
+    provenance: Option<Rc<()>>,
+}
+
+impl RandomState {
+    /// Construct a deserialized or externally supplied Python state tuple.
+    /// Equal raw state words do not establish getstate/setstate provenance.
+    pub fn from_raw(version: i64, words: [u32; N], index: usize, gauss_next: Option<f64>) -> Self {
+        Self {
+            version,
+            words,
+            index,
+            gauss_next,
+            provenance: None,
+        }
+    }
+}
+
+impl PartialEq for RandomState {
+    fn eq(&self, other: &Self) -> bool {
+        self.version == other.version
+            && self.words == other.words
+            && self.index == other.index
+            && self.gauss_next == other.gauss_next
+    }
 }
 
 #[derive(Clone, Debug)]
+struct SavedState {
+    identity: Rc<()>,
+    words_consumed: u64,
+}
+
+#[derive(Debug)]
 pub struct PyRandom {
     mt: [u32; N],
     index: usize,
     words_consumed: u64,
     gauss_next: Option<f64>,
     opaque: bool,
+    saved_states: RefCell<VecDeque<SavedState>>,
+}
+
+impl Clone for PyRandom {
+    fn clone(&self) -> Self {
+        Self {
+            mt: self.mt,
+            index: self.index,
+            words_consumed: self.words_consumed,
+            gauss_next: self.gauss_next,
+            opaque: self.opaque,
+            // A cloned generator is a separate instance, rather than another
+            // handle to the same instance. RandomContext shares Rc handles.
+            saved_states: RefCell::new(VecDeque::new()),
+        }
+    }
 }
 
 impl PyRandom {
@@ -96,6 +146,7 @@ impl PyRandom {
             words_consumed: 0,
             gauss_next: None,
             opaque: false,
+            saved_states: RefCell::new(VecDeque::new()),
         };
         result.mt[0] = 19_650_218;
         for i in 1..N {
@@ -400,15 +451,26 @@ impl PyRandom {
     }
 
     pub fn getstate(&self) -> RandomState {
+        let identity = Rc::new(());
+        let mut saved = self.saved_states.borrow_mut();
+        if saved.len() == 8 {
+            saved.pop_front();
+        }
+        saved.push_back(SavedState {
+            identity: identity.clone(),
+            words_consumed: self.words_consumed,
+        });
         RandomState {
             version: 3,
             words: self.mt,
             index: self.index,
             gauss_next: self.gauss_next,
+            provenance: Some(identity),
         }
     }
 
-    /// Successful setstate marks seed/advance restoration as opaque.
+    /// Restore the word count only for one of this instance's last eight
+    /// getstate handles. Other valid states make count restoration opaque.
     pub fn setstate(&mut self, state: &RandomState) -> PyResult<()> {
         if state.version != 2 && state.version != 3 {
             return Err(PyExc::value_error(format!(
@@ -422,7 +484,17 @@ impl PyRandom {
         self.mt = state.words;
         self.index = state.index;
         self.gauss_next = state.gauss_next;
-        self.opaque = true;
+        if let Some(count) = state.provenance.as_ref().and_then(|identity| {
+            self.saved_states
+                .borrow()
+                .iter()
+                .find(|saved| Rc::ptr_eq(&saved.identity, identity))
+                .map(|saved| saved.words_consumed)
+        }) {
+            self.words_consumed = count;
+        } else {
+            self.opaque = true;
+        }
         Ok(())
     }
 
@@ -566,6 +638,126 @@ mod tests {
         assert_eq!(
             (0..1300).map(|_| restored.next_u32()).collect::<Vec<_>>(),
             expected
+        );
+    }
+
+    #[test]
+    fn paired_state_handle_restores_word_count() {
+        let mut rng = PyRandom::from_str("paired");
+        rng.getrandbits(65).unwrap();
+        let state = rng.getstate();
+        let alias = state.clone();
+        let next = rng.next_u32();
+        rng.random();
+        assert_eq!(rng.words_consumed(), 6);
+        rng.setstate(&alias).unwrap();
+        assert_eq!(rng.words_consumed(), 3);
+        assert!(!rng.state_is_opaque());
+        assert_eq!(rng.next_u32(), next);
+        assert_eq!(rng.words_consumed(), 4);
+    }
+
+    #[test]
+    fn only_last_eight_state_identities_restore_counts() {
+        let mut rng = PyRandom::from_int(&0.into());
+        let oldest = rng.getstate();
+        for _ in 0..7 {
+            // Even identical tuples are distinct getstate return objects.
+            assert_eq!(rng.getstate(), oldest);
+        }
+        rng.advance(5);
+        rng.setstate(&oldest).unwrap();
+        assert_eq!(rng.words_consumed(), 0);
+        assert!(!rng.state_is_opaque());
+        let newest = rng.getstate();
+        assert_eq!(newest, oldest);
+        rng.advance(5);
+        rng.setstate(&oldest).unwrap();
+        assert_eq!(rng.words_consumed(), 5);
+        assert!(rng.state_is_opaque());
+        // A later known restore rewinds its count but never clears opacity.
+        rng.setstate(&newest).unwrap();
+        assert_eq!(rng.words_consumed(), 0);
+        assert!(rng.state_is_opaque());
+    }
+
+    #[test]
+    fn foreign_and_raw_state_tuples_have_no_provenance() {
+        let mut source = PyRandom::from_str("source");
+        source.advance(2);
+        let state = source.getstate();
+        let raw = RandomState::from_raw(state.version, state.words, state.index, state.gauss_next);
+        assert_eq!(state, raw);
+
+        let mut foreign = PyRandom::from_str("source");
+        foreign.advance(7);
+        foreign.setstate(&state).unwrap();
+        assert_eq!(foreign.words_consumed(), 7);
+        assert!(foreign.state_is_opaque());
+        let expected = source.next_u32();
+        assert_eq!(foreign.next_u32(), expected);
+
+        source.advance(5);
+        let count = source.words_consumed();
+        source.setstate(&raw).unwrap();
+        assert_eq!(source.words_consumed(), count);
+        assert!(source.state_is_opaque());
+        assert_eq!(source.next_u32(), expected);
+    }
+
+    #[test]
+    fn cloned_generator_is_an_independent_state_owner() {
+        let mut source = PyRandom::from_int(&42.into());
+        source.advance(3);
+        let state = source.getstate();
+        let mut cloned = source.clone();
+        cloned.advance(7);
+        cloned.setstate(&state).unwrap();
+        assert_eq!(cloned.words_consumed(), 10);
+        assert!(cloned.state_is_opaque());
+        assert_eq!(source.words_consumed(), 3);
+        assert!(!source.state_is_opaque());
+        assert_eq!(source.next_u32(), cloned.next_u32());
+    }
+
+    #[test]
+    fn shared_context_observes_paired_restores_and_raw_opacity() {
+        use crate::context::RandomContext;
+        use serde_json::json;
+
+        let mut context = RandomContext::new(0.into());
+        let global = context.global();
+        let instance = context.new_unseeded();
+        global.borrow_mut().random();
+        instance.borrow_mut().getrandbits(65).unwrap();
+        let global_state = global.borrow().getstate();
+        let instance_state = instance.borrow().getstate();
+        global.borrow_mut().random();
+        context.instance(0).unwrap().borrow_mut().random();
+        assert_eq!(context.snapshot(), json!({"global":4,"instances":[5]}));
+        // Restore through other handles retained by the same context.
+        context
+            .global()
+            .borrow_mut()
+            .setstate(&global_state)
+            .unwrap();
+        context
+            .instance(0)
+            .unwrap()
+            .borrow_mut()
+            .setstate(&instance_state)
+            .unwrap();
+        assert_eq!(context.snapshot(), json!({"global":2,"instances":[3]}));
+        let raw = RandomState::from_raw(
+            instance_state.version,
+            instance_state.words,
+            instance_state.index,
+            instance_state.gauss_next,
+        );
+        instance.borrow_mut().setstate(&raw).unwrap();
+        assert_eq!(
+            context.snapshot(),
+            json!({"global":2,"instances":[3],"opaque":true})
         );
     }
 

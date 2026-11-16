@@ -1,8 +1,11 @@
 //! Python-compatible primitives shared by the native and WebAssembly ports.
 
 pub mod cases;
+pub mod context;
+pub mod datetime;
 mod exception;
 pub mod formatting;
+pub mod math;
 pub mod ops;
 pub mod random;
 pub mod regex;
