@@ -219,6 +219,9 @@ class TranslatorTests(unittest.TestCase):
         target.mkdir(parents=True, exist_ok=True)
         cls.directory = tempfile.TemporaryDirectory(dir=target)
         cls.path = Path(cls.directory.name)
+        cls.target = Path(os.environ.get("PY2RS_TEST_TARGET", ROOT / "rustbot/target")).resolve()
+        if not cls.target.is_relative_to((ROOT / "rustbot/target").resolve()):
+            raise ValueError("PY2RS_TEST_TARGET must stay under rustbot/target")
         (cls.path / "src").mkdir()
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", SyntaxWarning)
@@ -246,7 +249,7 @@ fn main(){for line in io::stdin().lock().lines(){let case:serde_json::Value=serd
         env = os.environ.copy()
         env["PATH"] = "/home/max/.cargo/bin:" + env.get("PATH", "")
         result = subprocess.run(["cargo", "build", "--manifest-path", str(cls.path / "Cargo.toml"),
-                        "--target-dir", str(ROOT / "rustbot/target")],
+                        "--target-dir", str(cls.target)],
                        capture_output=True, text=True, timeout=120, env=env)
         if result.returncode:
             raise AssertionError(result.stderr)
@@ -259,7 +262,7 @@ fn main(){for line in io::stdin().lock().lines(){let case:serde_json::Value=serd
         sys.path.insert(0, str(ROOT / "agent/checks"))
         from lib import canon
         payload = [{"name": name, "args": canon.encode(args)} for name, args in cases]
-        process = subprocess.run([str(ROOT / "rustbot/target/debug/py2rs-fixture")],
+        process = subprocess.run([str(self.target / "debug/py2rs-fixture")],
                                  input="".join(json.dumps(case) + "\n" for case in payload),
                                  capture_output=True, text=True, check=True, timeout=15)
         results = [json.loads(line) for line in process.stdout.splitlines()]
@@ -303,7 +306,7 @@ fn main(){for line in io::stdin().lock().lines(){let case:serde_json::Value=serd
     def test_generator_traces_resume_only_and_include_empty_final_resume(self):
         cases = [{"name": name, "args": {"$tuple": []}, "trace": True}
                  for name in ("create_generator", "exhaust_generator", "empty_genexpr")]
-        process = subprocess.run([str(ROOT / "rustbot/target/debug/py2rs-fixture")],
+        process = subprocess.run([str(self.target / "debug/py2rs-fixture")],
                                  input="".join(json.dumps(case) + "\n" for case in cases),
                                  text=True, capture_output=True, check=True, timeout=15)
         actual = [json.loads(line) for line in process.stdout.splitlines()]
@@ -353,7 +356,7 @@ fn main(){for line in io::stdin().lock().lines(){let case:serde_json::Value=serd
             ("breeds", "the_animal_a_breed_is", (["our", "golden", "retriever", "won't", "eat"],)),
         ]
         payload = [{"module": module, "name": name, "args": canon.encode(args)} for module, name, args in cases]
-        process = subprocess.run([str(ROOT / "rustbot/target/debug/py2rs-fixture")],
+        process = subprocess.run([str(self.target / "debug/py2rs-fixture")],
                                  input="".join(json.dumps(c) + "\n" for c in payload),
                                  text=True, capture_output=True, check=True, timeout=30)
         actual = [json.loads(line) for line in process.stdout.splitlines()]

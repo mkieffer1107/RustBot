@@ -542,3 +542,77 @@ impl PyObject for BoundMethod {
         }
     }
 }
+
+/// Copy native instance storage without invoking __init__. The caller supplies
+/// the same memo used for surrounding builtin containers, preserving mixed
+/// container/instance cycles and aliases to an instance's exposed __dict__.
+pub(crate) fn deepcopy_object(
+    value: &Value,
+    memo: &mut std::collections::HashMap<(u8, usize), Value>,
+    mut copy: impl FnMut(&Value, &mut std::collections::HashMap<(u8, usize), Value>) -> Value,
+) -> Option<Value> {
+    let Value::Object(object) = value else {
+        return None;
+    };
+    let is_instance = object.as_any().is::<InstanceObject>();
+    let is_plain = object.as_any().is::<crate::object::PlainObject>();
+    if !is_instance && !is_plain {
+        return None;
+    }
+    let id = (4, Rc::as_ptr(object) as *const () as usize);
+    if let Some(existing) = memo.get(&id) {
+        return Some(existing.clone());
+    }
+    if is_plain {
+        let result = Value::Object(Rc::new(crate::object::PlainObject));
+        memo.insert(id, result.clone());
+        return Some(result);
+    }
+    let source = object
+        .as_any()
+        .downcast_ref::<InstanceObject>()
+        .expect("native instance");
+    let namespace_id = |v: &Value| {
+        let Value::Dict(dict) = v else {
+            unreachable!("instance namespaces are dictionaries")
+        };
+        (1, Rc::as_ptr(dict) as usize)
+    };
+    let fields_id = namespace_id(&source.fields);
+    let dict_id = namespace_id(&source.dict);
+    let previous_fields = memo.get(&fields_id).cloned();
+    let previous_dict = memo.get(&dict_id).cloned();
+    let fields = previous_fields.clone().unwrap_or_else(Value::dict);
+    let dict = previous_dict.clone().unwrap_or_else(Value::dict);
+    let instance = Rc::new_cyclic(|this| InstanceObject {
+        class: source.class.clone(),
+        kind: source.kind.clone(),
+        fields,
+        dict,
+        this: this.clone(),
+        handle: source.handle.clone(),
+    });
+    let result = Value::Object(instance.clone());
+    memo.insert(id, result.clone());
+    memo.entry(fields_id)
+        .or_insert_with(|| instance.fields.clone());
+    memo.entry(dict_id).or_insert_with(|| instance.dict.clone());
+    for (source, target, previous) in [
+        (&source.fields, &instance.fields, previous_fields),
+        (&source.dict, &instance.dict, previous_dict),
+    ] {
+        if previous.is_some() {
+            continue;
+        }
+        let (Value::Dict(source), Value::Dict(target)) = (source, target) else {
+            unreachable!()
+        };
+        let entries = source.borrow().clone();
+        let entries = entries
+            .iter()
+            .map(|(key, value)| (copy(key, memo), copy(value, memo)))
+            .collect();
+        *target.borrow_mut() = entries;
+    }
+    Some(result)
+}

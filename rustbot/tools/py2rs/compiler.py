@@ -146,8 +146,9 @@ class Compiler:
         self.fail(node, f"literal type {type(value).__name__}")
 
     def binary(self, op: ast.operator, a: str, b: str) -> str:
+        if isinstance(op, ast.Sub): return f"pyrt::ops::sub_rt(rt, &{a}, &{b})?"
         if type(op) in BINOPS: return f"pyrt::ops::{BINOPS[type(op)]}(&{a}, &{b})?"
-        if type(op) in BITOPS: return f"pyrt::ops::bitwise({rust_string(BITOPS[type(op)])}, &{a}, &{b})?"
+        if type(op) in BITOPS: return f"pyrt::ops::bitwise_rt(rt, {rust_string(BITOPS[type(op)])}, &{a}, &{b})?"
         self.fail(op)
 
     def expr(self, node: ast.expr) -> str:
@@ -587,7 +588,9 @@ class Compiler:
         captured = f"{self.closure_frame}.clone()" if info['code'].co_freevars else f"Frame::module({self.closure_frame}.globals.clone())"
         lines.append(f"let {capture} = {captured};")
         path = ("super::" if self.in_function else "") + f"__py_{info['id']}::{info['rust_name']}"
-        lines.append(f"let mut {result} = NativeFunction::qualified_with_attrs({rust_string(info['name'])}.into(), {rust_string(info['qualname'])}.into(), {rust_string(self.module)}.into(), {attributes}, move |rt, args| {path}(rt, {capture}.clone(), &{signature}, args));")
+        origin = (f"pyrt::object::FunctionOrigin {{ span: pyrt::runtime::SourceSpan {{ file: {rust_string(self.filename)}, first: {info['first']}, last: {info['last']}, qualname: {rust_string(info['qualname'])} }}, "
+                  f"closure: {capture}.clone(), freevars: vec![{','.join(rust_string(name)+'.into()' for name in info['code'].co_freevars)}] }}")
+        lines.append(f"let mut {result} = NativeFunction::qualified_with_origin({rust_string(info['name'])}.into(), {rust_string(info['qualname'])}.into(), {rust_string(self.module)}.into(), {attributes}, {origin}, move |rt, args| {path}(rt, {capture}.clone(), &{signature}, args));")
         for decorator in reversed(decorators):
             lines.append(f"{result} = rt.call(&{decorator}, CallArgs::new(vec![{result}]))?;")
         return "{ " + " ".join(lines) + f" {result} }}"
@@ -600,7 +603,7 @@ class Compiler:
         self.in_function, self.module_scope = True, False
         self.frame = self.closure_frame = "frame"
         strings = lambda values: ",".join(rust_string(v) for v in values)
-        header = (f"#[allow(clippy::all)]\nmod __py_{info['id']} {{ use super::*;\n"
+        header = (f"#[allow(clippy::all, non_snake_case)]\nmod __py_{info['id']} {{ use super::*;\n"
                 f"// py: {self.filename}:{info['first']}-{info['last']} {info['qualname']}\n"
                 f"pub(super) fn {info['rust_name']}(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {{\n"
                 f"let frame = Frame::function(closure, &[{strings(declared)}], &[{strings(globals_)}], &[{strings(nonlocals)}], signature.bind(args)?);\n")
@@ -636,11 +639,15 @@ class Compiler:
                 "use pyrt::flow::Flow as __Flow;\n"
                 f"pub const PY_MODULE: &str = {rust_string(self.module)};\npub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[{spans}];\n"
                 "#[allow(clippy::all)]\npub const INIT: pyrt::runtime::ModuleInit = |rt, module| {\n"
+                f"rt.trace_call({rust_string(self.filename)}, 0, 0, \"<module>\");\n"
                 "let globals = rt.getattr(module, \"__dict__\")?;\nlet frame = Frame::module(globals);\n"
                 f"frame.store(\"__doc__\", {self.value(ast.get_docstring(self.tree, clean=False), self.tree)})?;\n"
                 f"let flow = (|| -> PyResult<__Flow> {{\n{module_body}\nOk(__Flow::Next)\n}})()?;\n"
                 "match flow { __Flow::Next => Ok(()), _ => Err(PyExc::runtime_error(\"invalid module control flow\")) }\n};\n"
                 + '\n'.join(functions))
+        # Whitespace-only branches remain explicit for control-flow fidelity,
+        # but do not leave trailing spaces in unformatted generated previews.
+        rust = '\n'.join(line.rstrip(' \t\r') for line in rust.split('\n'))
         return Translation(rust, metadata)
 
 

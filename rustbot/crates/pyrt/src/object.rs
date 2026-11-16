@@ -166,7 +166,18 @@ pub struct NativeFunction {
     pub qualname: String,
     pub module: String,
     pub attrs: Value,
+    origin: Option<FunctionOrigin>,
     body: Rc<NativeBody>,
+}
+
+/// Private-to-the-runtime Python code and closure provenance. These fields do
+/// not become Python-visible attributes and never include module globals as
+/// closure cells. Free-variable order is CPython's co_freevars tuple order.
+#[derive(Clone, Debug)]
+pub struct FunctionOrigin {
+    pub span: crate::runtime::SourceSpan,
+    pub closure: Rc<crate::frame::Frame>,
+    pub freevars: Vec<String>,
 }
 
 impl fmt::Debug for NativeFunction {
@@ -196,6 +207,7 @@ impl NativeFunction {
             qualname,
             module,
             attrs: Value::dict(),
+            origin: None,
             body: Rc::new(body),
         }))
     }
@@ -211,8 +223,44 @@ impl NativeFunction {
             qualname,
             module,
             attrs,
+            origin: None,
             body: Rc::new(body),
         }))
+    }
+
+    pub fn qualified_with_origin(
+        name: String,
+        qualname: String,
+        module: String,
+        attrs: Value,
+        origin: FunctionOrigin,
+        body: impl Fn(&mut Runtime, CallArgs) -> PyResult<Value> + 'static,
+    ) -> Value {
+        Value::Object(Rc::new(Self {
+            name,
+            qualname,
+            module,
+            attrs,
+            origin: Some(origin),
+            body: Rc::new(body),
+        }))
+    }
+
+    pub fn source_span(&self) -> Option<crate::runtime::SourceSpan> {
+        self.origin.as_ref().map(|origin| origin.span)
+    }
+
+    /// Read live cells rather than taking a definition-time snapshot: rebinding
+    /// a captured callable after decoration must affect the respond search.
+    /// Empty cells behave like cell_contents raising ValueError and are skipped.
+    pub fn closure_values(&self, runtime: &mut Runtime) -> Vec<Value> {
+        self.origin.as_ref().map_or_else(Vec::new, |origin| {
+            origin
+                .freevars
+                .iter()
+                .filter_map(|name| origin.closure.load(runtime, name).ok())
+                .collect()
+        })
     }
 }
 
@@ -570,5 +618,67 @@ impl Signature {
             bound.dict_set(Value::from(name.clone()), extra)?;
         }
         Ok(bound)
+    }
+}
+
+#[cfg(test)]
+mod origin_tests {
+    use super::*;
+    use crate::{frame::Frame, runtime::SourceSpan};
+
+    #[test]
+    fn source_origin_reads_live_free_cells_and_skips_empty_cells() {
+        let mut runtime = Runtime::default();
+        let module = Frame::module(Value::dict());
+        let global = NativeFunction::value("global", |_, _| Ok(Value::None));
+        module.store("global", global).unwrap();
+        let closure = Frame::function(module, &["target", "empty"], &[], &[], Value::dict());
+        let first = NativeFunction::value("first", |_, _| Ok(Value::None));
+        let second = NativeFunction::value("second", |_, _| Ok(Value::None));
+        closure.store("target", first.clone()).unwrap();
+        let span = SourceSpan {
+            file: "bot/modules/example.py",
+            first: 7,
+            last: 12,
+            qualname: "respond",
+        };
+        let value = NativeFunction::qualified_with_origin(
+            "wrapper".into(),
+            "wrapper".into(),
+            "example".into(),
+            Value::dict(),
+            FunctionOrigin {
+                span,
+                closure: closure.clone(),
+                freevars: vec!["empty".into(), "target".into()],
+            },
+            |_, _| Ok(Value::None),
+        );
+        let Value::Object(object) = value else {
+            panic!()
+        };
+        let function = object.as_any().downcast_ref::<NativeFunction>().unwrap();
+        assert_eq!(function.source_span(), Some(span));
+        let captured = function.closure_values(&mut runtime);
+        assert_eq!(captured.len(), 1);
+        assert!(captured[0].is_identical(&first));
+        closure.store("target", second.clone()).unwrap();
+        let captured = function.closure_values(&mut runtime);
+        assert_eq!(captured.len(), 1);
+        assert!(captured[0].is_identical(&second));
+        assert!(function.get_attr(&mut runtime, "origin").is_err());
+        assert!(function.get_attr(&mut runtime, "__closure__").is_err());
+    }
+
+    #[test]
+    fn native_functions_without_python_origins_have_no_cells() {
+        let mut runtime = Runtime::default();
+        let value = NativeFunction::value("builtin", |_, _| Ok(Value::None));
+        let Value::Object(object) = value else {
+            panic!()
+        };
+        let function = object.as_any().downcast_ref::<NativeFunction>().unwrap();
+        assert_eq!(function.source_span(), None);
+        assert!(function.closure_values(&mut runtime).is_empty());
     }
 }

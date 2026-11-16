@@ -132,6 +132,11 @@ impl Runtime {
         }
         if let Some((parent, _)) = name.rsplit_once('.') {
             self.import(parent)?;
+            // The package initializer may have imported this requested child.
+            // Reuse that module instead of executing its initializer twice.
+            if let Some(module) = self.state.modules.borrow().get(name).cloned() {
+                return Ok(module);
+            }
         }
         let init = self
             .state

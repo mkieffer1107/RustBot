@@ -48,6 +48,7 @@ dependencies = [
  "num-bigint",
  "num-traits",
  "pyrt",
+ "serde_json",
 ]
 
 [[package]]

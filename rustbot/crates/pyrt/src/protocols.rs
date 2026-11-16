@@ -466,6 +466,204 @@ impl PyObject for ViewObject {
     }
 }
 
+fn set_view(value: &Value) -> Option<&ViewObject> {
+    if let Value::Object(object) = value {
+        object
+            .as_any()
+            .downcast_ref::<ViewObject>()
+            .filter(|view| view.kind != ViewKind::Values)
+    } else {
+        None
+    }
+}
+fn walk(
+    rt: &mut Option<&mut Runtime>,
+    value: &Value,
+    mut visit: impl FnMut(Value) -> PyResult<()>,
+) -> PyResult<()> {
+    if let Some(rt) = rt.as_deref_mut() {
+        let iterator = rt.iter(value)?;
+        while let Some(value) = rt.next(&iterator)? {
+            visit(value)?;
+        }
+    } else {
+        for value in value.sequence()? {
+            visit(value)?;
+        }
+    }
+    Ok(())
+}
+fn view_set(
+    rt: &mut Option<&mut Runtime>,
+    value: &Value,
+    optimize_keys: bool,
+) -> PyResult<crate::sets::PySet> {
+    if let Value::Set(set) | Value::FrozenSet(set) = value {
+        return set.python_copy();
+    }
+    let set = crate::sets::PySet::new();
+    let source = if optimize_keys {
+        set_view(value)
+            .filter(|view| view.kind == ViewKind::Keys)
+            .map_or(value, |view| &view.dict)
+    } else {
+        value
+    };
+    if let Value::Dict(dict) = source {
+        set.reserve_for_update(dict.borrow().len());
+    }
+    walk(rt, source, |value| {
+        set.insert(value)?;
+        Ok(())
+    })?;
+    Ok(set)
+}
+fn update_view_set(
+    rt: &mut Option<&mut Runtime>,
+    set: &crate::sets::PySet,
+    value: &Value,
+) -> PyResult<()> {
+    if let Value::Set(other) | Value::FrozenSet(other) = value {
+        return set.update_set(other);
+    }
+    if let Value::Dict(dict) = value {
+        set.reserve_for_update(dict.borrow().len());
+    }
+    walk(rt, value, |value| {
+        set.insert(value)?;
+        Ok(())
+    })
+}
+fn items_xor(left: &ViewObject, right: &ViewObject) -> PyResult<Value> {
+    let (Value::Dict(left), Value::Dict(right)) = (&left.dict, &right.dict) else {
+        unreachable!()
+    };
+    let mut remaining = left.borrow().clone();
+    let others = right.borrow().clone();
+    let result = crate::sets::PySet::new();
+    for (key, value) in others {
+        let mut found = None;
+        for (i, (old_key, old_value)) in remaining.iter().enumerate() {
+            if equal(old_key, &key)? {
+                if equal(old_value, &value)? {
+                    found = Some(i);
+                }
+                break;
+            }
+        }
+        if let Some(i) = found {
+            remaining.remove(i);
+        } else {
+            result.insert(Value::tuple(vec![key, value]))?;
+        }
+    }
+    for (key, value) in remaining {
+        result.insert(Value::tuple(vec![key, value]))?;
+    }
+    Ok(Value::Set(result))
+}
+fn view_binary_with(
+    mut rt: Option<&mut Runtime>,
+    op: &str,
+    left: &Value,
+    right: &Value,
+) -> Option<PyResult<Value>> {
+    if !matches!(op, "|" | "&" | "^" | "-") || set_view(left).is_none() && set_view(right).is_none()
+    {
+        return None;
+    }
+    Some((|| {
+        if op == "^"
+            && let (Some(a), Some(b)) = (set_view(left), set_view(right))
+            && a.kind == ViewKind::Items
+            && b.kind == ViewKind::Items
+        {
+            return items_xor(a, b);
+        }
+        if op == "&" {
+            let (mut view, mut other, own) = if let Some(view) = set_view(left) {
+                (view, right, left)
+            } else {
+                (set_view(right).expect("reflected view"), left, right)
+            };
+            if let Value::Set(set) = other
+                && view.len()? <= set.len()
+            {
+                // CPython delegates this smaller-view case to set.intersection.
+                let own = dict_view(&view.dict, view.kind)?;
+                return crate::containers::call_method(other, "intersection", &[own]);
+            }
+            if let Some(other_view) = set_view(other)
+                && other_view.len()? > view.len()?
+            {
+                other = own;
+                view = other_view;
+            }
+            let result = crate::sets::PySet::new();
+            walk(&mut rt, other, |item| {
+                if view.contains(&item)? {
+                    result.insert(item)?;
+                }
+                Ok(())
+            })?;
+            return Ok(Value::Set(result));
+        }
+        let result = view_set(&mut rt, left, true)?;
+        match op {
+            "|" => update_view_set(&mut rt, &result, right)?,
+            "-" => {
+                if matches!(right, Value::Set(_) | Value::FrozenSet(_)) {
+                    crate::containers::call_method(
+                        &Value::Set(result.clone()),
+                        "difference_update",
+                        std::slice::from_ref(right),
+                    )?;
+                } else {
+                    walk(&mut rt, right, |item| {
+                        crate::sets::element_hash(&item)?;
+                        result.discard(&item)?;
+                        Ok(())
+                    })?;
+                    result.compact_after_difference();
+                }
+            }
+            "^" => {
+                if matches!(right, Value::Dict(_)) {
+                    walk(&mut rt, right, |item| {
+                        if !result.discard(&item)? {
+                            result.insert(item)?;
+                        }
+                        Ok(())
+                    })?;
+                } else {
+                    let other = view_set(&mut rt, right, false)?;
+                    for item in other.values() {
+                        if !result.discard(&item)? {
+                            result.insert(item)?;
+                        }
+                    }
+                }
+            }
+            _ => unreachable!(),
+        }
+        Ok(Value::Set(result))
+    })())
+}
+
+/// Native operators without a runtime can consume ordinary sequence values.
+pub fn view_binary(op: &str, left: &Value, right: &Value) -> Option<PyResult<Value>> {
+    view_binary_with(None, op, left, right)
+}
+/// Generated operators use this form so iterable callbacks share execution state.
+pub fn view_binary_rt(
+    rt: &mut Runtime,
+    op: &str,
+    left: &Value,
+    right: &Value,
+) -> Option<PyResult<Value>> {
+    view_binary_with(Some(rt), op, left, right)
+}
+
 fn dict_iterator(dict: &Value, kind: ViewKind, reverse: bool) -> PyResult<Value> {
     let Value::Dict(values) = dict else {
         return Err(PyExc::type_error("expected dict"));

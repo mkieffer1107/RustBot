@@ -490,7 +490,7 @@ impl Decimal {
         };
         Ok(format!("{sign}{mantissa}E{adjusted:+}"))
     }
-    fn quantize(&self, exponent: i32) -> PyResult<Self> {
+    fn quantize(&self, exponent: i32, half_up: bool) -> PyResult<Self> {
         if !(-1_000_026..=999_999).contains(&exponent) {
             return Err(invalid_decimal());
         }
@@ -516,7 +516,10 @@ impl Decimal {
                 let abs = self.coefficient.abs();
                 let mut q = &abs / &divisor;
                 let rem = abs % &divisor;
-                if &rem * 2u8 >= divisor {
+                let twice = &rem * 2u8;
+                if twice > divisor
+                    || twice == divisor && (half_up || (&q & BigInt::one()) != BigInt::zero())
+                {
                     q += 1;
                 }
                 if negative { -q } else { q }
@@ -613,18 +616,18 @@ impl PyObject for Decimal {
                     {
                         return Err(PyExc::type_error("invalid quantize arguments"));
                     }
-                    let Some(mode) = rounding else {
-                        return Err(PyExc::not_implemented_error(
-                            "default decimal rounding mode",
-                        ));
+                    let half_up = match rounding {
+                        None | Some(Value::None) => false,
+                        Some(mode) => match mode.as_str()? {
+                            "ROUND_HALF_UP" => true,
+                            "ROUND_HALF_EVEN" => false,
+                            _ => return Err(PyExc::not_implemented_error("decimal rounding mode")),
+                        },
                     };
-                    if mode.as_str()? != "ROUND_HALF_UP" {
-                        return Err(PyExc::not_implemented_error("decimal rounding mode"));
-                    }
                     let target = obj::<Decimal>(&args.positional[0]).ok_or_else(|| {
                         PyExc::type_error("conversion to Decimal is not supported")
                     })?;
-                    Ok(decimal_value(this.quantize(target.exponent)?))
+                    Ok(decimal_value(this.quantize(target.exponent, half_up)?))
                 }))
             }
             _ => Err(PyExc::attribute_error(format!(
@@ -677,6 +680,7 @@ fn init_decimal(rt: &mut Runtime, module: &Value) -> PyResult<()> {
         ),
     )?;
     rt.setattr(module, "ROUND_HALF_UP", Value::from("ROUND_HALF_UP"))?;
+    rt.setattr(module, "ROUND_HALF_EVEN", Value::from("ROUND_HALF_EVEN"))?;
     for name in crate::exceptions::DECIMAL_EXCEPTIONS {
         let exception = crate::exceptions::exception_type(rt, name)?;
         rt.setattr(module, name, exception)?;

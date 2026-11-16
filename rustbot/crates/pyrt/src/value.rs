@@ -419,6 +419,15 @@ impl Value {
                 memo.insert(id, out.clone());
                 out
             }
+            Self::Object(_) => crate::classes::deepcopy_object(self, memo, |value, memo| {
+                value.copy_with_memo(memo)
+            })
+            .or_else(|| {
+                crate::exceptions::deepcopy_object(self, memo, |value, memo| {
+                    value.copy_with_memo(memo)
+                })
+            })
+            .unwrap_or_else(|| self.clone()),
             _ => self.clone(),
         }
     }

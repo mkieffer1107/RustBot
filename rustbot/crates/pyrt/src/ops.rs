@@ -51,6 +51,9 @@ pub fn add(a: &Value, b: &Value) -> PyResult<Value> {
 }
 
 pub fn sub(a: &Value, b: &Value) -> PyResult<Value> {
+    if let Some(result) = crate::protocols::view_binary("-", a, b) {
+        return result;
+    }
     if let Some(value) = crate::numeric_objects::binary("sub", a, b) {
         return value;
     }
@@ -290,7 +293,9 @@ pub fn true_div(a: &Value, b: &Value) -> PyResult<Value> {
 }
 
 pub fn divmod(a: &Value, b: &Value) -> PyResult<Value> {
-    if let Some(value)=crate::numeric_objects::binary("divmod",a,b){return value;}
+    if let Some(value) = crate::numeric_objects::binary("divmod", a, b) {
+        return value;
+    }
     if integers(a, b) {
         let (q, r) = int_divmod(a.as_int()?, b.as_int()?)?;
         return Ok(Value::tuple(vec![Value::Int(q), Value::Int(r)]));
@@ -542,16 +547,37 @@ pub fn inplace(
     }
     match op {
         "+" => add(a, b),
-        "-" => sub(a, b),
+        "-" => sub_rt(rt, a, b),
         "*" => mul(a, b),
         "/" => true_div(a, b),
         "//" => floor_div(a, b),
         "%" => modulo(a, b),
         "**" => power(a, b),
-        "|" | "&" | "^" | "<<" | ">>" => bitwise(op, a, b),
+        "|" | "&" | "^" | "<<" | ">>" => bitwise_rt(rt, op, a, b),
         _ => Err(PyExc::value_error(format!(
             "unknown augmented assignment operator '{op}'"
         ))),
+    }
+}
+
+/// Runtime-aware view operators consume generators in their original context.
+pub fn sub_rt(rt: &mut crate::runtime::Runtime, a: &Value, b: &Value) -> PyResult<Value> {
+    if let Some(result) = crate::protocols::view_binary_rt(rt, "-", a, b) {
+        result
+    } else {
+        sub(a, b)
+    }
+}
+pub fn bitwise_rt(
+    rt: &mut crate::runtime::Runtime,
+    op: &str,
+    a: &Value,
+    b: &Value,
+) -> PyResult<Value> {
+    if let Some(result) = crate::protocols::view_binary_rt(rt, op, a, b) {
+        result
+    } else {
+        bitwise(op, a, b)
     }
 }
 
@@ -567,6 +593,9 @@ pub fn neg(v: &Value) -> PyResult<Value> {
 }
 
 pub fn bitwise(op: &str, a: &Value, b: &Value) -> PyResult<Value> {
+    if let Some(result) = crate::protocols::view_binary(op, a, b) {
+        return result;
+    }
     if matches!(a, Value::Set(_) | Value::FrozenSet(_))
         && matches!(b, Value::Set(_) | Value::FrozenSet(_))
     {

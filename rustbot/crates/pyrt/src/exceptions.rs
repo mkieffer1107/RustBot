@@ -401,3 +401,50 @@ impl PyObject for ExceptionObject {
         }
     }
 }
+
+/// Preserve constructor args and custom attributes when a runtime error value
+/// occurs inside copied memory, sharing the builtin container copy memo.
+pub(crate) fn deepcopy_object(
+    value: &Value,
+    memo: &mut std::collections::HashMap<(u8, usize), Value>,
+    mut copy: impl FnMut(&Value, &mut std::collections::HashMap<(u8, usize), Value>) -> Value,
+) -> Option<Value> {
+    let Value::Object(object) = value else {
+        return None;
+    };
+    let source = object.as_any().downcast_ref::<ExceptionObject>()?;
+    let id = (4, Rc::as_ptr(object) as *const () as usize);
+    if let Some(existing) = memo.get(&id) {
+        return Some(existing.clone());
+    }
+    let Value::Dict(attributes) = &source.attrs else {
+        unreachable!()
+    };
+    let attrs_id = (1, Rc::as_ptr(attributes) as usize);
+    let previous_attrs = memo.get(&attrs_id).cloned();
+    let result = Rc::new(ExceptionObject {
+        kind: source.kind,
+        args: RefCell::new(Vec::new()),
+        class: source.class.clone(),
+        message: RefCell::new(source.message.borrow().clone()),
+        attrs: previous_attrs.clone().unwrap_or_else(Value::dict),
+        text_depth: Cell::new(0),
+    });
+    let value = Value::Object(result.clone());
+    memo.insert(id, value.clone());
+    memo.entry(attrs_id).or_insert_with(|| result.attrs.clone());
+    let args = source.args.borrow().clone();
+    *result.args.borrow_mut() = args.iter().map(|arg| copy(arg, memo)).collect();
+    if previous_attrs.is_none() {
+        let entries = attributes.borrow().clone();
+        let entries = entries
+            .iter()
+            .map(|(key, value)| (copy(key, memo), copy(value, memo)))
+            .collect();
+        let Value::Dict(target) = &result.attrs else {
+            unreachable!()
+        };
+        *target.borrow_mut() = entries;
+    }
+    Some(value)
+}
