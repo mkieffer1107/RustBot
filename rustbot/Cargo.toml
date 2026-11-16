@@ -1,0 +1,19 @@
+[workspace]
+members = ["crates/pyrt", "crates/bot", "crates/cli"]
+resolver = "2"
+
+[workspace.package]
+edition = "2024"
+license = "Apache-2.0"
+version = "0.1.0"
+
+[workspace.dependencies]
+num-bigint = "0.4"
+num-traits = "0.2"
+serde_json = { version = "1", features = ["arbitrary_precision", "preserve_order"] }
+sha2 = "0.10"
+fancy-regex = "0.16"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
