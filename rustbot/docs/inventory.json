@@ -1,0 +1,6627 @@
+{
+  "source_files": 528,
+  "ast_nodes": {
+    "Add": {
+      "count": 17427,
+      "first": "bot/compose/__init__.py:136"
+    },
+    "And": {
+      "count": 9415,
+      "first": "bot/compose/__init__.py:54"
+    },
+    "Assign": {
+      "count": 56836,
+      "first": "bot/__main__.py:8"
+    },
+    "Attribute": {
+      "count": 80079,
+      "first": "bot/__main__.py:9"
+    },
+    "AugAssign": {
+      "count": 665,
+      "first": "bot/compose/breakup.py:42"
+    },
+    "BinOp": {
+      "count": 22259,
+      "first": "bot/compose/__init__.py:100"
+    },
+    "BitAnd": {
+      "count": 1320,
+      "first": "bot/compose/__init__.py:152"
+    },
+    "BitOr": {
+      "count": 587,
+      "first": "bot/compose/badnews.py:108"
+    },
+    "BoolOp": {
+      "count": 27949,
+      "first": "bot/__main__.py:12"
+    },
+    "Break": {
+      "count": 631,
+      "first": "bot/compose/a_thing_being_weighed.py:131"
+    },
+    "Call": {
+      "count": 134916,
+      "first": "bot/__main__.py:11"
+    },
+    "ClassDef": {
+      "count": 5,
+      "first": "bot/knowledge/lookup.py:467"
+    },
+    "Compare": {
+      "count": 22370,
+      "first": "bot/__main__.py:18"
+    },
+    "Constant": {
+      "count": 670418,
+      "first": "bot/__init__.py:1"
+    },
+    "Continue": {
+      "count": 3760,
+      "first": "bot/compose/__init__.py:181"
+    },
+    "Del": {
+      "count": 35,
+      "first": "bot/knowledge/cooking_more.py:2376"
+    },
+    "Delete": {
+      "count": 16,
+      "first": "bot/knowledge/cooking_more.py:2376"
+    },
+    "Dict": {
+      "count": 4662,
+      "first": "bot/__main__.py:8"
+    },
+    "DictComp": {
+      "count": 81,
+      "first": "bot/compose/circumstance.py:121"
+    },
+    "Div": {
+      "count": 342,
+      "first": "bot/compose/aboutness.py:102"
+    },
+    "Eq": {
+      "count": 3514,
+      "first": "bot/__main__.py:18"
+    },
+    "ExceptHandler": {
+      "count": 611,
+      "first": "bot/__main__.py:13"
+    },
+    "Expr": {
+      "count": 14081,
+      "first": "bot/__init__.py:1"
+    },
+    "FloorDiv": {
+      "count": 110,
+      "first": "bot/compose/pace.py:190"
+    },
+    "For": {
+      "count": 4974,
+      "first": "bot/__main__.py:9"
+    },
+    "FormattedValue": {
+      "count": 2163,
+      "first": "bot/compose/__init__.py:306"
+    },
+    "FunctionDef": {
+      "count": 10987,
+      "first": "bot/__main__.py:7"
+    },
+    "GeneratorExp": {
+      "count": 4784,
+      "first": "bot/compose/__init__.py:123"
+    },
+    "Global": {
+      "count": 25,
+      "first": "bot/compose/checking.py:78"
+    },
+    "Gt": {
+      "count": 1659,
+      "first": "bot/compose/__init__.py:91"
+    },
+    "GtE": {
+      "count": 783,
+      "first": "bot/compose/a_number_the_bot_knows.py:183"
+    },
+    "If": {
+      "count": 34560,
+      "first": "bot/__main__.py:18"
+    },
+    "IfExp": {
+      "count": 3973,
+      "first": "bot/compose/__init__.py:318"
+    },
+    "Import": {
+      "count": 552,
+      "first": "bot/__main__.py:2"
+    },
+    "ImportFrom": {
+      "count": 1621,
+      "first": "bot/__main__.py:4"
+    },
+    "In": {
+      "count": 8717,
+      "first": "bot/compose/__init__.py:87"
+    },
+    "Is": {
+      "count": 1295,
+      "first": "bot/compose/a_place_nobody_can_see.py:468"
+    },
+    "IsNot": {
+      "count": 1014,
+      "first": "bot/compose/badnews.py:1153"
+    },
+    "JoinedStr": {
+      "count": 1078,
+      "first": "bot/compose/__init__.py:306"
+    },
+    "Lambda": {
+      "count": 373,
+      "first": "bot/compose/fallback.py:8799"
+    },
+    "List": {
+      "count": 3407,
+      "first": "bot/compose/__init__.py:317"
+    },
+    "ListComp": {
+      "count": 2674,
+      "first": "bot/compose/__init__.py:122"
+    },
+    "Load": {
+      "count": 442469,
+      "first": "bot/__main__.py:9"
+    },
+    "Lt": {
+      "count": 1353,
+      "first": "bot/compose/__init__.py:186"
+    },
+    "LtE": {
+      "count": 991,
+      "first": "bot/compose/a_detail_dropped.py:377"
+    },
+    "Mod": {
+      "count": 1210,
+      "first": "bot/compose/a_trouble.py:146"
+    },
+    "Module": {
+      "count": 528,
+      "first": "bot/__init__.py:1"
+    },
+    "Mult": {
+      "count": 596,
+      "first": "bot/compose/__init__.py:352"
+    },
+    "Name": {
+      "count": 364566,
+      "first": "bot/__main__.py:8"
+    },
+    "Not": {
+      "count": 15290,
+      "first": "bot/compose/__init__.py:54"
+    },
+    "NotEq": {
+      "count": 1029,
+      "first": "bot/compose/__init__.py:335"
+    },
+    "NotIn": {
+      "count": 2277,
+      "first": "bot/compose/__init__.py:180"
+    },
+    "Or": {
+      "count": 18534,
+      "first": "bot/__main__.py:12"
+    },
+    "Pass": {
+      "count": 52,
+      "first": "bot/compose/__init__.py:522"
+    },
+    "Pow": {
+      "count": 22,
+      "first": "bot/knowledge/home.py:8629"
+    },
+    "Raise": {
+      "count": 2,
+      "first": "bot/knowledge/maths.py:81"
+    },
+    "Return": {
+      "count": 35904,
+      "first": "bot/compose/__init__.py:54"
+    },
+    "Set": {
+      "count": 497,
+      "first": "bot/compose/colour_on_the_body.py:247"
+    },
+    "SetComp": {
+      "count": 490,
+      "first": "bot/compose/__init__.py:303"
+    },
+    "Slice": {
+      "count": 4777,
+      "first": "bot/compose/__init__.py:91"
+    },
+    "Starred": {
+      "count": 135,
+      "first": "bot/compose/badnews.py:562"
+    },
+    "Store": {
+      "count": 77944,
+      "first": "bot/__main__.py:8"
+    },
+    "Sub": {
+      "count": 1310,
+      "first": "bot/compose/__init__.py:100"
+    },
+    "Subscript": {
+      "count": 13150,
+      "first": "bot/compose/__init__.py:91"
+    },
+    "Try": {
+      "count": 615,
+      "first": "bot/__main__.py:10"
+    },
+    "Tuple": {
+      "count": 59111,
+      "first": "bot/compose/__init__.py:12"
+    },
+    "USub": {
+      "count": 3013,
+      "first": "bot/compose/__init__.py:91"
+    },
+    "UnaryOp": {
+      "count": 18303,
+      "first": "bot/compose/__init__.py:54"
+    },
+    "While": {
+      "count": 285,
+      "first": "bot/compose/a_place_nobody_can_see.py:317"
+    },
+    "Yield": {
+      "count": 14,
+      "first": "bot/knowledge/explains.py:2983"
+    },
+    "alias": {
+      "count": 7465,
+      "first": "bot/__main__.py:2"
+    },
+    "arg": {
+      "count": 18107,
+      "first": "bot/compose/__init__.py:43"
+    },
+    "arguments": {
+      "count": 11360,
+      "first": "bot/__main__.py:7"
+    },
+    "comprehension": {
+      "count": 8379,
+      "first": "bot/compose/__init__.py:122"
+    },
+    "keyword": {
+      "count": 14016,
+      "first": "bot/__main__.py:15"
+    }
+  },
+  "builtins": {
+    "AttributeError": {
+      "count": 16,
+      "first": "bot/compose/fallback.py:13977"
+    },
+    "Exception": {
+      "count": 475,
+      "first": "bot/__main__.py:13"
+    },
+    "ImportError": {
+      "count": 5,
+      "first": "bot/memory/__init__.py:1066"
+    },
+    "IndexError": {
+      "count": 6,
+      "first": "bot/memory/price.py:384"
+    },
+    "KeyError": {
+      "count": 2,
+      "first": "bot/memory/price.py:384"
+    },
+    "OverflowError": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:126"
+    },
+    "SyntaxError": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:126"
+    },
+    "TypeError": {
+      "count": 52,
+      "first": "bot/compose/fallback.py:10409"
+    },
+    "ValueError": {
+      "count": 111,
+      "first": "bot/compose/goodnews.py:1184"
+    },
+    "ZeroDivisionError": {
+      "count": 3,
+      "first": "bot/knowledge/maths.py:126"
+    },
+    "__name__": {
+      "count": 5,
+      "first": "bot/__main__.py:18"
+    },
+    "__package__": {
+      "count": 12,
+      "first": "bot/memory/cause.py:410"
+    },
+    "abs": {
+      "count": 102,
+      "first": "bot/compose/badnews.py:790"
+    },
+    "all": {
+      "count": 332,
+      "first": "bot/compose/a_trouble.py:183"
+    },
+    "any": {
+      "count": 3036,
+      "first": "bot/compose/__init__.py:123"
+    },
+    "bool": {
+      "count": 1972,
+      "first": "bot/compose/__init__.py:54"
+    },
+    "callable": {
+      "count": 35,
+      "first": "bot/compose/gap.py:630"
+    },
+    "dict": {
+      "count": 3187,
+      "first": "bot/compose/__init__.py:318"
+    },
+    "divmod": {
+      "count": 22,
+      "first": "bot/compose/quantity.py:419"
+    },
+    "enumerate": {
+      "count": 445,
+      "first": "bot/compose/__init__.py:97"
+    },
+    "float": {
+      "count": 236,
+      "first": "bot/compose/quantity.py:398"
+    },
+    "format": {
+      "count": 112,
+      "first": "bot/knowledge/cars.py:1076"
+    },
+    "frozenset": {
+      "count": 3780,
+      "first": "bot/compose/__init__.py:12"
+    },
+    "getattr": {
+      "count": 209,
+      "first": "bot/compose/find_a_place.py:189"
+    },
+    "globals": {
+      "count": 8,
+      "first": "bot/compose/fallback.py:11503"
+    },
+    "hasattr": {
+      "count": 4,
+      "first": "bot/compose/find_a_place.py:191"
+    },
+    "id": {
+      "count": 62,
+      "first": "bot/knowledge/cooking.py:4042"
+    },
+    "int": {
+      "count": 699,
+      "first": "bot/compose/aboutness.py:146"
+    },
+    "isinstance": {
+      "count": 4553,
+      "first": "bot/compose/__init__.py:259"
+    },
+    "iter": {
+      "count": 8,
+      "first": "bot/knowledge/cooking.py:6218"
+    },
+    "len": {
+      "count": 4544,
+      "first": "bot/compose/__init__.py:91"
+    },
+    "list": {
+      "count": 964,
+      "first": "bot/compose/__init__.py:335"
+    },
+    "map": {
+      "count": 5,
+      "first": "bot/compose/goodnews.py:1228"
+    },
+    "max": {
+      "count": 279,
+      "first": "bot/compose/__init__.py:180"
+    },
+    "min": {
+      "count": 115,
+      "first": "bot/compose/__init__.py:349"
+    },
+    "next": {
+      "count": 158,
+      "first": "bot/compose/fallback.py:8660"
+    },
+    "object": {
+      "count": 7,
+      "first": "bot/knowledge/lookup.py:2644"
+    },
+    "ord": {
+      "count": 41,
+      "first": "bot/compose/__init__.py:352"
+    },
+    "print": {
+      "count": 5,
+      "first": "bot/__main__.py:15"
+    },
+    "range": {
+      "count": 256,
+      "first": "bot/compose/badnews.py:1208"
+    },
+    "reversed": {
+      "count": 533,
+      "first": "bot/compose/__init__.py:381"
+    },
+    "round": {
+      "count": 240,
+      "first": "bot/compose/quantity.py:410"
+    },
+    "set": {
+      "count": 1537,
+      "first": "bot/compose/__init__.py:152"
+    },
+    "sorted": {
+      "count": 346,
+      "first": "bot/compose/a_thing_being_weighed.py:128"
+    },
+    "str": {
+      "count": 7591,
+      "first": "bot/__main__.py:12"
+    },
+    "sum": {
+      "count": 105,
+      "first": "bot/compose/__init__.py:352"
+    },
+    "tuple": {
+      "count": 816,
+      "first": "bot/compose/a_number_the_bot_knows.py:183"
+    },
+    "type": {
+      "count": 4,
+      "first": "bot/knowledge/maths.py:78"
+    },
+    "vars": {
+      "count": 4,
+      "first": "bot/compose/their_day.py:197"
+    },
+    "zip": {
+      "count": 36,
+      "first": "bot/compose/badnews.py:760"
+    }
+  },
+  "methods": {
+    "ABOUT_SELF": {
+      "count": 1,
+      "first": "bot/compose/hands.py:254"
+    },
+    "ABOUT_THE_BOT": {
+      "count": 1,
+      "first": "bot/memory/another.py:260"
+    },
+    "ABOUT_THE_CHAT": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:1687"
+    },
+    "ABUSE_AFTER": {
+      "count": 1,
+      "first": "bot/modules/carers_turn.py:603"
+    },
+    "ACKS": {
+      "count": 3,
+      "first": "bot/memory/cause.py:164"
+    },
+    "ACTION": {
+      "count": 2,
+      "first": "bot/memory/doing_it.py:60"
+    },
+    "ACTS_FOR_ME": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:842"
+    },
+    "ADDRESS_WORDS": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1300"
+    },
+    "AFTER_ANIMAL": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11839"
+    },
+    "AFTER_REPLIES": {
+      "count": 5,
+      "first": "bot/compose/fallback.py:16590"
+    },
+    "AGAIN": {
+      "count": 7,
+      "first": "bot/memory/returns.py:268"
+    },
+    "AGAIN_HELP": {
+      "count": 1,
+      "first": "bot/memory/paragraph.py:92"
+    },
+    "ALL_I_CAN_DO": {
+      "count": 1,
+      "first": "bot/memory/ack.py:5451"
+    },
+    "ALL_OF_IT_LINES": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:4277"
+    },
+    "ALONE_PERSON": {
+      "count": 5,
+      "first": "bot/memory/relations.py:188"
+    },
+    "AMOUNT": {
+      "count": 5,
+      "first": "bot/compose/lead.py:332"
+    },
+    "ANIMALS": {
+      "count": 4,
+      "first": "bot/memory/store_replies.py:1540"
+    },
+    "ANIMAL_KINDS": {
+      "count": 4,
+      "first": "bot/memory/__init__.py:419"
+    },
+    "ANIMAL_NOUNS": {
+      "count": 3,
+      "first": "bot/knowledge/family.py:9638"
+    },
+    "ANSWER_KEPT": {
+      "count": 1,
+      "first": "bot/modules/a_return_brings_back_the_advice.py:106"
+    },
+    "AN_ILLNESS": {
+      "count": 1,
+      "first": "bot/compose/breakup.py:64"
+    },
+    "ASK": {
+      "count": 2,
+      "first": "bot/memory/another.py:58"
+    },
+    "ASKING_THEM": {
+      "count": 4,
+      "first": "bot/memory/tried.py:1211"
+    },
+    "ASKS_FOR_THE_WORDS": {
+      "count": 1,
+      "first": "bot/modules/chat.py:13877"
+    },
+    "ASKS_WHAT_TO_DO": {
+      "count": 1,
+      "first": "bot/modules/chat.py:13879"
+    },
+    "ASK_ONLY": {
+      "count": 4,
+      "first": "bot/memory/again.py:637"
+    },
+    "A_BARE_DURATION_ASK": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:4299"
+    },
+    "A_CALLBACK": {
+      "count": 2,
+      "first": "bot/modules/memory_store.py:1688"
+    },
+    "A_DATE_VALUE": {
+      "count": 1,
+      "first": "bot/modules/trip_date_said_again.py:44"
+    },
+    "A_DAY_ASKED_PLAIN": {
+      "count": 1,
+      "first": "bot/compose/stretches.py:406"
+    },
+    "A_DESCRIBING": {
+      "count": 2,
+      "first": "bot/understanding/__init__.py:253"
+    },
+    "A_HARD_TIME": {
+      "count": 1,
+      "first": "bot/compose/breakup.py:59"
+    },
+    "A_LENGTH": {
+      "count": 1,
+      "first": "bot/memory/ack.py:3886"
+    },
+    "A_MEDICAL_THREAD": {
+      "count": 1,
+      "first": "bot/compose/breakup.py:62"
+    },
+    "A_MEDS": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:5827"
+    },
+    "A_MEDS_CHANGE": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:5827"
+    },
+    "A_MEDS_MINE": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:5828"
+    },
+    "A_MEDS_SYMPTOM": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:5829"
+    },
+    "A_MORNING_AFTER": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3036"
+    },
+    "A_NOD": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:715"
+    },
+    "A_PAY_WORD": {
+      "count": 2,
+      "first": "bot/modules/answers.py:8400"
+    },
+    "A_PLACE_HAS": {
+      "count": 1,
+      "first": "bot/modules/where_it_answers.py:130"
+    },
+    "A_PRICE_VERB": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:6604"
+    },
+    "A_RULING_ALREADY": {
+      "count": 1,
+      "first": "bot/compose/verdict.py:5443"
+    },
+    "A_SAFETY_ALREADY_RULED": {
+      "count": 1,
+      "first": "bot/compose/verdict.py:5447"
+    },
+    "A_SMALL_DAY": {
+      "count": 6,
+      "first": "bot/compose/find_a_place.py:157"
+    },
+    "A_STATE": {
+      "count": 9,
+      "first": "bot/memory/facts.py:4573"
+    },
+    "A_THING_DONE": {
+      "count": 1,
+      "first": "bot/compose/onmybehalf.py:44"
+    },
+    "A_THING_ON_ITS_WAY": {
+      "count": 1,
+      "first": "bot/memory/ack.py:4480"
+    },
+    "A_THING_SEEN_TO": {
+      "count": 1,
+      "first": "bot/compose/onmybehalf.py:44"
+    },
+    "A_TOLD_BACK": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16549"
+    },
+    "Add": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:63"
+    },
+    "BACKGROUND_STARTS": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:6034"
+    },
+    "BARE_COUNT_ASK": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:6407"
+    },
+    "BASICS": {
+      "count": 2,
+      "first": "bot/knowledge/cooking_entries.py:283"
+    },
+    "BEST_TIME": {
+      "count": 2,
+      "first": "bot/memory/trips.py:1158"
+    },
+    "BIRD_GRAMS": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:979"
+    },
+    "BIRTHDAY": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:9343"
+    },
+    "BODY_HURTS": {
+      "count": 1,
+      "first": "bot/memory/whathurts.py:99"
+    },
+    "BODY_PART": {
+      "count": 6,
+      "first": "bot/compose/fallback.py:13785"
+    },
+    "BODY_PARTS": {
+      "count": 11,
+      "first": "bot/knowledge/lookup.py:2149"
+    },
+    "BOT_NAME_ASK": {
+      "count": 3,
+      "first": "bot/memory/store_replies.py:3103"
+    },
+    "BREED_KIND": {
+      "count": 2,
+      "first": "bot/memory/facts.py:8672"
+    },
+    "BREED_RE": {
+      "count": 6,
+      "first": "bot/memory/facts.py:7391"
+    },
+    "BUY_POOL": {
+      "count": 1,
+      "first": "bot/compose/fallback_data.py:5973"
+    },
+    "BinOp": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:78"
+    },
+    "CALLING_SOMEONE": {
+      "count": 1,
+      "first": "bot/modules/answers.py:4217"
+    },
+    "CAME_BACK": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4079"
+    },
+    "CANNOT_ANYTHING": {
+      "count": 1,
+      "first": "bot/compose/the_turn_after.py:95"
+    },
+    "CANNOT_SEE": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:10285"
+    },
+    "CANNOT_SEE_ANYTHING_LINES": {
+      "count": 1,
+      "first": "bot/compose/the_turn_after.py:95"
+    },
+    "CANNOT_YOUR_OWN": {
+      "count": 1,
+      "first": "bot/compose/the_turn_after.py:96"
+    },
+    "CAPITALS": {
+      "count": 1,
+      "first": "bot/memory/not_this.py:184"
+    },
+    "CARE_VERBS": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10076"
+    },
+    "CHAT": {
+      "count": 33,
+      "first": "bot/knowledge/lookup.py:2496"
+    },
+    "CHEESES": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:7258"
+    },
+    "CITIES": {
+      "count": 4,
+      "first": "bot/memory/facts.py:1491"
+    },
+    "CITY_BEST_TIME": {
+      "count": 1,
+      "first": "bot/memory/trips.py:1154"
+    },
+    "CITY_COUNTRY": {
+      "count": 3,
+      "first": "bot/memory/not_this.py:182"
+    },
+    "CLAUSE": {
+      "count": 1,
+      "first": "bot/memory/too_late.py:134"
+    },
+    "CLAUSE_BREAKS": {
+      "count": 2,
+      "first": "bot/understanding/normalize.py:6015"
+    },
+    "CLOCK": {
+      "count": 1,
+      "first": "bot/compose/lead.py:568"
+    },
+    "COMFORT_SAID": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16495"
+    },
+    "COMMON": {
+      "count": 6,
+      "first": "bot/knowledge/lookup.py:2466"
+    },
+    "COMMON_NAMES": {
+      "count": 18,
+      "first": "bot/memory/facts.py:9018"
+    },
+    "COMMON_WORDS": {
+      "count": 2,
+      "first": "bot/modules/memory_store.py:2808"
+    },
+    "COMPLAINT": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3909"
+    },
+    "COMPOUND_AFTER": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:8071"
+    },
+    "CONDITION": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11735"
+    },
+    "CONDITION_BANS": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:12780"
+    },
+    "CONDITION_FOOD": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:6421"
+    },
+    "CONDOLENCE": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8307"
+    },
+    "CONFUSIONS": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1844"
+    },
+    "CONFUSIONS_AFTER": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1846"
+    },
+    "CONFUSIONS_BEFORE": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1850"
+    },
+    "CONFUSIONS_BEFORE_A_QUESTION": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1860"
+    },
+    "CONFUSIONS_IN_A_FEELING": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1856"
+    },
+    "CONTRACTIONS": {
+      "count": 1,
+      "first": "bot/modules/safety.py:970"
+    },
+    "CORE": {
+      "count": 5,
+      "first": "bot/knowledge/lookup.py:2057"
+    },
+    "CORE_WORDS": {
+      "count": 4,
+      "first": "bot/memory/again.py:700"
+    },
+    "CORRECTION_LEAD": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:2449"
+    },
+    "CORRECTION_LEAD_RE": {
+      "count": 1,
+      "first": "bot/memory/corrected.py:410"
+    },
+    "CORRECTION_OPENER": {
+      "count": 2,
+      "first": "bot/memory/places.py:95"
+    },
+    "COUNTRIES": {
+      "count": 7,
+      "first": "bot/knowledge/family_more.py:57"
+    },
+    "COUNT_UNITS": {
+      "count": 2,
+      "first": "bot/understanding/__init__.py:1390"
+    },
+    "CRISIS_WORDS": {
+      "count": 1,
+      "first": "bot/memory/already.py:1051"
+    },
+    "Constant": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:76"
+    },
+    "DAYS": {
+      "count": 12,
+      "first": "bot/compose/remark.py:2361"
+    },
+    "DEATH_WORDS": {
+      "count": 1,
+      "first": "bot/modules/chat.py:13190"
+    },
+    "DECIDING_NOW": {
+      "count": 1,
+      "first": "bot/modules/answers.py:4218"
+    },
+    "DENIAL_OF_A_VALUE": {
+      "count": 1,
+      "first": "bot/memory/corrected.py:111"
+    },
+    "DETAIL_AGAIN": {
+      "count": 1,
+      "first": "bot/memory/returns.py:269"
+    },
+    "DIED": {
+      "count": 1,
+      "first": "bot/memory/ack.py:6203"
+    },
+    "DIET_NAMES": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:11724"
+    },
+    "DISHES": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8741"
+    },
+    "DISLIKE_IN": {
+      "count": 1,
+      "first": "bot/memory/ack.py:6353"
+    },
+    "DOG_FEED_AMOUNT_ENTRY": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8468"
+    },
+    "DRIVE_ASK": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:9572"
+    },
+    "Div": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:66"
+    },
+    "ENTRIES": {
+      "count": 1,
+      "first": "bot/knowledge/dishes.py:3364"
+    },
+    "EVENT_WORD": {
+      "count": 2,
+      "first": "bot/memory/ack.py:3993"
+    },
+    "EXPAND": {
+      "count": 16,
+      "first": "bot/knowledge/lookup.py:2497"
+    },
+    "EXPLAIN_TAIL": {
+      "count": 1,
+      "first": "bot/compose/verdict.py:2085"
+    },
+    "Expression": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:74"
+    },
+    "FACT_FILLER": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10017"
+    },
+    "FALLBACK_MODULE": {
+      "count": 4,
+      "first": "bot/modules/arbiter.py:4324"
+    },
+    "FAMILIES": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:7256"
+    },
+    "FAULT": {
+      "count": 2,
+      "first": "bot/memory/limit.py:592"
+    },
+    "FEELINGS": {
+      "count": 12,
+      "first": "bot/memory/facts.py:4573"
+    },
+    "FEELING_FILLER": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1814"
+    },
+    "FEELING_LEAD": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1819"
+    },
+    "FENCED_IN_SENTENCE": {
+      "count": 1,
+      "first": "bot/compose/who_to_see.py:209"
+    },
+    "FIGURE_POOL": {
+      "count": 1,
+      "first": "bot/compose/fallback_data.py:5973"
+    },
+    "FIGURE_WORDS": {
+      "count": 4,
+      "first": "bot/memory/repair.py:819"
+    },
+    "FILLER": {
+      "count": 2,
+      "first": "bot/memory/another.py:58"
+    },
+    "FILLER_TAIL_PHRASES": {
+      "count": 1,
+      "first": "bot/memory/ack.py:6737"
+    },
+    "FOLLOWING_IT": {
+      "count": 1,
+      "first": "bot/modules/answers.py:4218"
+    },
+    "FOOD": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:7258"
+    },
+    "FORGETS_AGAIN": {
+      "count": 1,
+      "first": "bot/modules/chat.py:12923"
+    },
+    "FORGETS_A_CLASH": {
+      "count": 1,
+      "first": "bot/modules/chat.py:12923"
+    },
+    "FORGET_A_DATE": {
+      "count": 1,
+      "first": "bot/modules/chat.py:12922"
+    },
+    "FORGET_A_SECRET": {
+      "count": 1,
+      "first": "bot/modules/chat.py:12922"
+    },
+    "FRAME": {
+      "count": 2,
+      "first": "bot/compose/why.py:1866"
+    },
+    "FRAMES": {
+      "count": 2,
+      "first": "bot/compose/verdict.py:2085"
+    },
+    "FUNERAL": {
+      "count": 1,
+      "first": "bot/modules/grief.py:730"
+    },
+    "FUTURE": {
+      "count": 1,
+      "first": "bot/compose/remark.py:2359"
+    },
+    "GETTING_THROUGH_REPLIES": {
+      "count": 1,
+      "first": "bot/compose/griefplea.py:78"
+    },
+    "GOING_TAIL": {
+      "count": 1,
+      "first": "bot/compose/verdict.py:2085"
+    },
+    "GREET": {
+      "count": 1,
+      "first": "bot/memory/thread.py:680"
+    },
+    "GREETINGS": {
+      "count": 2,
+      "first": "bot/understanding/__init__.py:666"
+    },
+    "GROUP_ASK": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:6407"
+    },
+    "HABIT_TAIL": {
+      "count": 1,
+      "first": "bot/compose/verdict.py:2085"
+    },
+    "HANDOFF_BRIDGES": {
+      "count": 1,
+      "first": "bot/knowledge/lookup.py:2088"
+    },
+    "HANDOFF_LEADS": {
+      "count": 2,
+      "first": "bot/knowledge/lookup.py:2106"
+    },
+    "HARD": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:3421"
+    },
+    "HE": {
+      "count": 29,
+      "first": "bot/memory/ack.py:252"
+    },
+    "HEDGE": {
+      "count": 8,
+      "first": "bot/memory/another.py:118"
+    },
+    "HELP_ALREADY": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:4273"
+    },
+    "HER": {
+      "count": 1,
+      "first": "bot/memory/matters.py:95"
+    },
+    "HIM": {
+      "count": 1,
+      "first": "bot/memory/matters.py:93"
+    },
+    "HOME_STOP": {
+      "count": 2,
+      "first": "bot/memory/places.py:58"
+    },
+    "HOW_MANY_POOL": {
+      "count": 1,
+      "first": "bot/compose/fallback_data.py:5973"
+    },
+    "HUMAN_TABLET_PETS": {
+      "count": 1,
+      "first": "bot/knowledge/family.py:4417"
+    },
+    "HURT": {
+      "count": 1,
+      "first": "bot/memory/taking.py:136"
+    },
+    "I": {
+      "count": 5770,
+      "first": "bot/compose/__init__.py:30"
+    },
+    "IGNORECASE": {
+      "count": 330,
+      "first": "bot/compose/__init__.py:464"
+    },
+    "IMPERATIVE": {
+      "count": 1,
+      "first": "bot/memory/obstacle.py:373"
+    },
+    "INCLUDED": {
+      "count": 2,
+      "first": "bot/modules/where_it_answers.py:136"
+    },
+    "INGREDIENTS": {
+      "count": 1,
+      "first": "bot/knowledge/still_ok.py:265"
+    },
+    "INTENDED_SPEND": {
+      "count": 1,
+      "first": "bot/memory/ack.py:5450"
+    },
+    "INTEREST_GIFTS": {
+      "count": 2,
+      "first": "bot/modules/answers.py:6568"
+    },
+    "IN_A_CARING_PLACE": {
+      "count": 1,
+      "first": "bot/memory/trips.py:622"
+    },
+    "IN_A_DISH": {
+      "count": 1,
+      "first": "bot/knowledge/still_ok.py:265"
+    },
+    "IN_LAW": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:9298"
+    },
+    "JOB": {
+      "count": 1,
+      "first": "bot/modules/chat.py:1343"
+    },
+    "JOBS": {
+      "count": 1,
+      "first": "bot/memory/facts.py:1491"
+    },
+    "JOB_WAS": {
+      "count": 1,
+      "first": "bot/memory/ack.py:5021"
+    },
+    "JOB_WORDS": {
+      "count": 3,
+      "first": "bot/compose/remark.py:1538"
+    },
+    "JOINED_WORDS": {
+      "count": 3,
+      "first": "bot/memory/facts.py:4756"
+    },
+    "JOINING": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10018"
+    },
+    "KID_NUMBERS": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:11884"
+    },
+    "KID_NUMBER_WORDS": {
+      "count": 2,
+      "first": "bot/modules/chat.py:11171"
+    },
+    "KIN": {
+      "count": 5,
+      "first": "bot/compose/fallback.py:4353"
+    },
+    "KIND_ASK": {
+      "count": 2,
+      "first": "bot/modules/answers.py:1845"
+    },
+    "KIN_WORDS": {
+      "count": 13,
+      "first": "bot/memory/places.py:235"
+    },
+    "LAST_PERSON": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:656"
+    },
+    "LAUGHTER": {
+      "count": 4,
+      "first": "bot/memory/facts.py:151"
+    },
+    "LEADS": {
+      "count": 2,
+      "first": "bot/memory/doubt.py:89"
+    },
+    "LEAD_INS": {
+      "count": 2,
+      "first": "bot/compose/fallback.py:14366"
+    },
+    "LEAVING": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:15951"
+    },
+    "LEFT_POOL": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4372"
+    },
+    "LEFT_POOL_GONE": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4372"
+    },
+    "LENGTH_NAMED_DAYS": {
+      "count": 1,
+      "first": "bot/memory/ack.py:3892"
+    },
+    "LEXICON": {
+      "count": 5,
+      "first": "bot/memory/facts.py:563"
+    },
+    "LIKE_I_SAID": {
+      "count": 1,
+      "first": "bot/modules/answers.py:252"
+    },
+    "LINES": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3548"
+    },
+    "LIVE_KINDS": {
+      "count": 4,
+      "first": "bot/compose/findout.py:663"
+    },
+    "LIVE_NOT_WORLDS": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16200"
+    },
+    "LIVING": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:10368"
+    },
+    "LOOKBACK": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2255"
+    },
+    "LOOKS_BACK": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:5904"
+    },
+    "LOOK_BACK_FAR": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8297"
+    },
+    "LOSS_ALL": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:1361"
+    },
+    "LOSS_REPLIES": {
+      "count": 3,
+      "first": "bot/compose/fallback.py:14959"
+    },
+    "MEAN": {
+      "count": 1,
+      "first": "bot/understanding/kinds.py:5815"
+    },
+    "MEANING": {
+      "count": 2,
+      "first": "bot/compose/lead.py:332"
+    },
+    "MEANT_APPLIED_TO": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1181"
+    },
+    "MEASURE_WORDS": {
+      "count": 1,
+      "first": "bot/modules/done_ask.py:158"
+    },
+    "MISREAD_AS_GOOD_NEWS": {
+      "count": 1,
+      "first": "bot/modules/confusing.py:76"
+    },
+    "MISSPELLINGS": {
+      "count": 13,
+      "first": "bot/understanding/normalize.py:210"
+    },
+    "MISS_REPLIES": {
+      "count": 1,
+      "first": "bot/modules/loss.py:102"
+    },
+    "MONTHS": {
+      "count": 15,
+      "first": "bot/compose/remark.py:2361"
+    },
+    "MONTH_NAMES": {
+      "count": 1,
+      "first": "bot/modules/answers.py:3031"
+    },
+    "MOOD_NOUNS": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1286"
+    },
+    "MOVE_ASK": {
+      "count": 2,
+      "first": "bot/modules/arbiter.py:3044"
+    },
+    "MOVING_TO": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:9571"
+    },
+    "Mod": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:68"
+    },
+    "Mult": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:65"
+    },
+    "NAMES_A_CLINICIAN": {
+      "count": 2,
+      "first": "bot/compose/who_to_see.py:141"
+    },
+    "NAMES_THAT_END_LIKE_A_VERB": {
+      "count": 1,
+      "first": "bot/memory/corrected.py:60"
+    },
+    "NAMES_THE_THING": {
+      "count": 1,
+      "first": "bot/memory/ack.py:4474"
+    },
+    "NAME_ANSWER_ANNOUNCED": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:2294"
+    },
+    "NAME_ANSWER_ANNOUNCED_LAST": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:2297"
+    },
+    "NAME_WORD": {
+      "count": 1,
+      "first": "bot/memory/corrected.py:783"
+    },
+    "NEEDS_ANSWER": {
+      "count": 2,
+      "first": "bot/understanding/__init__.py:1279"
+    },
+    "NEGATIONS": {
+      "count": 1,
+      "first": "bot/understanding/kinds.py:16"
+    },
+    "NEUTRAL": {
+      "count": 14,
+      "first": "bot/compose/find_a_place.py:157"
+    },
+    "NEXT_ASK": {
+      "count": 1,
+      "first": "bot/memory/tried.py:1514"
+    },
+    "NEXT_STEP_EMERGENCY": {
+      "count": 1,
+      "first": "bot/memory/detail.py:742"
+    },
+    "NON_NOUN": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:10978"
+    },
+    "NOTHING_HELD": {
+      "count": 2,
+      "first": "bot/compose/fallback_pools.py:405"
+    },
+    "NOTHING_SAID_YET": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:2885"
+    },
+    "NOT_A_CREATURE_NEXT": {
+      "count": 1,
+      "first": "bot/memory/facts.py:8682"
+    },
+    "NOT_A_FEELING": {
+      "count": 2,
+      "first": "bot/understanding/normalize.py:1745"
+    },
+    "NOT_A_NAME": {
+      "count": 1,
+      "first": "bot/memory/corrected.py:783"
+    },
+    "NOT_A_PRONOUN_NAME": {
+      "count": 2,
+      "first": "bot/modules/chat.py:11281"
+    },
+    "NOT_NAME_ENDING": {
+      "count": 1,
+      "first": "bot/memory/corrected.py:62"
+    },
+    "NOT_PLACES": {
+      "count": 4,
+      "first": "bot/memory/places.py:58"
+    },
+    "NOT_THE_THING": {
+      "count": 1,
+      "first": "bot/memory/ack.py:6048"
+    },
+    "NOT_TO_REPEAT": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8303"
+    },
+    "NOT_WANTED": {
+      "count": 4,
+      "first": "bot/knowledge/cooking_entries.py:263"
+    },
+    "NOT_YET": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3765"
+    },
+    "OPENERS": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:2170"
+    },
+    "OPTIONS": {
+      "count": 1,
+      "first": "bot/compose/lead.py:333"
+    },
+    "OTHERS": {
+      "count": 2,
+      "first": "bot/compose/fallback.py:2003"
+    },
+    "OTHER_PEOPLE": {
+      "count": 4,
+      "first": "bot/understanding/__init__.py:1286"
+    },
+    "OWNED": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:8221"
+    },
+    "PAIN_WORDS": {
+      "count": 6,
+      "first": "bot/understanding/body.py:503"
+    },
+    "PANTRY": {
+      "count": 1,
+      "first": "bot/memory/guest.py:118"
+    },
+    "PEOPLE": {
+      "count": 3,
+      "first": "bot/compose/fallback_chain.py:1539"
+    },
+    "PEOPLE_WORDS": {
+      "count": 1,
+      "first": "bot/memory/tried.py:1568"
+    },
+    "PERSON": {
+      "count": 2,
+      "first": "bot/compose/lead.py:332"
+    },
+    "PERSON_NOUNS": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1286"
+    },
+    "PER_PERSON": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:971"
+    },
+    "PER_PERSON_WHEN_COUNTED": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:971"
+    },
+    "PETS": {
+      "count": 3,
+      "first": "bot/memory/ack.py:4272"
+    },
+    "PET_ANIMALS": {
+      "count": 1,
+      "first": "bot/memory/tried.py:1568"
+    },
+    "PET_COMPOUND": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11840"
+    },
+    "PET_COUNT_WORDS": {
+      "count": 7,
+      "first": "bot/memory/corrected.py:1028"
+    },
+    "PET_NAME": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11286"
+    },
+    "PET_TAIL_MANY": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:1581"
+    },
+    "PET_WORDS": {
+      "count": 4,
+      "first": "bot/modules/grief.py:86"
+    },
+    "PICK": {
+      "count": 1,
+      "first": "bot/compose/lead.py:333"
+    },
+    "PICK_POOL": {
+      "count": 1,
+      "first": "bot/compose/fallback_data.py:5972"
+    },
+    "PLACE": {
+      "count": 3,
+      "first": "bot/compose/lead.py:332"
+    },
+    "PLACE_LOWER": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:10626"
+    },
+    "PLACE_POOL": {
+      "count": 1,
+      "first": "bot/compose/fallback_data.py:5971"
+    },
+    "PLACE_PREPS": {
+      "count": 2,
+      "first": "bot/understanding/normalize.py:6086"
+    },
+    "PLACE_ROUTE_POOL": {
+      "count": 1,
+      "first": "bot/compose/fallback_data.py:5974"
+    },
+    "PLACE_VERBS": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:10630"
+    },
+    "PLAIN_EXPANDS": {
+      "count": 2,
+      "first": "bot/understanding/normalize.py:35"
+    },
+    "PLAIN_ONE_WORD": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:35"
+    },
+    "PLAN": {
+      "count": 1,
+      "first": "bot/memory/ack.py:1540"
+    },
+    "PLANS": {
+      "count": 3,
+      "first": "bot/knowledge/cooking.py:1550"
+    },
+    "PLANT_SAID": {
+      "count": 1,
+      "first": "bot/knowledge/meat_in_a_card.py:61"
+    },
+    "PLAN_MEDICINE_REPLY": {
+      "count": 1,
+      "first": "bot/modules/chat_replies.py:210"
+    },
+    "PLAN_MEDICINE_SLOW": {
+      "count": 1,
+      "first": "bot/modules/chat.py:5217"
+    },
+    "PLAN_MEDICINE_SLOW_REPLY": {
+      "count": 1,
+      "first": "bot/modules/chat_replies.py:211"
+    },
+    "PLEA": {
+      "count": 1,
+      "first": "bot/compose/worn.py:180"
+    },
+    "POINTING_WORD": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:5995"
+    },
+    "POINTING_WORD_NOTHING": {
+      "count": 1,
+      "first": "bot/compose/onmybehalf.py:219"
+    },
+    "POINTS_BACK_NOTHING": {
+      "count": 1,
+      "first": "bot/compose/onmybehalf.py:218"
+    },
+    "POOLS": {
+      "count": 1,
+      "first": "bot/modules/chat.py:10318"
+    },
+    "PRAISE_SAID": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1319"
+    },
+    "PRAISING_VERB": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1319"
+    },
+    "PREGNANCY_BLEEDING": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4407"
+    },
+    "PREPOSITION": {
+      "count": 2,
+      "first": "bot/modules/answers.py:6922"
+    },
+    "PRESENT_ASK": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:2203"
+    },
+    "PROFESSIONAL_POOL": {
+      "count": 1,
+      "first": "bot/compose/fallback_data.py:5972"
+    },
+    "PRONOUNS": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:479"
+    },
+    "PUNT": {
+      "count": 2,
+      "first": "bot/compose/onscreen.py:428"
+    },
+    "Pow": {
+      "count": 2,
+      "first": "bot/knowledge/maths.py:67"
+    },
+    "QUALITY": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:10978"
+    },
+    "QUESTION_BACK_LINES": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16486"
+    },
+    "QUESTION_WORDS": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1859"
+    },
+    "REAL_IN": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:806"
+    },
+    "REAL_WORDS": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:211"
+    },
+    "REASON": {
+      "count": 2,
+      "first": "bot/compose/lead.py:296"
+    },
+    "REASON_POOL": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4138"
+    },
+    "RECALL": {
+      "count": 1,
+      "first": "bot/modules/said_fact_back.py:130"
+    },
+    "RECEIPT": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8308"
+    },
+    "RED_FLAG": {
+      "count": 21,
+      "first": "bot/memory/another.py:405"
+    },
+    "RELATIONS": {
+      "count": 56,
+      "first": "bot/memory/__init__.py:1175"
+    },
+    "RELATION_WHOS_AGE": {
+      "count": 1,
+      "first": "bot/memory/ack.py:3041"
+    },
+    "REPEAT": {
+      "count": 3,
+      "first": "bot/memory/again.py:136"
+    },
+    "REPEAT_LEADS": {
+      "count": 3,
+      "first": "bot/memory/again.py:544"
+    },
+    "REPLIES": {
+      "count": 1,
+      "first": "bot/memory/cause.py:460"
+    },
+    "RETURNED_TO_A_THING": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4089"
+    },
+    "RETURNED_TO_IT": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4085"
+    },
+    "ROLE_YOU_CAN_FAIL": {
+      "count": 1,
+      "first": "bot/modules/chat.py:436"
+    },
+    "Random": {
+      "count": 21,
+      "first": "bot/compose/__init__.py:355"
+    },
+    "S": {
+      "count": 14,
+      "first": "bot/compose/fit.py:5427"
+    },
+    "SAID_SHORT": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:6819"
+    },
+    "SAME_AGAIN": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:4272"
+    },
+    "SAY_GOODBYE": {
+      "count": 1,
+      "first": "bot/modules/grief.py:744"
+    },
+    "SAY_NO_POLITELY": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9219"
+    },
+    "SEASONS": {
+      "count": 1,
+      "first": "bot/modules/answers.py:3031"
+    },
+    "SEEING_FAMILIES": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:10283"
+    },
+    "SELF_JUDGEMENT": {
+      "count": 1,
+      "first": "bot/modules/chat.py:204"
+    },
+    "SELF_NOUNS": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:2553"
+    },
+    "SENTENCE": {
+      "count": 7,
+      "first": "bot/compose/still.py:216"
+    },
+    "SETTLED_IT": {
+      "count": 2,
+      "first": "bot/compose/loss.py:4722"
+    },
+    "SHE": {
+      "count": 29,
+      "first": "bot/memory/ack.py:254"
+    },
+    "SHORT_AGAIN": {
+      "count": 3,
+      "first": "bot/memory/paragraph.py:91"
+    },
+    "SHORT_TURN": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:5960"
+    },
+    "SIDE_ASKS": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11178"
+    },
+    "SIGNALS": {
+      "count": 2,
+      "first": "bot/modules/arbiter.py:619"
+    },
+    "SIGNING_OFF": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1323"
+    },
+    "SOFT": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:760"
+    },
+    "SOUNDS_LIKE_A_FEELING": {
+      "count": 3,
+      "first": "bot/understanding/normalize.py:1904"
+    },
+    "SPANS": {
+      "count": 3,
+      "first": "bot/memory/repeat.py:2322"
+    },
+    "START_VERBS": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:6075"
+    },
+    "STATES_SAID_ONTO_IM": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:4543"
+    },
+    "STATES_WITHOUT_G": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:6823"
+    },
+    "STATE_WORDS": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9964"
+    },
+    "STEPS": {
+      "count": 1,
+      "first": "bot/compose/lead.py:333"
+    },
+    "STILL_WRONG": {
+      "count": 2,
+      "first": "bot/understanding/__init__.py:1281"
+    },
+    "STOP": {
+      "count": 1,
+      "first": "bot/modules/answers.py:6984"
+    },
+    "STOPWORDS": {
+      "count": 41,
+      "first": "bot/memory/again.py:636"
+    },
+    "STUCK": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:4356"
+    },
+    "SUBJECTS": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10263"
+    },
+    "SUDDEN_LOSS": {
+      "count": 2,
+      "first": "bot/modules/arbiter.py:4407"
+    },
+    "SequenceMatcher": {
+      "count": 1,
+      "first": "bot/modules/answers.py:495"
+    },
+    "Sub": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:64"
+    },
+    "TAKES_AS_IT_COMES": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:1261"
+    },
+    "TAKE_BACK_SPLIT": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:2383"
+    },
+    "THEIRS": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:5648"
+    },
+    "THEIR_NAME": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:5755"
+    },
+    "THEIR_NAME_AGE": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:5755"
+    },
+    "THE_FIRST_HOUR_AND_A_CHILD": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4408"
+    },
+    "THE_JOURNEY_ASK": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8372"
+    },
+    "THE_OLD_ONE_POOL": {
+      "count": 1,
+      "first": "bot/modules/where_it_answers.py:134"
+    },
+    "THE_STORY_GOES_ON": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4666"
+    },
+    "THE_THING_MAY_COST": {
+      "count": 1,
+      "first": "bot/memory/ack.py:5450"
+    },
+    "THE_WORDS_FOR_A_CHILD": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:3016"
+    },
+    "THIRD_PARTY": {
+      "count": 1,
+      "first": "bot/memory/taking.py:161"
+    },
+    "TIME": {
+      "count": 4,
+      "first": "bot/compose/lead.py:332"
+    },
+    "TIPS_LINES": {
+      "count": 2,
+      "first": "bot/compose/griefplea.py:58"
+    },
+    "TIPS_THING": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:4275"
+    },
+    "TITLE_GENDER": {
+      "count": 4,
+      "first": "bot/memory/relations.py:1407"
+    },
+    "TITLE_WORDS": {
+      "count": 1,
+      "first": "bot/memory/corrected.py:97"
+    },
+    "TRADE_POOL": {
+      "count": 1,
+      "first": "bot/compose/fallback_data.py:5971"
+    },
+    "TRAITS": {
+      "count": 3,
+      "first": "bot/memory/facts.py:189"
+    },
+    "TRIED_NO_CHANGE_ELSEWHERE": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:4276"
+    },
+    "TYPED_CONTRACTIONS": {
+      "count": 2,
+      "first": "bot/understanding/normalize.py:4850"
+    },
+    "TYPED_WORDS": {
+      "count": 2,
+      "first": "bot/understanding/normalize.py:689"
+    },
+    "UAdd": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:70"
+    },
+    "UNKNOWN": {
+      "count": 11,
+      "first": "bot/compose/griefplea.py:58"
+    },
+    "UNKNOWN_HOW_IT_GOES_FOR_A_HARD_TIME": {
+      "count": 1,
+      "first": "bot/compose/breakup.py:66"
+    },
+    "UNKNOWN_HOW_IT_GOES_FOR_SOMEONE": {
+      "count": 1,
+      "first": "bot/compose/breakup.py:28"
+    },
+    "UNKNOWN_HOW_LONG_IN_HOSPITAL": {
+      "count": 1,
+      "first": "bot/compose/breakup.py:29"
+    },
+    "UNREADABLE": {
+      "count": 2,
+      "first": "bot/compose/still.py:140"
+    },
+    "URGENT_ALREADY_GIVEN": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:2267"
+    },
+    "URGENT_MISSPELLINGS": {
+      "count": 8,
+      "first": "bot/understanding/normalize.py:66"
+    },
+    "USER_NAME_ASKED": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:2289"
+    },
+    "USE_UP_PHRASES": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11961"
+    },
+    "US_SPELLINGS": {
+      "count": 5,
+      "first": "bot/knowledge/lookup.py:1824"
+    },
+    "USub": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:70"
+    },
+    "UnaryOp": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:83"
+    },
+    "VERBISH": {
+      "count": 9,
+      "first": "bot/memory/detail.py:246"
+    },
+    "VERBOSE": {
+      "count": 7,
+      "first": "bot/compose/remark.py:837"
+    },
+    "VERB_FORMS": {
+      "count": 5,
+      "first": "bot/memory/detail.py:246"
+    },
+    "VERB_THIRD": {
+      "count": 1,
+      "first": "bot/modules/answers.py:1121"
+    },
+    "WANTS_ANSWER": {
+      "count": 1,
+      "first": "bot/modules/chat.py:13000"
+    },
+    "WAS_NOT_A_JOB": {
+      "count": 1,
+      "first": "bot/memory/ack.py:5026"
+    },
+    "WHAT_I_NEED": {
+      "count": 1,
+      "first": "bot/compose/clause.py:83"
+    },
+    "WHAT_TO_DO": {
+      "count": 1,
+      "first": "bot/compose/clause.py:85"
+    },
+    "WHAT_TO_PICK": {
+      "count": 1,
+      "first": "bot/compose/clause.py:81"
+    },
+    "WHAT_TO_STEPS": {
+      "count": 1,
+      "first": "bot/compose/clause.py:85"
+    },
+    "WHAT_YOU_TAKE": {
+      "count": 1,
+      "first": "bot/compose/clause.py:83"
+    },
+    "WHO_POOL": {
+      "count": 1,
+      "first": "bot/compose/fallback_data.py:5972"
+    },
+    "WHO_TO_ASK": {
+      "count": 2,
+      "first": "bot/compose/their_day.py:196"
+    },
+    "WORDING_ASKS": {
+      "count": 1,
+      "first": "bot/memory/again.py:1274"
+    },
+    "WORDING_SAYS": {
+      "count": 1,
+      "first": "bot/memory/again.py:1275"
+    },
+    "WORDING_SOMEONE": {
+      "count": 1,
+      "first": "bot/memory/again.py:1274"
+    },
+    "WORD_NUMBERS": {
+      "count": 1,
+      "first": "bot/memory/ack.py:3851"
+    },
+    "WRECKED_POOL": {
+      "count": 1,
+      "first": "bot/compose/fallback_data.py:5974"
+    },
+    "X": {
+      "count": 31,
+      "first": "bot/compose/fallback.py:15124"
+    },
+    "YESNO": {
+      "count": 4,
+      "first": "bot/compose/lead.py:229"
+    },
+    "YES_NO": {
+      "count": 1,
+      "first": "bot/modules/answers.py:12191"
+    },
+    "_A_WORD_FOR_A_PERSON": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:1720"
+    },
+    "_BUILT_KIN": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11606"
+    },
+    "_CAUSE_SENTENCE": {
+      "count": 1,
+      "first": "bot/modules/answers.py:206"
+    },
+    "_MAXCACHE": {
+      "count": 1,
+      "first": "bot/knowledge/lookup.py:96"
+    },
+    "_SORE_ANYWHERE": {
+      "count": 1,
+      "first": "bot/memory/taking.py:137"
+    },
+    "__doc__": {
+      "count": 3,
+      "first": "bot/knowledge/home.py:8807"
+    },
+    "__name__": {
+      "count": 4,
+      "first": "bot/knowledge/home.py:8806"
+    },
+    "__path__": {
+      "count": 1,
+      "first": "bot/runtime.py:31"
+    },
+    "_a_condition_they_wonder_about": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3291"
+    },
+    "_a_date": {
+      "count": 1,
+      "first": "bot/modules/trip_date_said_again.py:69"
+    },
+    "_a_fall_that_is_not_one": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1321"
+    },
+    "_a_good_time": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16729"
+    },
+    "_a_move": {
+      "count": 1,
+      "first": "bot/memory/detail.py:1576"
+    },
+    "_a_rate_said": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:233"
+    },
+    "_a_relationship_ending": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16643"
+    },
+    "_a_small_day": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:1144"
+    },
+    "_a_step": {
+      "count": 2,
+      "first": "bot/memory/obstacle.py:437"
+    },
+    "_a_step_done": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1314"
+    },
+    "_a_thing": {
+      "count": 1,
+      "first": "bot/modules/recap.py:98"
+    },
+    "_a_time": {
+      "count": 1,
+      "first": "bot/compose/lead.py:582"
+    },
+    "_about_somebody_else": {
+      "count": 1,
+      "first": "bot/modules/carers_turn.py:592"
+    },
+    "_about_the_bot_here": {
+      "count": 1,
+      "first": "bot/modules/recap.py:144"
+    },
+    "_about_the_same_thing": {
+      "count": 3,
+      "first": "bot/memory/detail.py:500"
+    },
+    "_about_this_chat": {
+      "count": 1,
+      "first": "bot/modules/recap.py:87"
+    },
+    "_age": {
+      "count": 2,
+      "first": "bot/knowledge/shopping.py:639"
+    },
+    "_already_repeated": {
+      "count": 11,
+      "first": "bot/memory/detail.py:578"
+    },
+    "_an_amount": {
+      "count": 1,
+      "first": "bot/compose/lead.py:582"
+    },
+    "_an_instruction_sentence": {
+      "count": 1,
+      "first": "bot/memory/already.py:679"
+    },
+    "_answer": {
+      "count": 1,
+      "first": "bot/modules/aboutachild.py:36"
+    },
+    "_answers": {
+      "count": 1,
+      "first": "bot/memory/too_late.py:161"
+    },
+    "_answers_in": {
+      "count": 1,
+      "first": "bot/compose/reading.py:1870"
+    },
+    "_apply_correction": {
+      "count": 1,
+      "first": "bot/modules/trip_date_said_again.py:158"
+    },
+    "_choose": {
+      "count": 40,
+      "first": "bot/compose/a_first_time.py:88"
+    },
+    "_crowd_or_any": {
+      "count": 1,
+      "first": "bot/knowledge/meals.py:1791"
+    },
+    "_diet_said": {
+      "count": 1,
+      "first": "bot/knowledge/cooking.py:5459"
+    },
+    "_entry": {
+      "count": 4,
+      "first": "bot/memory/returns.py:156"
+    },
+    "_excluded": {
+      "count": 1,
+      "first": "bot/knowledge/meals.py:1791"
+    },
+    "_finish": {
+      "count": 2,
+      "first": "bot/modules/memory_store.py:2574"
+    },
+    "_first_clause": {
+      "count": 3,
+      "first": "bot/memory/obstacle.py:528"
+    },
+    "_fit": {
+      "count": 1,
+      "first": "bot/modules/a_count_of_packets.py:34"
+    },
+    "_flat": {
+      "count": 4,
+      "first": "bot/memory/paragraph.py:81"
+    },
+    "_flat_words": {
+      "count": 11,
+      "first": "bot/compose/onscreen.py:279"
+    },
+    "_folded": {
+      "count": 1,
+      "first": "bot/modules/recap.py:61"
+    },
+    "_gist": {
+      "count": 1,
+      "first": "bot/memory/too_late.py:116"
+    },
+    "_handed_back": {
+      "count": 11,
+      "first": "bot/memory/detail.py:907"
+    },
+    "_handed_back_already": {
+      "count": 1,
+      "first": "bot/memory/detail.py:1066"
+    },
+    "_hedged_recently": {
+      "count": 3,
+      "first": "bot/compose/onscreen.py:403"
+    },
+    "_hours_family": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:580"
+    },
+    "_in_a_care_thread": {
+      "count": 1,
+      "first": "bot/modules/chat.py:5166"
+    },
+    "_in_a_pool": {
+      "count": 19,
+      "first": "bot/compose/griefplea.py:72"
+    },
+    "_in_context": {
+      "count": 1,
+      "first": "bot/modules/chat.py:4812"
+    },
+    "_is_a_hedge": {
+      "count": 44,
+      "first": "bot/compose/stretches.py:400"
+    },
+    "_is_a_placeholder": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:263"
+    },
+    "_is_an_ask_which_bit": {
+      "count": 2,
+      "first": "bot/compose/the_course_of_it.py:376"
+    },
+    "_is_rumination": {
+      "count": 1,
+      "first": "bot/modules/chat.py:12926"
+    },
+    "_is_the_ruled_out_food": {
+      "count": 1,
+      "first": "bot/knowledge/cooking.py:5465"
+    },
+    "_later_part": {
+      "count": 1,
+      "first": "bot/memory/already.py:1094"
+    },
+    "_leads_a_question": {
+      "count": 1,
+      "first": "bot/memory/aboutthem.py:63"
+    },
+    "_loss_is_the_thread": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:15146"
+    },
+    "_loves_someone": {
+      "count": 1,
+      "first": "bot/compose/taste.py:502"
+    },
+    "_matchable": {
+      "count": 13,
+      "first": "bot/modules/a_plan_the_thread_holds.py:32"
+    },
+    "_may_be_a_name": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:2897"
+    },
+    "_names_a_goal": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:226"
+    },
+    "_names_an_appliance_and_a_cut": {
+      "count": 1,
+      "first": "bot/knowledge/cooking.py:796"
+    },
+    "_names_it": {
+      "count": 1,
+      "first": "bot/memory/returns.py:192"
+    },
+    "_not_a_name": {
+      "count": 4,
+      "first": "bot/memory/corrected.py:54"
+    },
+    "_nothing_to_stand_behind": {
+      "count": 9,
+      "first": "bot/compose/the_trouble_named.py:160"
+    },
+    "_offer": {
+      "count": 1,
+      "first": "bot/modules/chat.py:4811"
+    },
+    "_offered": {
+      "count": 1,
+      "first": "bot/modules/answers.py:3754"
+    },
+    "_payload": {
+      "count": 2,
+      "first": "bot/memory/detail.py:1216"
+    },
+    "_person_from_pronoun": {
+      "count": 1,
+      "first": "bot/memory/their_feeling.py:126"
+    },
+    "_plain": {
+      "count": 4,
+      "first": "bot/modules/a_plan_the_thread_holds.py:32"
+    },
+    "_points_at_nothing": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:6016"
+    },
+    "_reads_as_heavy_news": {
+      "count": 3,
+      "first": "bot/modules/their_life.py:367"
+    },
+    "_recent_answers": {
+      "count": 5,
+      "first": "bot/memory/detail.py:442"
+    },
+    "_referral": {
+      "count": 1,
+      "first": "bot/compose/who_to_see.py:227"
+    },
+    "_refused_foods": {
+      "count": 2,
+      "first": "bot/knowledge/dishes.py:3417"
+    },
+    "_reported_clause": {
+      "count": 1,
+      "first": "bot/memory/ack.py:2989"
+    },
+    "_respond": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:77"
+    },
+    "_rewritten_outside_swaps": {
+      "count": 1,
+      "first": "bot/knowledge/meat_in_a_card.py:71"
+    },
+    "_rules_out_what_i_never_said": {
+      "count": 2,
+      "first": "bot/modules/arbiter.py:488"
+    },
+    "_say": {
+      "count": 1,
+      "first": "bot/compose/still.py:288"
+    },
+    "_says_what_to_do": {
+      "count": 7,
+      "first": "bot/memory/tried.py:1191"
+    },
+    "_sentences": {
+      "count": 1,
+      "first": "bot/memory/too_late.py:111"
+    },
+    "_short": {
+      "count": 2,
+      "first": "bot/memory/paragraph.py:88"
+    },
+    "_someone_else_minding": {
+      "count": 1,
+      "first": "bot/modules/chat.py:8902"
+    },
+    "_speaker_before": {
+      "count": 1,
+      "first": "bot/understanding/body.py:409"
+    },
+    "_spoken": {
+      "count": 1,
+      "first": "bot/modules/chat.py:12773"
+    },
+    "_start": {
+      "count": 2,
+      "first": "bot/modules/safety.py:9137"
+    },
+    "_stated_plan": {
+      "count": 1,
+      "first": "bot/modules/trip_date_said_again.py:91"
+    },
+    "_step": {
+      "count": 1,
+      "first": "bot/compose/reading.py:224"
+    },
+    "_steps": {
+      "count": 3,
+      "first": "bot/compose/still.py:183"
+    },
+    "_tail_has_a_verb": {
+      "count": 1,
+      "first": "bot/memory/ack.py:5914"
+    },
+    "_target": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:336"
+    },
+    "_the_answer_gave_a_step": {
+      "count": 3,
+      "first": "bot/memory/ack.py:600"
+    },
+    "_the_card_said_last": {
+      "count": 1,
+      "first": "bot/memory/will_it_work.py:128"
+    },
+    "_the_goal_in_the_chat": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:218"
+    },
+    "_the_line_before": {
+      "count": 1,
+      "first": "bot/modules/their_pastime.py:322"
+    },
+    "_the_model": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:2771"
+    },
+    "_the_morning_has_a_clock": {
+      "count": 3,
+      "first": "bot/memory/ack.py:2974"
+    },
+    "_the_period_they_said": {
+      "count": 1,
+      "first": "bot/compose/reading.py:1872"
+    },
+    "_the_plan_and_its_line": {
+      "count": 1,
+      "first": "bot/compose/reaction.py:240"
+    },
+    "_the_price_they_mean": {
+      "count": 1,
+      "first": "bot/compose/reading.py:1867"
+    },
+    "_the_range_that_is_about_it": {
+      "count": 1,
+      "first": "bot/compose/reading.py:1871"
+    },
+    "_the_referral_sentence": {
+      "count": 1,
+      "first": "bot/compose/who_to_see.py:220"
+    },
+    "_the_reply": {
+      "count": 1,
+      "first": "bot/memory/pending.py:169"
+    },
+    "_the_step_went_wrong": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1314"
+    },
+    "_the_steps": {
+      "count": 1,
+      "first": "bot/memory/plan.py:244"
+    },
+    "_the_thing_the_last_line_named": {
+      "count": 2,
+      "first": "bot/memory/carry.py:114"
+    },
+    "_the_thread_is_heavy": {
+      "count": 6,
+      "first": "bot/compose/a_trouble.py:160"
+    },
+    "_the_trip_so_far": {
+      "count": 2,
+      "first": "bot/modules/trip_date_said_again.py:94"
+    },
+    "_the_words": {
+      "count": 4,
+      "first": "bot/compose/theirperson.py:278"
+    },
+    "_their_figure": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:6606"
+    },
+    "_thick_enough": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8310"
+    },
+    "_thread_is_about_the_body": {
+      "count": 2,
+      "first": "bot/compose/what_i_do_know.py:790"
+    },
+    "_tidy": {
+      "count": 10,
+      "first": "bot/modules/memory_store.py:2815"
+    },
+    "_told_phrase": {
+      "count": 1,
+      "first": "bot/modules/attribute_said_again.py:217"
+    },
+    "_tried": {
+      "count": 2,
+      "first": "bot/memory/already.py:1093"
+    },
+    "_vary": {
+      "count": 1,
+      "first": "bot/modules/recap.py:135"
+    },
+    "_vocabulary": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:678"
+    },
+    "_with_an_age": {
+      "count": 2,
+      "first": "bot/knowledge/shopping.py:638"
+    },
+    "_with_title": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11288"
+    },
+    "_wrote_for_them": {
+      "count": 1,
+      "first": "bot/modules/carers_turn.py:453"
+    },
+    "a_bare_count_to_fill": {
+      "count": 2,
+      "first": "bot/modules/answers.py:8408"
+    },
+    "a_bare_return": {
+      "count": 1,
+      "first": "bot/modules/answers.py:1083"
+    },
+    "a_broken_car_is_the_subject": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2253"
+    },
+    "a_callback_the_chat_has": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:1031"
+    },
+    "a_card_is_not_the_answer": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8494"
+    },
+    "a_care_home": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2171"
+    },
+    "a_chained_person": {
+      "count": 2,
+      "first": "bot/memory/relations.py:182"
+    },
+    "a_check_on_the_reply": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4779"
+    },
+    "a_child_the_chat_is_about": {
+      "count": 1,
+      "first": "bot/knowledge/shopping.py:829"
+    },
+    "a_city_card_is_in_front": {
+      "count": 2,
+      "first": "bot/memory/repeat.py:2435"
+    },
+    "a_clock_time": {
+      "count": 4,
+      "first": "bot/memory/corrected.py:477"
+    },
+    "a_colour_is_worn": {
+      "count": 2,
+      "first": "bot/compose/loss.py:4697"
+    },
+    "a_contact_they_handed_over": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:264"
+    },
+    "a_continuation_of_the_tight_week": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:1253"
+    },
+    "a_corrected_age": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:201"
+    },
+    "a_correction_without_a_subject": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:884"
+    },
+    "a_count_they_report": {
+      "count": 1,
+      "first": "bot/modules/a_count_said.py:32"
+    },
+    "a_count_to_fill": {
+      "count": 2,
+      "first": "bot/modules/answers.py:8407"
+    },
+    "a_date_of_ours_forgotten": {
+      "count": 1,
+      "first": "bot/modules/chat.py:10230"
+    },
+    "a_date_on_a_settled_rate": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:278"
+    },
+    "a_death_came_first": {
+      "count": 3,
+      "first": "bot/compose/badnews.py:1252"
+    },
+    "a_dinner_without": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11216"
+    },
+    "a_doable": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:159"
+    },
+    "a_dream_is_not_happening": {
+      "count": 5,
+      "first": "bot/compose/badnews.py:1251"
+    },
+    "a_faulty_thing": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:3519"
+    },
+    "a_figure_each_week": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:267"
+    },
+    "a_figure_on_the_doing": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9726"
+    },
+    "a_figure_with_a_unit": {
+      "count": 1,
+      "first": "bot/knowledge/study.py:3244"
+    },
+    "a_frame_before": {
+      "count": 2,
+      "first": "bot/memory/facts.py:8677"
+    },
+    "a_goal_measured": {
+      "count": 1,
+      "first": "bot/memory/topics.py:7962"
+    },
+    "a_hand_back": {
+      "count": 1,
+      "first": "bot/memory/another.py:296"
+    },
+    "a_home_carried_forward": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2172"
+    },
+    "a_job_to_do": {
+      "count": 1,
+      "first": "bot/modules/chat.py:4898"
+    },
+    "a_length_at_the_rate_in_the_chat": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:184"
+    },
+    "a_length_was_said": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:233"
+    },
+    "a_length_with_no_price": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:191"
+    },
+    "a_limit_for_the_plan": {
+      "count": 1,
+      "first": "bot/modules/chat.py:14195"
+    },
+    "a_limit_on_the_plan": {
+      "count": 7,
+      "first": "bot/compose/fallback_chain.py:4190"
+    },
+    "a_limit_reply": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:4195"
+    },
+    "a_limit_the_reading_missed": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:4880"
+    },
+    "a_lost_record": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:703"
+    },
+    "a_map_app_line": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:702"
+    },
+    "a_measure_asked_again": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9324"
+    },
+    "a_misquoted_line": {
+      "count": 2,
+      "first": "bot/modules/said_fact_back.py:135"
+    },
+    "a_move_refused": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:345"
+    },
+    "a_moved_place": {
+      "count": 2,
+      "first": "bot/memory/topics.py:300"
+    },
+    "a_name_could_be": {
+      "count": 6,
+      "first": "bot/compose/remark.py:1721"
+    },
+    "a_name_is_taken_back": {
+      "count": 1,
+      "first": "bot/memory/corrected.py:109"
+    },
+    "a_name_picked": {
+      "count": 3,
+      "first": "bot/memory/store_replies.py:1529"
+    },
+    "a_newer_thing": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9670"
+    },
+    "a_part_of_the_day_asked": {
+      "count": 2,
+      "first": "bot/modules/grief.py:730"
+    },
+    "a_part_of_the_trip": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9334"
+    },
+    "a_past_that_is_not_there": {
+      "count": 3,
+      "first": "bot/compose/__init__.py:329"
+    },
+    "a_person_named_alone": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:2851"
+    },
+    "a_person_pointed_at": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:2852"
+    },
+    "a_person_word": {
+      "count": 9,
+      "first": "bot/memory/relations.py:187"
+    },
+    "a_pet_died": {
+      "count": 5,
+      "first": "bot/modules/chat.py:593"
+    },
+    "a_plan_moved_to_a_day": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9365"
+    },
+    "a_present_was_answered": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8562"
+    },
+    "a_price_in_an_answer": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:198"
+    },
+    "a_progress_asked": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:4244"
+    },
+    "a_rate_for_the_goal": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:203"
+    },
+    "a_rate_put_in_with_a_verb": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:179"
+    },
+    "a_rate_raised": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:168"
+    },
+    "a_rate_restated": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:173"
+    },
+    "a_rate_with_no_date": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:163"
+    },
+    "a_recording_they_offer": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:265"
+    },
+    "a_repair_is_open": {
+      "count": 1,
+      "first": "bot/modules/chat.py:10145"
+    },
+    "a_report_about_the_thing": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:198"
+    },
+    "a_report_that_says_something": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:2808"
+    },
+    "a_return_to_the_topic": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9309"
+    },
+    "a_step": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:9624"
+    },
+    "a_thing_in_the_room": {
+      "count": 1,
+      "first": "bot/compose/fallback_pools.py:224"
+    },
+    "a_thing_in_the_room_over_a_placeholder": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:256"
+    },
+    "a_thing_of_the_answer": {
+      "count": 1,
+      "first": "bot/memory/detail.py:929"
+    },
+    "a_thing_of_theirs_reply_for": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:277"
+    },
+    "a_trip_date_put_right": {
+      "count": 2,
+      "first": "bot/modules/trip_date_said_again.py:150"
+    },
+    "a_verdict_on_their_plan": {
+      "count": 1,
+      "first": "bot/modules/chat.py:5044"
+    },
+    "a_verdict_stands_down": {
+      "count": 2,
+      "first": "bot/modules/greeting.py:168"
+    },
+    "a_want_said_back": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:4526"
+    },
+    "a_yes_no_about_the_rate": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:157"
+    },
+    "about": {
+      "count": 3,
+      "first": "bot/memory/store_replies.py:7478"
+    },
+    "about_a_place_they_left_behind": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:897"
+    },
+    "about_a_thing_they_said": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:2048"
+    },
+    "about_earlier_chats": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:475"
+    },
+    "about_it": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9591"
+    },
+    "about_the_bot": {
+      "count": 2,
+      "first": "bot/modules/arbiter.py:3516"
+    },
+    "about_the_chat": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:99"
+    },
+    "about_the_medium": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9535"
+    },
+    "about_the_subject": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9412"
+    },
+    "about_the_thing": {
+      "count": 3,
+      "first": "bot/modules/answers.py:9603"
+    },
+    "about_them": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9617"
+    },
+    "about_themselves": {
+      "count": 1,
+      "first": "bot/memory/ack.py:3022"
+    },
+    "acknowledges": {
+      "count": 1,
+      "first": "bot/modules/loss.py:44"
+    },
+    "acted_pool": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16055"
+    },
+    "add": {
+      "count": 299,
+      "first": "bot/compose/a_place_nobody_can_see.py:449"
+    },
+    "after": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:682"
+    },
+    "after_a_change_of_subject": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:3918"
+    },
+    "after_an_ack": {
+      "count": 2,
+      "first": "bot/modules/answers.py:8424"
+    },
+    "after_an_answer": {
+      "count": 2,
+      "first": "bot/memory/ack.py:3880"
+    },
+    "after_any_link": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1960"
+    },
+    "against_the_bands": {
+      "count": 1,
+      "first": "bot/memory/enough.py:596"
+    },
+    "against_the_last_answer": {
+      "count": 1,
+      "first": "bot/modules/a_count_said.py:37"
+    },
+    "ages_said_one_by_one": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:730"
+    },
+    "agreement_with_the_answer": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9204"
+    },
+    "ahead_of_now": {
+      "count": 1,
+      "first": "bot/compose/moving.py:107"
+    },
+    "alike": {
+      "count": 6,
+      "first": "bot/memory/back_again.py:127"
+    },
+    "already_a_route": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:716"
+    },
+    "already_had": {
+      "count": 2,
+      "first": "bot/memory/carry.py:330"
+    },
+    "an_age_ahead": {
+      "count": 3,
+      "first": "bot/modules/an_age_ahead.py:23"
+    },
+    "an_ask": {
+      "count": 2,
+      "first": "bot/modules/answers.py:8407"
+    },
+    "an_earlier_turn": {
+      "count": 7,
+      "first": "bot/compose/__init__.py:328"
+    },
+    "an_entry_for": {
+      "count": 2,
+      "first": "bot/memory/ack.py:5385"
+    },
+    "an_in_law": {
+      "count": 4,
+      "first": "bot/memory/store_replies.py:1797"
+    },
+    "an_outcome_asked_about_someone": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:399"
+    },
+    "announced_part": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11299"
+    },
+    "another_animal": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11846"
+    },
+    "another_line_was_asked_for": {
+      "count": 2,
+      "first": "bot/modules/said_fact_back.py:138"
+    },
+    "another_sum_asked": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:287"
+    },
+    "answer": {
+      "count": 19,
+      "first": "bot/compose/fallback_pools.py:666"
+    },
+    "answer_about": {
+      "count": 2,
+      "first": "bot/memory/asked_about.py:141"
+    },
+    "answer_first": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8530"
+    },
+    "answer_followup": {
+      "count": 2,
+      "first": "bot/modules/answers.py:8369"
+    },
+    "answer_for": {
+      "count": 47,
+      "first": "bot/compose/fallback_chain.py:3023"
+    },
+    "answer_for_a_thing_they_cannot_use": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:356"
+    },
+    "answer_in_hand": {
+      "count": 1,
+      "first": "bot/modules/answers.py:7356"
+    },
+    "answers_a_strain_question": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:6148"
+    },
+    "answers_more_than_a_pair": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:1848"
+    },
+    "answers_nothing": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:762"
+    },
+    "answers_the_ask": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16625"
+    },
+    "answers_the_line": {
+      "count": 1,
+      "first": "bot/memory/topics.py:3444"
+    },
+    "append": {
+      "count": 2207,
+      "first": "bot/compose/a_number_the_bot_knows.py:182"
+    },
+    "argv": {
+      "count": 3,
+      "first": "bot/compose/badnews.py:1352"
+    },
+    "arranged_reply_for": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:4438"
+    },
+    "as_the_same_answer": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9321"
+    },
+    "asin": {
+      "count": 1,
+      "first": "bot/knowledge/travel.py:12435"
+    },
+    "ask": {
+      "count": 21,
+      "first": "bot/knowledge/lookup.py:480"
+    },
+    "ask_kind": {
+      "count": 6,
+      "first": "bot/modules/answers.py:6078"
+    },
+    "asked": {
+      "count": 3,
+      "first": "bot/memory/store_replies.py:2037"
+    },
+    "asked_back": {
+      "count": 3,
+      "first": "bot/modules/arbiter.py:368"
+    },
+    "asks": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:1686"
+    },
+    "asks_a_food_fact": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11227"
+    },
+    "asks_a_part_of_the_trip": {
+      "count": 2,
+      "first": "bot/memory/another.py:482"
+    },
+    "asks_about_a_care_answer": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4867"
+    },
+    "asks_about_a_taste": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10953"
+    },
+    "asks_about_saving": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:226"
+    },
+    "asks_about_the_remains": {
+      "count": 2,
+      "first": "bot/modules/grief.py:36"
+    },
+    "asks_all": {
+      "count": 1,
+      "first": "bot/modules/favourites.py:103"
+    },
+    "asks_for_a_decision": {
+      "count": 1,
+      "first": "bot/modules/loss.py:46"
+    },
+    "asks_for_a_fix": {
+      "count": 2,
+      "first": "bot/memory/limit.py:575"
+    },
+    "asks_for_a_judgement": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:2390"
+    },
+    "asks_for_a_side_of_a_food": {
+      "count": 2,
+      "first": "bot/knowledge/cooking.py:1496"
+    },
+    "asks_for_a_when": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:3367"
+    },
+    "asks_for_a_word": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11012"
+    },
+    "asks_for_less": {
+      "count": 2,
+      "first": "bot/modules/answers.py:8198"
+    },
+    "asks_for_more": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:3411"
+    },
+    "asks_for_the_list": {
+      "count": 1,
+      "first": "bot/modules/group_ages.py:60"
+    },
+    "asks_for_the_move": {
+      "count": 1,
+      "first": "bot/memory/again.py:1287"
+    },
+    "asks_for_words": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10754"
+    },
+    "asks_how_i_am": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2148"
+    },
+    "asks_how_long": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:207"
+    },
+    "asks_only": {
+      "count": 5,
+      "first": "bot/modules/answers.py:7429"
+    },
+    "asks_something_too": {
+      "count": 1,
+      "first": "bot/modules/favourites.py:81"
+    },
+    "asks_the_administration": {
+      "count": 1,
+      "first": "bot/modules/loss.py:57"
+    },
+    "asks_the_outlook": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:14473"
+    },
+    "asks_the_rate": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:255"
+    },
+    "asks_the_words_for_a_child": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:3015"
+    },
+    "asks_to_put_it_right": {
+      "count": 1,
+      "first": "bot/modules/chat.py:14241"
+    },
+    "asks_what_i_said": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:5929"
+    },
+    "asks_what_that_costs": {
+      "count": 2,
+      "first": "bot/modules/answers.py:8447"
+    },
+    "asks_what_to_tell_a_child": {
+      "count": 2,
+      "first": "bot/modules/arbiter.py:4405"
+    },
+    "asks_which_one_first": {
+      "count": 2,
+      "first": "bot/memory/repeat.py:2446"
+    },
+    "asks_which_part": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9281"
+    },
+    "assumes_an_earlier_turn": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:2884"
+    },
+    "attribute_of_the_thing": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10800"
+    },
+    "avoid": {
+      "count": 26,
+      "first": "bot/knowledge/cooking.py:9629"
+    },
+    "avoids": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8701"
+    },
+    "avoids_for_the_one_talked_about": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8714"
+    },
+    "bare_name": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:1433"
+    },
+    "bare_question": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11863"
+    },
+    "before": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:677"
+    },
+    "bias": {
+      "count": 2,
+      "first": "bot/knowledge/lookup.py:479"
+    },
+    "body": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:75"
+    },
+    "bot_name": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:3173"
+    },
+    "break_in_reply_for": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3850"
+    },
+    "brings_nothing_of_its_own": {
+      "count": 2,
+      "first": "bot/compose/fallback.py:15704"
+    },
+    "buying": {
+      "count": 1,
+      "first": "bot/memory/limit.py:701"
+    },
+    "callback": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:4629"
+    },
+    "candidates": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11633"
+    },
+    "cannot_see_your_thing": {
+      "count": 3,
+      "first": "bot/compose/fallback_chain.py:1441"
+    },
+    "capitalize": {
+      "count": 136,
+      "first": "bot/compose/__init__.py:424"
+    },
+    "care_reports": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9584"
+    },
+    "careful": {
+      "count": 1,
+      "first": "bot/modules/answers.py:4957"
+    },
+    "carried_on": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:4066"
+    },
+    "carried_topic": {
+      "count": 5,
+      "first": "bot/memory/ack.py:5728"
+    },
+    "carries": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:2516"
+    },
+    "carries_a_lead_in": {
+      "count": 1,
+      "first": "bot/memory/topics.py:4531"
+    },
+    "carries_subject": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:11141"
+    },
+    "carries_the_answer": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4763"
+    },
+    "carries_the_figure": {
+      "count": 2,
+      "first": "bot/modules/arbiter.py:898"
+    },
+    "carries_the_story_on": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4656"
+    },
+    "carry_on": {
+      "count": 2,
+      "first": "bot/modules/chat.py:14175"
+    },
+    "ceil": {
+      "count": 1,
+      "first": "bot/knowledge/units.py:1655"
+    },
+    "change_reply": {
+      "count": 1,
+      "first": "bot/modules/figure_asked_again.py:31"
+    },
+    "checking_a_fact": {
+      "count": 2,
+      "first": "bot/modules/chat.py:9394"
+    },
+    "checking_the_verdict": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16503"
+    },
+    "checks_earlier_turns": {
+      "count": 1,
+      "first": "bot/memory/again.py:1118"
+    },
+    "choice": {
+      "count": 22,
+      "first": "bot/compose/__init__.py:355"
+    },
+    "choosing": {
+      "count": 1,
+      "first": "bot/knowledge/cooking.py:11485"
+    },
+    "chosen": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:2703"
+    },
+    "claims": {
+      "count": 1,
+      "first": "bot/modules/callback_about.py:39"
+    },
+    "classify": {
+      "count": 2,
+      "first": "bot/understanding/__init__.py:1899"
+    },
+    "clear": {
+      "count": 15,
+      "first": "bot/knowledge/cooking.py:10719"
+    },
+    "closed": {
+      "count": 3,
+      "first": "bot/memory/again.py:522"
+    },
+    "combining": {
+      "count": 2,
+      "first": "bot/knowledge/study.py:361"
+    },
+    "compile": {
+      "count": 10181,
+      "first": "bot/compose/__init__.py:27"
+    },
+    "conditions": {
+      "count": 1,
+      "first": "bot/memory/detail.py:1364"
+    },
+    "confusion_of": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2278"
+    },
+    "considered": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11972"
+    },
+    "content": {
+      "count": 11,
+      "first": "bot/memory/history.py:428"
+    },
+    "content_words": {
+      "count": 5,
+      "first": "bot/compose/onscreen.py:409"
+    },
+    "context": {
+      "count": 4,
+      "first": "bot/knowledge/home.py:3750"
+    },
+    "continues": {
+      "count": 2,
+      "first": "bot/compose/griefplea.py:74"
+    },
+    "convert": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:1847"
+    },
+    "cos": {
+      "count": 2,
+      "first": "bot/knowledge/travel.py:12433"
+    },
+    "count": {
+      "count": 47,
+      "first": "bot/compose/fit.py:3269"
+    },
+    "count_of_the_people": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:897"
+    },
+    "current": {
+      "count": 11,
+      "first": "bot/memory/ack.py:2898"
+    },
+    "date": {
+      "count": 118,
+      "first": "bot/compose/goodnews.py:1179"
+    },
+    "datetime": {
+      "count": 5,
+      "first": "bot/knowledge/nature.py:38"
+    },
+    "day": {
+      "count": 34,
+      "first": "bot/knowledge/family_more.py:679"
+    },
+    "days": {
+      "count": 34,
+      "first": "bot/knowledge/family_more.py:826"
+    },
+    "deepcopy": {
+      "count": 21,
+      "first": "bot/compose/hedge.py:48"
+    },
+    "denials": {
+      "count": 4,
+      "first": "bot/memory/store_replies.py:6647"
+    },
+    "denominator": {
+      "count": 11,
+      "first": "bot/knowledge/maths.py:253"
+    },
+    "dependant_want_reply_for": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:4527"
+    },
+    "derived": {
+      "count": 1,
+      "first": "bot/compose/verdict.py:2293"
+    },
+    "detail_pool": {
+      "count": 1,
+      "first": "bot/modules/the_detail_the_thread_adds.py:24"
+    },
+    "detect_entities": {
+      "count": 14,
+      "first": "bot/modules/arbiter.py:5205"
+    },
+    "detect_numbers": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2349"
+    },
+    "detect_topic": {
+      "count": 8,
+      "first": "bot/modules/arbiter.py:5205"
+    },
+    "diet": {
+      "count": 3,
+      "first": "bot/knowledge/meals.py:49"
+    },
+    "difference_update": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:11741"
+    },
+    "digest": {
+      "count": 1,
+      "first": "bot/modules/keeping.py:76"
+    },
+    "discard": {
+      "count": 20,
+      "first": "bot/compose/fit.py:1879"
+    },
+    "dish": {
+      "count": 5,
+      "first": "bot/knowledge/dishes.py:3529"
+    },
+    "dish_for": {
+      "count": 2,
+      "first": "bot/knowledge/chilli.py:61"
+    },
+    "dish_in": {
+      "count": 5,
+      "first": "bot/knowledge/cooking.py:1549"
+    },
+    "domain": {
+      "count": 7,
+      "first": "bot/knowledge/__init__.py:171"
+    },
+    "done_to_me": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:5792"
+    },
+    "draft": {
+      "count": 6,
+      "first": "bot/modules/arbiter.py:4329"
+    },
+    "drafter": {
+      "count": 3,
+      "first": "bot/compose/fallback.py:14363"
+    },
+    "dying_in_the_chat": {
+      "count": 2,
+      "first": "bot/knowledge/fun.py:92"
+    },
+    "earlier_turn": {
+      "count": 3,
+      "first": "bot/modules/arbiter.py:1067"
+    },
+    "emotion_of": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:5351"
+    },
+    "encode": {
+      "count": 2,
+      "first": "bot/modules/keeping.py:76"
+    },
+    "end": {
+      "count": 671,
+      "first": "bot/compose/a_trouble.py:124"
+    },
+    "endswith": {
+      "count": 853,
+      "first": "bot/compose/__init__.py:91"
+    },
+    "entry_answer": {
+      "count": 3,
+      "first": "bot/compose/reading.py:237"
+    },
+    "error": {
+      "count": 1,
+      "first": "bot/modules/safety.py:2452"
+    },
+    "escape": {
+      "count": 481,
+      "first": "bot/compose/__init__.py:136"
+    },
+    "every_word": {
+      "count": 1,
+      "first": "bot/knowledge/lookup.py:2498"
+    },
+    "explain": {
+      "count": 6,
+      "first": "bot/knowledge/fitness.py:1674"
+    },
+    "extend": {
+      "count": 106,
+      "first": "bot/compose/badnews.py:1031"
+    },
+    "extract": {
+      "count": 44,
+      "first": "bot/memory/ack.py:1542"
+    },
+    "facts": {
+      "count": 8,
+      "first": "bot/modules/answers.py:7923"
+    },
+    "fault": {
+      "count": 1,
+      "first": "bot/knowledge/lookup.py:487"
+    },
+    "favourite": {
+      "count": 4,
+      "first": "bot/knowledge/meals.py:52"
+    },
+    "feeling_about_the_body": {
+      "count": 1,
+      "first": "bot/modules/grief.py:40"
+    },
+    "feeling_by_sound": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:1963"
+    },
+    "fill_person": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:6291"
+    },
+    "find": {
+      "count": 107,
+      "first": "bot/compose/a_thing_being_weighed.py:199"
+    },
+    "findall": {
+      "count": 901,
+      "first": "bot/compose/__init__.py:303"
+    },
+    "finditer": {
+      "count": 541,
+      "first": "bot/compose/__init__.py:136"
+    },
+    "first_bot_line": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:10139"
+    },
+    "first_plan": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11134"
+    },
+    "first_sentence": {
+      "count": 2,
+      "first": "bot/compose/lead.py:349"
+    },
+    "fits_the_diet": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8706"
+    },
+    "fitted_for_the_one_talked_about": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8713"
+    },
+    "flat": {
+      "count": 1,
+      "first": "bot/modules/what_they_said.py:200"
+    },
+    "follow_up": {
+      "count": 15,
+      "first": "bot/knowledge/chilli.py:69"
+    },
+    "followup_reading": {
+      "count": 2,
+      "first": "bot/modules/answers.py:2970"
+    },
+    "foods_ruled_out": {
+      "count": 2,
+      "first": "bot/memory/ack.py:6377"
+    },
+    "for_the_ask": {
+      "count": 4,
+      "first": "bot/compose/fallback_chain.py:3979"
+    },
+    "format": {
+      "count": 519,
+      "first": "bot/compose/a_place_nobody_can_see.py:480"
+    },
+    "forms": {
+      "count": 16,
+      "first": "bot/memory/carry.py:156"
+    },
+    "found": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:6576"
+    },
+    "found_what_was_lost": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3524"
+    },
+    "framed": {
+      "count": 1,
+      "first": "bot/memory/meant.py:520"
+    },
+    "from_bytes": {
+      "count": 1,
+      "first": "bot/modules/keeping.py:76"
+    },
+    "from_the_line": {
+      "count": 1,
+      "first": "bot/modules/said_fact_back.py:172"
+    },
+    "fromkeys": {
+      "count": 15,
+      "first": "bot/knowledge/cars.py:410"
+    },
+    "fullmatch": {
+      "count": 140,
+      "first": "bot/compose/badnews.py:946"
+    },
+    "general_sides": {
+      "count": 1,
+      "first": "bot/knowledge/cooking.py:1497"
+    },
+    "get": {
+      "count": 10594,
+      "first": "bot/compose/__init__.py:317"
+    },
+    "getrandbits": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:8470"
+    },
+    "getstate": {
+      "count": 3,
+      "first": "bot/compose/hedge.py:49"
+    },
+    "gift_ask": {
+      "count": 4,
+      "first": "bot/knowledge/shopping.py:551"
+    },
+    "given_away_one": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:1135"
+    },
+    "gives": {
+      "count": 9,
+      "first": "bot/compose/lead.py:247"
+    },
+    "gives_the_named_value": {
+      "count": 1,
+      "first": "bot/modules/said_fact_back.py:102"
+    },
+    "group": {
+      "count": 2738,
+      "first": "bot/compose/__init__.py:247"
+    },
+    "groupdict": {
+      "count": 57,
+      "first": "bot/compose/reading.py:2042"
+    },
+    "groups": {
+      "count": 35,
+      "first": "bot/compose/fallback.py:11043"
+    },
+    "grown_up_in_a_place": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11809"
+    },
+    "guard": {
+      "count": 7,
+      "first": "bot/knowledge/__init__.py:173"
+    },
+    "handed_back": {
+      "count": 9,
+      "first": "bot/memory/meant.py:713"
+    },
+    "handed_you_something": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3694"
+    },
+    "hands_it_back": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:2412"
+    },
+    "hands_over_the_shape": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4335"
+    },
+    "hands_over_words": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4334"
+    },
+    "has_a_date": {
+      "count": 1,
+      "first": "bot/compose/facts.py:66"
+    },
+    "has_a_diet_reply": {
+      "count": 2,
+      "first": "bot/modules/answers.py:7906"
+    },
+    "has_a_dislike_reply": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10981"
+    },
+    "has_a_veggie_reply": {
+      "count": 1,
+      "first": "bot/modules/answers.py:7907"
+    },
+    "has_news": {
+      "count": 1,
+      "first": "bot/modules/chat.py:8082"
+    },
+    "has_time": {
+      "count": 2,
+      "first": "bot/modules/answers.py:7418"
+    },
+    "hour": {
+      "count": 3,
+      "first": "bot/knowledge/travel.py:4126"
+    },
+    "how": {
+      "count": 9,
+      "first": "bot/knowledge/meals.py:50"
+    },
+    "how_long_answer": {
+      "count": 2,
+      "first": "bot/modules/since_it_began.py:30"
+    },
+    "how_long_it_takes": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:208"
+    },
+    "how_long_its_been": {
+      "count": 2,
+      "first": "bot/modules/memory_store.py:1754"
+    },
+    "how_much_of_the_answer_kept": {
+      "count": 2,
+      "first": "bot/modules/arbiter.py:4896"
+    },
+    "id": {
+      "count": 35,
+      "first": "bot/knowledge/cooking.py:600"
+    },
+    "idea_is_a_dish": {
+      "count": 2,
+      "first": "bot/knowledge/cooking.py:9934"
+    },
+    "import_module": {
+      "count": 14,
+      "first": "bot/knowledge/__init__.py:80"
+    },
+    "in_a_list": {
+      "count": 1,
+      "first": "bot/modules/chat.py:13773"
+    },
+    "in_a_safety_thread": {
+      "count": 3,
+      "first": "bot/compose/is_it_worth_it.py:340"
+    },
+    "in_care_pool": {
+      "count": 1,
+      "first": "bot/modules/chat.py:15655"
+    },
+    "index": {
+      "count": 52,
+      "first": "bot/compose/a_trouble.py:141"
+    },
+    "ingredients": {
+      "count": 7,
+      "first": "bot/knowledge/dishes.py:3144"
+    },
+    "insert": {
+      "count": 11,
+      "first": "bot/knowledge/cooking.py:10617"
+    },
+    "instead": {
+      "count": 12,
+      "first": "bot/memory/paragraph.py:52"
+    },
+    "interest_reply_for": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:4428"
+    },
+    "intersection": {
+      "count": 51,
+      "first": "bot/compose/fallback.py:6285"
+    },
+    "introduction_question": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10996"
+    },
+    "is_a_correction_opener": {
+      "count": 1,
+      "first": "bot/memory/ack.py:6273"
+    },
+    "is_a_forecast": {
+      "count": 2,
+      "first": "bot/modules/greeting.py:1147"
+    },
+    "is_a_hedge": {
+      "count": 14,
+      "first": "bot/compose/is_it_worth_it.py:312"
+    },
+    "is_a_judgement": {
+      "count": 3,
+      "first": "bot/memory/store_replies.py:11643"
+    },
+    "is_a_laugh": {
+      "count": 3,
+      "first": "bot/memory/facts.py:4759"
+    },
+    "is_a_place_of_work": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:622"
+    },
+    "is_a_pointer": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:503"
+    },
+    "is_a_progress_ask": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9726"
+    },
+    "is_a_punt": {
+      "count": 2,
+      "first": "bot/compose/lead.py:544"
+    },
+    "is_a_rate_ask": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:1732"
+    },
+    "is_a_reason_line": {
+      "count": 2,
+      "first": "bot/compose/verdict.py:2377"
+    },
+    "is_a_recall_ask": {
+      "count": 1,
+      "first": "bot/modules/what_they_said.py:145"
+    },
+    "is_a_routine": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2242"
+    },
+    "is_about_the_paperwork": {
+      "count": 1,
+      "first": "bot/modules/loss.py:59"
+    },
+    "is_ack": {
+      "count": 1,
+      "first": "bot/memory/cause.py:295"
+    },
+    "is_dying_now": {
+      "count": 1,
+      "first": "bot/modules/grief.py:558"
+    },
+    "is_integer": {
+      "count": 15,
+      "first": "bot/compose/quantity.py:409"
+    },
+    "is_it_worth_it": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:418"
+    },
+    "is_only_a_date": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:275"
+    },
+    "is_repair": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11633"
+    },
+    "is_said_it_already": {
+      "count": 4,
+      "first": "bot/memory/history.py:647"
+    },
+    "is_the_answer_shorter": {
+      "count": 2,
+      "first": "bot/compose/fallback.py:11216"
+    },
+    "is_their_news": {
+      "count": 1,
+      "first": "bot/memory/relations.py:1040"
+    },
+    "isalnum": {
+      "count": 6,
+      "first": "bot/compose/verdict.py:3414"
+    },
+    "isalpha": {
+      "count": 92,
+      "first": "bot/compose/__init__.py:418"
+    },
+    "isdigit": {
+      "count": 164,
+      "first": "bot/compose/a_thing_being_weighed.py:143"
+    },
+    "isdisjoint": {
+      "count": 3,
+      "first": "bot/knowledge/lookup.py:2921"
+    },
+    "islower": {
+      "count": 27,
+      "first": "bot/compose/draft.py:422"
+    },
+    "isspace": {
+      "count": 4,
+      "first": "bot/compose/fit.py:4758"
+    },
+    "isupper": {
+      "count": 76,
+      "first": "bot/compose/draft.py:434"
+    },
+    "items": {
+      "count": 231,
+      "first": "bot/compose/a_thing_being_weighed.py:95"
+    },
+    "iter_modules": {
+      "count": 2,
+      "first": "bot/knowledge/__init__.py:76"
+    },
+    "join": {
+      "count": 3679,
+      "first": "bot/__main__.py:12"
+    },
+    "judged": {
+      "count": 2,
+      "first": "bot/compose/reading.py:1851"
+    },
+    "judged_with_the_card": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8504"
+    },
+    "judges_a_figure": {
+      "count": 2,
+      "first": "bot/modules/chat.py:715"
+    },
+    "judges_the_figure_on_the_table": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8273"
+    },
+    "keep": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:879"
+    },
+    "keep_the_correction": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:701"
+    },
+    "keeping_ask": {
+      "count": 3,
+      "first": "bot/modules/answers.py:7175"
+    },
+    "keeping_followup": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11271"
+    },
+    "keeps_away": {
+      "count": 1,
+      "first": "bot/modules/answers.py:5826"
+    },
+    "keeps_losing_thing": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:3534"
+    },
+    "kept": {
+      "count": 2,
+      "first": "bot/modules/favourites.py:116"
+    },
+    "key": {
+      "count": 52,
+      "first": "bot/knowledge/devices.py:350"
+    },
+    "key_subject": {
+      "count": 1,
+      "first": "bot/modules/answers.py:3043"
+    },
+    "key_words": {
+      "count": 2,
+      "first": "bot/modules/chat.py:12903"
+    },
+    "keywords": {
+      "count": 38,
+      "first": "bot/memory/asked_about.py:82"
+    },
+    "kid_ages": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11825"
+    },
+    "kid_count": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11819"
+    },
+    "kind_of": {
+      "count": 3,
+      "first": "bot/memory/repeat.py:2311"
+    },
+    "last_ask": {
+      "count": 3,
+      "first": "bot/memory/store_replies.py:11108"
+    },
+    "last_bot": {
+      "count": 33,
+      "first": "bot/compose/the_turn_after.py:85"
+    },
+    "last_module": {
+      "count": 10,
+      "first": "bot/compose/who.py:146"
+    },
+    "last_reply": {
+      "count": 2,
+      "first": "bot/compose/who.py:150"
+    },
+    "last_said": {
+      "count": 3,
+      "first": "bot/memory/store_replies.py:11073"
+    },
+    "last_user": {
+      "count": 6,
+      "first": "bot/knowledge/units.py:1436"
+    },
+    "lastindex": {
+      "count": 1,
+      "first": "bot/memory/facts.py:5025"
+    },
+    "lead": {
+      "count": 2,
+      "first": "bot/knowledge/lookup.py:522"
+    },
+    "learn_thing_words": {
+      "count": 1,
+      "first": "bot/understanding/topics.py:323"
+    },
+    "learns_from_the_chat": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:482"
+    },
+    "left": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:79"
+    },
+    "left_for_a_blank": {
+      "count": 1,
+      "first": "bot/modules/answers.py:4267"
+    },
+    "left_out": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:6631"
+    },
+    "limit_denominator": {
+      "count": 4,
+      "first": "bot/knowledge/maths.py:252"
+    },
+    "lines": {
+      "count": 5,
+      "first": "bot/compose/waited_for.py:187"
+    },
+    "locked_out": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3530"
+    },
+    "locked_out_of_the_car": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3531"
+    },
+    "log": {
+      "count": 2,
+      "first": "bot/knowledge/money.py:894"
+    },
+    "look_at_a_body_lines": {
+      "count": 3,
+      "first": "bot/compose/fallback_chain.py:1442"
+    },
+    "looks_back": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:5984"
+    },
+    "losses": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:1364"
+    },
+    "lost_thing_to_find": {
+      "count": 3,
+      "first": "bot/compose/fallback_chain.py:3524"
+    },
+    "lower": {
+      "count": 6273,
+      "first": "bot/compose/__init__.py:204"
+    },
+    "lru_cache": {
+      "count": 1,
+      "first": "bot/knowledge/meals.py:935"
+    },
+    "lstrip": {
+      "count": 37,
+      "first": "bot/compose/badnews.py:108"
+    },
+    "machine_before": {
+      "count": 1,
+      "first": "bot/modules/answers.py:4221"
+    },
+    "machine_named": {
+      "count": 1,
+      "first": "bot/modules/answers.py:4207"
+    },
+    "maketrans": {
+      "count": 2,
+      "first": "bot/knowledge/lookup.py:1735"
+    },
+    "match": {
+      "count": 1911,
+      "first": "bot/compose/__init__.py:244"
+    },
+    "may_replace": {
+      "count": 1,
+      "first": "bot/modules/theirperson.py:29"
+    },
+    "meal": {
+      "count": 8,
+      "first": "bot/knowledge/dishes.py:3529"
+    },
+    "meal_follow_up": {
+      "count": 2,
+      "first": "bot/modules/answers.py:11314"
+    },
+    "memory_bot": {
+      "count": 3,
+      "first": "bot/memory/already.py:1067"
+    },
+    "might_be_a_report": {
+      "count": 2,
+      "first": "bot/modules/answers.py:9501"
+    },
+    "minute": {
+      "count": 3,
+      "first": "bot/knowledge/travel.py:4126"
+    },
+    "minutes": {
+      "count": 28,
+      "first": "bot/knowledge/meals.py:48"
+    },
+    "missing": {
+      "count": 1,
+      "first": "bot/memory/limit.py:727"
+    },
+    "mod": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:68"
+    },
+    "month": {
+      "count": 66,
+      "first": "bot/knowledge/garden.py:696"
+    },
+    "monthrange": {
+      "count": 3,
+      "first": "bot/knowledge/maths.py:2594"
+    },
+    "more_about_the_journey": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:793"
+    },
+    "move_after_a_limit": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16006"
+    },
+    "moves": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:2560"
+    },
+    "mul": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:65"
+    },
+    "name": {
+      "count": 30,
+      "first": "bot/knowledge/__init__.py:77"
+    },
+    "named": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4697"
+    },
+    "named_food": {
+      "count": 1,
+      "first": "bot/knowledge/cooking.py:9928"
+    },
+    "names": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11661"
+    },
+    "names_a_draft": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4329"
+    },
+    "names_a_feeling": {
+      "count": 3,
+      "first": "bot/modules/grief.py:40"
+    },
+    "names_a_limit": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:3355"
+    },
+    "names_nothing": {
+      "count": 4,
+      "first": "bot/memory/cause.py:503"
+    },
+    "names_offered": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:1513"
+    },
+    "names_only_a_page": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:823"
+    },
+    "names_person": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11698"
+    },
+    "names_the_addressee": {
+      "count": 1,
+      "first": "bot/compose/fallback_pools.py:91"
+    },
+    "names_the_paper": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:824"
+    },
+    "narrow": {
+      "count": 6,
+      "first": "bot/memory/repeat.py:2325"
+    },
+    "neg": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:70"
+    },
+    "negated_ingredients": {
+      "count": 1,
+      "first": "bot/modules/chat.py:4892"
+    },
+    "new_thing": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:4221"
+    },
+    "new_thing_replies": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:4223"
+    },
+    "next_slot_reading": {
+      "count": 1,
+      "first": "bot/modules/answers.py:3105"
+    },
+    "next_step": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:2373"
+    },
+    "no_tone": {
+      "count": 4,
+      "first": "bot/memory/__init__.py:925"
+    },
+    "normalize": {
+      "count": 2,
+      "first": "bot/knowledge/study.py:360"
+    },
+    "not_a_destination": {
+      "count": 2,
+      "first": "bot/memory/ack.py:1117"
+    },
+    "not_a_subject": {
+      "count": 4,
+      "first": "bot/compose/fallback.py:12386"
+    },
+    "not_the_message": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3762"
+    },
+    "note": {
+      "count": 2,
+      "first": "bot/memory/ack.py:3941"
+    },
+    "nothing_said": {
+      "count": 4,
+      "first": "bot/modules/memory_store.py:5917"
+    },
+    "nothing_said_yet": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:2882"
+    },
+    "noun_phrase_request": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1986"
+    },
+    "now": {
+      "count": 4,
+      "first": "bot/knowledge/nature.py:49"
+    },
+    "numerator": {
+      "count": 8,
+      "first": "bot/knowledge/maths.py:254"
+    },
+    "observe": {
+      "count": 7,
+      "first": "bot/compose/lead_in.py:123"
+    },
+    "offers_a_choice": {
+      "count": 2,
+      "first": "bot/compose/fallback.py:16088"
+    },
+    "offers_a_draft": {
+      "count": 2,
+      "first": "bot/modules/arbiter.py:4331"
+    },
+    "on_the_table": {
+      "count": 1,
+      "first": "bot/modules/chat.py:13771"
+    },
+    "on_the_thing": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:811"
+    },
+    "one_more": {
+      "count": 2,
+      "first": "bot/memory/ack.py:5709"
+    },
+    "only_a_dislike": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:1961"
+    },
+    "only_a_length": {
+      "count": 2,
+      "first": "bot/memory/ack.py:3876"
+    },
+    "only_a_limit": {
+      "count": 1,
+      "first": "bot/modules/chat.py:2730"
+    },
+    "only_a_shrug": {
+      "count": 1,
+      "first": "bot/modules/confusing.py:76"
+    },
+    "only_a_taste": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10968"
+    },
+    "only_acknowledges": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:5944"
+    },
+    "only_said_it_back": {
+      "count": 1,
+      "first": "bot/compose/remark.py:2196"
+    },
+    "op": {
+      "count": 5,
+      "first": "bot/knowledge/maths.py:78"
+    },
+    "opening_line": {
+      "count": 2,
+      "first": "bot/understanding/__init__.py:2014"
+    },
+    "opens_on_a_job": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4790"
+    },
+    "operand": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:84"
+    },
+    "options": {
+      "count": 1,
+      "first": "bot/modules/where_it_answers.py:151"
+    },
+    "options_in": {
+      "count": 1,
+      "first": "bot/memory/reject.py:385"
+    },
+    "other_option": {
+      "count": 2,
+      "first": "bot/compose/still.py:266"
+    },
+    "outcomes": {
+      "count": 1,
+      "first": "bot/knowledge/lookup.py:532"
+    },
+    "over_time": {
+      "count": 2,
+      "first": "bot/understanding/__init__.py:2102"
+    },
+    "own_fact_for": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:590"
+    },
+    "own_output_word": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2207"
+    },
+    "pairing": {
+      "count": 4,
+      "first": "bot/memory/limit.py:645"
+    },
+    "pantry_idea": {
+      "count": 1,
+      "first": "bot/knowledge/meals.py:1542"
+    },
+    "parse": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:125"
+    },
+    "partition": {
+      "count": 47,
+      "first": "bot/compose/fallback.py:12221"
+    },
+    "pattern": {
+      "count": 79,
+      "first": "bot/compose/checking.py:362"
+    },
+    "person_is_new": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2366"
+    },
+    "person_names": {
+      "count": 2,
+      "first": "bot/understanding/__init__.py:2318"
+    },
+    "pet_appositive": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11292"
+    },
+    "pet_counts": {
+      "count": 1,
+      "first": "bot/memory/corrected.py:1882"
+    },
+    "pet_given_away": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:1090"
+    },
+    "pet_name_only": {
+      "count": 4,
+      "first": "bot/memory/store_replies.py:1482"
+    },
+    "pick": {
+      "count": 20,
+      "first": "bot/compose/griefplea.py:85"
+    },
+    "place_pool": {
+      "count": 1,
+      "first": "bot/modules/onsubject.py:43"
+    },
+    "place_value": {
+      "count": 5,
+      "first": "bot/memory/corrected.py:614"
+    },
+    "plain": {
+      "count": 3,
+      "first": "bot/memory/store_replies.py:6627"
+    },
+    "plan_ask_pool": {
+      "count": 1,
+      "first": "bot/modules/a_plan_the_thread_holds.py:33"
+    },
+    "plan_recent": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8737"
+    },
+    "pointed": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11173"
+    },
+    "points_at_a_word_alone": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:6009"
+    },
+    "points_at_the_thread": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4877"
+    },
+    "points_back": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:5917"
+    },
+    "pool": {
+      "count": 17,
+      "first": "bot/compose/fallback_chain.py:3255"
+    },
+    "pool_for": {
+      "count": 7,
+      "first": "bot/modules/answers.py:9501"
+    },
+    "pool_name": {
+      "count": 1,
+      "first": "bot/modules/no_advice.py:40"
+    },
+    "pool_over_a_receipt": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:799"
+    },
+    "pop": {
+      "count": 202,
+      "first": "bot/compose/a_place_nobody_can_see.py:318"
+    },
+    "pos": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:70"
+    },
+    "pow": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:67"
+    },
+    "present_less": {
+      "count": 1,
+      "first": "bot/modules/answers.py:6632"
+    },
+    "present_within": {
+      "count": 1,
+      "first": "bot/modules/answers.py:6633"
+    },
+    "product": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:2303"
+    },
+    "punctuation": {
+      "count": 34,
+      "first": "bot/compose/fallback.py:13434"
+    },
+    "purse_till_at": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2235"
+    },
+    "put_right": {
+      "count": 2,
+      "first": "bot/modules/said_fact_back.py:135"
+    },
+    "qualified_by": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11802"
+    },
+    "quantize": {
+      "count": 3,
+      "first": "bot/knowledge/maths.py:754"
+    },
+    "quoted": {
+      "count": 3,
+      "first": "bot/modules/answers.py:451"
+    },
+    "radians": {
+      "count": 4,
+      "first": "bot/knowledge/travel.py:12431"
+    },
+    "randrange": {
+      "count": 2,
+      "first": "bot/compose/fallback.py:9373"
+    },
+    "rank_topics": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1997"
+    },
+    "rate": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:4344"
+    },
+    "rate_question": {
+      "count": 4,
+      "first": "bot/modules/saving_followup.py:245"
+    },
+    "rate_question_for": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:221"
+    },
+    "ratio": {
+      "count": 1,
+      "first": "bot/modules/answers.py:495"
+    },
+    "re": {
+      "count": 21,
+      "first": "bot/compose/fallback.py:5249"
+    },
+    "read": {
+      "count": 2,
+      "first": "bot/modules/favourites.py:138"
+    },
+    "read_all": {
+      "count": 1,
+      "first": "bot/memory/facts.py:10962"
+    },
+    "read_other": {
+      "count": 1,
+      "first": "bot/memory/facts.py:2423"
+    },
+    "reading": {
+      "count": 2,
+      "first": "bot/modules/answers.py:9189"
+    },
+    "reads": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:3547"
+    },
+    "reads_as_a_change_of_medicine": {
+      "count": 2,
+      "first": "bot/modules/chat.py:4836"
+    },
+    "reads_as_a_feeling": {
+      "count": 1,
+      "first": "bot/memory/facts.py:4674"
+    },
+    "reads_as_a_judgement": {
+      "count": 2,
+      "first": "bot/memory/named.py:1154"
+    },
+    "reads_as_a_leave_with_a_body_in_it": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3454"
+    },
+    "reads_as_a_leave_with_a_trouble_in_it": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:4707"
+    },
+    "reads_as_a_leaving_already_gone": {
+      "count": 2,
+      "first": "bot/modules/arbiter.py:4362"
+    },
+    "reads_as_a_morning_after": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3035"
+    },
+    "reads_as_a_move_cheered": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:1258"
+    },
+    "reads_as_a_name": {
+      "count": 3,
+      "first": "bot/modules/memory_store.py:2296"
+    },
+    "reads_as_a_receipt": {
+      "count": 11,
+      "first": "bot/compose/fallback.py:11986"
+    },
+    "reads_as_a_result_line": {
+      "count": 1,
+      "first": "bot/memory/ack.py:3554"
+    },
+    "reads_as_a_return": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4086"
+    },
+    "reads_as_a_sacking": {
+      "count": 1,
+      "first": "bot/modules/chat.py:1315"
+    },
+    "reads_as_a_sign_off": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4178"
+    },
+    "reads_as_a_sound": {
+      "count": 1,
+      "first": "bot/memory/facts.py:4820"
+    },
+    "reads_as_a_step_done": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9371"
+    },
+    "reads_as_a_story": {
+      "count": 1,
+      "first": "bot/modules/chat.py:12773"
+    },
+    "reads_as_a_taste": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:3584"
+    },
+    "reads_as_a_tight_week": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:1249"
+    },
+    "reads_as_a_trip": {
+      "count": 3,
+      "first": "bot/compose/fallback_chain.py:4241"
+    },
+    "reads_as_a_verdict": {
+      "count": 4,
+      "first": "bot/compose/safety_doubt.py:136"
+    },
+    "reads_as_a_writing_ask": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4332"
+    },
+    "reads_as_about_itself": {
+      "count": 2,
+      "first": "bot/modules/arbiter.py:2895"
+    },
+    "reads_as_an_ask_for_the_news": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:10607"
+    },
+    "reads_as_bad_news": {
+      "count": 1,
+      "first": "bot/modules/chat.py:7531"
+    },
+    "reads_as_busy": {
+      "count": 2,
+      "first": "bot/modules/greeting.py:790"
+    },
+    "reads_as_crowd": {
+      "count": 2,
+      "first": "bot/compose/fallback_pools.py:654"
+    },
+    "reads_as_heavy_news": {
+      "count": 3,
+      "first": "bot/compose/a_trouble.py:159"
+    },
+    "reads_as_hurting_someone": {
+      "count": 4,
+      "first": "bot/modules/arbiter.py:4623"
+    },
+    "reads_as_if_i_saw": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:12952"
+    },
+    "reads_as_leaving": {
+      "count": 3,
+      "first": "bot/compose/fallback.py:15950"
+    },
+    "reads_as_loss": {
+      "count": 27,
+      "first": "bot/compose/fallback.py:2030"
+    },
+    "reads_as_news": {
+      "count": 1,
+      "first": "bot/knowledge/cooking.py:11396"
+    },
+    "reads_as_news_with_a_name": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16268"
+    },
+    "reads_as_our_reply": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4629"
+    },
+    "reads_as_pregnancy_bleeding": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4403"
+    },
+    "reads_as_recovery": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8962"
+    },
+    "reads_as_report": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3873"
+    },
+    "reads_as_reported_judgement": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:287"
+    },
+    "reads_as_settled": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8963"
+    },
+    "reads_as_situation": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11756"
+    },
+    "reads_as_small_talk": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:1254"
+    },
+    "reads_as_somebody_elses_words": {
+      "count": 2,
+      "first": "bot/modules/chat.py:940"
+    },
+    "reads_as_someones_death": {
+      "count": 1,
+      "first": "bot/modules/chat.py:2670"
+    },
+    "reads_as_sudden_loss": {
+      "count": 12,
+      "first": "bot/compose/fallback.py:2030"
+    },
+    "reads_as_the_leaving": {
+      "count": 4,
+      "first": "bot/compose/fallback.py:5871"
+    },
+    "reads_as_trouble": {
+      "count": 20,
+      "first": "bot/compose/fallback.py:6343"
+    },
+    "reads_as_unfit": {
+      "count": 1,
+      "first": "bot/modules/chat.py:955"
+    },
+    "reads_as_worn": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:4507"
+    },
+    "reads_it": {
+      "count": 1,
+      "first": "bot/modules/chat.py:15115"
+    },
+    "reads_the_answer": {
+      "count": 2,
+      "first": "bot/modules/answers.py:9297"
+    },
+    "recent": {
+      "count": 1,
+      "first": "bot/modules/answers.py:7458"
+    },
+    "recent_answers": {
+      "count": 1,
+      "first": "bot/memory/more.py:195"
+    },
+    "recent_replies": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11183"
+    },
+    "recent_texts": {
+      "count": 2,
+      "first": "bot/knowledge/cooking.py:1518"
+    },
+    "refused": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:2705"
+    },
+    "refused_foods": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:443"
+    },
+    "regret_reply_for": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:4232"
+    },
+    "remembered": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8157"
+    },
+    "remove": {
+      "count": 14,
+      "first": "bot/compose/checking.py:1003"
+    },
+    "repaired_tokens": {
+      "count": 1,
+      "first": "bot/memory/facts.py:4776"
+    },
+    "repeat": {
+      "count": 2,
+      "first": "bot/memory/too_late.py:164"
+    },
+    "replace": {
+      "count": 866,
+      "first": "bot/compose/__init__.py:86"
+    },
+    "replied": {
+      "count": 5,
+      "first": "bot/modules/answers.py:12261"
+    },
+    "replies_to_a_who_to_see": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:1260"
+    },
+    "reply": {
+      "count": 28,
+      "first": "bot/compose/fallback_chain.py:4515"
+    },
+    "reply_for": {
+      "count": 101,
+      "first": "bot/compose/fallback.py:9879"
+    },
+    "reply_for_a_year_ago": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:325"
+    },
+    "reply_to_a_bare_doubt": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:1654"
+    },
+    "report": {
+      "count": 3,
+      "first": "bot/knowledge/lookup.py:493"
+    },
+    "report_reply_for": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:3874"
+    },
+    "reported": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:6860"
+    },
+    "reported_states": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9553"
+    },
+    "reread": {
+      "count": 1,
+      "first": "bot/memory/corrected.py:2004"
+    },
+    "resolve": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1953"
+    },
+    "respond": {
+      "count": 45,
+      "first": "bot/compose/fallback.py:8114"
+    },
+    "respond_to_a_saying_ask": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3363"
+    },
+    "restate": {
+      "count": 9,
+      "first": "bot/memory/store_replies.py:3026"
+    },
+    "restates_the_answer": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:2494"
+    },
+    "resumed": {
+      "count": 3,
+      "first": "bot/memory/again.py:652"
+    },
+    "reverse": {
+      "count": 2,
+      "first": "bot/compose/plan_ask.py:119"
+    },
+    "revise": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:6613"
+    },
+    "rewritten": {
+      "count": 5,
+      "first": "bot/compose/fallback_chain.py:4652"
+    },
+    "rewritten_person": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11694"
+    },
+    "rfind": {
+      "count": 46,
+      "first": "bot/compose/badnews.py:1305"
+    },
+    "right": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:79"
+    },
+    "rpartition": {
+      "count": 5,
+      "first": "bot/knowledge/maths.py:231"
+    },
+    "rsplit": {
+      "count": 10,
+      "first": "bot/compose/fallback.py:1724"
+    },
+    "rstrip": {
+      "count": 593,
+      "first": "bot/__main__.py:11"
+    },
+    "rules_on_the_doubt": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:1952"
+    },
+    "said": {
+      "count": 16,
+      "first": "bot/knowledge/meals.py:46"
+    },
+    "said_about": {
+      "count": 1,
+      "first": "bot/memory/facts.py:8723"
+    },
+    "said_after_a_to": {
+      "count": 1,
+      "first": "bot/modules/chat.py:5092"
+    },
+    "said_again": {
+      "count": 9,
+      "first": "bot/compose/fallback_chain.py:3178"
+    },
+    "said_already": {
+      "count": 3,
+      "first": "bot/modules/saving_followup.py:259"
+    },
+    "said_back": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:2712"
+    },
+    "said_recently": {
+      "count": 3,
+      "first": "bot/memory/more.py:208"
+    },
+    "said_text": {
+      "count": 1,
+      "first": "bot/knowledge/chilli.py:174"
+    },
+    "same_subject": {
+      "count": 1,
+      "first": "bot/memory/more.py:201"
+    },
+    "sample": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:5381"
+    },
+    "saving_for_a_trip": {
+      "count": 1,
+      "first": "bot/knowledge/work.py:6130"
+    },
+    "says_a_death": {
+      "count": 1,
+      "first": "bot/modules/no_advice.py:63"
+    },
+    "says_a_food_was_left_out": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11064"
+    },
+    "says_another_thing": {
+      "count": 1,
+      "first": "bot/knowledge/dishes.py:916"
+    },
+    "says_it_already": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:2288"
+    },
+    "says_it_happened_again": {
+      "count": 2,
+      "first": "bot/memory/topics.py:4539"
+    },
+    "says_it_is_the_message": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:14358"
+    },
+    "says_no_advice": {
+      "count": 1,
+      "first": "bot/modules/no_advice.py:56"
+    },
+    "says_nothing_about_the_line": {
+      "count": 2,
+      "first": "bot/modules/the_detail_the_thread_adds.py:28"
+    },
+    "says_where_to_look": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:791"
+    },
+    "scaleb": {
+      "count": 2,
+      "first": "bot/knowledge/maths.py:760"
+    },
+    "search": {
+      "count": 10790,
+      "first": "bot/compose/__init__.py:54"
+    },
+    "senses": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2129"
+    },
+    "sentences": {
+      "count": 12,
+      "first": "bot/memory/again.py:419"
+    },
+    "served_already": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9196"
+    },
+    "service": {
+      "count": 2,
+      "first": "bot/understanding/kinds.py:6919"
+    },
+    "setdefault": {
+      "count": 83,
+      "first": "bot/compose/__init__.py:344"
+    },
+    "setstate": {
+      "count": 3,
+      "first": "bot/compose/hedge.py:58"
+    },
+    "sha1": {
+      "count": 1,
+      "first": "bot/modules/keeping.py:76"
+    },
+    "shape": {
+      "count": 6,
+      "first": "bot/knowledge/lookup.py:508"
+    },
+    "shift_worked": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2160"
+    },
+    "shorter_for": {
+      "count": 2,
+      "first": "bot/modules/answers.py:8198"
+    },
+    "side_for": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11179"
+    },
+    "sin": {
+      "count": 2,
+      "first": "bot/knowledge/travel.py:12433"
+    },
+    "sized_reply": {
+      "count": 3,
+      "first": "bot/modules/answers.py:4116"
+    },
+    "slips": {
+      "count": 1,
+      "first": "bot/knowledge/lookup.py:481"
+    },
+    "somebody_elses_body": {
+      "count": 1,
+      "first": "bot/compose/badnews.py:1155"
+    },
+    "someone_elses": {
+      "count": 1,
+      "first": "bot/compose/worn.py:175"
+    },
+    "someone_elses_occasion": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:4241"
+    },
+    "sort": {
+      "count": 41,
+      "first": "bot/compose/reading.py:618"
+    },
+    "span": {
+      "count": 8,
+      "first": "bot/knowledge/geography.py:1173"
+    },
+    "speaks_of_keeping": {
+      "count": 2,
+      "first": "bot/modules/answers.py:7140"
+    },
+    "speaks_to_a_self_judgement": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:293"
+    },
+    "spelled": {
+      "count": 1,
+      "first": "bot/memory/facts.py:4765"
+    },
+    "split": {
+      "count": 6827,
+      "first": "bot/__main__.py:12"
+    },
+    "splitlines": {
+      "count": 1,
+      "first": "bot/understanding/lexicon.py:286"
+    },
+    "sqrt": {
+      "count": 1,
+      "first": "bot/knowledge/travel.py:12435"
+    },
+    "stands_alone": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:1215"
+    },
+    "start": {
+      "count": 692,
+      "first": "bot/compose/__init__.py:137"
+    },
+    "startswith": {
+      "count": 541,
+      "first": "bot/compose/__init__.py:263"
+    },
+    "stated_about_the_person": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9569"
+    },
+    "stdin": {
+      "count": 1,
+      "first": "bot/__main__.py:9"
+    },
+    "stem": {
+      "count": 16,
+      "first": "bot/memory/ack.py:6045"
+    },
+    "steps_left": {
+      "count": 1,
+      "first": "bot/modules/chat.py:2736"
+    },
+    "still_going_on": {
+      "count": 2,
+      "first": "bot/modules/chat.py:11371"
+    },
+    "still_the_state": {
+      "count": 1,
+      "first": "bot/memory/already.py:1014"
+    },
+    "strftime": {
+      "count": 9,
+      "first": "bot/knowledge/family_more.py:679"
+    },
+    "string": {
+      "count": 4,
+      "first": "bot/compose/fallback.py:9578"
+    },
+    "strip": {
+      "count": 3745,
+      "first": "bot/compose/__init__.py:176"
+    },
+    "sub": {
+      "count": 999,
+      "first": "bot/compose/__init__.py:204"
+    },
+    "subject": {
+      "count": 40,
+      "first": "bot/memory/ack.py:6030"
+    },
+    "subject_topic": {
+      "count": 5,
+      "first": "bot/understanding/__init__.py:1936"
+    },
+    "subject_word": {
+      "count": 2,
+      "first": "bot/knowledge/pets.py:3077"
+    },
+    "subn": {
+      "count": 2,
+      "first": "bot/memory/choice.py:160"
+    },
+    "suggest": {
+      "count": 1,
+      "first": "bot/knowledge/cooking.py:5835"
+    },
+    "suits_them": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11207"
+    },
+    "swapped_out": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8705"
+    },
+    "take_back_cut": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11118"
+    },
+    "takes_a_fact_back": {
+      "count": 1,
+      "first": "bot/memory/history.py:647"
+    },
+    "takes_as_it_comes": {
+      "count": 9,
+      "first": "bot/compose/fallback_chain.py:6114"
+    },
+    "takes_back": {
+      "count": 4,
+      "first": "bot/memory/store_replies.py:9885"
+    },
+    "taking_up": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2157"
+    },
+    "talk_frame": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2069"
+    },
+    "talks_about_the_conversation": {
+      "count": 3,
+      "first": "bot/modules/arbiter.py:1069"
+    },
+    "tells_them_the_step_again": {
+      "count": 3,
+      "first": "bot/modules/arbiter.py:1576"
+    },
+    "the_advice_was_to_get_seen": {
+      "count": 3,
+      "first": "bot/compose/fallback_chain.py:2264"
+    },
+    "the_age_of_the_person_they_mean": {
+      "count": 4,
+      "first": "bot/knowledge/shopping.py:355"
+    },
+    "the_animal": {
+      "count": 1,
+      "first": "bot/modules/grief.py:532"
+    },
+    "the_animal_a_breed_is": {
+      "count": 2,
+      "first": "bot/understanding/__init__.py:1223"
+    },
+    "the_animal_follow_up_line": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9395"
+    },
+    "the_animal_in_hand": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2093"
+    },
+    "the_animal_the_chat_is_on": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2096"
+    },
+    "the_answer_in_hand": {
+      "count": 1,
+      "first": "bot/memory/already.py:882"
+    },
+    "the_answer_is_a_card": {
+      "count": 1,
+      "first": "bot/compose/onscreen.py:312"
+    },
+    "the_answer_on_screen": {
+      "count": 2,
+      "first": "bot/compose/onscreen.py:305"
+    },
+    "the_answer_the_lead_in_hid": {
+      "count": 1,
+      "first": "bot/modules/after_a_lead_in.py:28"
+    },
+    "the_answer_they_gave": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:516"
+    },
+    "the_answer_this_chat_gave": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:659"
+    },
+    "the_ask_and_the_subject": {
+      "count": 1,
+      "first": "bot/modules/taking_asked_again.py:36"
+    },
+    "the_ask_behind_a_moan": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10108"
+    },
+    "the_bag_beats_the_list": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10815"
+    },
+    "the_best_time_to_do_it": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9110"
+    },
+    "the_better_answer": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:3920"
+    },
+    "the_bot_already_ruled": {
+      "count": 1,
+      "first": "bot/compose/verdict.py:5442"
+    },
+    "the_bot_lines": {
+      "count": 1,
+      "first": "bot/memory/callback.py:238"
+    },
+    "the_breed_named": {
+      "count": 2,
+      "first": "bot/memory/facts.py:8671"
+    },
+    "the_card_after_a_present": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8561"
+    },
+    "the_cause_said_again": {
+      "count": 1,
+      "first": "bot/modules/chat.py:14340"
+    },
+    "the_change_asked_about": {
+      "count": 1,
+      "first": "bot/modules/figure_asked_again.py:38"
+    },
+    "the_checks_already_named": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:449"
+    },
+    "the_clock_in": {
+      "count": 4,
+      "first": "bot/memory/corrected.py:880"
+    },
+    "the_comparison": {
+      "count": 1,
+      "first": "bot/modules/a_count_said.py:40"
+    },
+    "the_day_remarked": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8433"
+    },
+    "the_decision": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:3181"
+    },
+    "the_detail": {
+      "count": 1,
+      "first": "bot/memory/thread.py:1425"
+    },
+    "the_dog_feed_follow_up": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8462"
+    },
+    "the_earlier_turn": {
+      "count": 3,
+      "first": "bot/memory/repeat.py:5606"
+    },
+    "the_extra_a_month_asked": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:147"
+    },
+    "the_fact_asked_for": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:3376"
+    },
+    "the_fact_the_answer_has": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8049"
+    },
+    "the_favourites": {
+      "count": 1,
+      "first": "bot/modules/favourites.py:104"
+    },
+    "the_feeling_two_letters_are_gone_from": {
+      "count": 1,
+      "first": "bot/memory/facts.py:4676"
+    },
+    "the_figure_a_week": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:269"
+    },
+    "the_figure_against_the_answer": {
+      "count": 2,
+      "first": "bot/modules/greeting.py:146"
+    },
+    "the_figure_asked": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:402"
+    },
+    "the_figure_asked_about": {
+      "count": 1,
+      "first": "bot/modules/figure_asked_again.py:37"
+    },
+    "the_figure_they_gave": {
+      "count": 10,
+      "first": "bot/modules/answers.py:8401"
+    },
+    "the_fix_asked": {
+      "count": 1,
+      "first": "bot/modules/chat.py:14230"
+    },
+    "the_food_it_is_about": {
+      "count": 2,
+      "first": "bot/modules/answers.py:10542"
+    },
+    "the_gap_left": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:136"
+    },
+    "the_keep_up_line": {
+      "count": 1,
+      "first": "bot/modules/pace.py:39"
+    },
+    "the_kind_of": {
+      "count": 4,
+      "first": "bot/memory/recall.py:386"
+    },
+    "the_kind_they_gave": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:387"
+    },
+    "the_last_answer": {
+      "count": 1,
+      "first": "bot/memory/portions.py:124"
+    },
+    "the_limit_in_the_chat": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:3312"
+    },
+    "the_limit_they_share": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:635"
+    },
+    "the_line": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:10578"
+    },
+    "the_line_after_a_courtesy": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:1908"
+    },
+    "the_line_as_read": {
+      "count": 1,
+      "first": "bot/modules/talkto.py:58"
+    },
+    "the_line_that_gives": {
+      "count": 2,
+      "first": "bot/memory/lineback.py:450"
+    },
+    "the_lines": {
+      "count": 1,
+      "first": "bot/modules/what_they_said.py:144"
+    },
+    "the_lines_before": {
+      "count": 2,
+      "first": "bot/knowledge/money.py:237"
+    },
+    "the_loss_that_was_the_plan": {
+      "count": 1,
+      "first": "bot/modules/chat.py:11867"
+    },
+    "the_machine_decision": {
+      "count": 1,
+      "first": "bot/modules/answers.py:4231"
+    },
+    "the_missing_half": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:627"
+    },
+    "the_move": {
+      "count": 4,
+      "first": "bot/modules/answers.py:9287"
+    },
+    "the_name_a_line_moved_on": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:2570"
+    },
+    "the_name_given": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:4542"
+    },
+    "the_name_the_answer_says": {
+      "count": 2,
+      "first": "bot/memory/returns.py:263"
+    },
+    "the_name_they_take_back": {
+      "count": 1,
+      "first": "bot/modules/name_taken_back.py:72"
+    },
+    "the_news_is_the_whole_of_it": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8966"
+    },
+    "the_next_move": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:16293"
+    },
+    "the_next_step": {
+      "count": 1,
+      "first": "bot/memory/again.py:1210"
+    },
+    "the_next_verse": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10848"
+    },
+    "the_one_asked_about": {
+      "count": 2,
+      "first": "bot/memory/ack.py:300"
+    },
+    "the_ones_are_given_one_at_a_time": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:733"
+    },
+    "the_opening": {
+      "count": 2,
+      "first": "bot/memory/ack.py:3301"
+    },
+    "the_pace_line": {
+      "count": 1,
+      "first": "bot/modules/pace.py:39"
+    },
+    "the_part_asked": {
+      "count": 4,
+      "first": "bot/memory/store_replies.py:3286"
+    },
+    "the_place_ruled_out": {
+      "count": 2,
+      "first": "bot/modules/answers.py:8441"
+    },
+    "the_place_the_person_works": {
+      "count": 2,
+      "first": "bot/modules/my_work.py:20"
+    },
+    "the_plain_ask": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:644"
+    },
+    "the_pool": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:14483"
+    },
+    "the_pot_and_the_rest": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:231"
+    },
+    "the_pot_position": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:142"
+    },
+    "the_pot_said_alone": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:213"
+    },
+    "the_price_reply": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:10710"
+    },
+    "the_prognosis_the_line_asks": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11895"
+    },
+    "the_quality_in_the_chat": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:3307"
+    },
+    "the_question_with_the_place": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8590"
+    },
+    "the_rate_they_asked_about": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:10699"
+    },
+    "the_report_reply": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:2432"
+    },
+    "the_rest_of_a_question": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:11528"
+    },
+    "the_same_date": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:3389"
+    },
+    "the_same_figure_a_month": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:152"
+    },
+    "the_same_question_again": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:391"
+    },
+    "the_same_thing_underneath": {
+      "count": 3,
+      "first": "bot/modules/answers.py:1479"
+    },
+    "the_scene": {
+      "count": 1,
+      "first": "bot/modules/dreams.py:221"
+    },
+    "the_sentence_answered": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10785"
+    },
+    "the_sentence_owed": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8545"
+    },
+    "the_setup": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2183"
+    },
+    "the_shape_it_asks": {
+      "count": 1,
+      "first": "bot/modules/intent.py:35"
+    },
+    "the_step_they_took": {
+      "count": 1,
+      "first": "bot/memory/topics.py:3990"
+    },
+    "the_still_ok_follow_up": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11070"
+    },
+    "the_stretch_said_back": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:335"
+    },
+    "the_subject_in_the_condition": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:3300"
+    },
+    "the_thing": {
+      "count": 4,
+      "first": "bot/compose/fallback.py:6833"
+    },
+    "the_thing_asked_again": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9255"
+    },
+    "the_thing_named": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:4747"
+    },
+    "the_thing_they_meant": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:3295"
+    },
+    "the_thing_they_named": {
+      "count": 1,
+      "first": "bot/memory/repeat.py:5539"
+    },
+    "the_thing_they_pay_for": {
+      "count": 1,
+      "first": "bot/compose/fallback.py:10700"
+    },
+    "the_thing_went_back_to": {
+      "count": 1,
+      "first": "bot/modules/answers.py:9261"
+    },
+    "the_thread_has_a_new_baby": {
+      "count": 1,
+      "first": "bot/knowledge/shopping.py:785"
+    },
+    "the_threads_answer": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:552"
+    },
+    "the_total_for": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16024"
+    },
+    "the_trip_they_booked": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:1057"
+    },
+    "the_two_of_them": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:4473"
+    },
+    "the_verdict_in_the_chat": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:3302"
+    },
+    "the_verdict_on_a_present": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10835"
+    },
+    "the_verse_longer": {
+      "count": 1,
+      "first": "bot/modules/answers.py:10842"
+    },
+    "the_visit": {
+      "count": 1,
+      "first": "bot/memory/trips.py:624"
+    },
+    "the_warmth_said": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2199"
+    },
+    "the_whole_of_it": {
+      "count": 1,
+      "first": "bot/modules/chat.py:16041"
+    },
+    "the_words_that_said": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2045"
+    },
+    "the_wrecked_form_reply": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:4814"
+    },
+    "the_years_in_the_doing": {
+      "count": 2,
+      "first": "bot/modules/years_in.py:28"
+    },
+    "the_years_in_their_doing": {
+      "count": 2,
+      "first": "bot/modules/years_in.py:29"
+    },
+    "their_back": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:1180"
+    },
+    "their_mood_going_on_reply_for": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:4497"
+    },
+    "their_mood_with_you_reply_for": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:4500"
+    },
+    "their_own_words": {
+      "count": 1,
+      "first": "bot/modules/said_fact_back.py:165"
+    },
+    "their_people_reply_for": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:4482"
+    },
+    "their_words": {
+      "count": 7,
+      "first": "bot/modules/favourites.py:88"
+    },
+    "then_framed": {
+      "count": 1,
+      "first": "bot/modules/answers.py:12268"
+    },
+    "there_is_one": {
+      "count": 1,
+      "first": "bot/memory/callback.py:177"
+    },
+    "thin": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:10014"
+    },
+    "thing": {
+      "count": 6,
+      "first": "bot/modules/answers.py:4156"
+    },
+    "things_tried": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2357"
+    },
+    "tight_on_money": {
+      "count": 2,
+      "first": "bot/compose/fallback.py:13140"
+    },
+    "timedelta": {
+      "count": 46,
+      "first": "bot/knowledge/maths.py:2644"
+    },
+    "timezone": {
+      "count": 3,
+      "first": "bot/knowledge/travel.py:4110"
+    },
+    "timing_followup": {
+      "count": 1,
+      "first": "bot/modules/answers.py:11283"
+    },
+    "title": {
+      "count": 74,
+      "first": "bot/compose/fallback_chain.py:6253"
+    },
+    "today": {
+      "count": 50,
+      "first": "bot/compose/goodnews.py:1179"
+    },
+    "tokens": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:677"
+    },
+    "told_as_a_dream": {
+      "count": 1,
+      "first": "bot/knowledge/lookup.py:5148"
+    },
+    "told_in_the_turn_before": {
+      "count": 2,
+      "first": "bot/compose/loss.py:4723"
+    },
+    "topic_index": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:11110"
+    },
+    "topic_lines": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:12198"
+    },
+    "topic_text": {
+      "count": 2,
+      "first": "bot/modules/answers.py:2221"
+    },
+    "topics": {
+      "count": 14,
+      "first": "bot/modules/answers.py:2293"
+    },
+    "total_seconds": {
+      "count": 1,
+      "first": "bot/knowledge/nature.py:50"
+    },
+    "translate": {
+      "count": 3,
+      "first": "bot/knowledge/lookup.py:1816"
+    },
+    "trouble_pool": {
+      "count": 1,
+      "first": "bot/modules/the_trouble_it_has.py:21"
+    },
+    "truediv": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:66"
+    },
+    "turned": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:1280"
+    },
+    "turned_down_alone": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:6607"
+    },
+    "turns": {
+      "count": 1,
+      "first": "bot/compose/who.py:200"
+    },
+    "turns_before": {
+      "count": 3,
+      "first": "bot/memory/portions.py:287"
+    },
+    "unclear_subject": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2338"
+    },
+    "unframed": {
+      "count": 11,
+      "first": "bot/compose/verdict.py:6461"
+    },
+    "union": {
+      "count": 7,
+      "first": "bot/compose/fallback.py:4907"
+    },
+    "unknown_food": {
+      "count": 1,
+      "first": "bot/knowledge/cooking.py:5863"
+    },
+    "unsure_words": {
+      "count": 1,
+      "first": "bot/understanding/__init__.py:2316"
+    },
+    "unusable": {
+      "count": 5,
+      "first": "bot/memory/limit.py:729"
+    },
+    "update": {
+      "count": 138,
+      "first": "bot/compose/a_trouble.py:127"
+    },
+    "upper": {
+      "count": 443,
+      "first": "bot/compose/a_place_nobody_can_see.py:328"
+    },
+    "use_it_up": {
+      "count": 2,
+      "first": "bot/knowledge/cooking.py:9935"
+    },
+    "user": {
+      "count": 4,
+      "first": "bot/knowledge/cooking.py:3893"
+    },
+    "user_lines": {
+      "count": 4,
+      "first": "bot/knowledge/clothing.py:798"
+    },
+    "uses": {
+      "count": 18,
+      "first": "bot/knowledge/meals.py:47"
+    },
+    "utc": {
+      "count": 3,
+      "first": "bot/knowledge/travel.py:4110"
+    },
+    "value": {
+      "count": 2,
+      "first": "bot/knowledge/maths.py:76"
+    },
+    "value_put_right": {
+      "count": 1,
+      "first": "bot/compose/fallback_chain.py:3288"
+    },
+    "values": {
+      "count": 80,
+      "first": "bot/compose/fallback.py:4904"
+    },
+    "venue_hours": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:3551"
+    },
+    "venue_hours_lines": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:3558"
+    },
+    "vetted": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8577"
+    },
+    "wanted": {
+      "count": 1,
+      "first": "bot/knowledge/meals.py:2216"
+    },
+    "wants": {
+      "count": 2,
+      "first": "bot/modules/intent.py:36"
+    },
+    "watch": {
+      "count": 2,
+      "first": "bot/modules/favourites.py:34"
+    },
+    "weekday": {
+      "count": 26,
+      "first": "bot/knowledge/maths.py:2651"
+    },
+    "went": {
+      "count": 2,
+      "first": "bot/memory/store_replies.py:3157"
+    },
+    "what_is_hurting_reply": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:10320"
+    },
+    "what_is_left": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:5264"
+    },
+    "what_it_knows": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:769"
+    },
+    "what_they_described": {
+      "count": 2,
+      "first": "bot/compose/fallback_pools.py:221"
+    },
+    "what_they_say": {
+      "count": 1,
+      "first": "bot/modules/chat.py:14198"
+    },
+    "when": {
+      "count": 2,
+      "first": "bot/understanding/kinds.py:6919"
+    },
+    "when_answer": {
+      "count": 1,
+      "first": "bot/modules/a_fact_asked_again.py:114"
+    },
+    "who_settles": {
+      "count": 1,
+      "first": "bot/modules/chat.py:10333"
+    },
+    "whose": {
+      "count": 1,
+      "first": "bot/modules/grief.py:549"
+    },
+    "with_the_age": {
+      "count": 2,
+      "first": "bot/modules/aboutachild.py:25"
+    },
+    "without": {
+      "count": 7,
+      "first": "bot/knowledge/dishes.py:3529"
+    },
+    "without_filler": {
+      "count": 1,
+      "first": "bot/memory/facts.py:3271"
+    },
+    "without_the_correction_opener": {
+      "count": 1,
+      "first": "bot/memory/named.py:1172"
+    },
+    "without_the_figure_of_speech": {
+      "count": 2,
+      "first": "bot/modules/chat.py:2704"
+    },
+    "without_the_frame": {
+      "count": 1,
+      "first": "bot/memory/store_replies.py:1611"
+    },
+    "without_the_hedges": {
+      "count": 1,
+      "first": "bot/modules/memory_store.py:2293"
+    },
+    "without_the_pot_opener": {
+      "count": 2,
+      "first": "bot/modules/saving_followup.py:225"
+    },
+    "without_what_was_just_said": {
+      "count": 1,
+      "first": "bot/modules/saving_followup.py:85"
+    },
+    "words": {
+      "count": 58,
+      "first": "bot/memory/again.py:180"
+    },
+    "words_of": {
+      "count": 3,
+      "first": "bot/modules/loss.py:130"
+    },
+    "work_weight": {
+      "count": 2,
+      "first": "bot/modules/memory_store.py:606"
+    },
+    "worry_on_the_table": {
+      "count": 1,
+      "first": "bot/modules/answers.py:8963"
+    },
+    "writes_the_message": {
+      "count": 2,
+      "first": "bot/compose/fallback_chain.py:1440"
+    },
+    "writes_the_words": {
+      "count": 1,
+      "first": "bot/modules/greeting.py:841"
+    },
+    "written_out": {
+      "count": 8,
+      "first": "bot/modules/answers.py:1766"
+    },
+    "year": {
+      "count": 106,
+      "first": "bot/compose/goodnews.py:1182"
+    },
+    "your_words": {
+      "count": 4,
+      "first": "bot/modules/chat.py:13119"
+    }
+  },
+  "stdlib": {
+    "ast.Add": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:63"
+    },
+    "ast.BinOp": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:78"
+    },
+    "ast.Constant": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:76"
+    },
+    "ast.Div": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:66"
+    },
+    "ast.Expression": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:74"
+    },
+    "ast.Mod": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:68"
+    },
+    "ast.Mult": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:65"
+    },
+    "ast.Pow": {
+      "count": 2,
+      "first": "bot/knowledge/maths.py:67"
+    },
+    "ast.Sub": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:64"
+    },
+    "ast.UAdd": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:70"
+    },
+    "ast.USub": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:70"
+    },
+    "ast.UnaryOp": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:83"
+    },
+    "ast.parse": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:125"
+    },
+    "calendar.monthrange": {
+      "count": 3,
+      "first": "bot/knowledge/maths.py:2594"
+    },
+    "copy.deepcopy": {
+      "count": 21,
+      "first": "bot/compose/hedge.py:48"
+    },
+    "datetime.date": {
+      "count": 115,
+      "first": "bot/compose/goodnews.py:1179"
+    },
+    "datetime.date.today": {
+      "count": 50,
+      "first": "bot/compose/goodnews.py:1179"
+    },
+    "datetime.datetime": {
+      "count": 5,
+      "first": "bot/knowledge/nature.py:38"
+    },
+    "datetime.datetime.now": {
+      "count": 4,
+      "first": "bot/knowledge/nature.py:49"
+    },
+    "datetime.timedelta": {
+      "count": 46,
+      "first": "bot/knowledge/maths.py:2644"
+    },
+    "datetime.timezone": {
+      "count": 3,
+      "first": "bot/knowledge/travel.py:4110"
+    },
+    "datetime.timezone.utc": {
+      "count": 3,
+      "first": "bot/knowledge/travel.py:4110"
+    },
+    "decimal.Decimal": {
+      "count": 6,
+      "first": "bot/knowledge/maths.py:753"
+    },
+    "decimal.ROUND_HALF_UP": {
+      "count": 3,
+      "first": "bot/knowledge/maths.py:754"
+    },
+    "difflib.SequenceMatcher": {
+      "count": 1,
+      "first": "bot/modules/answers.py:495"
+    },
+    "fractions.Fraction": {
+      "count": 9,
+      "first": "bot/knowledge/maths.py:235"
+    },
+    "fractions.items": {
+      "count": 1,
+      "first": "bot/knowledge/units.py:3671"
+    },
+    "functools.lru_cache": {
+      "count": 1,
+      "first": "bot/knowledge/meals.py:935"
+    },
+    "hashlib.sha1": {
+      "count": 1,
+      "first": "bot/modules/keeping.py:76"
+    },
+    "importlib.import_module": {
+      "count": 14,
+      "first": "bot/knowledge/__init__.py:80"
+    },
+    "itertools.product": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:2303"
+    },
+    "math.asin": {
+      "count": 1,
+      "first": "bot/knowledge/travel.py:12435"
+    },
+    "math.ceil": {
+      "count": 1,
+      "first": "bot/knowledge/units.py:1655"
+    },
+    "math.cos": {
+      "count": 2,
+      "first": "bot/knowledge/travel.py:12433"
+    },
+    "math.floor": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:775"
+    },
+    "math.log": {
+      "count": 2,
+      "first": "bot/knowledge/money.py:894"
+    },
+    "math.log10": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:775"
+    },
+    "math.radians": {
+      "count": 4,
+      "first": "bot/knowledge/travel.py:12431"
+    },
+    "math.sin": {
+      "count": 2,
+      "first": "bot/knowledge/travel.py:12433"
+    },
+    "math.sqrt": {
+      "count": 1,
+      "first": "bot/knowledge/travel.py:12435"
+    },
+    "numbers.append": {
+      "count": 3,
+      "first": "bot/knowledge/cooking.py:1270"
+    },
+    "operator.add": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:63"
+    },
+    "operator.mod": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:68"
+    },
+    "operator.mul": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:65"
+    },
+    "operator.neg": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:70"
+    },
+    "operator.pos": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:70"
+    },
+    "operator.pow": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:67"
+    },
+    "operator.sub": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:64"
+    },
+    "operator.truediv": {
+      "count": 1,
+      "first": "bot/knowledge/maths.py:66"
+    },
+    "pkgutil.iter_modules": {
+      "count": 2,
+      "first": "bot/knowledge/__init__.py:76"
+    },
+    "platform.search": {
+      "count": 1,
+      "first": "bot/compose/checking.py:830"
+    },
+    "random.Random": {
+      "count": 20,
+      "first": "bot/compose/__init__.py:355"
+    },
+    "random.choice": {
+      "count": 5,
+      "first": "bot/compose/check_with_you.py:111"
+    },
+    "random.getstate": {
+      "count": 3,
+      "first": "bot/compose/hedge.py:49"
+    },
+    "random.setstate": {
+      "count": 3,
+      "first": "bot/compose/hedge.py:58"
+    },
+    "re.I": {
+      "count": 5667,
+      "first": "bot/compose/__init__.py:30"
+    },
+    "re.IGNORECASE": {
+      "count": 327,
+      "first": "bot/compose/__init__.py:464"
+    },
+    "re.S": {
+      "count": 14,
+      "first": "bot/compose/fit.py:5427"
+    },
+    "re.VERBOSE": {
+      "count": 7,
+      "first": "bot/compose/remark.py:837"
+    },
+    "re.X": {
+      "count": 30,
+      "first": "bot/compose/fallback.py:15124"
+    },
+    "re.compile": {
+      "count": 9962,
+      "first": "bot/compose/__init__.py:27"
+    },
+    "re.error": {
+      "count": 1,
+      "first": "bot/modules/safety.py:2452"
+    },
+    "re.escape": {
+      "count": 469,
+      "first": "bot/compose/__init__.py:136"
+    },
+    "re.findall": {
+      "count": 638,
+      "first": "bot/compose/__init__.py:303"
+    },
+    "re.finditer": {
+      "count": 100,
+      "first": "bot/compose/__init__.py:136"
+    },
+    "re.fullmatch": {
+      "count": 77,
+      "first": "bot/compose/fallback.py:6141"
+    },
+    "re.match": {
+      "count": 172,
+      "first": "bot/compose/a_wait_about_a_body.py:271"
+    },
+    "re.search": {
+      "count": 1637,
+      "first": "bot/compose/__init__.py:422"
+    },
+    "re.split": {
+      "count": 320,
+      "first": "bot/compose/checking.py:765"
+    },
+    "re.sub": {
+      "count": 488,
+      "first": "bot/compose/a_number_the_bot_knows.py:154"
+    },
+    "re.subn": {
+      "count": 2,
+      "first": "bot/memory/choice.py:160"
+    },
+    "signal.search": {
+      "count": 1,
+      "first": "bot/modules/arbiter.py:641"
+    },
+    "string.punctuation": {
+      "count": 34,
+      "first": "bot/compose/fallback.py:13434"
+    },
+    "sys.argv": {
+      "count": 3,
+      "first": "bot/compose/badnews.py:1352"
+    },
+    "sys.stdin": {
+      "count": 1,
+      "first": "bot/__main__.py:9"
+    },
+    "token.endswith": {
+      "count": 6,
+      "first": "bot/memory/tried.py:1831"
+    },
+    "token.isalpha": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:4748"
+    },
+    "token.isdigit": {
+      "count": 3,
+      "first": "bot/knowledge/travel.py:7892"
+    },
+    "token.islower": {
+      "count": 2,
+      "first": "bot/understanding/normalize.py:4540"
+    },
+    "token.lower": {
+      "count": 2,
+      "first": "bot/understanding/normalize.py:3572"
+    },
+    "token.replace": {
+      "count": 1,
+      "first": "bot/understanding/normalize.py:4519"
+    },
+    "token.startswith": {
+      "count": 7,
+      "first": "bot/memory/thread.py:427"
+    },
+    "token.strip": {
+      "count": 3,
+      "first": "bot/memory/price.py:164"
+    },
+    "unicodedata.combining": {
+      "count": 2,
+      "first": "bot/knowledge/study.py:361"
+    },
+    "unicodedata.normalize": {
+      "count": 2,
+      "first": "bot/knowledge/study.py:360"
+    }
+  },
+  "regex_features": {
+    "character_class": {
+      "count": 3768,
+      "first": "bot/compose/__init__.py:221"
+    },
+    "dynamic_pattern": {
+      "count": 1671,
+      "first": "bot/compose/__init__.py:136"
+    },
+    "end_anchor_Z": {
+      "count": 4,
+      "first": "bot/memory/ack.py:4120"
+    },
+    "inline_flags": {
+      "count": 9,
+      "first": "bot/compose/fit.py:3363"
+    },
+    "literal_pattern": {
+      "count": 11725,
+      "first": "bot/compose/__init__.py:27"
+    },
+    "lookahead": {
+      "count": 548,
+      "first": "bot/compose/badnews.py:740"
+    },
+    "lookbehind": {
+      "count": 390,
+      "first": "bot/compose/a_number_the_bot_knows.py:60"
+    },
+    "named_backreference": {
+      "count": 1,
+      "first": "bot/memory/ack.py:6679"
+    },
+    "named_group": {
+      "count": 446,
+      "first": "bot/compose/a_thing_being_weighed.py:62"
+    },
+    "numeric_backreference": {
+      "count": 7,
+      "first": "bot/compose/talkto.py:152"
+    },
+    "possessive_quantifier": {
+      "count": 2,
+      "first": "bot/memory/meant.py:116"
+    },
+    "unicode_classes": {
+      "count": 10476,
+      "first": "bot/compose/__init__.py:27"
+    }
+  },
+  "runtime_trace": {
+    "status": "missing",
+    "calls": null,
+    "regex_patterns_status": "missing",
+    "regex_patterns": null
+  }
+}
