@@ -10,6 +10,9 @@ next step.
 ## Check disputes
 (none yet)
 
+### 2026-11-16 — Recorded runtime call counts inflate across groups
+Read-only audit of agent/checks/lib/record.py: cmd_shard retains one writer across seed/clock groups; run_group forks with its accumulated trace, adds current calls, and returns the entire inherited-plus-current trace. The parent then adds those cumulative counts again (lines 181–183), producing T_new = 2*T_old + current calls. Observed _operator.add count 2^30 in shard 4 is consistent with this recurrence. Trace names and first locations remain valid inventory inputs; count magnitudes are not profiling weights. Protected recorder unchanged. This does not by itself invalidate the separately recorded function/hook/turn outputs or G1 cases.
+
 ## Log
 
 ### 2026-11-16 11:27 EST — M0 bootstrap / M2 runtime foundation (partial)
@@ -95,3 +98,9 @@ next step.
 - Native workspace cargo build PASS in 3m48s, measured peak compiler RSS 9,194,756 KiB. Prior 131-file build was 5m51s; concurrent host load differs, so these are observations rather than a performance claim. Full workspace tests are pending behind the quick-check hygiene lock (session 79467, target/resume-workspace-tests.log). Generated source diff check PASS.
 - All six original golden-recording shards have finished, totaling 2,413 conversations; original merge is running and MANIFEST is not yet published. A single verification watcher will run check_env and full runtime parity using the standalone production-runtime checker once the merge finishes (target/full-verification-watch.log). Isolated coverage is still processing its last large seed/clock group. Do not restart either reference job. Hidden hold-out remains untouched.
 - Count remains native 131/527, WASM integration not started, combined unique 131/527; last verified structure count 3,965 spans. Exact next steps: collect actual understanding leaf-call comparisons and workspace/Clippy results, save fixes in another small push, then generate compose (126 files) and continue native G2/G3. Complete G0/G1 against the full merged goldens; defer WASM until native acceptance.
+
+### 2026-11-16 14:23 EST — M0 / M1 acceptance checkpoint
+- Buildable native checkpoint 90ea2cc pushed successfully. Full dev golden merge finished: 6,508 turns, 753,393 hook calls, 242,647 function calls across 1,787 functions. Manifest is sample 100%, six shards, and matches the committed dev corpus SHA. Harness selftest previously passed with failures=0. check_env PASS (target/full-env.log); M0 bootstrap gate is now achieved. Coverage report remains pending and will be committed when its final group finishes.
+- Regenerated inventory from all 528 Python files and the actual merged runtime trace; inventory/progress fixture tests 3/3 PASS. M1 inventory and its environment gate are achieved; source-node coverage was independently verified earlier. Discovered and documented recorder call-count inflation under Check disputes; inventory labels these counts as recorded and unsuitable for profiling. Protected checks remain unchanged.
+- Full G1 is running on all 94,125 recorded runtime cases (59,138 regex, 28,574 strings, 3,474 formatting, 2,939 random) using the standalone production-runtime frontend. Complete CLI acceptance is still required later. Full workspace tests and explicit Clippy are running/queued separately. Startup check_all --quick timed out at 600 seconds during hygiene after reporting missing unfinished gates; it is not a passing all-gate run.
+- Actual leaf calls exposed another native import failure in normalize.py: membership in a lazy generator. Runtime-aware contains_rt and compiler dispatch now pass focused lazy-consumption/exception tests and ten translator tests; generated mirrors have not yet been regenerated with this fix. Compiler agent is testing an isolated normalization import before the next full build. Native/WASM/unique file counts remain 131/527, not started, 131/527 respectively.
