@@ -20,4 +20,5 @@ replies are included.
 
 The checked-in smoke tools exercise a small set of boundary cases and the native
 JSONL interface. They never execute a PyBot conversation or build goldens.
-Acceptance parity requires the compute-host goldens and all relevant gates.
+Acceptance parity requires generated goldens and all relevant gates. Local
+generation and full checks are authorized by root `AGENTS.md`.

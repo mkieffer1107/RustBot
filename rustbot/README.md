@@ -32,5 +32,6 @@ separately. Both builds share the same source translation count. Presence counts
 do not assert behavioral parity; acceptance gates are recorded separately.
 
 Corpus generation, full parity, performance, and the acceptance harness self-test
-must run on a compute host as described in `agent/checks/README.md`. No native or
+may run locally with bounded worker counts. Follow the steps in `agent/checks/README.md`; its older compute-host-only
+wording is superseded by root `AGENTS.md`. No native or
 browser performance claims have been measured for this port yet.

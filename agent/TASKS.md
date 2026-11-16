@@ -5,9 +5,9 @@ the commit, in `PROGRESS.md`. Milestones M3–M5 can run in parallel on separate
 
 ## M0 — Bootstrap (gate G0)
 - Read `SPEC.md`, `AGENTS.md`, `agent/checks/README.md`.
-- Build the corpus and goldens (PyBot recorded on the dev corpus at every layer) on a compute host, not the
-  development machine: `agent/checks/README.md`, "Building the corpus and goldens". Run
-  `agent/checks/selftest/run.sh` once there and record its result in `PROGRESS.md`. Commit the corpus files; keep the
+- Build the corpus and goldens (PyBot recorded on the dev corpus at every layer) locally; a separate compute host
+  is optional: `agent/checks/README.md`, "Building the corpus and goldens". Run
+  `agent/checks/selftest/run.sh` and record its result in `PROGRESS.md`. Commit the corpus files; keep the
   goldens out of git (`agent/goldens/` is ignored).
 - Create the Cargo workspace skeleton (`rustbot/Cargo.toml`, crates `pyrt`, `bot`, `cli`) and `rustbot/tools/py2rs/`.
 - **Done when:** `agent/checks/check_env.sh`

@@ -15,8 +15,9 @@ byte-identical behaviour. Any coding agent (Codex, Claude, ...) follows the same
 Setup: `reference/fetch.sh` fetches the pinned PyBot source and SmolTalkBench prompts (git-ignored).
 
 ## Where to run what
-- **The development machine: no CPU-heavy work.** Edit code, `cargo check`/`cargo build`, unit tests of a single
-  crate, and smoke runs of a few turns only. Don't build the corpus or goldens, run PyBot over a corpus, or run
-  `check_all.sh`, `check_perf.sh` or full parity checks there.
-- **A separate compute host** runs the heavy work: corpus + goldens, full checks, perf, and grading on the hidden
-  hold-out set. Steps: [`agent/checks/README.md`](agent/checks/README.md), "Building the corpus and goldens".
+- **Local execution is authorized.** Build the corpus and goldens, run PyBot, full parity checks,
+  `check_all.sh`, and performance checks on this machine. Use bounded worker counts and timeouts so implementation
+  can continue alongside long jobs. A separate compute host is optional; SSH is not required.
+- This supersedes older compute-host-only wording in supporting documents. Follow the build steps in
+  [`agent/checks/README.md`](agent/checks/README.md), "Building the corpus and goldens", locally. Keep the hidden
+  hold-out set separate from development as described there.
