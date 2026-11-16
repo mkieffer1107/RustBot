@@ -20,7 +20,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_the_other_end",170,176),
 ("the_line_that_gives.<locals>.<genexpr>",272,272)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/kinds.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/kinds.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("The kind of detail a line asks for, and the earlier line of theirs that gives that kind.\n\n`bot/memory/lineback.py` is the one check for \"is there an earlier turn this line is about\", and\nits readers are matched on the words an ask shares with their lines. A whole family of asks shares\nno word with the line that answers them:\n\n    the plumber is coming tuesday at 10                              what time again\n    its a worcester bosch, about six years old                       and what make is the boiler\n    its a dulox one, the blue tin                                     what colour was it\n    we paid 28 pounds for it                                          how much was it again\n\nThe ask names the *kind* of detail it wants - the time, the make, the colour, the price - and the\nline gives that kind without ever using the word. So the question underneath is not \"which line\nshares a word with this ask\" but \"does an earlier line of theirs hold the kind of detail this line\nasks for, about the thing this line names (or, when it names nothing, about anything the chat has\nbeen on)\".\n\nThis module is the table for that question and nothing else: it reads, and never decides a reply.\n`bot/memory/lineback.py` asks it last, after the readers that match on words, and says the line\nback in its own voice.\n"))?;
@@ -66,7 +66,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/kinds.py:170-176 _the_other_end
 pub(super) fn _the_other_end(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["ask","asking_end","asking_start","line"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kinds.py", 170, 176, "_the_other_end");
+rt.trace_call_code("bot/memory/kinds.py", 170, 176, "_the_other_end", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_294 = { let __callable_295 = frame.load(rt, "bool")?; let mut __args_296 = CallArgs::default(); let __v_297 = { let __callable_298 = { let __v_300 = frame.load(rt, "AN_END")?; rt.getattr(&__v_300, "search")? }; let mut __args_299 = CallArgs::default(); let __v_301 = frame.load(rt, "ask")?; __args_299.positional.push(__v_301); rt.call(&__callable_298, __args_299)? }; __args_296.positional.push(__v_297); rt.call(&__callable_295, __args_296)? };
@@ -90,7 +90,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/kinds.py:183-184 _flat
 pub(super) fn _flat(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kinds.py", 183, 184, "_flat");
+rt.trace_call_code("bot/memory/kinds.py", 183, 184, "_flat", 3);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __callable_329 = { let __v_331 = Value::from(" "); rt.getattr(&__v_331, "join")? }; let mut __args_330 = CallArgs::default(); let __v_332 = { let __callable_333 = { let __v_335 = { let __callable_336 = { let __v_338 = { let __callable_339 = frame.load(rt, "str")?; let mut __args_340 = CallArgs::default(); let __v_341 = { let mut __v_342 = frame.load(rt, "text")?; if !__v_342.is_truthy() { __v_342 = Value::from(""); } __v_342 }; __args_340.positional.push(__v_341); rt.call(&__callable_339, __args_340)? }; rt.getattr(&__v_338, "lower")? }; let mut __args_337 = CallArgs::default(); rt.call(&__callable_336, __args_337)? }; rt.getattr(&__v_335, "split")? }; let mut __args_334 = CallArgs::default(); rt.call(&__callable_333, __args_334)? }; __args_330.positional.push(__v_332); rt.call(&__callable_329, __args_330)? }));
 Ok(__Flow::Next)
@@ -104,7 +104,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/kinds.py:187-197 _words
 pub(super) fn _words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["length","line","out","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kinds.py", 187, 197, "_words");
+rt.trace_call_code("bot/memory/kinds.py", 187, 197, "_words", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_343 = { let __callable_344 = frame.load(rt, "set")?; let mut __args_345 = CallArgs::default(); rt.call(&__callable_344, __args_345)? };
@@ -144,7 +144,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/kinds.py:200-209 _mentions
 pub(super) fn _mentions(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["flat","have","line","wanted","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kinds.py", 200, 209, "_mentions");
+rt.trace_call_code("bot/memory/kinds.py", 200, 209, "_mentions", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_400 = { let __callable_401 = frame.load(rt, "_words")?; let mut __args_402 = CallArgs::default(); let __v_403 = frame.load(rt, "line")?; __args_402.positional.push(__v_403); rt.call(&__callable_401, __args_402)? };
@@ -183,7 +183,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/kinds.py:212-234 _their_lines
 pub(super) fn _their_lines(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","memory","out","turn","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kinds.py", 212, 234, "_their_lines");
+rt.trace_call_code("bot/memory/kinds.py", 212, 234, "_their_lines", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_437 = { let __callable_438 = { let __v_440 = frame.load(rt, "memory")?; rt.getattr(&__v_440, "get")? }; let mut __args_439 = CallArgs::default(); let __v_441 = Value::from("turns"); __args_439.positional.push(__v_441); rt.call(&__callable_438, __args_439)? };
@@ -235,7 +235,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/kinds.py:237-240 the_kind_asked
 pub(super) fn the_kind_asked(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["low","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kinds.py", 237, 240, "the_kind_asked");
+rt.trace_call_code("bot/memory/kinds.py", 237, 240, "the_kind_asked", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_494 = { let __callable_495 = frame.load(rt, "_flat")?; let mut __args_496 = CallArgs::default(); let __v_497 = frame.load(rt, "text")?; __args_496.positional.push(__v_497); rt.call(&__callable_495, __args_496)? };
@@ -252,7 +252,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/kinds.py:243-293 the_line_that_gives
 pub(super) fn the_line_that_gives(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asking_again","gives","index","kind","kinds","line","lines","low","named","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kinds.py", 243, 293, "the_line_that_gives");
+rt.trace_call_code("bot/memory/kinds.py", 243, 293, "the_line_that_gives", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_504 = { let __callable_505 = frame.load(rt, "the_kind_asked")?; let mut __args_506 = CallArgs::default(); let __v_507 = frame.load(rt, "text")?; __args_506.positional.push(__v_507); rt.call(&__callable_505, __args_506)? };
@@ -285,7 +285,7 @@ let __v_542 = { let __comp_parent_543 = frame.clone(); pyrt::comprehension::coll
 frame.store("named", __v_542.clone())?;
 let __v_559 = { let __callable_560 = frame.load(rt, "bool")?; let mut __args_561 = CallArgs::default(); let __v_562 = { let __callable_563 = { let __v_565 = frame.load(rt, "A_RECALL_SAID")?; rt.getattr(&__v_565, "search")? }; let mut __args_564 = CallArgs::default(); let __v_566 = frame.load(rt, "low")?; __args_564.positional.push(__v_566); rt.call(&__callable_563, __args_564)? }; __args_561.positional.push(__v_562); rt.call(&__callable_560, __args_561)? };
 frame.store("asking_again", __v_559.clone())?;
-let __v_567 = { let mut __v_568 = { let __v_569 = frame.load(rt, "named")?; Value::Bool(!__v_569.is_truthy()) }; if __v_568.is_truthy() { __v_568 = { let __v_570 = frame.load(rt, "asking_again")?; Value::Bool(!__v_570.is_truthy()) }; } if __v_568.is_truthy() { __v_568 = { let __v_571 = { let __callable_572 = frame.load(rt, "any")?; let mut __args_573 = CallArgs::default(); let __v_574 = { let __comp_parent_575 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_575.clone(), &["kind"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_575 = __comp_parent_575.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "kinds")?) }) }, assign: { let __comp_parent_575 = __comp_parent_575.clone(); Rc::new(move |rt, frame, value| { frame.store("kind", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_575 = __comp_parent_575.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_576 = frame.load(rt, "kind")?; let mut __matched_577 = true; if __matched_577 { let __v_578 = frame.load(rt, "UNNAMED_KINDS")?; __matched_577 = pyrt::ops::contains(&__v_578, &__v_576)?; } Value::Bool(__matched_577) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/kinds.py", 272, 272, "the_line_that_gives.<locals>.<genexpr>"); Ok(()) }))? }; __args_573.positional.push(__v_574); rt.call(&__callable_572, __args_573)? }; Value::Bool(!__v_571.is_truthy()) }; } __v_568 }; if __v_567.is_truthy() {
+let __v_567 = { let mut __v_568 = { let __v_569 = frame.load(rt, "named")?; Value::Bool(!__v_569.is_truthy()) }; if __v_568.is_truthy() { __v_568 = { let __v_570 = frame.load(rt, "asking_again")?; Value::Bool(!__v_570.is_truthy()) }; } if __v_568.is_truthy() { __v_568 = { let __v_571 = { let __callable_572 = frame.load(rt, "any")?; let mut __args_573 = CallArgs::default(); let __v_574 = { let __comp_parent_575 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_575.clone(), &["kind"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_575 = __comp_parent_575.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "kinds")?) }) }, assign: { let __comp_parent_575 = __comp_parent_575.clone(); Rc::new(move |rt, frame, value| { frame.store("kind", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_575 = __comp_parent_575.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_576 = frame.load(rt, "kind")?; let mut __matched_577 = true; if __matched_577 { let __v_578 = frame.load(rt, "UNNAMED_KINDS")?; __matched_577 = pyrt::ops::contains(&__v_578, &__v_576)?; } Value::Bool(__matched_577) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/kinds.py", 272, 272, "the_line_that_gives.<locals>.<genexpr>", 9); Ok(()) }))? }; __args_573.positional.push(__v_574); rt.call(&__callable_572, __args_573)? }; Value::Bool(!__v_571.is_truthy()) }; } __v_568 }; if __v_567.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 

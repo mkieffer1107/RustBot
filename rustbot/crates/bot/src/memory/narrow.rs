@@ -123,7 +123,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("only_a_length",143,160),
 ("tidy",2884,2899)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/narrow.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/narrow.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("The part of an answer that a follow-up asks for.\n\nA follow-up often asks about the answer the bot has just given: after \"How do I roast a\nchicken?\", \"what temperature should the oven be?\" wants the oven temperature, not the whole\nmethod again. STYLE.md says never answer the same way twice in a row, and the full answer is\nalready on screen, so this returns the sentence, clause or number that answers the property\nasked for (\"190C (170C fan).\", \"40 to 45 minutes.\", \"20 minutes per 500g.\").\n\nIt is deliberately conservative. It only acts when the line asks for a property it knows how\nto find (time, heat, amount, money, distance, order), and it returns None rather than guess:\na sentence with several different times is handed back whole unless the question or the\nsentence says which one is meant. The caller decides whether the entry is the right one; this\nmodule only reads the answer.\n"))?;
@@ -504,7 +504,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/narrow.py:143-160 only_a_length
 pub(super) fn only_a_length(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","rest","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 143, 160, "only_a_length");
+rt.trace_call_code("bot/memory/narrow.py", 143, 160, "only_a_length", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1664 = { let mut __v_1665 = { let __v_1666 = { let __callable_1667 = frame.load(rt, "isinstance")?; let mut __args_1668 = CallArgs::default(); let __v_1669 = frame.load(rt, "text")?; __args_1668.positional.push(__v_1669); let __v_1670 = frame.load(rt, "str")?; __args_1668.positional.push(__v_1670); rt.call(&__callable_1667, __args_1668)? }; Value::Bool(!__v_1666.is_truthy()) }; if !__v_1665.is_truthy() { __v_1665 = { let mut __v_1671 = Value::from("?"); let mut __matched_1672 = true; if __matched_1672 { let __v_1673 = frame.load(rt, "text")?; __matched_1672 = pyrt::ops::contains(&__v_1673, &__v_1671)?; } Value::Bool(__matched_1672) }; } __v_1665 }; if __v_1664.is_truthy() {
@@ -526,7 +526,7 @@ return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-return Ok(__Flow::Return({ let __callable_1715 = frame.load(rt, "all")?; let mut __args_1716 = CallArgs::default(); let __v_1717 = { let __comp_parent_1718 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1718.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1718 = __comp_parent_1718.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "rest")?) }) }, assign: { let __comp_parent_1718 = __comp_parent_1718.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1718 = __comp_parent_1718.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_1719 = { let __callable_1721 = { let __v_1723 = frame.load(rt, "word")?; rt.getattr(&__v_1723, "lower")? }; let mut __args_1722 = CallArgs::default(); rt.call(&__callable_1721, __args_1722)? }; let mut __matched_1720 = true; if __matched_1720 { let __v_1724 = frame.load(rt, "LENGTH_FILLER")?; __matched_1720 = pyrt::ops::contains(&__v_1724, &__v_1719)?; } Value::Bool(__matched_1720) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 160, 160, "only_a_length.<locals>.<genexpr>"); Ok(()) }))? }; __args_1716.positional.push(__v_1717); rt.call(&__callable_1715, __args_1716)? }));
+return Ok(__Flow::Return({ let __callable_1715 = frame.load(rt, "all")?; let mut __args_1716 = CallArgs::default(); let __v_1717 = { let __comp_parent_1718 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1718.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1718 = __comp_parent_1718.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "rest")?) }) }, assign: { let __comp_parent_1718 = __comp_parent_1718.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1718 = __comp_parent_1718.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_1719 = { let __callable_1721 = { let __v_1723 = frame.load(rt, "word")?; rt.getattr(&__v_1723, "lower")? }; let mut __args_1722 = CallArgs::default(); rt.call(&__callable_1721, __args_1722)? }; let mut __matched_1720 = true; if __matched_1720 { let __v_1724 = frame.load(rt, "LENGTH_FILLER")?; __matched_1720 = pyrt::ops::contains(&__v_1724, &__v_1719)?; } Value::Bool(__matched_1720) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 160, 160, "only_a_length.<locals>.<genexpr>", 3); Ok(()) }))? }; __args_1716.positional.push(__v_1717); rt.call(&__callable_1715, __args_1716)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -538,7 +538,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/narrow.py:218-241 _the_remedy_in
 pub(super) fn _the_remedy_in(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","kept","part","piece","pieces","said","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 218, 241, "_the_remedy_in");
+rt.trace_call_code("bot/memory/narrow.py", 218, 241, "_the_remedy_in", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1725 = { let __callable_1726 = frame.load(rt, "str")?; let mut __args_1727 = CallArgs::default(); let __v_1728 = { let mut __v_1729 = frame.load(rt, "said")?; if !__v_1729.is_truthy() { __v_1729 = Value::from(""); } __v_1729 }; __args_1727.positional.push(__v_1728); rt.call(&__callable_1726, __args_1727)? };
@@ -607,7 +607,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/narrow.py:244-255 carries
 pub(super) fn carries(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["kind","reply","span"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 244, 255, "carries");
+rt.trace_call_code("bot/memory/narrow.py", 244, 255, "carries", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1856 = { let mut __v_1857 = frame.load(rt, "kind")?; let mut __matched_1858 = true; if __matched_1858 { let __v_1859 = Value::from("remedy"); __matched_1858 = __v_1857.equals(&__v_1859)?; } Value::Bool(__matched_1858) }; if __v_1856.is_truthy() {
@@ -629,7 +629,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/narrow.py:291-295 has_a_date
 pub(super) fn has_a_date(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 291, 295, "has_a_date");
+rt.trace_call_code("bot/memory/narrow.py", 291, 295, "has_a_date", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1902 = { let __callable_1903 = { let __v_1905 = frame.load(rt, "DATED_STRONG")?; rt.getattr(&__v_1905, "search")? }; let mut __args_1904 = CallArgs::default(); let __v_1906 = frame.load(rt, "sentence")?; __args_1904.positional.push(__v_1906); rt.call(&__callable_1903, __args_1904)? }; if __v_1902.is_truthy() {
@@ -649,7 +649,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/narrow.py:503-504 _NoLength.__bool__
 pub(super) fn __bool__(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["self"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 503, 504, "_NoLength.__bool__");
+rt.trace_call_code("bot/memory/narrow.py", 503, 504, "_NoLength.__bool__", 8);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return(Value::Bool(false)));
 Ok(__Flow::Next)
@@ -663,7 +663,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/narrow.py:506-507 _NoLength.__repr__
 pub(super) fn __repr__(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["self"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 506, 507, "_NoLength.__repr__");
+rt.trace_call_code("bot/memory/narrow.py", 506, 507, "_NoLength.__repr__", 9);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return(Value::from("NO_LENGTH")));
 Ok(__Flow::Next)
@@ -677,7 +677,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/narrow.py:623-629 pieces_of
 pub(super) fn pieces_of(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["guarded","pattern","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 623, 629, "pieces_of");
+rt.trace_call_code("bot/memory/narrow.py", 623, 629, "pieces_of", 10);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1923 = { let __callable_1924 = { let __v_1926 = frame.load(rt, "NUM_RANGE")?; rt.getattr(&__v_1926, "sub")? }; let mut __args_1925 = CallArgs::default(); let __v_1927 = { let __signature_1929 = Signature { name: "<lambda>".into(), positional: vec!["found".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_1931 = Value::dict(); __attrs_1931.dict_set(Value::from("__doc__"), Value::None)?; __attrs_1931.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_1932 = Value::dict(); __attrs_1931.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_1928 = Frame::module(frame.globals.clone()); let mut __function_1930 = NativeFunction::qualified_with_origin("<lambda>".into(), "pieces_of.<locals>.<lambda>".into(), "bot.memory.narrow".into(), __attrs_1931, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/narrow.py", first: 625, last: 625, qualname: "pieces_of.<locals>.<lambda>" }, closure: __closure_1928.clone(), freevars: vec![] }, move |rt, args| super::__py_7::__lambda(rt, __closure_1928.clone(), &__signature_1929, args)); __function_1930 }; __args_1925.positional.push(__v_1927); let __v_1933 = { let __callable_1934 = frame.load(rt, "str")?; let mut __args_1935 = CallArgs::default(); let __v_1936 = { let mut __v_1937 = frame.load(rt, "text")?; if !__v_1937.is_truthy() { __v_1937 = Value::from(""); } __v_1937 }; __args_1935.positional.push(__v_1936); rt.call(&__callable_1934, __args_1935)? }; __args_1925.positional.push(__v_1933); rt.call(&__callable_1924, __args_1925)? };
@@ -696,7 +696,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/narrow.py:625-625 pieces_of.<locals>.<lambda>
 pub(super) fn __lambda(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 625, 625, "pieces_of.<locals>.<lambda>");
+rt.trace_call_code("bot/memory/narrow.py", 625, 625, "pieces_of.<locals>.<lambda>", 11);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __callable_1960 = { let __v_1962 = { let __callable_1963 = { let __v_1965 = frame.load(rt, "found")?; rt.getattr(&__v_1965, "group")? }; let mut __args_1964 = CallArgs::default(); let __v_1966 = Value::Int("0".parse().expect("integer literal")); __args_1964.positional.push(__v_1966); rt.call(&__callable_1963, __args_1964)? }; rt.getattr(&__v_1962, "replace")? }; let mut __args_1961 = CallArgs::default(); let __v_1967 = Value::from(" and "); __args_1961.positional.push(__v_1967); let __v_1968 = frame.load(rt, "RANGE_JOIN")?; __args_1961.positional.push(__v_1968); rt.call(&__callable_1960, __args_1961)? }));
 Ok(__Flow::Next)
@@ -710,7 +710,7 @@ mod __py_8 { use super::*;
 // py: bot/memory/narrow.py:659-662 _same
 pub(super) fn _same(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["group","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 659, 662, "_same");
+rt.trace_call_code("bot/memory/narrow.py", 659, 662, "_same", 12);
 let flow = (|| -> PyResult<__Flow> {
 let __v_1969 = { let __callable_1970 = frame.load(rt, "frozenset")?; let mut __args_1971 = CallArgs::default(); let __v_1972 = { let __callable_1973 = { let __v_1975 = { let __callable_1976 = frame.load(rt, "str")?; let mut __args_1977 = CallArgs::default(); let __v_1978 = frame.load(rt, "words")?; __args_1977.positional.push(__v_1978); rt.call(&__callable_1976, __args_1977)? }; rt.getattr(&__v_1975, "split")? }; let mut __args_1974 = CallArgs::default(); rt.call(&__callable_1973, __args_1974)? }; __args_1971.positional.push(__v_1972); rt.call(&__callable_1970, __args_1971)? };
 frame.store("group", __v_1969.clone())?;
@@ -737,7 +737,7 @@ mod __py_9 { use super::*;
 // py: bot/memory/narrow.py:731-734 step_word
 pub(super) fn step_word(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","question"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 731, 734, "step_word");
+rt.trace_call_code("bot/memory/narrow.py", 731, 734, "step_word", 13);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1987 = { let __callable_1988 = { let __v_1990 = frame.load(rt, "STEP_VERB")?; rt.getattr(&__v_1990, "search")? }; let mut __args_1989 = CallArgs::default(); let __v_1991 = { let __callable_1992 = frame.load(rt, "flat")?; let mut __args_1993 = CallArgs::default(); let __v_1994 = frame.load(rt, "question")?; __args_1993.positional.push(__v_1994); rt.call(&__callable_1992, __args_1993)? }; __args_1989.positional.push(__v_1991); rt.call(&__callable_1988, __args_1989)? };
@@ -754,7 +754,7 @@ mod __py_10 { use super::*;
 // py: bot/memory/narrow.py:737-749 kind_of
 pub(super) fn kind_of(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clean","kind","pattern","question"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 737, 749, "kind_of");
+rt.trace_call_code("bot/memory/narrow.py", 737, 749, "kind_of", 14);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2003 = { let __callable_2004 = { let __v_2006 = Value::from(" "); rt.getattr(&__v_2006, "join")? }; let mut __args_2005 = CallArgs::default(); let __v_2007 = { let __callable_2008 = { let __v_2010 = { let __callable_2011 = { let __v_2013 = { let __callable_2014 = frame.load(rt, "str")?; let mut __args_2015 = CallArgs::default(); let __v_2016 = { let mut __v_2017 = frame.load(rt, "question")?; if !__v_2017.is_truthy() { __v_2017 = Value::from(""); } __v_2017 }; __args_2015.positional.push(__v_2016); rt.call(&__callable_2014, __args_2015)? }; rt.getattr(&__v_2013, "lower")? }; let mut __args_2012 = CallArgs::default(); rt.call(&__callable_2011, __args_2012)? }; rt.getattr(&__v_2010, "split")? }; let mut __args_2009 = CallArgs::default(); rt.call(&__callable_2008, __args_2009)? }; __args_2005.positional.push(__v_2007); rt.call(&__callable_2004, __args_2005)? };
@@ -791,7 +791,7 @@ mod __py_11 { use super::*;
 // py: bot/memory/narrow.py:752-757 asks_a_part
 pub(super) fn asks_a_part(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["question"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 752, 757, "asks_a_part");
+rt.trace_call_code("bot/memory/narrow.py", 752, 757, "asks_a_part", 15);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let mut __v_2038 = { let mut __v_2039 = { let __callable_2041 = frame.load(rt, "kind_of")?; let mut __args_2042 = CallArgs::default(); let __v_2043 = frame.load(rt, "question")?; __args_2042.positional.push(__v_2043); rt.call(&__callable_2041, __args_2042)? }; let mut __matched_2040 = true; if __matched_2040 { let __v_2044 = Value::None; __matched_2040 = !__v_2039.is_identical(&__v_2044); } Value::Bool(__matched_2040) }; if !__v_2038.is_truthy() { __v_2038 = { let __callable_2045 = frame.load(rt, "_property_ask")?; let mut __args_2046 = CallArgs::default(); let __v_2047 = frame.load(rt, "question")?; __args_2046.positional.push(__v_2047); rt.call(&__callable_2045, __args_2046)? }; } if !__v_2038.is_truthy() { __v_2038 = { let __callable_2048 = frame.load(rt, "_option_ask")?; let mut __args_2049 = CallArgs::default(); let __v_2050 = frame.load(rt, "question")?; __args_2049.positional.push(__v_2050); rt.call(&__callable_2048, __args_2049)? }; } if !__v_2038.is_truthy() { __v_2038 = { let __callable_2051 = frame.load(rt, "_named_follow_up")?; let mut __args_2052 = CallArgs::default(); let __v_2053 = frame.load(rt, "question")?; __args_2052.positional.push(__v_2053); rt.call(&__callable_2051, __args_2052)? }; } if !__v_2038.is_truthy() { __v_2038 = { let __callable_2054 = frame.load(rt, "bool")?; let mut __args_2055 = CallArgs::default(); let __v_2056 = { let __callable_2057 = { let __v_2059 = frame.load(rt, "YES_NO")?; rt.getattr(&__v_2059, "search")? }; let mut __args_2058 = CallArgs::default(); let __v_2060 = { let __callable_2061 = frame.load(rt, "flat")?; let mut __args_2062 = CallArgs::default(); let __v_2063 = frame.load(rt, "question")?; __args_2062.positional.push(__v_2063); rt.call(&__callable_2061, __args_2062)? }; __args_2058.positional.push(__v_2060); rt.call(&__callable_2057, __args_2058)? }; __args_2055.positional.push(__v_2056); rt.call(&__callable_2054, __args_2055)? }; } if !__v_2038.is_truthy() { __v_2038 = { let __callable_2064 = frame.load(rt, "bool")?; let mut __args_2065 = CallArgs::default(); let __v_2066 = { let __callable_2067 = { let __v_2069 = frame.load(rt, "ASKS_FREQUENCY")?; rt.getattr(&__v_2069, "search")? }; let mut __args_2068 = CallArgs::default(); let __v_2070 = { let __callable_2071 = frame.load(rt, "flat")?; let mut __args_2072 = CallArgs::default(); let __v_2073 = frame.load(rt, "question")?; __args_2072.positional.push(__v_2073); rt.call(&__callable_2071, __args_2072)? }; __args_2068.positional.push(__v_2070); rt.call(&__callable_2067, __args_2068)? }; __args_2065.positional.push(__v_2066); rt.call(&__callable_2064, __args_2065)? }; } if !__v_2038.is_truthy() { __v_2038 = { let __callable_2074 = frame.load(rt, "bool")?; let mut __args_2075 = CallArgs::default(); let __v_2076 = { let __callable_2077 = { let __v_2079 = frame.load(rt, "ASKS_FOR_A_HAND")?; rt.getattr(&__v_2079, "search")? }; let mut __args_2078 = CallArgs::default(); let __v_2080 = { let __callable_2081 = frame.load(rt, "flat")?; let mut __args_2082 = CallArgs::default(); let __v_2083 = frame.load(rt, "question")?; __args_2082.positional.push(__v_2083); rt.call(&__callable_2081, __args_2082)? }; __args_2078.positional.push(__v_2080); rt.call(&__callable_2077, __args_2078)? }; __args_2075.positional.push(__v_2076); rt.call(&__callable_2074, __args_2075)? }; } __v_2038 }));
@@ -806,7 +806,7 @@ mod __py_12 { use super::*;
 // py: bot/memory/narrow.py:760-766 _named_follow_up
 pub(super) fn _named_follow_up(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clean","named","question"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 760, 766, "_named_follow_up");
+rt.trace_call_code("bot/memory/narrow.py", 760, 766, "_named_follow_up", 16);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2084 = { let __callable_2085 = frame.load(rt, "flat")?; let mut __args_2086 = CallArgs::default(); let __v_2087 = frame.load(rt, "question")?; __args_2086.positional.push(__v_2087); rt.call(&__callable_2085, __args_2086)? };
@@ -830,10 +830,10 @@ mod __py_13 { use super::*;
 // py: bot/memory/narrow.py:777-785 _gives_a_figure_in
 pub(super) fn _gives_a_figure_in(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["part","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 777, 785, "_gives_a_figure_in");
+rt.trace_call_code("bot/memory/narrow.py", 777, 785, "_gives_a_figure_in", 17);
 let flow = (|| -> PyResult<__Flow> {
 
-return Ok(__Flow::Return({ let __callable_2116 = frame.load(rt, "any")?; let mut __args_2117 = CallArgs::default(); let __v_2118 = { let __comp_parent_2119 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_2119.clone(), &["hit"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_2119 = __comp_parent_2119.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_2120 = { let __v_2122 = frame.load(rt, "_COUNTED_UNIT")?; rt.getattr(&__v_2122, "finditer")? }; let mut __args_2121 = CallArgs::default(); let __v_2123 = { let __callable_2124 = frame.load(rt, "str")?; let mut __args_2125 = CallArgs::default(); let __v_2126 = { let mut __v_2127 = frame.load(rt, "part")?; if !__v_2127.is_truthy() { __v_2127 = Value::from(""); } __v_2127 }; __args_2125.positional.push(__v_2126); rt.call(&__callable_2124, __args_2125)? }; __args_2121.positional.push(__v_2123); rt.call(&__callable_2120, __args_2121)? }) }) }, assign: { let __comp_parent_2119 = __comp_parent_2119.clone(); Rc::new(move |rt, frame, value| { frame.store("hit", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_2119 = __comp_parent_2119.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_2128 = { let __callable_2130 = frame.load(rt, "_unit_stem")?; let mut __args_2131 = CallArgs::default(); let __v_2132 = { let __callable_2133 = { let __v_2135 = frame.load(rt, "hit")?; rt.getattr(&__v_2135, "group")? }; let mut __args_2134 = CallArgs::default(); let __v_2136 = Value::Int("1".parse().expect("integer literal")); __args_2134.positional.push(__v_2136); rt.call(&__callable_2133, __args_2134)? }; __args_2131.positional.push(__v_2132); rt.call(&__callable_2130, __args_2131)? }; let mut __matched_2129 = true; if __matched_2129 { let __v_2137 = frame.load(rt, "unit")?; __matched_2129 = __v_2128.equals(&__v_2137)?; } Value::Bool(__matched_2129) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 784, 785, "_gives_a_figure_in.<locals>.<genexpr>"); Ok(()) }))? }; __args_2117.positional.push(__v_2118); rt.call(&__callable_2116, __args_2117)? }));
+return Ok(__Flow::Return({ let __callable_2116 = frame.load(rt, "any")?; let mut __args_2117 = CallArgs::default(); let __v_2118 = { let __comp_parent_2119 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_2119.clone(), &["hit"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_2119 = __comp_parent_2119.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_2120 = { let __v_2122 = frame.load(rt, "_COUNTED_UNIT")?; rt.getattr(&__v_2122, "finditer")? }; let mut __args_2121 = CallArgs::default(); let __v_2123 = { let __callable_2124 = frame.load(rt, "str")?; let mut __args_2125 = CallArgs::default(); let __v_2126 = { let mut __v_2127 = frame.load(rt, "part")?; if !__v_2127.is_truthy() { __v_2127 = Value::from(""); } __v_2127 }; __args_2125.positional.push(__v_2126); rt.call(&__callable_2124, __args_2125)? }; __args_2121.positional.push(__v_2123); rt.call(&__callable_2120, __args_2121)? }) }) }, assign: { let __comp_parent_2119 = __comp_parent_2119.clone(); Rc::new(move |rt, frame, value| { frame.store("hit", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_2119 = __comp_parent_2119.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_2128 = { let __callable_2130 = frame.load(rt, "_unit_stem")?; let mut __args_2131 = CallArgs::default(); let __v_2132 = { let __callable_2133 = { let __v_2135 = frame.load(rt, "hit")?; rt.getattr(&__v_2135, "group")? }; let mut __args_2134 = CallArgs::default(); let __v_2136 = Value::Int("1".parse().expect("integer literal")); __args_2134.positional.push(__v_2136); rt.call(&__callable_2133, __args_2134)? }; __args_2131.positional.push(__v_2132); rt.call(&__callable_2130, __args_2131)? }; let mut __matched_2129 = true; if __matched_2129 { let __v_2137 = frame.load(rt, "unit")?; __matched_2129 = __v_2128.equals(&__v_2137)?; } Value::Bool(__matched_2129) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 784, 785, "_gives_a_figure_in.<locals>.<genexpr>", 18); Ok(()) }))? }; __args_2117.positional.push(__v_2118); rt.call(&__callable_2116, __args_2117)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -845,7 +845,7 @@ mod __py_14 { use super::*;
 // py: bot/memory/narrow.py:791-805 _the_clause_in_the_unit
 pub(super) fn _the_clause_in_the_unit(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","part","sentence","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 791, 805, "_the_clause_in_the_unit");
+rt.trace_call_code("bot/memory/narrow.py", 791, 805, "_the_clause_in_the_unit", 19);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_2138 = false; let __v_2140 = { let __callable_2143 = { let __v_2145 = frame.load(rt, "CLAUSE_BREAK")?; rt.getattr(&__v_2145, "split")? }; let mut __args_2144 = CallArgs::default(); let __v_2146 = { let __callable_2147 = frame.load(rt, "str")?; let mut __args_2148 = CallArgs::default(); let __v_2149 = { let mut __v_2150 = frame.load(rt, "sentence")?; if !__v_2150.is_truthy() { __v_2150 = Value::from(""); } __v_2150 }; __args_2148.positional.push(__v_2149); rt.call(&__callable_2147, __args_2148)? }; __args_2144.positional.push(__v_2146); rt.call(&__callable_2143, __args_2144)? }; let __iter_2141 = rt.iter(&__v_2140)?;
@@ -884,7 +884,7 @@ mod __py_15 { use super::*;
 // py: bot/memory/narrow.py:808-821 _the_sentence_in_the_unit
 pub(super) fn _the_sentence_in_the_unit(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["part","reply","sentence","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 808, 821, "_the_sentence_in_the_unit");
+rt.trace_call_code("bot/memory/narrow.py", 808, 821, "_the_sentence_in_the_unit", 20);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_2195 = false; let __v_2197 = { let __callable_2200 = { let __v_2202 = frame.load(rt, "re")?; rt.getattr(&__v_2202, "split")? }; let mut __args_2201 = CallArgs::default(); let __v_2203 = Value::from("(?<=[.!?])\\s+"); __args_2201.positional.push(__v_2203); let __v_2204 = { let __callable_2205 = frame.load(rt, "str")?; let mut __args_2206 = CallArgs::default(); let __v_2207 = { let mut __v_2208 = frame.load(rt, "reply")?; if !__v_2208.is_truthy() { __v_2208 = Value::from(""); } __v_2208 }; __args_2206.positional.push(__v_2207); rt.call(&__callable_2205, __args_2206)? }; __args_2201.positional.push(__v_2204); rt.call(&__callable_2200, __args_2201)? }; let __iter_2198 = rt.iter(&__v_2197)?;
@@ -916,7 +916,7 @@ mod __py_16 { use super::*;
 // py: bot/memory/narrow.py:824-841 part_in_the_unit
 pub(super) fn part_in_the_unit(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","part","question","reply","said","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 824, 841, "part_in_the_unit");
+rt.trace_call_code("bot/memory/narrow.py", 824, 841, "part_in_the_unit", 21);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2224 = { let __callable_2225 = { let __v_2227 = frame.load(rt, "ASKED_UNIT")?; rt.getattr(&__v_2227, "search")? }; let mut __args_2226 = CallArgs::default(); let __v_2228 = { let __callable_2229 = frame.load(rt, "str")?; let mut __args_2230 = CallArgs::default(); let __v_2231 = { let mut __v_2232 = frame.load(rt, "question")?; if !__v_2232.is_truthy() { __v_2232 = Value::from(""); } __v_2232 }; __args_2230.positional.push(__v_2231); rt.call(&__callable_2229, __args_2230)? }; __args_2226.positional.push(__v_2228); rt.call(&__callable_2225, __args_2226)? };
@@ -949,7 +949,7 @@ mod __py_17 { use super::*;
 // py: bot/memory/narrow.py:865-868 asked_unit
 pub(super) fn asked_unit(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","question"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 865, 868, "asked_unit");
+rt.trace_call_code("bot/memory/narrow.py", 865, 868, "asked_unit", 22);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2286 = { let __callable_2287 = { let __v_2289 = frame.load(rt, "ASKED_UNIT")?; rt.getattr(&__v_2289, "search")? }; let mut __args_2288 = CallArgs::default(); let __v_2290 = { let __callable_2291 = frame.load(rt, "str")?; let mut __args_2292 = CallArgs::default(); let __v_2293 = { let mut __v_2294 = frame.load(rt, "question")?; if !__v_2294.is_truthy() { __v_2294 = Value::from(""); } __v_2294 }; __args_2292.positional.push(__v_2293); rt.call(&__callable_2291, __args_2292)? }; __args_2288.positional.push(__v_2290); rt.call(&__callable_2287, __args_2288)? };
@@ -966,10 +966,10 @@ mod __py_18 { use super::*;
 // py: bot/memory/narrow.py:871-873 _states_a_length
 pub(super) fn _states_a_length(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["part"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 871, 873, "_states_a_length");
+rt.trace_call_code("bot/memory/narrow.py", 871, 873, "_states_a_length", 23);
 let flow = (|| -> PyResult<__Flow> {
 
-return Ok(__Flow::Return({ let __callable_2303 = frame.load(rt, "any")?; let mut __args_2304 = CallArgs::default(); let __v_2305 = { let __comp_parent_2306 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_2306.clone(), &["_"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_2306 = __comp_parent_2306.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_2307 = { let __v_2309 = frame.load(rt, "_COUNTED_UNIT")?; rt.getattr(&__v_2309, "finditer")? }; let mut __args_2308 = CallArgs::default(); let __v_2310 = { let __callable_2311 = frame.load(rt, "str")?; let mut __args_2312 = CallArgs::default(); let __v_2313 = { let mut __v_2314 = frame.load(rt, "part")?; if !__v_2314.is_truthy() { __v_2314 = Value::from(""); } __v_2314 }; __args_2312.positional.push(__v_2313); rt.call(&__callable_2311, __args_2312)? }; __args_2308.positional.push(__v_2310); rt.call(&__callable_2307, __args_2308)? }) }) }, assign: { let __comp_parent_2306 = __comp_parent_2306.clone(); Rc::new(move |rt, frame, value| { frame.store("_", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_2306 = __comp_parent_2306.clone(); Rc::new(move |rt, frame| Ok(Value::Bool(true))) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 873, 873, "_states_a_length.<locals>.<genexpr>"); Ok(()) }))? }; __args_2304.positional.push(__v_2305); rt.call(&__callable_2303, __args_2304)? }));
+return Ok(__Flow::Return({ let __callable_2303 = frame.load(rt, "any")?; let mut __args_2304 = CallArgs::default(); let __v_2305 = { let __comp_parent_2306 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_2306.clone(), &["_"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_2306 = __comp_parent_2306.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_2307 = { let __v_2309 = frame.load(rt, "_COUNTED_UNIT")?; rt.getattr(&__v_2309, "finditer")? }; let mut __args_2308 = CallArgs::default(); let __v_2310 = { let __callable_2311 = frame.load(rt, "str")?; let mut __args_2312 = CallArgs::default(); let __v_2313 = { let mut __v_2314 = frame.load(rt, "part")?; if !__v_2314.is_truthy() { __v_2314 = Value::from(""); } __v_2314 }; __args_2312.positional.push(__v_2313); rt.call(&__callable_2311, __args_2312)? }; __args_2308.positional.push(__v_2310); rt.call(&__callable_2307, __args_2308)? }) }) }, assign: { let __comp_parent_2306 = __comp_parent_2306.clone(); Rc::new(move |rt, frame, value| { frame.store("_", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_2306 = __comp_parent_2306.clone(); Rc::new(move |rt, frame| Ok(Value::Bool(true))) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 873, 873, "_states_a_length.<locals>.<genexpr>", 24); Ok(()) }))? }; __args_2304.positional.push(__v_2305); rt.call(&__callable_2303, __args_2304)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -981,7 +981,7 @@ mod __py_19 { use super::*;
 // py: bot/memory/narrow.py:917-923 the_outcome_asked
 pub(super) fn the_outcome_asked(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["pattern","question","said","which"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 917, 923, "the_outcome_asked");
+rt.trace_call_code("bot/memory/narrow.py", 917, 923, "the_outcome_asked", 25);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2315 = { let __callable_2316 = frame.load(rt, "flat")?; let mut __args_2317 = CallArgs::default(); let __v_2318 = frame.load(rt, "question")?; __args_2317.positional.push(__v_2318); rt.call(&__callable_2316, __args_2317)? };
@@ -1013,7 +1013,7 @@ mod __py_20 { use super::*;
 // py: bot/memory/narrow.py:926-940 the_part_asked
 pub(super) fn the_part_asked(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["about","part","question","reply","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 926, 940, "the_part_asked");
+rt.trace_call_code("bot/memory/narrow.py", 926, 940, "the_part_asked", 26);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2330 = { let __callable_2331 = frame.load(rt, "narrow")?; let mut __args_2332 = CallArgs::default(); let __v_2333 = frame.load(rt, "reply")?; __args_2332.positional.push(__v_2333); let __v_2334 = frame.load(rt, "question")?; __args_2332.positional.push(__v_2334); let __v_2335 = frame.load(rt, "about")?; __args_2332.positional.push(__v_2335); rt.call(&__callable_2331, __args_2332)? };
@@ -1037,7 +1037,7 @@ mod __py_21 { use super::*;
 // py: bot/memory/narrow.py:952-979 _a_rate_cut_from_its_figure
 pub(super) fn _a_rate_cut_from_its_figure(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","figure","found","hit","part","periods","piece","question","reply","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 952, 979, "_a_rate_cut_from_its_figure");
+rt.trace_call_code("bot/memory/narrow.py", 952, 979, "_a_rate_cut_from_its_figure", 27);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2358 = { let __callable_2359 = frame.load(rt, "flat")?; let mut __args_2360 = CallArgs::default(); let __v_2361 = frame.load(rt, "reply")?; __args_2360.positional.push(__v_2361); rt.call(&__callable_2359, __args_2360)? };
@@ -1095,7 +1095,7 @@ mod __py_22 { use super::*;
 // py: bot/memory/narrow.py:982-1005 narrow
 pub(super) fn narrow(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["about","part","question","reply","said"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 982, 1005, "narrow");
+rt.trace_call_code("bot/memory/narrow.py", 982, 1005, "narrow", 28);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2466 = { let __callable_2467 = frame.load(rt, "flat")?; let mut __args_2468 = CallArgs::default(); let __v_2469 = frame.load(rt, "question")?; __args_2468.positional.push(__v_2469); rt.call(&__callable_2467, __args_2468)? };
@@ -1134,7 +1134,7 @@ mod __py_23 { use super::*;
 // py: bot/memory/narrow.py:1029-1053 _a_length_of_a_doing
 pub(super) fn _a_length_of_a_doing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","cut","doing","part","question","said","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1029, 1053, "_a_length_of_a_doing");
+rt.trace_call_code("bot/memory/narrow.py", 1029, 1053, "_a_length_of_a_doing", 29);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2518 = { let __v_2519 = { let __callable_2520 = { let __v_2522 = frame.load(rt, "_STATE_LENGTH_ASKS")?; rt.getattr(&__v_2522, "search")? }; let mut __args_2521 = CallArgs::default(); let __v_2523 = { let __callable_2524 = frame.load(rt, "flat")?; let mut __args_2525 = CallArgs::default(); let __v_2526 = frame.load(rt, "question")?; __args_2525.positional.push(__v_2526); rt.call(&__callable_2524, __args_2525)? }; __args_2521.positional.push(__v_2523); rt.call(&__callable_2520, __args_2521)? }; Value::Bool(!__v_2519.is_truthy()) }; if __v_2518.is_truthy() {
@@ -1172,7 +1172,7 @@ mod __py_24 { use super::*;
 // py: bot/memory/narrow.py:1085-1110 _a_cut_off_not_a_length
 pub(super) fn _a_cut_off_not_a_length(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["after","at","before","clause","cut","part","said","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1085, 1110, "_a_cut_off_not_a_length");
+rt.trace_call_code("bot/memory/narrow.py", 1085, 1110, "_a_cut_off_not_a_length", 30);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2580 = { let __callable_2581 = frame.load(rt, "flat")?; let mut __args_2582 = CallArgs::default(); let __v_2583 = frame.load(rt, "sentence")?; __args_2582.positional.push(__v_2583); rt.call(&__callable_2581, __args_2582)? };
@@ -1224,7 +1224,7 @@ mod __py_25 { use super::*;
 // py: bot/memory/narrow.py:1113-1126 _a_clause_before
 pub(super) fn _a_clause_before(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","cut","mark","said","start"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1113, 1126, "_a_clause_before");
+rt.trace_call_code("bot/memory/narrow.py", 1113, 1126, "_a_clause_before", 31);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2655 = Value::Int("0".parse().expect("integer literal"));
@@ -1259,7 +1259,7 @@ mod __py_26 { use super::*;
 // py: bot/memory/narrow.py:1129-1163 the_doings_length
 pub(super) fn the_doings_length(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","clauses","kind","part","question","reply","said","sentence","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1129, 1163, "the_doings_length");
+rt.trace_call_code("bot/memory/narrow.py", 1129, 1163, "the_doings_length", 32);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2689 = { let __callable_2690 = frame.load(rt, "flat")?; let mut __args_2691 = CallArgs::default(); let __v_2692 = frame.load(rt, "reply")?; __args_2691.positional.push(__v_2692); rt.call(&__callable_2690, __args_2691)? };
@@ -1326,7 +1326,7 @@ mod __py_27 { use super::*;
 // py: bot/memory/narrow.py:1166-1180 _the_clause_around
 pub(super) fn _the_clause_around(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","cut","end","mark","said","start"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1166, 1180, "_the_clause_around");
+rt.trace_call_code("bot/memory/narrow.py", 1166, 1180, "_the_clause_around", 33);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2793 = { let mut __v_2794 = frame.load(rt, "at")?; let mut __matched_2795 = true; if __matched_2795 { let __v_2796 = Value::Int("0".parse().expect("integer literal")); __matched_2795 = pyrt::ops::compare(&__v_2794, &__v_2796)?.is_some_and(|o| o.is_lt()); } Value::Bool(__matched_2795) }; if __v_2793.is_truthy() {
@@ -1386,7 +1386,7 @@ mod __py_28 { use super::*;
 // py: bot/memory/narrow.py:1183-1203 _at_another_place
 pub(super) fn _at_another_place(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","at","cut","found","part","question","said","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1183, 1203, "_at_another_place");
+rt.trace_call_code("bot/memory/narrow.py", 1183, 1203, "_at_another_place", 34);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2863 = { let __comp_parent_2864 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_2864.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_2864 = __comp_parent_2864.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_2865 = { let __v_2867 = frame.load(rt, "PLACE")?; rt.getattr(&__v_2867, "findall")? }; let mut __args_2866 = CallArgs::default(); let __v_2868 = { let __callable_2869 = frame.load(rt, "flat")?; let mut __args_2870 = CallArgs::default(); let __v_2871 = frame.load(rt, "question")?; __args_2870.positional.push(__v_2871); rt.call(&__callable_2869, __args_2870)? }; __args_2866.positional.push(__v_2868); rt.call(&__callable_2865, __args_2866)? }) }) }, assign: { let __comp_parent_2864 = __comp_parent_2864.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_2864 = __comp_parent_2864.clone(); Rc::new(move |rt, frame| Ok({ let __callable_2872 = { let __v_2874 = frame.load(rt, "word")?; rt.getattr(&__v_2874, "lower")? }; let mut __args_2873 = CallArgs::default(); rt.call(&__callable_2872, __args_2873)? })) })? };
@@ -1426,7 +1426,7 @@ mod __py_29 { use super::*;
 // py: bot/memory/narrow.py:1206-1213 _gives_another_places_figure
 pub(super) fn _gives_another_places_figure(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["kind","part","question","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1206, 1213, "_gives_another_places_figure");
+rt.trace_call_code("bot/memory/narrow.py", 1206, 1213, "_gives_another_places_figure", 35);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2922 = { let mut __v_2923 = frame.load(rt, "kind")?; let mut __matched_2924 = true; if __matched_2924 { let __v_2925 = frame.load(rt, "SPANS")?; __matched_2924 = !pyrt::ops::contains(&__v_2925, &__v_2923)?; } Value::Bool(__matched_2924) }; if __v_2922.is_truthy() {
@@ -1453,7 +1453,7 @@ mod __py_30 { use super::*;
 // py: bot/memory/narrow.py:1216-1417 _narrow
 pub(super) fn _narrow(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["both","dated","found","guess","holder","kind","longer","named","naming","often","one","only","openings","part","piece","question","reply","said","sentence","sentences","skipped_a_cut_off","wait","wanted","when_ask","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1216, 1417, "_narrow");
+rt.trace_call_code("bot/memory/narrow.py", 1216, 1417, "_narrow", 36);
 let flow = (|| -> PyResult<__Flow> {
 let __v_2943 = { let mut __v_2944 = { let __v_2945 = { let __callable_2946 = frame.load(rt, "isinstance")?; let mut __args_2947 = CallArgs::default(); let __v_2948 = frame.load(rt, "reply")?; __args_2947.positional.push(__v_2948); let __v_2949 = frame.load(rt, "str")?; __args_2947.positional.push(__v_2949); rt.call(&__callable_2946, __args_2947)? }; Value::Bool(!__v_2945.is_truthy()) }; if !__v_2944.is_truthy() { __v_2944 = { let __v_2950 = { let __callable_2951 = { let __v_2953 = frame.load(rt, "reply")?; rt.getattr(&__v_2953, "strip")? }; let mut __args_2952 = CallArgs::default(); rt.call(&__callable_2951, __args_2952)? }; Value::Bool(!__v_2950.is_truthy()) }; } __v_2944 }; if __v_2943.is_truthy() {
 return Ok(__Flow::Return(Value::None));
@@ -1525,7 +1525,7 @@ frame.store("sentences", __v_3066.clone())?;
 
 }
 let __v_3075 = { let mut __v_3076 = frame.load(rt, "kind")?; let mut __matched_3077 = true; if __matched_3077 { let __v_3078 = Value::from("cause"); __matched_3077 = __v_3076.equals(&__v_3078)?; } Value::Bool(__matched_3077) }; if __v_3075.is_truthy() {
-let __v_3079 = { let __comp_parent_3080 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_3080.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "wanted")?) }) }, assign: { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_3081 = { let __callable_3083 = frame.load(rt, "sum")?; let mut __args_3084 = CallArgs::default(); let __v_3085 = { let __comp_parent_3086 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_3086.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "sentences")?) }) }, assign: { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_3087 = frame.load(rt, "word")?; let mut __matched_3088 = true; if __matched_3088 { let __v_3089 = { let __callable_3090 = frame.load(rt, "set")?; let mut __args_3091 = CallArgs::default(); let __v_3092 = { let __callable_3093 = frame.load(rt, "words_of")?; let mut __args_3094 = CallArgs::default(); let __v_3095 = frame.load(rt, "one")?; __args_3094.positional.push(__v_3095); rt.call(&__callable_3093, __args_3094)? }; __args_3091.positional.push(__v_3092); rt.call(&__callable_3090, __args_3091)? }; __matched_3088 = pyrt::ops::contains(&__v_3089, &__v_3087)?; } Value::Bool(__matched_3088) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 1272, 1272, "_narrow.<locals>.<genexpr>"); Ok(()) }))? }; __args_3084.positional.push(__v_3085); rt.call(&__callable_3083, __args_3084)? }; let mut __matched_3082 = true; if __matched_3082 { let __v_3096 = Value::Int("1".parse().expect("integer literal")); __matched_3082 = __v_3081.equals(&__v_3096)?; } Value::Bool(__matched_3082) }).is_truthy()) }) }] }], { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })? };
+let __v_3079 = { let __comp_parent_3080 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_3080.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "wanted")?) }) }, assign: { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_3081 = { let __callable_3083 = frame.load(rt, "sum")?; let mut __args_3084 = CallArgs::default(); let __v_3085 = { let __comp_parent_3086 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_3086.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "sentences")?) }) }, assign: { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_3087 = frame.load(rt, "word")?; let mut __matched_3088 = true; if __matched_3088 { let __v_3089 = { let __callable_3090 = frame.load(rt, "set")?; let mut __args_3091 = CallArgs::default(); let __v_3092 = { let __callable_3093 = frame.load(rt, "words_of")?; let mut __args_3094 = CallArgs::default(); let __v_3095 = frame.load(rt, "one")?; __args_3094.positional.push(__v_3095); rt.call(&__callable_3093, __args_3094)? }; __args_3091.positional.push(__v_3092); rt.call(&__callable_3090, __args_3091)? }; __matched_3088 = pyrt::ops::contains(&__v_3089, &__v_3087)?; } Value::Bool(__matched_3088) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 1272, 1272, "_narrow.<locals>.<genexpr>", 37); Ok(()) }))? }; __args_3084.positional.push(__v_3085); rt.call(&__callable_3083, __args_3084)? }; let mut __matched_3082 = true; if __matched_3082 { let __v_3096 = Value::Int("1".parse().expect("integer literal")); __matched_3082 = __v_3081.equals(&__v_3096)?; } Value::Bool(__matched_3082) }).is_truthy()) }) }] }], { let __comp_parent_3080 = __comp_parent_3080.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })? };
 frame.store("only", __v_3079.clone())?;
 let __v_3097 = frame.load(rt, "only")?; if __v_3097.is_truthy() {
 let __v_3098 = { let __comp_parent_3099 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_3099.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_3099 = __comp_parent_3099.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "sentences")?) }) }, assign: { let __comp_parent_3099 = __comp_parent_3099.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_3099 = __comp_parent_3099.clone(); Rc::new(move |rt, frame| {  Ok(({ let __v_3100 = frame.load(rt, "only")?; let __v_3101 = { let __callable_3102 = frame.load(rt, "set")?; let mut __args_3103 = CallArgs::default(); let __v_3104 = { let __callable_3105 = frame.load(rt, "words_of")?; let mut __args_3106 = CallArgs::default(); let __v_3107 = frame.load(rt, "one")?; __args_3106.positional.push(__v_3107); rt.call(&__callable_3105, __args_3106)? }; __args_3103.positional.push(__v_3104); rt.call(&__callable_3102, __args_3103)? }; pyrt::ops::bitwise_rt(rt, "&", &__v_3100, &__v_3101)? }).is_truthy()) }) }] }], { let __comp_parent_3099 = __comp_parent_3099.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "one")?)) })?) };
@@ -1819,7 +1819,7 @@ mod __py_31 { use super::*;
 // py: bot/memory/narrow.py:1438-1448 _the_start_age
 pub(super) fn _the_start_age(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","before","figure","flat_sentence","lead","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1438, 1448, "_the_start_age");
+rt.trace_call_code("bot/memory/narrow.py", 1438, 1448, "_the_start_age", 38);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_3561 = { let __v_3562 = { let __callable_3563 = frame.load(rt, "hasattr")?; let mut __args_3564 = CallArgs::default(); let __v_3565 = frame.load(rt, "sentence")?; __args_3564.positional.push(__v_3565); let __v_3566 = Value::from("split"); __args_3564.positional.push(__v_3566); rt.call(&__callable_3563, __args_3564)? }; if __v_3562.is_truthy() { { let __callable_3567 = frame.load(rt, "flat")?; let mut __args_3568 = CallArgs::default(); let __v_3569 = frame.load(rt, "sentence")?; __args_3568.positional.push(__v_3569); rt.call(&__callable_3567, __args_3568)? } } else { { let __callable_3570 = frame.load(rt, "str")?; let mut __args_3571 = CallArgs::default(); let __v_3572 = frame.load(rt, "sentence")?; __args_3571.positional.push(__v_3572); rt.call(&__callable_3570, __args_3571)? } } };
@@ -1859,7 +1859,7 @@ mod __py_32 { use super::*;
 // py: bot/memory/narrow.py:1452-1504 _the_time_it_does_keep
 pub(super) fn _the_time_it_does_keep(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","last_end","match","one","sentence","sentences","start_age","timed","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1452, 1504, "_the_time_it_does_keep");
+rt.trace_call_code("bot/memory/narrow.py", 1452, 1504, "_the_time_it_does_keep", 39);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_3620 = Value::None;
@@ -1917,7 +1917,7 @@ return Ok(__Flow::Continue);
 } else {
 
 }
-let __v_3724 = { let mut __v_3725 = { let mut __v_3726 = frame.load(rt, "start_age")?; let mut __matched_3727 = true; if __matched_3727 { let __v_3728 = Value::None; __matched_3727 = __v_3726.is_identical(&__v_3728); } Value::Bool(__matched_3727) }; if __v_3725.is_truthy() { __v_3725 = { let __callable_3729 = frame.load(rt, "all")?; let mut __args_3730 = CallArgs::default(); let __v_3731 = { let __comp_parent_3732 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_3732.clone(), &["match"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_3732 = __comp_parent_3732.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "timed")?) }) }, assign: { let __comp_parent_3732 = __comp_parent_3732.clone(); Rc::new(move |rt, frame, value| { frame.store("match", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_3732 = __comp_parent_3732.clone(); Rc::new(move |rt, frame| Ok({ let __callable_3733 = frame.load(rt, "_a_cut_off_not_a_length")?; let mut __args_3734 = CallArgs::default(); let __v_3735 = frame.load(rt, "sentence")?; __args_3734.positional.push(__v_3735); let __v_3736 = { let __callable_3737 = { let __v_3739 = frame.load(rt, "match")?; rt.getattr(&__v_3739, "group")? }; let mut __args_3738 = CallArgs::default(); let __v_3740 = Value::Int("0".parse().expect("integer literal")); __args_3738.positional.push(__v_3740); rt.call(&__callable_3737, __args_3738)? }; __args_3734.positional.push(__v_3736); rt.call(&__callable_3733, __args_3734)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 1475, 1476, "_the_time_it_does_keep.<locals>.<genexpr>"); Ok(()) }))? }; __args_3730.positional.push(__v_3731); rt.call(&__callable_3729, __args_3730)? }; } __v_3725 }; if __v_3724.is_truthy() {
+let __v_3724 = { let mut __v_3725 = { let mut __v_3726 = frame.load(rt, "start_age")?; let mut __matched_3727 = true; if __matched_3727 { let __v_3728 = Value::None; __matched_3727 = __v_3726.is_identical(&__v_3728); } Value::Bool(__matched_3727) }; if __v_3725.is_truthy() { __v_3725 = { let __callable_3729 = frame.load(rt, "all")?; let mut __args_3730 = CallArgs::default(); let __v_3731 = { let __comp_parent_3732 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_3732.clone(), &["match"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_3732 = __comp_parent_3732.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "timed")?) }) }, assign: { let __comp_parent_3732 = __comp_parent_3732.clone(); Rc::new(move |rt, frame, value| { frame.store("match", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_3732 = __comp_parent_3732.clone(); Rc::new(move |rt, frame| Ok({ let __callable_3733 = frame.load(rt, "_a_cut_off_not_a_length")?; let mut __args_3734 = CallArgs::default(); let __v_3735 = frame.load(rt, "sentence")?; __args_3734.positional.push(__v_3735); let __v_3736 = { let __callable_3737 = { let __v_3739 = frame.load(rt, "match")?; rt.getattr(&__v_3739, "group")? }; let mut __args_3738 = CallArgs::default(); let __v_3740 = Value::Int("0".parse().expect("integer literal")); __args_3738.positional.push(__v_3740); rt.call(&__callable_3737, __args_3738)? }; __args_3734.positional.push(__v_3736); rt.call(&__callable_3733, __args_3734)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 1475, 1476, "_the_time_it_does_keep.<locals>.<genexpr>", 40); Ok(()) }))? }; __args_3730.positional.push(__v_3731); rt.call(&__callable_3729, __args_3730)? }; } __v_3725 }; if __v_3724.is_truthy() {
 let __v_3741 = { let __v_3742 = frame.load(rt, "timed")?; let __v_3743 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_3742, &__v_3743)? };
 frame.store("one", __v_3741.clone())?;
 let __v_3744 = { let __callable_3745 = frame.load(rt, "_the_start_age")?; let mut __args_3746 = CallArgs::default(); let __v_3747 = { let __callable_3748 = frame.load(rt, "flat")?; let mut __args_3749 = CallArgs::default(); let __v_3750 = frame.load(rt, "sentence")?; __args_3749.positional.push(__v_3750); rt.call(&__callable_3748, __args_3749)? }; __args_3746.positional.push(__v_3747); let __v_3751 = { let __callable_3752 = { let __v_3754 = frame.load(rt, "one")?; rt.getattr(&__v_3754, "group")? }; let mut __args_3753 = CallArgs::default(); let __v_3755 = Value::Int("0".parse().expect("integer literal")); __args_3753.positional.push(__v_3755); rt.call(&__callable_3752, __args_3753)? }; __args_3746.positional.push(__v_3751); let __v_3756 = { let __callable_3757 = { let __v_3759 = frame.load(rt, "one")?; rt.getattr(&__v_3759, "start")? }; let mut __args_3758 = CallArgs::default(); rt.call(&__callable_3757, __args_3758)? }; __args_3746.positional.push(__v_3756); rt.call(&__callable_3745, __args_3746)? };
@@ -1987,7 +1987,7 @@ mod __py_33 { use super::*;
 // py: bot/memory/narrow.py:1516-1518 _a_period_of_extent
 pub(super) fn _a_period_of_extent(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1516, 1518, "_a_period_of_extent");
+rt.trace_call_code("bot/memory/narrow.py", 1516, 1518, "_a_period_of_extent", 41);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_3842 = frame.load(rt, "bool")?; let mut __args_3843 = CallArgs::default(); let __v_3844 = { let __callable_3845 = { let __v_3847 = frame.load(rt, "_A_PERIOD_OF_EXTENT")?; rt.getattr(&__v_3847, "search")? }; let mut __args_3846 = CallArgs::default(); let __v_3848 = { let __v_3849 = { let __callable_3853 = frame.load(rt, "flat")?; let mut __args_3854 = CallArgs::default(); let __v_3855 = frame.load(rt, "sentence")?; __args_3854.positional.push(__v_3855); rt.call(&__callable_3853, __args_3854)? }; let __v_3851 = frame.load(rt, "at")?; let __index_3852 = if matches!(__v_3851, Value::None) { None } else { let n = __v_3851.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_3849, None, __index_3852, 1_i64)? }; __args_3846.positional.push(__v_3848); rt.call(&__callable_3845, __args_3846)? }; __args_3843.positional.push(__v_3844); rt.call(&__callable_3842, __args_3843)? }));
@@ -2002,7 +2002,7 @@ mod __py_34 { use super::*;
 // py: bot/memory/narrow.py:1521-1530 _says_a_time
 pub(super) fn _says_a_time(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1521, 1530, "_says_a_time");
+rt.trace_call_code("bot/memory/narrow.py", 1521, 1530, "_says_a_time", 42);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_3856 = frame.load(rt, "bool")?; let mut __args_3857 = CallArgs::default(); let __v_3858 = { let mut __v_3859 = { let __callable_3860 = { let __v_3862 = { let __v_3863 = frame.load(rt, "SIGNALS")?; let __v_3864 = Value::from("time"); pyrt::ops::getitem(&__v_3863, &__v_3864)? }; rt.getattr(&__v_3862, "search")? }; let mut __args_3861 = CallArgs::default(); let __v_3865 = frame.load(rt, "clause")?; __args_3861.positional.push(__v_3865); rt.call(&__callable_3860, __args_3861)? }; if !__v_3859.is_truthy() { __v_3859 = { let __callable_3866 = { let __v_3868 = frame.load(rt, "re")?; rt.getattr(&__v_3868, "search")? }; let mut __args_3867 = CallArgs::default(); let __v_3869 = Value::from("\\b(?:long|longer|slow|quick|soon|never|until|till|months?|weeks?|years?|days?|hours?|minutes?)\\b"); __args_3867.positional.push(__v_3869); let __v_3870 = frame.load(rt, "clause")?; __args_3867.positional.push(__v_3870); let __v_3871 = { let __v_3872 = frame.load(rt, "re")?; rt.getattr(&__v_3872, "I")? }; __args_3867.positional.push(__v_3871); rt.call(&__callable_3866, __args_3867)? }; } __v_3859 }; __args_3857.positional.push(__v_3858); rt.call(&__callable_3856, __args_3857)? }));
@@ -2017,7 +2017,7 @@ mod __py_35 { use super::*;
 // py: bot/memory/narrow.py:1533-1543 _only_a_cut_off
 pub(super) fn _only_a_cut_off(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","figures"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1533, 1543, "_only_a_cut_off");
+rt.trace_call_code("bot/memory/narrow.py", 1533, 1543, "_only_a_cut_off", 43);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_3873 = { let __comp_parent_3874 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_3874.clone(), &["match"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_3874 = __comp_parent_3874.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_3875 = { let __v_3877 = { let __v_3878 = frame.load(rt, "SIGNALS")?; let __v_3879 = Value::from("time"); pyrt::ops::getitem(&__v_3878, &__v_3879)? }; rt.getattr(&__v_3877, "finditer")? }; let mut __args_3876 = CallArgs::default(); let __v_3880 = frame.load(rt, "clause")?; __args_3876.positional.push(__v_3880); rt.call(&__callable_3875, __args_3876)? }) }) }, assign: { let __comp_parent_3874 = __comp_parent_3874.clone(); Rc::new(move |rt, frame, value| { frame.store("match", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_3874 = __comp_parent_3874.clone(); Rc::new(move |rt, frame| Ok({ let __callable_3881 = { let __v_3883 = frame.load(rt, "match")?; rt.getattr(&__v_3883, "group")? }; let mut __args_3882 = CallArgs::default(); let __v_3884 = Value::Int("0".parse().expect("integer literal")); __args_3882.positional.push(__v_3884); rt.call(&__callable_3881, __args_3882)? })) })?) };
@@ -2027,7 +2027,7 @@ return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-return Ok(__Flow::Return({ let __callable_3887 = frame.load(rt, "all")?; let mut __args_3888 = CallArgs::default(); let __v_3889 = { let __comp_parent_3890 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_3890.clone(), &["figure"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_3890 = __comp_parent_3890.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "figures")?) }) }, assign: { let __comp_parent_3890 = __comp_parent_3890.clone(); Rc::new(move |rt, frame, value| { frame.store("figure", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_3890 = __comp_parent_3890.clone(); Rc::new(move |rt, frame| Ok({ let __callable_3891 = frame.load(rt, "_a_cut_off_not_a_length")?; let mut __args_3892 = CallArgs::default(); let __v_3893 = frame.load(rt, "clause")?; __args_3892.positional.push(__v_3893); let __v_3894 = frame.load(rt, "figure")?; __args_3892.positional.push(__v_3894); rt.call(&__callable_3891, __args_3892)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 1543, 1543, "_only_a_cut_off.<locals>.<genexpr>"); Ok(()) }))? }; __args_3888.positional.push(__v_3889); rt.call(&__callable_3887, __args_3888)? }));
+return Ok(__Flow::Return({ let __callable_3887 = frame.load(rt, "all")?; let mut __args_3888 = CallArgs::default(); let __v_3889 = { let __comp_parent_3890 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_3890.clone(), &["figure"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_3890 = __comp_parent_3890.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "figures")?) }) }, assign: { let __comp_parent_3890 = __comp_parent_3890.clone(); Rc::new(move |rt, frame, value| { frame.store("figure", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_3890 = __comp_parent_3890.clone(); Rc::new(move |rt, frame| Ok({ let __callable_3891 = frame.load(rt, "_a_cut_off_not_a_length")?; let mut __args_3892 = CallArgs::default(); let __v_3893 = frame.load(rt, "clause")?; __args_3892.positional.push(__v_3893); let __v_3894 = frame.load(rt, "figure")?; __args_3892.positional.push(__v_3894); rt.call(&__callable_3891, __args_3892)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 1543, 1543, "_only_a_cut_off.<locals>.<genexpr>", 44); Ok(()) }))? }; __args_3888.positional.push(__v_3889); rt.call(&__callable_3887, __args_3888)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -2039,7 +2039,7 @@ mod __py_36 { use super::*;
 // py: bot/memory/narrow.py:1546-1557 _the_answer_said_again
 pub(super) fn _the_answer_said_again(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["opening","sentences","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1546, 1557, "_the_answer_said_again");
+rt.trace_call_code("bot/memory/narrow.py", 1546, 1557, "_the_answer_said_again", 45);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_3895 = { let mut __v_3896 = { let __callable_3898 = frame.load(rt, "len")?; let mut __args_3899 = CallArgs::default(); let __v_3900 = frame.load(rt, "sentences")?; __args_3899.positional.push(__v_3900); rt.call(&__callable_3898, __args_3899)? }; let mut __matched_3897 = true; if __matched_3897 { let __v_3901 = Value::Int("2".parse().expect("integer literal")); __matched_3897 = pyrt::ops::compare(&__v_3896, &__v_3901)?.is_some_and(|o| o.is_lt()); } Value::Bool(__matched_3897) }; if __v_3895.is_truthy() {
@@ -2066,7 +2066,7 @@ mod __py_37 { use super::*;
 // py: bot/memory/narrow.py:1568-1580 _the_sentence_a_figure_hangs_on
 pub(super) fn _the_sentence_a_figure_hangs_on(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["holder","part","sentence","when_ask","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1568, 1580, "_the_sentence_a_figure_hangs_on");
+rt.trace_call_code("bot/memory/narrow.py", 1568, 1580, "_the_sentence_a_figure_hangs_on", 46);
 let flow = (|| -> PyResult<__Flow> {
 let __v_3926 = { let __v_3927 = frame.load(rt, "when_ask")?; Value::Bool(!__v_3927.is_truthy()) }; if __v_3926.is_truthy() {
 return Ok(__Flow::Return(Value::None));
@@ -2102,7 +2102,7 @@ mod __py_38 { use super::*;
 // py: bot/memory/narrow.py:1621-1624 _unit_stem
 pub(super) fn _unit_stem(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["bare","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1621, 1624, "_unit_stem");
+rt.trace_call_code("bot/memory/narrow.py", 1621, 1624, "_unit_stem", 47);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_3979 = { let __callable_3980 = { let __v_3982 = { let __callable_3983 = { let __v_3985 = { let __callable_3986 = { let __v_3988 = { let __callable_3989 = frame.load(rt, "str")?; let mut __args_3990 = CallArgs::default(); let __v_3991 = { let mut __v_3992 = frame.load(rt, "word")?; if !__v_3992.is_truthy() { __v_3992 = Value::from(""); } __v_3992 }; __args_3990.positional.push(__v_3991); rt.call(&__callable_3989, __args_3990)? }; rt.getattr(&__v_3988, "strip")? }; let mut __args_3987 = CallArgs::default(); let __v_3993 = Value::from(".,;:!?"); __args_3987.positional.push(__v_3993); rt.call(&__callable_3986, __args_3987)? }; rt.getattr(&__v_3985, "lower")? }; let mut __args_3984 = CallArgs::default(); rt.call(&__callable_3983, __args_3984)? }; rt.getattr(&__v_3982, "rstrip")? }; let mut __args_3981 = CallArgs::default(); let __v_3994 = Value::from("s"); __args_3981.positional.push(__v_3994); rt.call(&__callable_3980, __args_3981)? };
@@ -2119,7 +2119,7 @@ mod __py_39 { use super::*;
 // py: bot/memory/narrow.py:1638-1643 _same_word
 pub(super) fn _same_word(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["one","other","short"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1638, 1643, "_same_word");
+rt.trace_call_code("bot/memory/narrow.py", 1638, 1643, "_same_word", 48);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_4000 = { let mut __v_4001 = frame.load(rt, "one")?; let mut __matched_4002 = true; if __matched_4002 { let __v_4003 = frame.load(rt, "other")?; __matched_4002 = __v_4001.equals(&__v_4003)?; } Value::Bool(__matched_4002) }; if __v_4000.is_truthy() {
@@ -2141,9 +2141,9 @@ mod __py_40 { use super::*;
 // py: bot/memory/narrow.py:1646-1647 _names_one_of
 pub(super) fn _names_one_of(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["wanted","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1646, 1647, "_names_one_of");
+rt.trace_call_code("bot/memory/narrow.py", 1646, 1647, "_names_one_of", 49);
 let flow = (|| -> PyResult<__Flow> {
-return Ok(__Flow::Return({ let __callable_4030 = frame.load(rt, "any")?; let mut __args_4031 = CallArgs::default(); let __v_4032 = { let __comp_parent_4033 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_4033.clone(), &["said","word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_4033 = __comp_parent_4033.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "wanted")?) }) }, assign: { let __comp_parent_4033 = __comp_parent_4033.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] },pyrt::comprehension::Level { iterable: { let __comp_parent_4033 = __comp_parent_4033.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_4033 = __comp_parent_4033.clone(); Rc::new(move |rt, frame, value| { frame.store("said", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_4033 = __comp_parent_4033.clone(); Rc::new(move |rt, frame| Ok({ let __callable_4034 = frame.load(rt, "_same_word")?; let mut __args_4035 = CallArgs::default(); let __v_4036 = frame.load(rt, "word")?; __args_4035.positional.push(__v_4036); let __v_4037 = frame.load(rt, "said")?; __args_4035.positional.push(__v_4037); rt.call(&__callable_4034, __args_4035)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 1647, 1647, "_names_one_of.<locals>.<genexpr>"); Ok(()) }))? }; __args_4031.positional.push(__v_4032); rt.call(&__callable_4030, __args_4031)? }));
+return Ok(__Flow::Return({ let __callable_4030 = frame.load(rt, "any")?; let mut __args_4031 = CallArgs::default(); let __v_4032 = { let __comp_parent_4033 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_4033.clone(), &["said","word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_4033 = __comp_parent_4033.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "wanted")?) }) }, assign: { let __comp_parent_4033 = __comp_parent_4033.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] },pyrt::comprehension::Level { iterable: { let __comp_parent_4033 = __comp_parent_4033.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_4033 = __comp_parent_4033.clone(); Rc::new(move |rt, frame, value| { frame.store("said", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_4033 = __comp_parent_4033.clone(); Rc::new(move |rt, frame| Ok({ let __callable_4034 = frame.load(rt, "_same_word")?; let mut __args_4035 = CallArgs::default(); let __v_4036 = frame.load(rt, "word")?; __args_4035.positional.push(__v_4036); let __v_4037 = frame.load(rt, "said")?; __args_4035.positional.push(__v_4037); rt.call(&__callable_4034, __args_4035)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 1647, 1647, "_names_one_of.<locals>.<genexpr>", 50); Ok(()) }))? }; __args_4031.positional.push(__v_4032); rt.call(&__callable_4030, __args_4031)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -2155,7 +2155,7 @@ mod __py_41 { use super::*;
 // py: bot/memory/narrow.py:1679-1686 _only_a_count
 pub(super) fn _only_a_count(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","piece"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1679, 1686, "_only_a_count");
+rt.trace_call_code("bot/memory/narrow.py", 1679, 1686, "_only_a_count", 51);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_4038 = { let __callable_4039 = frame.load(rt, "list")?; let mut __args_4040 = CallArgs::default(); let __v_4041 = { let __callable_4042 = { let __v_4044 = frame.load(rt, "FREQUENCY")?; rt.getattr(&__v_4044, "finditer")? }; let mut __args_4043 = CallArgs::default(); let __v_4045 = frame.load(rt, "piece")?; __args_4043.positional.push(__v_4045); rt.call(&__callable_4042, __args_4043)? }; __args_4040.positional.push(__v_4041); rt.call(&__callable_4039, __args_4040)? };
@@ -2165,7 +2165,7 @@ return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-return Ok(__Flow::Return({ let mut __v_4048 = { let __callable_4049 = frame.load(rt, "all")?; let mut __args_4050 = CallArgs::default(); let __v_4051 = { let __comp_parent_4052 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_4052.clone(), &["match"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_4052 = __comp_parent_4052.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "found")?) }) }, assign: { let __comp_parent_4052 = __comp_parent_4052.clone(); Rc::new(move |rt, frame, value| { frame.store("match", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_4052 = __comp_parent_4052.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_4053 = { let __callable_4054 = { let __v_4056 = frame.load(rt, "A_BARE_COUNT")?; rt.getattr(&__v_4056, "match")? }; let mut __args_4055 = CallArgs::default(); let __v_4057 = { let __callable_4058 = { let __v_4060 = frame.load(rt, "match")?; rt.getattr(&__v_4060, "group")? }; let mut __args_4059 = CallArgs::default(); let __v_4061 = Value::Int("0".parse().expect("integer literal")); __args_4059.positional.push(__v_4061); rt.call(&__callable_4058, __args_4059)? }; __args_4055.positional.push(__v_4057); rt.call(&__callable_4054, __args_4055)? }; if !__v_4053.is_truthy() { __v_4053 = { let mut __v_4062 = { let __callable_4064 = { let __v_4066 = { let __callable_4067 = { let __v_4069 = { let __callable_4070 = { let __v_4072 = frame.load(rt, "match")?; rt.getattr(&__v_4072, "group")? }; let mut __args_4071 = CallArgs::default(); let __v_4073 = Value::Int("0".parse().expect("integer literal")); __args_4071.positional.push(__v_4073); rt.call(&__callable_4070, __args_4071)? }; rt.getattr(&__v_4069, "lower")? }; let mut __args_4068 = CallArgs::default(); rt.call(&__callable_4067, __args_4068)? }; rt.getattr(&__v_4066, "strip")? }; let mut __args_4065 = CallArgs::default(); rt.call(&__callable_4064, __args_4065)? }; let mut __matched_4063 = true; if __matched_4063 { let __v_4074 = { let mut __items_4075 = Vec::new(); let __v_4076 = Value::from("once"); __items_4075.push(__v_4076); let __v_4077 = Value::from("twice"); __items_4075.push(__v_4077); let __v_4078 = Value::from("thrice"); __items_4075.push(__v_4078); Value::tuple(__items_4075) }; __matched_4063 = pyrt::ops::contains(&__v_4074, &__v_4062)?; } Value::Bool(__matched_4063) }; } __v_4053 })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 1684, 1685, "_only_a_count.<locals>.<genexpr>"); Ok(()) }))? }; __args_4050.positional.push(__v_4051); rt.call(&__callable_4049, __args_4050)? }; if __v_4048.is_truthy() { __v_4048 = { let __v_4079 = { let __callable_4080 = { let __v_4082 = frame.load(rt, "RATE_INTERVAL")?; rt.getattr(&__v_4082, "search")? }; let mut __args_4081 = CallArgs::default(); let __v_4083 = frame.load(rt, "piece")?; __args_4081.positional.push(__v_4083); rt.call(&__callable_4080, __args_4081)? }; Value::Bool(!__v_4079.is_truthy()) }; } __v_4048 }));
+return Ok(__Flow::Return({ let mut __v_4048 = { let __callable_4049 = frame.load(rt, "all")?; let mut __args_4050 = CallArgs::default(); let __v_4051 = { let __comp_parent_4052 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_4052.clone(), &["match"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_4052 = __comp_parent_4052.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "found")?) }) }, assign: { let __comp_parent_4052 = __comp_parent_4052.clone(); Rc::new(move |rt, frame, value| { frame.store("match", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_4052 = __comp_parent_4052.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_4053 = { let __callable_4054 = { let __v_4056 = frame.load(rt, "A_BARE_COUNT")?; rt.getattr(&__v_4056, "match")? }; let mut __args_4055 = CallArgs::default(); let __v_4057 = { let __callable_4058 = { let __v_4060 = frame.load(rt, "match")?; rt.getattr(&__v_4060, "group")? }; let mut __args_4059 = CallArgs::default(); let __v_4061 = Value::Int("0".parse().expect("integer literal")); __args_4059.positional.push(__v_4061); rt.call(&__callable_4058, __args_4059)? }; __args_4055.positional.push(__v_4057); rt.call(&__callable_4054, __args_4055)? }; if !__v_4053.is_truthy() { __v_4053 = { let mut __v_4062 = { let __callable_4064 = { let __v_4066 = { let __callable_4067 = { let __v_4069 = { let __callable_4070 = { let __v_4072 = frame.load(rt, "match")?; rt.getattr(&__v_4072, "group")? }; let mut __args_4071 = CallArgs::default(); let __v_4073 = Value::Int("0".parse().expect("integer literal")); __args_4071.positional.push(__v_4073); rt.call(&__callable_4070, __args_4071)? }; rt.getattr(&__v_4069, "lower")? }; let mut __args_4068 = CallArgs::default(); rt.call(&__callable_4067, __args_4068)? }; rt.getattr(&__v_4066, "strip")? }; let mut __args_4065 = CallArgs::default(); rt.call(&__callable_4064, __args_4065)? }; let mut __matched_4063 = true; if __matched_4063 { let __v_4074 = { let mut __items_4075 = Vec::new(); let __v_4076 = Value::from("once"); __items_4075.push(__v_4076); let __v_4077 = Value::from("twice"); __items_4075.push(__v_4077); let __v_4078 = Value::from("thrice"); __items_4075.push(__v_4078); Value::tuple(__items_4075) }; __matched_4063 = pyrt::ops::contains(&__v_4074, &__v_4062)?; } Value::Bool(__matched_4063) }; } __v_4053 })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 1684, 1685, "_only_a_count.<locals>.<genexpr>", 52); Ok(()) }))? }; __args_4050.positional.push(__v_4051); rt.call(&__callable_4049, __args_4050)? }; if __v_4048.is_truthy() { __v_4048 = { let __v_4079 = { let __callable_4080 = { let __v_4082 = frame.load(rt, "RATE_INTERVAL")?; rt.getattr(&__v_4082, "search")? }; let mut __args_4081 = CallArgs::default(); let __v_4083 = frame.load(rt, "piece")?; __args_4081.positional.push(__v_4083); rt.call(&__callable_4080, __args_4081)? }; Value::Bool(!__v_4079.is_truthy()) }; } __v_4048 }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -2177,7 +2177,7 @@ mod __py_42 { use super::*;
 // py: bot/memory/narrow.py:1732-1816 _how_often
 pub(super) fn _how_often(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["about","clause","counted","first_word","opening","question","rates","said","sentence","sentences","the_doing","wanted","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1732, 1816, "_how_often");
+rt.trace_call_code("bot/memory/narrow.py", 1732, 1816, "_how_often", 53);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_4084 = { let __v_4085 = { let __callable_4086 = { let __v_4088 = frame.load(rt, "ASKS_FREQUENCY")?; rt.getattr(&__v_4088, "search")? }; let mut __args_4087 = CallArgs::default(); let __v_4089 = { let __callable_4090 = frame.load(rt, "flat")?; let mut __args_4091 = CallArgs::default(); let __v_4092 = frame.load(rt, "question")?; __args_4091.positional.push(__v_4092); rt.call(&__callable_4090, __args_4091)? }; __args_4087.positional.push(__v_4089); rt.call(&__callable_4086, __args_4087)? }; Value::Bool(!__v_4085.is_truthy()) }; if __v_4084.is_truthy() {
@@ -2311,7 +2311,7 @@ mod __py_43 { use super::*;
 // py: bot/memory/narrow.py:1828-1830 _counts_on_the_answer
 pub(super) fn _counts_on_the_answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["piece"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1828, 1830, "_counts_on_the_answer");
+rt.trace_call_code("bot/memory/narrow.py", 1828, 1830, "_counts_on_the_answer", 54);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_4300 = frame.load(rt, "bool")?; let mut __args_4301 = CallArgs::default(); let __v_4302 = { let __callable_4303 = { let __v_4305 = frame.load(rt, "re")?; rt.getattr(&__v_4305, "search")? }; let mut __args_4304 = CallArgs::default(); let __v_4306 = Value::from("\\b(?:the same|same count|that count|as above|as before)\\b"); __args_4304.positional.push(__v_4306); let __v_4307 = frame.load(rt, "piece")?; __args_4304.positional.push(__v_4307); let __v_4308 = { let __v_4309 = frame.load(rt, "re")?; rt.getattr(&__v_4309, "I")? }; __args_4304.positional.push(__v_4308); rt.call(&__callable_4303, __args_4304)? }; __args_4301.positional.push(__v_4302); rt.call(&__callable_4300, __args_4301)? }));
@@ -2326,7 +2326,7 @@ mod __py_44 { use super::*;
 // py: bot/memory/narrow.py:1833-1878 _freq_clause
 pub(super) fn _freq_clause(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","found","last","parts","piece","pieces","plain","sentence","wanted","weak"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1833, 1878, "_freq_clause");
+rt.trace_call_code("bot/memory/narrow.py", 1833, 1878, "_freq_clause", 55);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_4310 = { let __comp_parent_4311 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_4311.clone(), &["piece"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_4311 = __comp_parent_4311.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_4312 = { let __v_4314 = frame.load(rt, "FREQ_CLAUSE")?; rt.getattr(&__v_4314, "split")? }; let mut __args_4313 = CallArgs::default(); let __v_4315 = frame.load(rt, "sentence")?; __args_4313.positional.push(__v_4315); rt.call(&__callable_4312, __args_4313)? }) }) }, assign: { let __comp_parent_4311 = __comp_parent_4311.clone(); Rc::new(move |rt, frame, value| { frame.store("piece", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_4311 = __comp_parent_4311.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_4316 = { let __v_4318 = frame.load(rt, "piece")?; rt.getattr(&__v_4318, "strip")? }; let mut __args_4317 = CallArgs::default(); let __v_4319 = Value::from(" ,;:"); __args_4317.positional.push(__v_4319); rt.call(&__callable_4316, __args_4317)? }).is_truthy()) }) }] }], { let __comp_parent_4311 = __comp_parent_4311.clone(); Rc::new(move |rt, frame| Ok({ let __callable_4320 = { let __v_4322 = frame.load(rt, "piece")?; rt.getattr(&__v_4322, "strip")? }; let mut __args_4321 = CallArgs::default(); let __v_4323 = Value::from(" ,;:"); __args_4321.positional.push(__v_4323); rt.call(&__callable_4320, __args_4321)? })) })?) };
@@ -2404,7 +2404,7 @@ mod __py_45 { use super::*;
 // py: bot/memory/narrow.py:1880-1899 _dated
 pub(super) fn _dated(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["best","best_score","question","score","sentence","sentences","wanted","whole","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1880, 1899, "_dated");
+rt.trace_call_code("bot/memory/narrow.py", 1880, 1899, "_dated", 56);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_4488 = { let __callable_4489 = frame.load(rt, "set")?; let mut __args_4490 = CallArgs::default(); let __v_4491 = { let __callable_4492 = frame.load(rt, "words_of")?; let mut __args_4493 = CallArgs::default(); let __v_4494 = frame.load(rt, "question")?; __args_4493.positional.push(__v_4494); rt.call(&__callable_4492, __args_4493)? }; __args_4490.positional.push(__v_4491); rt.call(&__callable_4489, __args_4490)? };
@@ -2462,7 +2462,7 @@ mod __py_46 { use super::*;
 // py: bot/memory/narrow.py:1911-1924 _the_part_they_named
 pub(super) fn _the_part_they_named(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["question","said","sentence","sentences","shared","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1911, 1924, "_the_part_they_named");
+rt.trace_call_code("bot/memory/narrow.py", 1911, 1924, "_the_part_they_named", 57);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_4575 = { let __v_4576 = { let __callable_4577 = { let __v_4579 = frame.load(rt, "ASKS_FOR_A_HAND")?; rt.getattr(&__v_4579, "search")? }; let mut __args_4578 = CallArgs::default(); let __v_4580 = { let __callable_4581 = frame.load(rt, "flat")?; let mut __args_4582 = CallArgs::default(); let __v_4583 = frame.load(rt, "question")?; __args_4582.positional.push(__v_4583); rt.call(&__callable_4581, __args_4582)? }; __args_4578.positional.push(__v_4580); rt.call(&__callable_4577, __args_4578)? }; Value::Bool(!__v_4576.is_truthy()) }; if __v_4575.is_truthy() {
@@ -2503,7 +2503,7 @@ mod __py_47 { use super::*;
 // py: bot/memory/narrow.py:1927-1950 _not_a_figure
 pub(super) fn _not_a_figure(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["option","question","reply","sentence","sentences","step","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1927, 1950, "_not_a_figure");
+rt.trace_call_code("bot/memory/narrow.py", 1927, 1950, "_not_a_figure", 58);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_4625 = { let __callable_4626 = frame.load(rt, "_by_option")?; let mut __args_4627 = CallArgs::default(); let __v_4628 = frame.load(rt, "sentences")?; __args_4627.positional.push(__v_4628); let __v_4629 = frame.load(rt, "question")?; __args_4627.positional.push(__v_4629); rt.call(&__callable_4626, __args_4627)? };
@@ -2543,7 +2543,7 @@ mod __py_48 { use super::*;
 // py: bot/memory/narrow.py:1953-1997 _named_clause
 pub(super) fn _named_clause(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","best","best_count","best_score","named","pairs","piece","pieces","question","roots","said","score"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 1953, 1997, "_named_clause");
+rt.trace_call_code("bot/memory/narrow.py", 1953, 1997, "_named_clause", 59);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_4689 = { let __comp_parent_4690 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_4690.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_4690 = __comp_parent_4690.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_4691 = frame.load(rt, "words_of")?; let mut __args_4692 = CallArgs::default(); let __v_4693 = frame.load(rt, "question")?; __args_4692.positional.push(__v_4693); rt.call(&__callable_4691, __args_4692)? }) }) }, assign: { let __comp_parent_4690 = __comp_parent_4690.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_4690 = __comp_parent_4690.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_4694 = { let mut __v_4695 = frame.load(rt, "word")?; let mut __matched_4696 = true; if __matched_4696 { let __v_4697 = frame.load(rt, "NAMING_IGNORE")?; __matched_4696 = !pyrt::ops::contains(&__v_4697, &__v_4695)?; } Value::Bool(__matched_4696) }; if __v_4694.is_truthy() { __v_4694 = { let mut __v_4698 = { let __callable_4700 = frame.load(rt, "len")?; let mut __args_4701 = CallArgs::default(); let __v_4702 = frame.load(rt, "word")?; __args_4701.positional.push(__v_4702); rt.call(&__callable_4700, __args_4701)? }; let mut __matched_4699 = true; if __matched_4699 { let __v_4703 = Value::Int("2".parse().expect("integer literal")); __matched_4699 = pyrt::ops::compare(&__v_4698, &__v_4703)?.is_some_and(|o| o.is_gt()); } Value::Bool(__matched_4699) }; } __v_4694 }).is_truthy()) }) }] }], { let __comp_parent_4690 = __comp_parent_4690.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })?) };
@@ -2615,7 +2615,7 @@ mod __py_49 { use super::*;
 // py: bot/memory/narrow.py:2000-2006 _root
 pub(super) fn _root(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["ending","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2000, 2006, "_root");
+rt.trace_call_code("bot/memory/narrow.py", 2000, 2006, "_root", 60);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_4855 = false; let __v_4857 = { let mut __items_4860 = Vec::new(); let __v_4861 = Value::from("ing"); __items_4860.push(__v_4861); let __v_4862 = Value::from("ed"); __items_4860.push(__v_4862); let __v_4863 = Value::from("es"); __items_4860.push(__v_4863); let __v_4864 = Value::from("s"); __items_4860.push(__v_4864); Value::tuple(__items_4860) }; let __iter_4858 = rt.iter(&__v_4857)?;
@@ -2647,10 +2647,10 @@ mod __py_50 { use super::*;
 // py: bot/memory/narrow.py:2009-2012 _says
 pub(super) fn _says(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["pattern","phrase","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2009, 2012, "_says");
+rt.trace_call_code("bot/memory/narrow.py", 2009, 2012, "_says", 61);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_4908 = { let __v_4909 = { let __v_4911 = Value::from("\\b"); let __v_4912 = { let __callable_4913 = { let __v_4915 = Value::from("[a-z]*\\s+"); rt.getattr(&__v_4915, "join")? }; let mut __args_4914 = CallArgs::default(); let __v_4916 = { let __comp_parent_4917 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_4917.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_4917 = __comp_parent_4917.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_4918 = { let __v_4920 = frame.load(rt, "phrase")?; rt.getattr(&__v_4920, "split")? }; let mut __args_4919 = CallArgs::default(); rt.call(&__callable_4918, __args_4919)? }) }) }, assign: { let __comp_parent_4917 = __comp_parent_4917.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_4917 = __comp_parent_4917.clone(); Rc::new(move |rt, frame| Ok({ let __callable_4921 = { let __v_4923 = frame.load(rt, "re")?; rt.getattr(&__v_4923, "escape")? }; let mut __args_4922 = CallArgs::default(); let __v_4924 = frame.load(rt, "word")?; __args_4922.positional.push(__v_4924); rt.call(&__callable_4921, __args_4922)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2011, 2011, "_says.<locals>.<genexpr>"); Ok(()) }))? }; __args_4914.positional.push(__v_4916); rt.call(&__callable_4913, __args_4914)? }; pyrt::ops::add(&__v_4911, &__v_4912)? }; let __v_4910 = Value::from("[a-z]*\\b"); pyrt::ops::add(&__v_4909, &__v_4910)? };
+let __v_4908 = { let __v_4909 = { let __v_4911 = Value::from("\\b"); let __v_4912 = { let __callable_4913 = { let __v_4915 = Value::from("[a-z]*\\s+"); rt.getattr(&__v_4915, "join")? }; let mut __args_4914 = CallArgs::default(); let __v_4916 = { let __comp_parent_4917 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_4917.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_4917 = __comp_parent_4917.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_4918 = { let __v_4920 = frame.load(rt, "phrase")?; rt.getattr(&__v_4920, "split")? }; let mut __args_4919 = CallArgs::default(); rt.call(&__callable_4918, __args_4919)? }) }) }, assign: { let __comp_parent_4917 = __comp_parent_4917.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_4917 = __comp_parent_4917.clone(); Rc::new(move |rt, frame| Ok({ let __callable_4921 = { let __v_4923 = frame.load(rt, "re")?; rt.getattr(&__v_4923, "escape")? }; let mut __args_4922 = CallArgs::default(); let __v_4924 = frame.load(rt, "word")?; __args_4922.positional.push(__v_4924); rt.call(&__callable_4921, __args_4922)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2011, 2011, "_says.<locals>.<genexpr>", 62); Ok(()) }))? }; __args_4914.positional.push(__v_4916); rt.call(&__callable_4913, __args_4914)? }; pyrt::ops::add(&__v_4911, &__v_4912)? }; let __v_4910 = Value::from("[a-z]*\\b"); pyrt::ops::add(&__v_4909, &__v_4910)? };
 frame.store("pattern", __v_4908.clone())?;
 return Ok(__Flow::Return({ let mut __v_4925 = { let __callable_4927 = { let __v_4929 = frame.load(rt, "re")?; rt.getattr(&__v_4929, "search")? }; let mut __args_4928 = CallArgs::default(); let __v_4930 = frame.load(rt, "pattern")?; __args_4928.positional.push(__v_4930); let __v_4931 = { let __callable_4932 = frame.load(rt, "flat")?; let mut __args_4933 = CallArgs::default(); let __v_4934 = frame.load(rt, "text")?; __args_4933.positional.push(__v_4934); rt.call(&__callable_4932, __args_4933)? }; __args_4928.positional.push(__v_4931); rt.call(&__callable_4927, __args_4928)? }; let mut __matched_4926 = true; if __matched_4926 { let __v_4935 = Value::None; __matched_4926 = !__v_4925.is_identical(&__v_4935); } Value::Bool(__matched_4926) }));
 Ok(__Flow::Next)
@@ -2664,7 +2664,7 @@ mod __py_51 { use super::*;
 // py: bot/memory/narrow.py:2015-2017 _informative
 pub(super) fn _informative(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["piece"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2015, 2017, "_informative");
+rt.trace_call_code("bot/memory/narrow.py", 2015, 2017, "_informative", 63);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_4936 = frame.load(rt, "bool")?; let mut __args_4937 = CallArgs::default(); let __v_4938 = { let mut __v_4939 = { let __callable_4940 = { let __v_4942 = frame.load(rt, "re")?; rt.getattr(&__v_4942, "search")? }; let mut __args_4941 = CallArgs::default(); let __v_4943 = Value::from("\\d"); __args_4941.positional.push(__v_4943); let __v_4944 = frame.load(rt, "piece")?; __args_4941.positional.push(__v_4944); rt.call(&__callable_4940, __args_4941)? }; if !__v_4939.is_truthy() { __v_4939 = { let __callable_4945 = { let __v_4947 = frame.load(rt, "COOKS")?; rt.getattr(&__v_4947, "search")? }; let mut __args_4946 = CallArgs::default(); let __v_4948 = frame.load(rt, "piece")?; __args_4946.positional.push(__v_4948); rt.call(&__callable_4945, __args_4946)? }; } if !__v_4939.is_truthy() { __v_4939 = { let __callable_4949 = { let __v_4951 = frame.load(rt, "WAIT")?; rt.getattr(&__v_4951, "search")? }; let mut __args_4950 = CallArgs::default(); let __v_4952 = frame.load(rt, "piece")?; __args_4950.positional.push(__v_4952); rt.call(&__callable_4949, __args_4950)? }; } __v_4939 }; __args_4937.positional.push(__v_4938); rt.call(&__callable_4936, __args_4937)? }));
@@ -2679,7 +2679,7 @@ mod __py_52 { use super::*;
 // py: bot/memory/narrow.py:2020-2033 _cuts_a_list
 pub(super) fn _cuts_a_list(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","piece","rest","said","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2020, 2033, "_cuts_a_list");
+rt.trace_call_code("bot/memory/narrow.py", 2020, 2033, "_cuts_a_list", 64);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_4953 = { let __callable_4954 = { let __v_4956 = Value::from(" "); rt.getattr(&__v_4956, "join")? }; let mut __args_4955 = CallArgs::default(); let __v_4957 = { let __callable_4958 = { let __v_4960 = { let __callable_4961 = frame.load(rt, "str")?; let mut __args_4962 = CallArgs::default(); let __v_4963 = { let mut __v_4964 = frame.load(rt, "piece")?; if !__v_4964.is_truthy() { __v_4964 = Value::from(""); } __v_4964 }; __args_4962.positional.push(__v_4963); rt.call(&__callable_4961, __args_4962)? }; rt.getattr(&__v_4960, "split")? }; let mut __args_4959 = CallArgs::default(); rt.call(&__callable_4958, __args_4959)? }; __args_4955.positional.push(__v_4957); rt.call(&__callable_4954, __args_4955)? };
@@ -2705,7 +2705,7 @@ mod __py_53 { use super::*;
 // py: bot/memory/narrow.py:2036-2050 _with_unit
 pub(super) fn _with_unit(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","before","piece","reply","text","units"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2036, 2050, "_with_unit");
+rt.trace_call_code("bot/memory/narrow.py", 2036, 2050, "_with_unit", 65);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5005 = { let __callable_5006 = { let __v_5008 = frame.load(rt, "piece")?; rt.getattr(&__v_5008, "strip")? }; let mut __args_5007 = CallArgs::default(); rt.call(&__callable_5006, __args_5007)? };
@@ -2738,7 +2738,7 @@ mod __py_54 { use super::*;
 // py: bot/memory/narrow.py:2053-2066 _property_ask
 pub(super) fn _property_ask(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["question"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2053, 2066, "_property_ask");
+rt.trace_call_code("bot/memory/narrow.py", 2053, 2066, "_property_ask", 66);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5066 = { let __v_5067 = { let __callable_5068 = { let __v_5070 = frame.load(rt, "re")?; rt.getattr(&__v_5070, "search")? }; let mut __args_5069 = CallArgs::default(); let __v_5071 = Value::from("\\bhow (?:do|can|should|would|could) (?:i|we|you)\\b"); __args_5069.positional.push(__v_5071); let __v_5072 = { let __callable_5073 = frame.load(rt, "flat")?; let mut __args_5074 = CallArgs::default(); let __v_5075 = frame.load(rt, "question")?; __args_5074.positional.push(__v_5075); rt.call(&__callable_5073, __args_5074)? }; __args_5069.positional.push(__v_5072); rt.call(&__callable_5068, __args_5069)? }; Value::Bool(!__v_5067.is_truthy()) }; if __v_5066.is_truthy() {
@@ -2751,7 +2751,7 @@ return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-return Ok(__Flow::Return({ let __callable_5084 = frame.load(rt, "any")?; let mut __args_5085 = CallArgs::default(); let __v_5086 = { let __comp_parent_5087 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5087.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5087 = __comp_parent_5087.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_5088 = frame.load(rt, "words_of")?; let mut __args_5089 = CallArgs::default(); let __v_5090 = frame.load(rt, "question")?; __args_5089.positional.push(__v_5090); rt.call(&__callable_5088, __args_5089)? }) }) }, assign: { let __comp_parent_5087 = __comp_parent_5087.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5087 = __comp_parent_5087.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_5091 = frame.load(rt, "word")?; let mut __matched_5092 = true; if __matched_5092 { let __v_5093 = frame.load(rt, "SAME")?; __matched_5092 = pyrt::ops::contains(&__v_5093, &__v_5091)?; } Value::Bool(__matched_5092) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2066, 2066, "_property_ask.<locals>.<genexpr>"); Ok(()) }))? }; __args_5085.positional.push(__v_5086); rt.call(&__callable_5084, __args_5085)? }));
+return Ok(__Flow::Return({ let __callable_5084 = frame.load(rt, "any")?; let mut __args_5085 = CallArgs::default(); let __v_5086 = { let __comp_parent_5087 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5087.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5087 = __comp_parent_5087.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_5088 = frame.load(rt, "words_of")?; let mut __args_5089 = CallArgs::default(); let __v_5090 = frame.load(rt, "question")?; __args_5089.positional.push(__v_5090); rt.call(&__callable_5088, __args_5089)? }) }) }, assign: { let __comp_parent_5087 = __comp_parent_5087.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5087 = __comp_parent_5087.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_5091 = frame.load(rt, "word")?; let mut __matched_5092 = true; if __matched_5092 { let __v_5093 = frame.load(rt, "SAME")?; __matched_5092 = pyrt::ops::contains(&__v_5093, &__v_5091)?; } Value::Bool(__matched_5092) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2066, 2066, "_property_ask.<locals>.<genexpr>", 67); Ok(()) }))? }; __args_5085.positional.push(__v_5086); rt.call(&__callable_5084, __args_5085)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -2763,7 +2763,7 @@ mod __py_55 { use super::*;
 // py: bot/memory/narrow.py:2075-2079 _option_ask
 pub(super) fn _option_ask(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clean","question"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2075, 2079, "_option_ask");
+rt.trace_call_code("bot/memory/narrow.py", 2075, 2079, "_option_ask", 68);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5094 = { let __callable_5095 = frame.load(rt, "flat")?; let mut __args_5096 = CallArgs::default(); let __v_5097 = frame.load(rt, "question")?; __args_5096.positional.push(__v_5097); rt.call(&__callable_5095, __args_5096)? };
@@ -2780,7 +2780,7 @@ mod __py_56 { use super::*;
 // py: bot/memory/narrow.py:2082-2096 _stands_alone
 pub(super) fn _stands_alone(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["piece","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2082, 2096, "_stands_alone");
+rt.trace_call_code("bot/memory/narrow.py", 2082, 2096, "_stands_alone", 69);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5124 = { let __callable_5125 = { let __v_5127 = { let __callable_5128 = frame.load(rt, "str")?; let mut __args_5129 = CallArgs::default(); let __v_5130 = { let mut __v_5131 = frame.load(rt, "piece")?; if !__v_5131.is_truthy() { __v_5131 = Value::from(""); } __v_5131 }; __args_5129.positional.push(__v_5130); rt.call(&__callable_5128, __args_5129)? }; rt.getattr(&__v_5127, "strip")? }; let mut __args_5126 = CallArgs::default(); rt.call(&__callable_5125, __args_5126)? };
@@ -2807,7 +2807,7 @@ mod __py_57 { use super::*;
 // py: bot/memory/narrow.py:2099-2115 _by_option
 pub(super) fn _by_option(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","qualifier","question","sentence","sentences"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2099, 2115, "_by_option");
+rt.trace_call_code("bot/memory/narrow.py", 2099, 2115, "_by_option", 70);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5149 = { let __callable_5150 = { let __v_5152 = frame.load(rt, "QUALIFIER")?; rt.getattr(&__v_5152, "search")? }; let mut __args_5151 = CallArgs::default(); let __v_5153 = frame.load(rt, "question")?; __args_5151.positional.push(__v_5153); rt.call(&__callable_5150, __args_5151)? };
@@ -2851,12 +2851,12 @@ mod __py_58 { use super::*;
 // py: bot/memory/narrow.py:2118-2121 _only_a_qualifier
 pub(super) fn _only_a_qualifier(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2118, 2121, "_only_a_qualifier");
+rt.trace_call_code("bot/memory/narrow.py", 2118, 2121, "_only_a_qualifier", 71);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5189 = { let __comp_parent_5190 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_5190.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5190 = __comp_parent_5190.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_5191 = frame.load(rt, "words_of")?; let mut __args_5192 = CallArgs::default(); let __v_5193 = frame.load(rt, "clause")?; __args_5192.positional.push(__v_5193); rt.call(&__callable_5191, __args_5192)? }) }) }, assign: { let __comp_parent_5190 = __comp_parent_5190.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_5190 = __comp_parent_5190.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_5194 = frame.load(rt, "word")?; let mut __matched_5195 = true; if __matched_5195 { let __v_5196 = frame.load(rt, "QUALIFIER_FILLER")?; __matched_5195 = !pyrt::ops::contains(&__v_5196, &__v_5194)?; } Value::Bool(__matched_5195) }).is_truthy()) }) }] }], { let __comp_parent_5190 = __comp_parent_5190.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })?) };
 frame.store("words", __v_5189.clone())?;
-return Ok(__Flow::Return({ let mut __v_5197 = { let __callable_5198 = frame.load(rt, "bool")?; let mut __args_5199 = CallArgs::default(); let __v_5200 = frame.load(rt, "words")?; __args_5199.positional.push(__v_5200); rt.call(&__callable_5198, __args_5199)? }; if __v_5197.is_truthy() { __v_5197 = { let __callable_5201 = frame.load(rt, "all")?; let mut __args_5202 = CallArgs::default(); let __v_5203 = { let __comp_parent_5204 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5204.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5204 = __comp_parent_5204.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_5204 = __comp_parent_5204.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5204 = __comp_parent_5204.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_5205 = frame.load(rt, "word")?; let mut __matched_5206 = true; if __matched_5206 { let __v_5207 = frame.load(rt, "QUALIFIER_WORDS")?; __matched_5206 = pyrt::ops::contains(&__v_5207, &__v_5205)?; } Value::Bool(__matched_5206) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2121, 2121, "_only_a_qualifier.<locals>.<genexpr>"); Ok(()) }))? }; __args_5202.positional.push(__v_5203); rt.call(&__callable_5201, __args_5202)? }; } __v_5197 }));
+return Ok(__Flow::Return({ let mut __v_5197 = { let __callable_5198 = frame.load(rt, "bool")?; let mut __args_5199 = CallArgs::default(); let __v_5200 = frame.load(rt, "words")?; __args_5199.positional.push(__v_5200); rt.call(&__callable_5198, __args_5199)? }; if __v_5197.is_truthy() { __v_5197 = { let __callable_5201 = frame.load(rt, "all")?; let mut __args_5202 = CallArgs::default(); let __v_5203 = { let __comp_parent_5204 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5204.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5204 = __comp_parent_5204.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_5204 = __comp_parent_5204.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5204 = __comp_parent_5204.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_5205 = frame.load(rt, "word")?; let mut __matched_5206 = true; if __matched_5206 { let __v_5207 = frame.load(rt, "QUALIFIER_WORDS")?; __matched_5206 = pyrt::ops::contains(&__v_5207, &__v_5205)?; } Value::Bool(__matched_5206) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2121, 2121, "_only_a_qualifier.<locals>.<genexpr>", 72); Ok(()) }))? }; __args_5202.positional.push(__v_5203); rt.call(&__callable_5201, __args_5202)? }; } __v_5197 }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -2868,7 +2868,7 @@ mod __py_59 { use super::*;
 // py: bot/memory/narrow.py:2138-2161 _by_step
 pub(super) fn _by_step(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["cut","first","question","raw","sentence","sentences","step","wanted"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2138, 2161, "_by_step");
+rt.trace_call_code("bot/memory/narrow.py", 2138, 2161, "_by_step", 73);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5208 = { let __v_5209 = { let __callable_5210 = { let __v_5212 = frame.load(rt, "YES_NO")?; rt.getattr(&__v_5212, "search")? }; let mut __args_5211 = CallArgs::default(); let __v_5213 = { let __callable_5214 = frame.load(rt, "flat")?; let mut __args_5215 = CallArgs::default(); let __v_5216 = frame.load(rt, "question")?; __args_5215.positional.push(__v_5216); rt.call(&__callable_5214, __args_5215)? }; __args_5211.positional.push(__v_5213); rt.call(&__callable_5210, __args_5211)? }; Value::Bool(!__v_5209.is_truthy()) }; if __v_5208.is_truthy() {
@@ -2930,7 +2930,7 @@ mod __py_60 { use super::*;
 // py: bot/memory/narrow.py:2164-2198 _with_the_script
 pub(super) fn _with_the_script(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","head","part","reply","said","sentence","sentences","whole_answer","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2164, 2198, "_with_the_script");
+rt.trace_call_code("bot/memory/narrow.py", 2164, 2198, "_with_the_script", 74);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5310 = { let __callable_5311 = { let __v_5313 = { let __callable_5314 = { let __v_5316 = { let __callable_5317 = frame.load(rt, "str")?; let mut __args_5318 = CallArgs::default(); let __v_5319 = { let mut __v_5320 = frame.load(rt, "part")?; if !__v_5320.is_truthy() { __v_5320 = Value::from(""); } __v_5320 }; __args_5318.positional.push(__v_5319); rt.call(&__callable_5317, __args_5318)? }; rt.getattr(&__v_5316, "strip")? }; let mut __args_5315 = CallArgs::default(); rt.call(&__callable_5314, __args_5315)? }; rt.getattr(&__v_5313, "strip")? }; let mut __args_5312 = CallArgs::default(); let __v_5321 = Value::from(".?! "); __args_5312.positional.push(__v_5321); rt.call(&__callable_5311, __args_5312)? };
@@ -2989,7 +2989,7 @@ mod __py_61 { use super::*;
 // py: bot/memory/narrow.py:2208-2217 _the_quotation
 pub(super) fn _the_quotation(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","sentence","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2208, 2217, "_the_quotation");
+rt.trace_call_code("bot/memory/narrow.py", 2208, 2217, "_the_quotation", 75);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5398 = { let __callable_5399 = frame.load(rt, "str")?; let mut __args_5400 = CallArgs::default(); let __v_5401 = { let mut __v_5402 = frame.load(rt, "sentence")?; if !__v_5402.is_truthy() { __v_5402 = Value::from(""); } __v_5402 }; __args_5400.positional.push(__v_5401); rt.call(&__callable_5399, __args_5400)? };
@@ -3020,7 +3020,7 @@ mod __py_62 { use super::*;
 // py: bot/memory/narrow.py:2220-2234 _to_the_end_of_the_script
 pub(super) fn _to_the_end_of_the_script(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","index","sentences","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2220, 2234, "_to_the_end_of_the_script");
+rt.trace_call_code("bot/memory/narrow.py", 2220, 2234, "_to_the_end_of_the_script", 76);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5431 = { let __callable_5432 = { let __v_5434 = { let __v_5435 = frame.load(rt, "sentences")?; let __v_5436 = frame.load(rt, "at")?; pyrt::ops::getitem(&__v_5435, &__v_5436)? }; rt.getattr(&__v_5434, "strip")? }; let mut __args_5433 = CallArgs::default(); rt.call(&__callable_5432, __args_5433)? };
@@ -3052,7 +3052,7 @@ mod __py_63 { use super::*;
 // py: bot/memory/narrow.py:2237-2250 _by_words
 pub(super) fn _by_words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["best","best_length","best_score","length","question","score","sentence","sentences","wanted","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2237, 2250, "_by_words");
+rt.trace_call_code("bot/memory/narrow.py", 2237, 2250, "_by_words", 77);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5468 = { let __callable_5469 = frame.load(rt, "set")?; let mut __args_5470 = CallArgs::default(); let __v_5471 = { let __callable_5472 = frame.load(rt, "words_of")?; let mut __args_5473 = CallArgs::default(); let __v_5474 = frame.load(rt, "question")?; __args_5473.positional.push(__v_5474); rt.call(&__callable_5472, __args_5473)? }; __args_5470.positional.push(__v_5471); rt.call(&__callable_5469, __args_5470)? };
@@ -3107,7 +3107,7 @@ mod __py_64 { use super::*;
 // py: bot/memory/narrow.py:2260-2267 _as_a_length
 pub(super) fn _as_a_length(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["say","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2260, 2267, "_as_a_length");
+rt.trace_call_code("bot/memory/narrow.py", 2260, 2267, "_as_a_length", 78);
 let flow = (|| -> PyResult<__Flow> {
 
 frame.store("say", { let __signature_5544 = Signature { name: "say".into(), positional: vec!["match".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_5546 = Value::dict(); __attrs_5546.dict_set(Value::from("__doc__"), Value::None)?; __attrs_5546.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_5547 = Value::dict(); __attrs_5546.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_5543 = Frame::module(frame.globals.clone()); let mut __function_5545 = NativeFunction::qualified_with_origin("say".into(), "_as_a_length.<locals>.say".into(), "bot.memory.narrow".into(), __attrs_5546, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/narrow.py", first: 2262, last: 2266, qualname: "_as_a_length.<locals>.say" }, closure: __closure_5543.clone(), freevars: vec![] }, move |rt, args| super::__py_65::say(rt, __closure_5543.clone(), &__signature_5544, args)); __function_5545 })?;
@@ -3123,7 +3123,7 @@ mod __py_65 { use super::*;
 // py: bot/memory/narrow.py:2262-2266 _as_a_length.<locals>.say
 pub(super) fn say(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["match","number","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2262, 2266, "_as_a_length.<locals>.say");
+rt.trace_call_code("bot/memory/narrow.py", 2262, 2266, "_as_a_length.<locals>.say", 79);
 let flow = (|| -> PyResult<__Flow> {
 let __v_5556 = { let mut __items_5557 = Vec::new(); let __v_5558 = { let __callable_5559 = { let __v_5561 = frame.load(rt, "match")?; rt.getattr(&__v_5561, "group")? }; let mut __args_5560 = CallArgs::default(); let __v_5562 = Value::Int("1".parse().expect("integer literal")); __args_5560.positional.push(__v_5562); rt.call(&__callable_5559, __args_5560)? }; __items_5557.push(__v_5558); let __v_5563 = { let __callable_5564 = { let __v_5566 = { let __callable_5567 = { let __v_5569 = frame.load(rt, "match")?; rt.getattr(&__v_5569, "group")? }; let mut __args_5568 = CallArgs::default(); let __v_5570 = Value::Int("2".parse().expect("integer literal")); __args_5568.positional.push(__v_5570); rt.call(&__callable_5567, __args_5568)? }; rt.getattr(&__v_5566, "lower")? }; let mut __args_5565 = CallArgs::default(); rt.call(&__callable_5564, __args_5565)? }; __items_5557.push(__v_5563); Value::tuple(__items_5557) };
 let __unpack_5571 = pyrt::containers::unpack(rt, &__v_5556.clone(), 2, 0, false)?; frame.store("number", __unpack_5571[0].clone())?; frame.store("unit", __unpack_5571[1].clone())?;
@@ -3144,10 +3144,10 @@ mod __py_66 { use super::*;
 // py: bot/memory/narrow.py:2279-2282 _names_a_thing
 pub(super) fn _names_a_thing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["question"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2279, 2282, "_names_a_thing");
+rt.trace_call_code("bot/memory/narrow.py", 2279, 2282, "_names_a_thing", 80);
 let flow = (|| -> PyResult<__Flow> {
 
-return Ok(__Flow::Return({ let __callable_5592 = frame.load(rt, "any")?; let mut __args_5593 = CallArgs::default(); let __v_5594 = { let __comp_parent_5595 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5595.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5595 = __comp_parent_5595.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_5596 = frame.load(rt, "words_of")?; let mut __args_5597 = CallArgs::default(); let __v_5598 = { let __callable_5599 = frame.load(rt, "flat")?; let mut __args_5600 = CallArgs::default(); let __v_5601 = frame.load(rt, "question")?; __args_5600.positional.push(__v_5601); rt.call(&__callable_5599, __args_5600)? }; __args_5597.positional.push(__v_5598); rt.call(&__callable_5596, __args_5597)? }) }) }, assign: { let __comp_parent_5595 = __comp_parent_5595.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5595 = __comp_parent_5595.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_5602 = { let mut __v_5603 = frame.load(rt, "word")?; let mut __matched_5604 = true; if __matched_5604 { let __v_5605 = frame.load(rt, "ASKING_ONLY")?; __matched_5604 = !pyrt::ops::contains(&__v_5605, &__v_5603)?; } Value::Bool(__matched_5604) }; if __v_5602.is_truthy() { __v_5602 = { let mut __v_5606 = frame.load(rt, "word")?; let mut __matched_5607 = true; if __matched_5607 { let __v_5608 = frame.load(rt, "POINTS_BACK")?; __matched_5607 = !pyrt::ops::contains(&__v_5608, &__v_5606)?; } Value::Bool(__matched_5607) }; } __v_5602 })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2281, 2282, "_names_a_thing.<locals>.<genexpr>"); Ok(()) }))? }; __args_5593.positional.push(__v_5594); rt.call(&__callable_5592, __args_5593)? }));
+return Ok(__Flow::Return({ let __callable_5592 = frame.load(rt, "any")?; let mut __args_5593 = CallArgs::default(); let __v_5594 = { let __comp_parent_5595 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5595.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5595 = __comp_parent_5595.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_5596 = frame.load(rt, "words_of")?; let mut __args_5597 = CallArgs::default(); let __v_5598 = { let __callable_5599 = frame.load(rt, "flat")?; let mut __args_5600 = CallArgs::default(); let __v_5601 = frame.load(rt, "question")?; __args_5600.positional.push(__v_5601); rt.call(&__callable_5599, __args_5600)? }; __args_5597.positional.push(__v_5598); rt.call(&__callable_5596, __args_5597)? }) }) }, assign: { let __comp_parent_5595 = __comp_parent_5595.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5595 = __comp_parent_5595.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_5602 = { let mut __v_5603 = frame.load(rt, "word")?; let mut __matched_5604 = true; if __matched_5604 { let __v_5605 = frame.load(rt, "ASKING_ONLY")?; __matched_5604 = !pyrt::ops::contains(&__v_5605, &__v_5603)?; } Value::Bool(__matched_5604) }; if __v_5602.is_truthy() { __v_5602 = { let mut __v_5606 = frame.load(rt, "word")?; let mut __matched_5607 = true; if __matched_5607 { let __v_5608 = frame.load(rt, "POINTS_BACK")?; __matched_5607 = !pyrt::ops::contains(&__v_5608, &__v_5606)?; } Value::Bool(__matched_5607) }; } __v_5602 })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2281, 2282, "_names_a_thing.<locals>.<genexpr>", 81); Ok(()) }))? }; __args_5593.positional.push(__v_5594); rt.call(&__callable_5592, __args_5593)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -3159,7 +3159,7 @@ mod __py_67 { use super::*;
 // py: bot/memory/narrow.py:2302-2305 _measure
 pub(super) fn _measure(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","span"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2302, 2305, "_measure");
+rt.trace_call_code("bot/memory/narrow.py", 2302, 2305, "_measure", 82);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5609 = { let __callable_5610 = { let __v_5612 = frame.load(rt, "FIGURE_MEASURE")?; rt.getattr(&__v_5612, "search")? }; let mut __args_5611 = CallArgs::default(); let __v_5613 = { let __callable_5614 = frame.load(rt, "str")?; let mut __args_5615 = CallArgs::default(); let __v_5616 = { let mut __v_5617 = frame.load(rt, "span")?; if !__v_5617.is_truthy() { __v_5617 = Value::from(""); } __v_5617 }; __args_5615.positional.push(__v_5616); rt.call(&__callable_5614, __args_5615)? }; __args_5611.positional.push(__v_5613); rt.call(&__callable_5610, __args_5611)? };
@@ -3176,7 +3176,7 @@ mod __py_68 { use super::*;
 // py: bot/memory/narrow.py:2308-2326 _figure
 pub(super) fn _figure(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["left","match","start","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2308, 2326, "_figure");
+rt.trace_call_code("bot/memory/narrow.py", 2308, 2326, "_figure", 83);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5626 = { let __callable_5627 = frame.load(rt, "str")?; let mut __args_5628 = CallArgs::default(); let __v_5629 = { let mut __v_5630 = frame.load(rt, "text")?; if !__v_5630.is_truthy() { __v_5630 = Value::from(""); } __v_5630 }; __args_5628.positional.push(__v_5629); rt.call(&__callable_5627, __args_5628)? };
@@ -3213,7 +3213,7 @@ mod __py_69 { use super::*;
 // py: bot/memory/narrow.py:2329-2353 _a_figure_each
 pub(super) fn _a_figure_each(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["figure","halves","kind","sentence","stated"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2329, 2353, "_a_figure_each");
+rt.trace_call_code("bot/memory/narrow.py", 2329, 2353, "_a_figure_each", 84);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5681 = { let __callable_5682 = { let __v_5684 = frame.load(rt, "SPANS")?; rt.getattr(&__v_5684, "get")? }; let mut __args_5683 = CallArgs::default(); let __v_5685 = frame.load(rt, "kind")?; __args_5683.positional.push(__v_5685); rt.call(&__callable_5682, __args_5683)? };
@@ -3230,14 +3230,14 @@ return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_5715 = { let __callable_5716 = frame.load(rt, "any")?; let mut __args_5717 = CallArgs::default(); let __v_5718 = { let __comp_parent_5719 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5719.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5719 = __comp_parent_5719.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "halves")?) }) }, assign: { let __comp_parent_5719 = __comp_parent_5719.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5719 = __comp_parent_5719.clone(); Rc::new(move |rt, frame| Ok({ let __callable_5720 = { let __v_5722 = frame.load(rt, "figure")?; rt.getattr(&__v_5722, "search")? }; let mut __args_5721 = CallArgs::default(); let __v_5723 = frame.load(rt, "one")?; __args_5721.positional.push(__v_5723); rt.call(&__callable_5720, __args_5721)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2348, 2348, "_a_figure_each.<locals>.<genexpr>"); Ok(()) }))? }; __args_5717.positional.push(__v_5718); rt.call(&__callable_5716, __args_5717)? };
+let __v_5715 = { let __callable_5716 = frame.load(rt, "any")?; let mut __args_5717 = CallArgs::default(); let __v_5718 = { let __comp_parent_5719 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5719.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5719 = __comp_parent_5719.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "halves")?) }) }, assign: { let __comp_parent_5719 = __comp_parent_5719.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5719 = __comp_parent_5719.clone(); Rc::new(move |rt, frame| Ok({ let __callable_5720 = { let __v_5722 = frame.load(rt, "figure")?; rt.getattr(&__v_5722, "search")? }; let mut __args_5721 = CallArgs::default(); let __v_5723 = frame.load(rt, "one")?; __args_5721.positional.push(__v_5723); rt.call(&__callable_5720, __args_5721)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2348, 2348, "_a_figure_each.<locals>.<genexpr>", 85); Ok(()) }))? }; __args_5717.positional.push(__v_5718); rt.call(&__callable_5716, __args_5717)? };
 frame.store("stated", __v_5715.clone())?;
 let __v_5724 = { let __v_5725 = frame.load(rt, "stated")?; Value::Bool(!__v_5725.is_truthy()) }; if __v_5724.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_5726 = { let __callable_5727 = frame.load(rt, "any")?; let mut __args_5728 = CallArgs::default(); let __v_5729 = { let __comp_parent_5730 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5730.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5730 = __comp_parent_5730.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "halves")?) }) }, assign: { let __comp_parent_5730 = __comp_parent_5730.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5730 = __comp_parent_5730.clone(); Rc::new(move |rt, frame| Ok({ let __v_5731 = { let mut __v_5732 = { let __callable_5733 = { let __v_5735 = frame.load(rt, "figure")?; rt.getattr(&__v_5735, "search")? }; let mut __args_5734 = CallArgs::default(); let __v_5736 = frame.load(rt, "one")?; __args_5734.positional.push(__v_5736); rt.call(&__callable_5733, __args_5734)? }; if !__v_5732.is_truthy() { __v_5732 = { let __callable_5737 = { let __v_5739 = frame.load(rt, "BARE_RANGE")?; rt.getattr(&__v_5739, "search")? }; let mut __args_5738 = CallArgs::default(); let __v_5740 = { let __callable_5741 = { let __v_5743 = frame.load(rt, "one")?; rt.getattr(&__v_5743, "rstrip")? }; let mut __args_5742 = CallArgs::default(); let __v_5744 = Value::from(".!?"); __args_5742.positional.push(__v_5744); rt.call(&__callable_5741, __args_5742)? }; __args_5738.positional.push(__v_5740); rt.call(&__callable_5737, __args_5738)? }; } __v_5732 }; Value::Bool(!__v_5731.is_truthy()) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2351, 2351, "_a_figure_each.<locals>.<genexpr>"); Ok(()) }))? }; __args_5728.positional.push(__v_5729); rt.call(&__callable_5727, __args_5728)? }; if __v_5726.is_truthy() {
+let __v_5726 = { let __callable_5727 = frame.load(rt, "any")?; let mut __args_5728 = CallArgs::default(); let __v_5729 = { let __comp_parent_5730 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5730.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5730 = __comp_parent_5730.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "halves")?) }) }, assign: { let __comp_parent_5730 = __comp_parent_5730.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5730 = __comp_parent_5730.clone(); Rc::new(move |rt, frame| Ok({ let __v_5731 = { let mut __v_5732 = { let __callable_5733 = { let __v_5735 = frame.load(rt, "figure")?; rt.getattr(&__v_5735, "search")? }; let mut __args_5734 = CallArgs::default(); let __v_5736 = frame.load(rt, "one")?; __args_5734.positional.push(__v_5736); rt.call(&__callable_5733, __args_5734)? }; if !__v_5732.is_truthy() { __v_5732 = { let __callable_5737 = { let __v_5739 = frame.load(rt, "BARE_RANGE")?; rt.getattr(&__v_5739, "search")? }; let mut __args_5738 = CallArgs::default(); let __v_5740 = { let __callable_5741 = { let __v_5743 = frame.load(rt, "one")?; rt.getattr(&__v_5743, "rstrip")? }; let mut __args_5742 = CallArgs::default(); let __v_5744 = Value::from(".!?"); __args_5742.positional.push(__v_5744); rt.call(&__callable_5741, __args_5742)? }; __args_5738.positional.push(__v_5740); rt.call(&__callable_5737, __args_5738)? }; } __v_5732 }; Value::Bool(!__v_5731.is_truthy()) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2351, 2351, "_a_figure_each.<locals>.<genexpr>", 86); Ok(()) }))? }; __args_5728.positional.push(__v_5729); rt.call(&__callable_5727, __args_5728)? }; if __v_5726.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 
@@ -3254,7 +3254,7 @@ mod __py_70 { use super::*;
 // py: bot/memory/narrow.py:2373-2424 _the_item_they_named
 pub(super) fn _the_item_they_named(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["best","body","figure","found","head","index","item","items","kind","match","question","said","scored","sentence","split","starts","stop","unit","winners"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2373, 2424, "_the_item_they_named");
+rt.trace_call_code("bot/memory/narrow.py", 2373, 2424, "_the_item_they_named", 87);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5745 = { let __callable_5746 = { let __v_5748 = frame.load(rt, "SPANS")?; rt.getattr(&__v_5748, "get")? }; let mut __args_5747 = CallArgs::default(); let __v_5749 = frame.load(rt, "kind")?; __args_5747.positional.push(__v_5749); rt.call(&__callable_5746, __args_5747)? };
@@ -3297,14 +3297,14 @@ match __flow_5813 { __Flow::Break => { __broke_5812 = true; break; }, __Flow::Ne
 if !__broke_5812 {
 
 }
-let __v_5861 = { let __callable_5862 = frame.load(rt, "any")?; let mut __args_5863 = CallArgs::default(); let __v_5864 = { let __comp_parent_5865 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5865.clone(), &["piece","span"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5865 = __comp_parent_5865.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "items")?) }) }, assign: { let __comp_parent_5865 = __comp_parent_5865.clone(); Rc::new(move |rt, frame, value| { let __unpack_5866 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("span", __unpack_5866[0].clone())?; frame.store("piece", __unpack_5866[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5865 = __comp_parent_5865.clone(); Rc::new(move |rt, frame| Ok({ let __v_5867 = { let __callable_5868 = { let __v_5870 = frame.load(rt, "A_FOR_A_THING")?; rt.getattr(&__v_5870, "match")? }; let mut __args_5869 = CallArgs::default(); let __v_5871 = frame.load(rt, "piece")?; __args_5869.positional.push(__v_5871); let __v_5872 = { let __callable_5873 = frame.load(rt, "len")?; let mut __args_5874 = CallArgs::default(); let __v_5875 = frame.load(rt, "span")?; __args_5874.positional.push(__v_5875); rt.call(&__callable_5873, __args_5874)? }; __args_5869.positional.push(__v_5872); rt.call(&__callable_5868, __args_5869)? }; Value::Bool(!__v_5867.is_truthy()) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2401, 2401, "_the_item_they_named.<locals>.<genexpr>"); Ok(()) }))? }; __args_5863.positional.push(__v_5864); rt.call(&__callable_5862, __args_5863)? }; if __v_5861.is_truthy() {
+let __v_5861 = { let __callable_5862 = frame.load(rt, "any")?; let mut __args_5863 = CallArgs::default(); let __v_5864 = { let __comp_parent_5865 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5865.clone(), &["piece","span"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5865 = __comp_parent_5865.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "items")?) }) }, assign: { let __comp_parent_5865 = __comp_parent_5865.clone(); Rc::new(move |rt, frame, value| { let __unpack_5866 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("span", __unpack_5866[0].clone())?; frame.store("piece", __unpack_5866[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5865 = __comp_parent_5865.clone(); Rc::new(move |rt, frame| Ok({ let __v_5867 = { let __callable_5868 = { let __v_5870 = frame.load(rt, "A_FOR_A_THING")?; rt.getattr(&__v_5870, "match")? }; let mut __args_5869 = CallArgs::default(); let __v_5871 = frame.load(rt, "piece")?; __args_5869.positional.push(__v_5871); let __v_5872 = { let __callable_5873 = frame.load(rt, "len")?; let mut __args_5874 = CallArgs::default(); let __v_5875 = frame.load(rt, "span")?; __args_5874.positional.push(__v_5875); rt.call(&__callable_5873, __args_5874)? }; __args_5869.positional.push(__v_5872); rt.call(&__callable_5868, __args_5869)? }; Value::Bool(!__v_5867.is_truthy()) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2401, 2401, "_the_item_they_named.<locals>.<genexpr>", 88); Ok(()) }))? }; __args_5863.positional.push(__v_5864); rt.call(&__callable_5862, __args_5863)? }; if __v_5861.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 
 }
 let __v_5876 = { let __comp_parent_5877 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_5877.clone(), &["_","piece"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5877 = __comp_parent_5877.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "items")?) }) }, assign: { let __comp_parent_5877 = __comp_parent_5877.clone(); Rc::new(move |rt, frame, value| { let __unpack_5878 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("_", __unpack_5878[0].clone())?; frame.store("piece", __unpack_5878[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5877 = __comp_parent_5877.clone(); Rc::new(move |rt, frame| Ok({ let mut __items_5879 = Vec::new(); let __v_5880 = { let __callable_5881 = frame.load(rt, "len")?; let mut __args_5882 = CallArgs::default(); let __v_5883 = { let __v_5884 = frame.load(rt, "said")?; let __v_5885 = { let __callable_5886 = frame.load(rt, "set")?; let mut __args_5887 = CallArgs::default(); let __v_5888 = { let __callable_5889 = frame.load(rt, "words_of")?; let mut __args_5890 = CallArgs::default(); let __v_5891 = frame.load(rt, "piece")?; __args_5890.positional.push(__v_5891); rt.call(&__callable_5889, __args_5890)? }; __args_5887.positional.push(__v_5888); rt.call(&__callable_5886, __args_5887)? }; pyrt::ops::bitwise_rt(rt, "&", &__v_5884, &__v_5885)? }; __args_5882.positional.push(__v_5883); rt.call(&__callable_5881, __args_5882)? }; __items_5879.push(__v_5880); let __v_5892 = frame.load(rt, "piece")?; __items_5879.push(__v_5892); Value::tuple(__items_5879) })) })?) };
 frame.store("scored", __v_5876.clone())?;
-let __v_5893 = { let __callable_5894 = frame.load(rt, "max")?; let mut __args_5895 = CallArgs::default(); let __v_5896 = { let __comp_parent_5897 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5897.clone(), &["_","score"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5897 = __comp_parent_5897.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "scored")?) }) }, assign: { let __comp_parent_5897 = __comp_parent_5897.clone(); Rc::new(move |rt, frame, value| { let __unpack_5898 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("score", __unpack_5898[0].clone())?; frame.store("_", __unpack_5898[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5897 = __comp_parent_5897.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "score")?)) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2408, 2408, "_the_item_they_named.<locals>.<genexpr>"); Ok(()) }))? }; __args_5895.positional.push(__v_5896); rt.call(&__callable_5894, __args_5895)? };
+let __v_5893 = { let __callable_5894 = frame.load(rt, "max")?; let mut __args_5895 = CallArgs::default(); let __v_5896 = { let __comp_parent_5897 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5897.clone(), &["_","score"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5897 = __comp_parent_5897.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "scored")?) }) }, assign: { let __comp_parent_5897 = __comp_parent_5897.clone(); Rc::new(move |rt, frame, value| { let __unpack_5898 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("score", __unpack_5898[0].clone())?; frame.store("_", __unpack_5898[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5897 = __comp_parent_5897.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "score")?)) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2408, 2408, "_the_item_they_named.<locals>.<genexpr>", 89); Ok(()) }))? }; __args_5895.positional.push(__v_5896); rt.call(&__callable_5894, __args_5895)? };
 frame.store("best", __v_5893.clone())?;
 let __v_5899 = { let __comp_parent_5900 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_5900.clone(), &["piece","score"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5900 = __comp_parent_5900.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "scored")?) }) }, assign: { let __comp_parent_5900 = __comp_parent_5900.clone(); Rc::new(move |rt, frame, value| { let __unpack_5901 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("score", __unpack_5901[0].clone())?; frame.store("piece", __unpack_5901[1].clone())?; Ok(()) }) }, filters: vec![{ let __comp_parent_5900 = __comp_parent_5900.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_5902 = frame.load(rt, "score")?; let mut __matched_5903 = true; if __matched_5903 { let __v_5904 = frame.load(rt, "best")?; __matched_5903 = __v_5902.equals(&__v_5904)?; } Value::Bool(__matched_5903) }).is_truthy()) }) }] }], { let __comp_parent_5900 = __comp_parent_5900.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "piece")?)) })?) };
 frame.store("winners", __v_5899.clone())?;
@@ -3316,7 +3316,7 @@ return Ok(__Flow::Return(Value::None));
 let __v_5916 = { let __callable_5917 = { let __v_5919 = frame.load(rt, "re")?; rt.getattr(&__v_5919, "sub")? }; let mut __args_5918 = CallArgs::default(); let __v_5920 = Value::from("[\\s,]*(?:and|or)?[\\s,]*$"); __args_5918.positional.push(__v_5920); let __v_5921 = Value::from(""); __args_5918.positional.push(__v_5921); let __v_5922 = { let __callable_5923 = { let __v_5925 = { let __v_5926 = frame.load(rt, "winners")?; let __v_5927 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_5926, &__v_5927)? }; rt.getattr(&__v_5925, "strip")? }; let mut __args_5924 = CallArgs::default(); rt.call(&__callable_5923, __args_5924)? }; __args_5918.positional.push(__v_5922); rt.call(&__callable_5917, __args_5918)? };
 frame.store("item", __v_5916.clone())?;
 let __v_5928 = { let __v_5929 = { let __callable_5930 = { let __v_5932 = frame.load(rt, "A_UNIT_WORD")?; rt.getattr(&__v_5932, "search")? }; let mut __args_5931 = CallArgs::default(); let __v_5933 = frame.load(rt, "item")?; __args_5931.positional.push(__v_5933); rt.call(&__callable_5930, __args_5931)? }; Value::Bool(!__v_5929.is_truthy()) }; if __v_5928.is_truthy() {
-let __v_5934 = { let __callable_5935 = frame.load(rt, "next")?; let mut __args_5936 = CallArgs::default(); let __v_5937 = { let __comp_parent_5938 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5938.clone(), &["_","one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5938 = __comp_parent_5938.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "items")?) }) }, assign: { let __comp_parent_5938 = __comp_parent_5938.clone(); Rc::new(move |rt, frame, value| { let __unpack_5939 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("_", __unpack_5939[0].clone())?; frame.store("one", __unpack_5939[1].clone())?; Ok(()) }) }, filters: vec![{ let __comp_parent_5938 = __comp_parent_5938.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_5940 = { let __v_5942 = frame.load(rt, "A_UNIT_WORD")?; rt.getattr(&__v_5942, "search")? }; let mut __args_5941 = CallArgs::default(); let __v_5943 = frame.load(rt, "one")?; __args_5941.positional.push(__v_5943); rt.call(&__callable_5940, __args_5941)? }).is_truthy()) }) }] }], { let __comp_parent_5938 = __comp_parent_5938.clone(); Rc::new(move |rt, frame| Ok({ let __callable_5944 = { let __v_5946 = frame.load(rt, "A_UNIT_WORD")?; rt.getattr(&__v_5946, "search")? }; let mut __args_5945 = CallArgs::default(); let __v_5947 = frame.load(rt, "one")?; __args_5945.positional.push(__v_5947); rt.call(&__callable_5944, __args_5945)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2416, 2416, "_the_item_they_named.<locals>.<genexpr>"); Ok(()) }))? }; __args_5936.positional.push(__v_5937); let __v_5948 = Value::None; __args_5936.positional.push(__v_5948); rt.call(&__callable_5935, __args_5936)? };
+let __v_5934 = { let __callable_5935 = frame.load(rt, "next")?; let mut __args_5936 = CallArgs::default(); let __v_5937 = { let __comp_parent_5938 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_5938.clone(), &["_","one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5938 = __comp_parent_5938.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "items")?) }) }, assign: { let __comp_parent_5938 = __comp_parent_5938.clone(); Rc::new(move |rt, frame, value| { let __unpack_5939 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("_", __unpack_5939[0].clone())?; frame.store("one", __unpack_5939[1].clone())?; Ok(()) }) }, filters: vec![{ let __comp_parent_5938 = __comp_parent_5938.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_5940 = { let __v_5942 = frame.load(rt, "A_UNIT_WORD")?; rt.getattr(&__v_5942, "search")? }; let mut __args_5941 = CallArgs::default(); let __v_5943 = frame.load(rt, "one")?; __args_5941.positional.push(__v_5943); rt.call(&__callable_5940, __args_5941)? }).is_truthy()) }) }] }], { let __comp_parent_5938 = __comp_parent_5938.clone(); Rc::new(move |rt, frame| Ok({ let __callable_5944 = { let __v_5946 = frame.load(rt, "A_UNIT_WORD")?; rt.getattr(&__v_5946, "search")? }; let mut __args_5945 = CallArgs::default(); let __v_5947 = frame.load(rt, "one")?; __args_5945.positional.push(__v_5947); rt.call(&__callable_5944, __args_5945)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2416, 2416, "_the_item_they_named.<locals>.<genexpr>", 90); Ok(()) }))? }; __args_5936.positional.push(__v_5937); let __v_5948 = Value::None; __args_5936.positional.push(__v_5948); rt.call(&__callable_5935, __args_5936)? };
 frame.store("unit", __v_5934.clone())?;
 let __v_5949 = { let __v_5950 = frame.load(rt, "unit")?; Value::Bool(!__v_5950.is_truthy()) }; if __v_5949.is_truthy() {
 return Ok(__Flow::Return(Value::None));
@@ -3344,7 +3344,7 @@ mod __py_71 { use super::*;
 // py: bot/memory/narrow.py:2427-2442 _the_half_they_named
 pub(super) fn _the_half_they_named(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["best","halves","question","said","scored","winners"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2427, 2442, "_the_half_they_named");
+rt.trace_call_code("bot/memory/narrow.py", 2427, 2442, "_the_half_they_named", 91);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_5986 = { let __callable_5987 = frame.load(rt, "set")?; let mut __args_5988 = CallArgs::default(); let __v_5989 = { let __callable_5990 = frame.load(rt, "words_of")?; let mut __args_5991 = CallArgs::default(); let __v_5992 = { let __callable_5993 = frame.load(rt, "flat")?; let mut __args_5994 = CallArgs::default(); let __v_5995 = frame.load(rt, "question")?; __args_5994.positional.push(__v_5995); rt.call(&__callable_5993, __args_5994)? }; __args_5991.positional.push(__v_5992); rt.call(&__callable_5990, __args_5991)? }; __args_5988.positional.push(__v_5989); rt.call(&__callable_5987, __args_5988)? };
@@ -3356,7 +3356,7 @@ return Ok(__Flow::Return(Value::None));
 }
 let __v_5998 = { let __comp_parent_5999 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_5999.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_5999 = __comp_parent_5999.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "halves")?) }) }, assign: { let __comp_parent_5999 = __comp_parent_5999.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_5999 = __comp_parent_5999.clone(); Rc::new(move |rt, frame| Ok({ let mut __items_6000 = Vec::new(); let __v_6001 = { let __callable_6002 = frame.load(rt, "len")?; let mut __args_6003 = CallArgs::default(); let __v_6004 = { let __v_6005 = frame.load(rt, "said")?; let __v_6006 = { let __callable_6007 = frame.load(rt, "set")?; let mut __args_6008 = CallArgs::default(); let __v_6009 = { let __callable_6010 = frame.load(rt, "words_of")?; let mut __args_6011 = CallArgs::default(); let __v_6012 = frame.load(rt, "one")?; __args_6011.positional.push(__v_6012); rt.call(&__callable_6010, __args_6011)? }; __args_6008.positional.push(__v_6009); rt.call(&__callable_6007, __args_6008)? }; pyrt::ops::bitwise_rt(rt, "&", &__v_6005, &__v_6006)? }; __args_6003.positional.push(__v_6004); rt.call(&__callable_6002, __args_6003)? }; __items_6000.push(__v_6001); let __v_6013 = frame.load(rt, "one")?; __items_6000.push(__v_6013); Value::tuple(__items_6000) })) })?) };
 frame.store("scored", __v_5998.clone())?;
-let __v_6014 = { let __callable_6015 = frame.load(rt, "max")?; let mut __args_6016 = CallArgs::default(); let __v_6017 = { let __comp_parent_6018 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_6018.clone(), &["_","score"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_6018 = __comp_parent_6018.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "scored")?) }) }, assign: { let __comp_parent_6018 = __comp_parent_6018.clone(); Rc::new(move |rt, frame, value| { let __unpack_6019 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("score", __unpack_6019[0].clone())?; frame.store("_", __unpack_6019[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_6018 = __comp_parent_6018.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "score")?)) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2438, 2438, "_the_half_they_named.<locals>.<genexpr>"); Ok(()) }))? }; __args_6016.positional.push(__v_6017); rt.call(&__callable_6015, __args_6016)? };
+let __v_6014 = { let __callable_6015 = frame.load(rt, "max")?; let mut __args_6016 = CallArgs::default(); let __v_6017 = { let __comp_parent_6018 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_6018.clone(), &["_","score"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_6018 = __comp_parent_6018.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "scored")?) }) }, assign: { let __comp_parent_6018 = __comp_parent_6018.clone(); Rc::new(move |rt, frame, value| { let __unpack_6019 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("score", __unpack_6019[0].clone())?; frame.store("_", __unpack_6019[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_6018 = __comp_parent_6018.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "score")?)) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2438, 2438, "_the_half_they_named.<locals>.<genexpr>", 92); Ok(()) }))? }; __args_6016.positional.push(__v_6017); rt.call(&__callable_6015, __args_6016)? };
 frame.store("best", __v_6014.clone())?;
 let __v_6020 = { let __comp_parent_6021 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_6021.clone(), &["one","score"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_6021 = __comp_parent_6021.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "scored")?) }) }, assign: { let __comp_parent_6021 = __comp_parent_6021.clone(); Rc::new(move |rt, frame, value| { let __unpack_6022 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("score", __unpack_6022[0].clone())?; frame.store("one", __unpack_6022[1].clone())?; Ok(()) }) }, filters: vec![{ let __comp_parent_6021 = __comp_parent_6021.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_6023 = frame.load(rt, "score")?; let mut __matched_6024 = true; if __matched_6024 { let __v_6025 = frame.load(rt, "best")?; __matched_6024 = __v_6023.equals(&__v_6025)?; } Value::Bool(__matched_6024) }).is_truthy()) }) }] }], { let __comp_parent_6021 = __comp_parent_6021.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "one")?)) })?) };
 frame.store("winners", __v_6020.clone())?;
@@ -3377,7 +3377,7 @@ mod __py_72 { use super::*;
 // py: bot/memory/narrow.py:2478-2491 _a_condition
 pub(super) fn _a_condition(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["before","match","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2478, 2491, "_a_condition");
+rt.trace_call_code("bot/memory/narrow.py", 2478, 2491, "_a_condition", 93);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_6039 = { let __callable_6040 = { let __v_6042 = frame.load(rt, "AT_A_TIME")?; rt.getattr(&__v_6042, "match")? }; let mut __args_6041 = CallArgs::default(); let __v_6043 = { let __v_6044 = frame.load(rt, "sentence")?; let __v_6046 = { let __callable_6048 = { let __v_6050 = frame.load(rt, "match")?; rt.getattr(&__v_6050, "end")? }; let mut __args_6049 = CallArgs::default(); rt.call(&__callable_6048, __args_6049)? }; let __index_6047 = if matches!(__v_6046, Value::None) { None } else { let n = __v_6046.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_6044, __index_6047, None, 1_i64)? }; __args_6041.positional.push(__v_6043); rt.call(&__callable_6040, __args_6041)? }; if __v_6039.is_truthy() {
@@ -3419,7 +3419,7 @@ mod __py_73 { use super::*;
 // py: bot/memory/narrow.py:2494-2628 _part
 pub(super) fn _part(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","cut","figure","found","kind","lead","lead_spans","lengths","options","qualifier","question","rates","rest","result","same","sentence","spans","stepped","unit","wanted","wanted_unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2494, 2628, "_part");
+rt.trace_call_code("bot/memory/narrow.py", 2494, 2628, "_part", 94);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_6098 = { let __callable_6099 = { let __v_6101 = frame.load(rt, "SPANS")?; rt.getattr(&__v_6101, "get")? }; let mut __args_6100 = CallArgs::default(); let __v_6102 = frame.load(rt, "kind")?; __args_6100.positional.push(__v_6102); rt.call(&__callable_6099, __args_6100)? };
@@ -3569,7 +3569,7 @@ let __v_6509 = { let __comp_parent_6510 = frame.clone(); Value::list(pyrt::compr
 frame.store("lead_spans", __v_6509.clone())?;
 let __v_6525 = { let __comp_parent_6526 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_6526.clone(), &["span"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_6526 = __comp_parent_6526.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "spans")?) }) }, assign: { let __comp_parent_6526 = __comp_parent_6526.clone(); Rc::new(move |rt, frame, value| { frame.store("span", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_6526 = __comp_parent_6526.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_6527 = frame.load(rt, "span")?; let mut __matched_6528 = true; if __matched_6528 { let __v_6529 = frame.load(rt, "lead_spans")?; __matched_6528 = !pyrt::ops::contains(&__v_6529, &__v_6527)?; } Value::Bool(__matched_6528) }).is_truthy()) }) }] }], { let __comp_parent_6526 = __comp_parent_6526.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "span")?)) })?) };
 frame.store("rest", __v_6525.clone())?;
-let __v_6530 = { let mut __v_6531 = { let mut __v_6532 = { let __callable_6534 = frame.load(rt, "len")?; let mut __args_6535 = CallArgs::default(); let __v_6536 = frame.load(rt, "lead_spans")?; __args_6535.positional.push(__v_6536); rt.call(&__callable_6534, __args_6535)? }; let mut __matched_6533 = true; if __matched_6533 { let __v_6537 = Value::Int("1".parse().expect("integer literal")); __matched_6533 = __v_6532.equals(&__v_6537)?; } Value::Bool(__matched_6533) }; if __v_6531.is_truthy() { __v_6531 = { let __callable_6538 = frame.load(rt, "any")?; let mut __args_6539 = CallArgs::default(); let __v_6540 = { let __comp_parent_6541 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_6541.clone(), &["span"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_6541 = __comp_parent_6541.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "rest")?) }) }, assign: { let __comp_parent_6541 = __comp_parent_6541.clone(); Rc::new(move |rt, frame, value| { frame.store("span", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_6541 = __comp_parent_6541.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_6542 = { let __callable_6544 = frame.load(rt, "_measure")?; let mut __args_6545 = CallArgs::default(); let __v_6546 = frame.load(rt, "span")?; __args_6545.positional.push(__v_6546); rt.call(&__callable_6544, __args_6545)? }; let mut __matched_6543 = true; if __matched_6543 { let __v_6547 = { let __callable_6548 = frame.load(rt, "_measure")?; let mut __args_6549 = CallArgs::default(); let __v_6550 = { let __v_6551 = frame.load(rt, "lead_spans")?; let __v_6552 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_6551, &__v_6552)? }; __args_6549.positional.push(__v_6550); rt.call(&__callable_6548, __args_6549)? }; __matched_6543 = !__v_6542.equals(&__v_6547)?; } Value::Bool(__matched_6543) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2603, 2604, "_part.<locals>.<genexpr>"); Ok(()) }))? }; __args_6539.positional.push(__v_6540); rt.call(&__callable_6538, __args_6539)? }; } __v_6531 }; if __v_6530.is_truthy() {
+let __v_6530 = { let mut __v_6531 = { let mut __v_6532 = { let __callable_6534 = frame.load(rt, "len")?; let mut __args_6535 = CallArgs::default(); let __v_6536 = frame.load(rt, "lead_spans")?; __args_6535.positional.push(__v_6536); rt.call(&__callable_6534, __args_6535)? }; let mut __matched_6533 = true; if __matched_6533 { let __v_6537 = Value::Int("1".parse().expect("integer literal")); __matched_6533 = __v_6532.equals(&__v_6537)?; } Value::Bool(__matched_6533) }; if __v_6531.is_truthy() { __v_6531 = { let __callable_6538 = frame.load(rt, "any")?; let mut __args_6539 = CallArgs::default(); let __v_6540 = { let __comp_parent_6541 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_6541.clone(), &["span"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_6541 = __comp_parent_6541.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "rest")?) }) }, assign: { let __comp_parent_6541 = __comp_parent_6541.clone(); Rc::new(move |rt, frame, value| { frame.store("span", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_6541 = __comp_parent_6541.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_6542 = { let __callable_6544 = frame.load(rt, "_measure")?; let mut __args_6545 = CallArgs::default(); let __v_6546 = frame.load(rt, "span")?; __args_6545.positional.push(__v_6546); rt.call(&__callable_6544, __args_6545)? }; let mut __matched_6543 = true; if __matched_6543 { let __v_6547 = { let __callable_6548 = frame.load(rt, "_measure")?; let mut __args_6549 = CallArgs::default(); let __v_6550 = { let __v_6551 = frame.load(rt, "lead_spans")?; let __v_6552 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_6551, &__v_6552)? }; __args_6549.positional.push(__v_6550); rt.call(&__callable_6548, __args_6549)? }; __matched_6543 = !__v_6542.equals(&__v_6547)?; } Value::Bool(__matched_6543) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2603, 2604, "_part.<locals>.<genexpr>", 95); Ok(()) }))? }; __args_6539.positional.push(__v_6540); rt.call(&__callable_6538, __args_6539)? }; } __v_6531 }; if __v_6530.is_truthy() {
 return Ok(__Flow::Return({ let __v_6553 = frame.load(rt, "lead_spans")?; let __v_6554 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_6553, &__v_6554)? }));
 } else {
 
@@ -3611,7 +3611,7 @@ mod __py_74 { use super::*;
 // py: bot/memory/narrow.py:2631-2633 _canonical
 pub(super) fn _canonical(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2631, 2633, "_canonical");
+rt.trace_call_code("bot/memory/narrow.py", 2631, 2633, "_canonical", 96);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __v_6624 = { let mut __v_6625 = frame.load(rt, "word")?; let mut __matched_6626 = true; if __matched_6626 { let __v_6627 = frame.load(rt, "OVEN")?; __matched_6626 = pyrt::ops::contains(&__v_6627, &__v_6625)?; } Value::Bool(__matched_6626) }; if __v_6624.is_truthy() { Value::from("oven") } else { frame.load(rt, "word")? } }));
@@ -3626,7 +3626,7 @@ mod __py_75 { use super::*;
 // py: bot/memory/narrow.py:2636-2649 _a_frequency
 pub(super) fn _a_frequency(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["after","end","sentence","start"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2636, 2649, "_a_frequency");
+rt.trace_call_code("bot/memory/narrow.py", 2636, 2649, "_a_frequency", 97);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_6628 = { let __v_6629 = frame.load(rt, "sentence")?; let __v_6631 = frame.load(rt, "end")?; let __index_6632 = if matches!(__v_6631, Value::None) { None } else { let n = __v_6631.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_6629, __index_6632, None, 1_i64)? };
@@ -3648,7 +3648,7 @@ mod __py_76 { use super::*;
 // py: bot/memory/narrow.py:2652-2669 _same_step
 pub(super) fn _same_step(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","long_","mine","short","theirs","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2652, 2669, "_same_step");
+rt.trace_call_code("bot/memory/narrow.py", 2652, 2669, "_same_step", 98);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_6662 = { let __v_6663 = { let __comp_parent_6665 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_6665.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_6665 = __comp_parent_6665.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "asked")?) }) }, assign: { let __comp_parent_6665 = __comp_parent_6665.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_6665 = __comp_parent_6665.clone(); Rc::new(move |rt, frame| Ok({ let __callable_6666 = frame.load(rt, "_canonical")?; let mut __args_6667 = CallArgs::default(); let __v_6668 = frame.load(rt, "word")?; __args_6667.positional.push(__v_6668); rt.call(&__callable_6666, __args_6667)? })) })? }; let __v_6664 = { let __comp_parent_6669 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_6669.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_6669 = __comp_parent_6669.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_6669 = __comp_parent_6669.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_6669 = __comp_parent_6669.clone(); Rc::new(move |rt, frame| Ok({ let __callable_6670 = frame.load(rt, "_canonical")?; let mut __args_6671 = CallArgs::default(); let __v_6672 = frame.load(rt, "word")?; __args_6671.positional.push(__v_6672); rt.call(&__callable_6670, __args_6671)? })) })? }; pyrt::ops::bitwise_rt(rt, "&", &__v_6663, &__v_6664)? }; if __v_6662.is_truthy() {
@@ -3695,14 +3695,14 @@ mod __py_77 { use super::*;
 // py: bot/memory/narrow.py:2672-2742 _step_time
 pub(super) fn _step_time(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","cooking","figure","found","named","piece","pieces","places","question","sentence","waiting","waiting_here","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2672, 2742, "_step_time");
+rt.trace_call_code("bot/memory/narrow.py", 2672, 2742, "_step_time", 99);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_6723 = { let __comp_parent_6724 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_6724.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_6724 = __comp_parent_6724.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_6725 = frame.load(rt, "words_of")?; let mut __args_6726 = CallArgs::default(); let __v_6727 = frame.load(rt, "question")?; __args_6726.positional.push(__v_6727); rt.call(&__callable_6725, __args_6726)? }) }) }, assign: { let __comp_parent_6724 = __comp_parent_6724.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_6724 = __comp_parent_6724.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_6728 = { let __callable_6730 = frame.load(rt, "len")?; let mut __args_6731 = CallArgs::default(); let __v_6732 = frame.load(rt, "word")?; __args_6731.positional.push(__v_6732); rt.call(&__callable_6730, __args_6731)? }; let mut __matched_6729 = true; if __matched_6729 { let __v_6733 = Value::Int("3".parse().expect("integer literal")); __matched_6729 = pyrt::ops::compare(&__v_6728, &__v_6733)?.is_some_and(|o| o.is_gt()); } Value::Bool(__matched_6729) }).is_truthy()) }) }] }], { let __comp_parent_6724 = __comp_parent_6724.clone(); Rc::new(move |rt, frame| Ok({ let __callable_6734 = { let __v_6736 = frame.load(rt, "word")?; rt.getattr(&__v_6736, "rstrip")? }; let mut __args_6735 = CallArgs::default(); let __v_6737 = Value::from("s"); __args_6735.positional.push(__v_6737); rt.call(&__callable_6734, __args_6735)? })) })? };
 frame.store("asked", __v_6723.clone())?;
 let __v_6738 = { let mut __items_6739 = Vec::new(); Value::list(__items_6739) };
 frame.store("pieces", __v_6738.clone())?;
-let mut __broke_6740 = false; let __v_6742 = { let __comp_parent_6745 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_6745.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_6745 = __comp_parent_6745.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_6746 = { let __v_6748 = frame.load(rt, "STEP")?; rt.getattr(&__v_6748, "split")? }; let mut __args_6747 = CallArgs::default(); let __v_6749 = frame.load(rt, "sentence")?; __args_6747.positional.push(__v_6749); rt.call(&__callable_6746, __args_6747)? }) }) }, assign: { let __comp_parent_6745 = __comp_parent_6745.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_6745 = __comp_parent_6745.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_6750 = { let __v_6752 = frame.load(rt, "one")?; rt.getattr(&__v_6752, "strip")? }; let mut __args_6751 = CallArgs::default(); rt.call(&__callable_6750, __args_6751)? }).is_truthy()) }) }] }], { let __comp_parent_6745 = __comp_parent_6745.clone(); Rc::new(move |rt, frame| Ok({ let __callable_6753 = { let __v_6755 = frame.load(rt, "one")?; rt.getattr(&__v_6755, "strip")? }; let mut __args_6754 = CallArgs::default(); rt.call(&__callable_6753, __args_6754)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/narrow.py", 2683, 2683, "_step_time.<locals>.<genexpr>"); Ok(()) }))? }; let __iter_6743 = rt.iter(&__v_6742)?;
+let mut __broke_6740 = false; let __v_6742 = { let __comp_parent_6745 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_6745.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_6745 = __comp_parent_6745.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_6746 = { let __v_6748 = frame.load(rt, "STEP")?; rt.getattr(&__v_6748, "split")? }; let mut __args_6747 = CallArgs::default(); let __v_6749 = frame.load(rt, "sentence")?; __args_6747.positional.push(__v_6749); rt.call(&__callable_6746, __args_6747)? }) }) }, assign: { let __comp_parent_6745 = __comp_parent_6745.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_6745 = __comp_parent_6745.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_6750 = { let __v_6752 = frame.load(rt, "one")?; rt.getattr(&__v_6752, "strip")? }; let mut __args_6751 = CallArgs::default(); rt.call(&__callable_6750, __args_6751)? }).is_truthy()) }) }] }], { let __comp_parent_6745 = __comp_parent_6745.clone(); Rc::new(move |rt, frame| Ok({ let __callable_6753 = { let __v_6755 = frame.load(rt, "one")?; rt.getattr(&__v_6755, "strip")? }; let mut __args_6754 = CallArgs::default(); rt.call(&__callable_6753, __args_6754)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/narrow.py", 2683, 2683, "_step_time.<locals>.<genexpr>", 100); Ok(()) }))? }; let __iter_6743 = rt.iter(&__v_6742)?;
 while let Some(__v_6744) = rt.next(&__iter_6743)? { frame.store("piece", __v_6744)?;
 let __flow_6741 = (|| -> PyResult<__Flow> {
 let __v_6756 = { let mut __v_6757 = frame.load(rt, "pieces")?; if __v_6757.is_truthy() { __v_6757 = { let __callable_6758 = { let __v_6760 = frame.load(rt, "BARE_UNIT")?; rt.getattr(&__v_6760, "match")? }; let mut __args_6759 = CallArgs::default(); let __v_6761 = frame.load(rt, "piece")?; __args_6759.positional.push(__v_6761); rt.call(&__callable_6758, __args_6759)? }; } __v_6757 }; if __v_6756.is_truthy() {
@@ -3814,7 +3814,7 @@ mod __py_78 { use super::*;
 // py: bot/memory/narrow.py:2764-2772 _aside_held
 pub(super) fn _aside_held(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["hide","kept","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2764, 2772, "_aside_held");
+rt.trace_call_code("bot/memory/narrow.py", 2764, 2772, "_aside_held", 101);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_6943 = { let mut __items_6944 = Vec::new(); Value::list(__items_6944) };
@@ -3832,7 +3832,7 @@ mod __py_79 { use super::*;
 // py: bot/memory/narrow.py:2768-2770 _aside_held.<locals>.hide
 pub(super) fn hide(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["match"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2768, 2770, "_aside_held.<locals>.hide");
+rt.trace_call_code("bot/memory/narrow.py", 2768, 2770, "_aside_held.<locals>.hide", 102);
 let flow = (|| -> PyResult<__Flow> {
 let _ = { let __callable_6962 = { let __v_6964 = frame.load(rt, "kept")?; rt.getattr(&__v_6964, "append")? }; let mut __args_6963 = CallArgs::default(); let __v_6965 = { let __callable_6966 = { let __v_6968 = { let __callable_6969 = { let __v_6971 = frame.load(rt, "match")?; rt.getattr(&__v_6971, "group")? }; let mut __args_6970 = CallArgs::default(); let __v_6972 = Value::Int("0".parse().expect("integer literal")); __args_6970.positional.push(__v_6972); rt.call(&__callable_6969, __args_6970)? }; rt.getattr(&__v_6968, "strip")? }; let mut __args_6967 = CallArgs::default(); rt.call(&__callable_6966, __args_6967)? }; __args_6963.positional.push(__v_6965); rt.call(&__callable_6962, __args_6963)? };
 return Ok(__Flow::Return({ let __v_6973 = Value::from(" \u{1}%d\u{1} "); let __v_6974 = { let __v_6975 = { let __callable_6977 = frame.load(rt, "len")?; let mut __args_6978 = CallArgs::default(); let __v_6979 = frame.load(rt, "kept")?; __args_6978.positional.push(__v_6979); rt.call(&__callable_6977, __args_6978)? }; let __v_6976 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::sub_rt(rt, &__v_6975, &__v_6976)? }; pyrt::ops::modulo(&__v_6973, &__v_6974)? }));
@@ -3847,7 +3847,7 @@ mod __py_80 { use super::*;
 // py: bot/memory/narrow.py:2775-2776 _aside_back
 pub(super) fn _aside_back(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["kept","piece"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2775, 2776, "_aside_back");
+rt.trace_call_code("bot/memory/narrow.py", 2775, 2776, "_aside_back", 103);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __callable_6980 = { let __v_6982 = Value::from(" "); rt.getattr(&__v_6982, "join")? }; let mut __args_6981 = CallArgs::default(); let __v_6983 = { let __callable_6984 = { let __v_6986 = { let __callable_6987 = { let __v_6989 = frame.load(rt, "HELD")?; rt.getattr(&__v_6989, "sub")? }; let mut __args_6988 = CallArgs::default(); let __v_6990 = { let __signature_6992 = Signature { name: "<lambda>".into(), positional: vec!["match".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_6994 = Value::dict(); __attrs_6994.dict_set(Value::from("__doc__"), Value::None)?; __attrs_6994.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_6995 = Value::dict(); __attrs_6994.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_6991 = frame.clone(); let mut __function_6993 = NativeFunction::qualified_with_origin("<lambda>".into(), "_aside_back.<locals>.<lambda>".into(), "bot.memory.narrow".into(), __attrs_6994, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/narrow.py", first: 2776, last: 2776, qualname: "_aside_back.<locals>.<lambda>" }, closure: __closure_6991.clone(), freevars: vec!["kept".into()] }, move |rt, args| super::__py_81::__lambda(rt, __closure_6991.clone(), &__signature_6992, args)); __function_6993 }; __args_6988.positional.push(__v_6990); let __v_6996 = frame.load(rt, "piece")?; __args_6988.positional.push(__v_6996); rt.call(&__callable_6987, __args_6988)? }; rt.getattr(&__v_6986, "split")? }; let mut __args_6985 = CallArgs::default(); rt.call(&__callable_6984, __args_6985)? }; __args_6981.positional.push(__v_6983); rt.call(&__callable_6980, __args_6981)? }));
 Ok(__Flow::Next)
@@ -3861,7 +3861,7 @@ mod __py_81 { use super::*;
 // py: bot/memory/narrow.py:2776-2776 _aside_back.<locals>.<lambda>
 pub(super) fn __lambda(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["match"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2776, 2776, "_aside_back.<locals>.<lambda>");
+rt.trace_call_code("bot/memory/narrow.py", 2776, 2776, "_aside_back.<locals>.<lambda>", 104);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __v_6997 = frame.load(rt, "kept")?; let __v_6998 = { let __callable_6999 = frame.load(rt, "int")?; let mut __args_7000 = CallArgs::default(); let __v_7001 = { let __callable_7002 = { let __v_7004 = frame.load(rt, "match")?; rt.getattr(&__v_7004, "group")? }; let mut __args_7003 = CallArgs::default(); let __v_7005 = Value::Int("1".parse().expect("integer literal")); __args_7003.positional.push(__v_7005); rt.call(&__callable_7002, __args_7003)? }; __args_7000.positional.push(__v_7001); rt.call(&__callable_6999, __args_7000)? }; pyrt::ops::getitem(&__v_6997, &__v_6998)? }));
 Ok(__Flow::Next)
@@ -3875,7 +3875,7 @@ mod __py_82 { use super::*;
 // py: bot/memory/narrow.py:2779-2786 clauses
 pub(super) fn clauses(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["pattern","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2779, 2786, "clauses");
+rt.trace_call_code("bot/memory/narrow.py", 2779, 2786, "clauses", 105);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __v_7006 = { let __callable_7008 = frame.load(rt, "clauses_bare")?; let mut __args_7009 = CallArgs::default(); let __v_7010 = frame.load(rt, "text")?; __args_7009.positional.push(__v_7010); let __v_7011 = frame.load(rt, "pattern")?; __args_7009.positional.push(__v_7011); rt.call(&__callable_7008, __args_7009)? }; let __v_7007 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_7006, &__v_7007)? }));
@@ -3890,7 +3890,7 @@ mod __py_83 { use super::*;
 // py: bot/memory/narrow.py:2789-2809 clauses_bare
 pub(super) fn clauses_bare(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["bare","dressed","held","kept","pattern","piece","pieces","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2789, 2809, "clauses_bare");
+rt.trace_call_code("bot/memory/narrow.py", 2789, 2809, "clauses_bare", 106);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_7012 = { let __callable_7013 = frame.load(rt, "_aside_held")?; let mut __args_7014 = CallArgs::default(); let __v_7015 = frame.load(rt, "text")?; __args_7014.positional.push(__v_7015); rt.call(&__callable_7013, __args_7014)? };
@@ -3928,7 +3928,7 @@ mod __py_84 { use super::*;
 // py: bot/memory/narrow.py:2829-2842 _clause
 pub(super) fn _clause(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["bare","best","piece","pieces","question","scores","text","wanted"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2829, 2842, "_clause");
+rt.trace_call_code("bot/memory/narrow.py", 2829, 2842, "_clause", 107);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_7071 = { let __callable_7072 = frame.load(rt, "set")?; let mut __args_7073 = CallArgs::default(); let __v_7074 = { let __callable_7075 = frame.load(rt, "words_of")?; let mut __args_7076 = CallArgs::default(); let __v_7077 = frame.load(rt, "question")?; __args_7076.positional.push(__v_7077); rt.call(&__callable_7075, __args_7076)? }; __args_7073.positional.push(__v_7074); rt.call(&__callable_7072, __args_7073)? };
@@ -3968,7 +3968,7 @@ mod __py_85 { use super::*;
 // py: bot/memory/narrow.py:2845-2849 _clause_with
 pub(super) fn _clause_with(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["hits","pieces","text","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2845, 2849, "_clause_with");
+rt.trace_call_code("bot/memory/narrow.py", 2845, 2849, "_clause_with", 108);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_7130 = { let __callable_7131 = frame.load(rt, "clauses")?; let mut __args_7132 = CallArgs::default(); let __v_7133 = frame.load(rt, "text")?; __args_7132.positional.push(__v_7133); let __v_7134 = frame.load(rt, "CLAUSE_BREAK_COLON")?; __args_7132.positional.push(__v_7134); rt.call(&__callable_7131, __args_7132)? };
@@ -3987,7 +3987,7 @@ mod __py_86 { use super::*;
 // py: bot/memory/narrow.py:2852-2863 _clause_holding
 pub(super) fn _clause_holding(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["hits","pieces","span","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2852, 2863, "_clause_holding");
+rt.trace_call_code("bot/memory/narrow.py", 2852, 2863, "_clause_holding", 109);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_7161 = { let __comp_parent_7162 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_7162.clone(), &["piece"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_7162 = __comp_parent_7162.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_7163 = frame.load(rt, "pieces_of")?; let mut __args_7164 = CallArgs::default(); let __v_7165 = frame.load(rt, "text")?; __args_7164.positional.push(__v_7165); let __v_7166 = frame.load(rt, "CLAUSE_BREAK_COLON")?; __args_7164.positional.push(__v_7166); rt.call(&__callable_7163, __args_7164)? }) }) }, assign: { let __comp_parent_7162 = __comp_parent_7162.clone(); Rc::new(move |rt, frame, value| { frame.store("piece", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_7162 = __comp_parent_7162.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_7167 = frame.load(rt, "piece")?; if __v_7167.is_truthy() { __v_7167 = { let __callable_7168 = { let __v_7170 = frame.load(rt, "piece")?; rt.getattr(&__v_7170, "strip")? }; let mut __args_7169 = CallArgs::default(); rt.call(&__callable_7168, __args_7169)? }; } __v_7167 }).is_truthy()) }) }] }], { let __comp_parent_7162 = __comp_parent_7162.clone(); Rc::new(move |rt, frame| Ok({ let __callable_7171 = { let __v_7173 = frame.load(rt, "piece")?; rt.getattr(&__v_7173, "strip")? }; let mut __args_7172 = CallArgs::default(); rt.call(&__callable_7171, __args_7172)? })) })?) };
@@ -4006,7 +4006,7 @@ mod __py_87 { use super::*;
 // py: bot/memory/narrow.py:2866-2877 words_of
 pub(super) fn words_of(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","text","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2866, 2877, "words_of");
+rt.trace_call_code("bot/memory/narrow.py", 2866, 2877, "words_of", 110);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_7188 = { let mut __items_7189 = Vec::new(); Value::list(__items_7189) };
@@ -4051,7 +4051,7 @@ mod __py_88 { use super::*;
 // py: bot/memory/narrow.py:2880-2881 flat
 pub(super) fn flat(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2880, 2881, "flat");
+rt.trace_call_code("bot/memory/narrow.py", 2880, 2881, "flat", 111);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __callable_7244 = { let __v_7246 = Value::from(" "); rt.getattr(&__v_7246, "join")? }; let mut __args_7245 = CallArgs::default(); let __v_7247 = { let __callable_7248 = { let __v_7250 = { let __callable_7251 = { let __v_7253 = { let __callable_7254 = frame.load(rt, "str")?; let mut __args_7255 = CallArgs::default(); let __v_7256 = { let mut __v_7257 = frame.load(rt, "text")?; if !__v_7257.is_truthy() { __v_7257 = Value::from(""); } __v_7257 }; __args_7255.positional.push(__v_7256); rt.call(&__callable_7254, __args_7255)? }; rt.getattr(&__v_7253, "lower")? }; let mut __args_7252 = CallArgs::default(); rt.call(&__callable_7251, __args_7252)? }; rt.getattr(&__v_7250, "split")? }; let mut __args_7249 = CallArgs::default(); rt.call(&__callable_7248, __args_7249)? }; __args_7245.positional.push(__v_7247); rt.call(&__callable_7244, __args_7245)? }));
 Ok(__Flow::Next)
@@ -4065,7 +4065,7 @@ mod __py_89 { use super::*;
 // py: bot/memory/narrow.py:2884-2899 tidy
 pub(super) fn tidy(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/narrow.py", 2884, 2899, "tidy");
+rt.trace_call_code("bot/memory/narrow.py", 2884, 2899, "tidy", 112);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_7258 = { let __v_7259 = { let __callable_7260 = frame.load(rt, "isinstance")?; let mut __args_7261 = CallArgs::default(); let __v_7262 = frame.load(rt, "text")?; __args_7261.positional.push(__v_7262); let __v_7263 = frame.load(rt, "str")?; __args_7261.positional.push(__v_7263); rt.call(&__callable_7260, __args_7261)? }; Value::Bool(!__v_7259.is_truthy()) }; if __v_7258.is_truthy() {

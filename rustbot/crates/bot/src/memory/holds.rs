@@ -23,7 +23,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("turns",32,37),
 ("the_last_line",109,114)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/holds.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/holds.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("The earlier turns: one check for \"was this said before the line I am answering?\".\n\nA loan, not a home. `bot/memory/prior.py` (#12130) is where this check is going for the whole\nswarm, and this reading folds onto it the day it lands - so this file keeps the smallest set of\nnames that reading needs, and it is deliberately called `holds` rather than `earlier` so it does\nnot take the path another branch is landing the same idea on.\n\nEvery memory-based reply asks the same question first - did the chat already hold this, or is\nthis the first line? - and until now each module answered it for itself, with its own walk over\n`memory[\"turns\"]`. The walks drifted: one took `turns[-1]`, another `turns[-3:]`, a third forgot\nthat a turn may not be a dict, and a fourth read a name out of the store without knowing whether\nthe line it came from was the one being answered or one from earlier.\n\nSo the question has one home. A reply that recalls something asks this module:\n\n    from bot.memory import holds as earlier\n\n    if not earlier.there_is_one(memory):\n        return None            # nothing has been said yet: there is nothing to recall\n    line = earlier.the_line(memory, MY_PATTERN)     # the earlier line that says it, or \"\"\n    if earlier.says(memory, name):\n        ...                    # the name came from the chat, not from this line\n\nThe turns here are the turns that came *before* the line being answered: the runtime appends the\ncurrent turn after the modules have replied, so `memory[\"turns\"]` is already only the earlier\nones - and this module is the one place that says so, so a module that recalls can stop worrying\nabout where the current line sits.\n"))?;
@@ -50,7 +50,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/holds.py:32-37 turns
 pub(super) fn turns(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/holds.py", 32, 37, "turns");
+rt.trace_call_code("bot/memory/holds.py", 32, 37, "turns", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_53 = { let __v_54 = { let __callable_55 = frame.load(rt, "isinstance")?; let mut __args_56 = CallArgs::default(); let __v_57 = frame.load(rt, "memory")?; __args_56.positional.push(__v_57); let __v_58 = frame.load(rt, "dict")?; __args_56.positional.push(__v_58); rt.call(&__callable_55, __args_56)? }; if __v_54.is_truthy() { { let __callable_59 = { let __v_61 = frame.load(rt, "memory")?; rt.getattr(&__v_61, "get")? }; let mut __args_60 = CallArgs::default(); let __v_62 = Value::from("turns"); __args_60.positional.push(__v_62); rt.call(&__callable_59, __args_60)? } } else { Value::None } };
@@ -72,7 +72,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/holds.py:40-46 there_is_one
 pub(super) fn there_is_one(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/holds.py", 40, 46, "there_is_one");
+rt.trace_call_code("bot/memory/holds.py", 40, 46, "there_is_one", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_75 = frame.load(rt, "bool")?; let mut __args_76 = CallArgs::default(); let __v_77 = { let __callable_78 = frame.load(rt, "turns")?; let mut __args_79 = CallArgs::default(); let __v_80 = frame.load(rt, "memory")?; __args_79.positional.push(__v_80); rt.call(&__callable_78, __args_79)? }; __args_76.positional.push(__v_77); rt.call(&__callable_75, __args_76)? }));
@@ -87,7 +87,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/holds.py:49-56 lines
 pub(super) fn lines(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","memory","said","turn"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/holds.py", 49, 56, "lines");
+rt.trace_call_code("bot/memory/holds.py", 49, 56, "lines", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_81 = { let mut __items_82 = Vec::new(); Value::list(__items_82) };
@@ -121,7 +121,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/holds.py:59-66 the_bot_lines
 pub(super) fn the_bot_lines(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","memory","said","turn"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/holds.py", 59, 66, "the_bot_lines");
+rt.trace_call_code("bot/memory/holds.py", 59, 66, "the_bot_lines", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_112 = { let mut __items_113 = Vec::new(); Value::list(__items_113) };
@@ -155,7 +155,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/holds.py:69-72 last_reply
 pub(super) fn last_reply(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/holds.py", 69, 72, "last_reply");
+rt.trace_call_code("bot/memory/holds.py", 69, 72, "last_reply", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_143 = { let __callable_144 = frame.load(rt, "the_bot_lines")?; let mut __args_145 = CallArgs::default(); let __v_146 = frame.load(rt, "memory")?; __args_145.positional.push(__v_146); rt.call(&__callable_144, __args_145)? };
@@ -172,7 +172,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/holds.py:75-78 last_module
 pub(super) fn last_module(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/holds.py", 75, 78, "last_module");
+rt.trace_call_code("bot/memory/holds.py", 75, 78, "last_module", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_151 = { let __callable_152 = frame.load(rt, "turns")?; let mut __args_153 = CallArgs::default(); let __v_154 = frame.load(rt, "memory")?; __args_153.positional.push(__v_154); rt.call(&__callable_152, __args_153)? };
@@ -189,7 +189,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/holds.py:81-89 recent
 pub(super) fn recent(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["key","memory","n","part","said","turn"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/holds.py", 81, 89, "recent");
+rt.trace_call_code("bot/memory/holds.py", 81, 89, "recent", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_167 = { let mut __items_168 = Vec::new(); Value::list(__items_168) };
@@ -233,7 +233,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/holds.py:92-98 says
 pub(super) fn says(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","pattern","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/holds.py", 92, 98, "says");
+rt.trace_call_code("bot/memory/holds.py", 92, 98, "says", 9);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_215 = { let __callable_216 = { let __v_218 = { let __callable_219 = { let __v_221 = { let __callable_222 = frame.load(rt, "str")?; let mut __args_223 = CallArgs::default(); let __v_224 = { let mut __v_225 = frame.load(rt, "word")?; if !__v_225.is_truthy() { __v_225 = Value::from(""); } __v_225 }; __args_223.positional.push(__v_224); rt.call(&__callable_222, __args_223)? }; rt.getattr(&__v_221, "strip")? }; let mut __args_220 = CallArgs::default(); rt.call(&__callable_219, __args_220)? }; rt.getattr(&__v_218, "lower")? }; let mut __args_217 = CallArgs::default(); rt.call(&__callable_216, __args_217)? };
@@ -245,7 +245,7 @@ return Ok(__Flow::Return(Value::Bool(false)));
 }
 let __v_228 = { let __callable_229 = { let __v_231 = frame.load(rt, "re")?; rt.getattr(&__v_231, "compile")? }; let mut __args_230 = CallArgs::default(); let __v_232 = { let __v_233 = { let __v_235 = Value::from("\\b"); let __v_236 = { let __callable_237 = { let __v_239 = frame.load(rt, "re")?; rt.getattr(&__v_239, "escape")? }; let mut __args_238 = CallArgs::default(); let __v_240 = frame.load(rt, "word")?; __args_238.positional.push(__v_240); rt.call(&__callable_237, __args_238)? }; pyrt::ops::add(&__v_235, &__v_236)? }; let __v_234 = Value::from("\\b"); pyrt::ops::add(&__v_233, &__v_234)? }; __args_230.positional.push(__v_232); let __v_241 = { let __v_242 = frame.load(rt, "re")?; rt.getattr(&__v_242, "I")? }; __args_230.positional.push(__v_241); rt.call(&__callable_229, __args_230)? };
 frame.store("pattern", __v_228.clone())?;
-return Ok(__Flow::Return({ let __callable_243 = frame.load(rt, "any")?; let mut __args_244 = CallArgs::default(); let __v_245 = { let __comp_parent_246 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_246.clone(), &["line"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_246 = __comp_parent_246.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_247 = frame.load(rt, "lines")?; let mut __args_248 = CallArgs::default(); let __v_249 = frame.load(rt, "memory")?; __args_248.positional.push(__v_249); rt.call(&__callable_247, __args_248)? }) }) }, assign: { let __comp_parent_246 = __comp_parent_246.clone(); Rc::new(move |rt, frame, value| { frame.store("line", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_246 = __comp_parent_246.clone(); Rc::new(move |rt, frame| Ok({ let __callable_250 = { let __v_252 = frame.load(rt, "pattern")?; rt.getattr(&__v_252, "search")? }; let mut __args_251 = CallArgs::default(); let __v_253 = frame.load(rt, "line")?; __args_251.positional.push(__v_253); rt.call(&__callable_250, __args_251)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/holds.py", 98, 98, "says.<locals>.<genexpr>"); Ok(()) }))? }; __args_244.positional.push(__v_245); rt.call(&__callable_243, __args_244)? }));
+return Ok(__Flow::Return({ let __callable_243 = frame.load(rt, "any")?; let mut __args_244 = CallArgs::default(); let __v_245 = { let __comp_parent_246 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_246.clone(), &["line"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_246 = __comp_parent_246.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_247 = frame.load(rt, "lines")?; let mut __args_248 = CallArgs::default(); let __v_249 = frame.load(rt, "memory")?; __args_248.positional.push(__v_249); rt.call(&__callable_247, __args_248)? }) }) }, assign: { let __comp_parent_246 = __comp_parent_246.clone(); Rc::new(move |rt, frame, value| { frame.store("line", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_246 = __comp_parent_246.clone(); Rc::new(move |rt, frame| Ok({ let __callable_250 = { let __v_252 = frame.load(rt, "pattern")?; rt.getattr(&__v_252, "search")? }; let mut __args_251 = CallArgs::default(); let __v_253 = frame.load(rt, "line")?; __args_251.positional.push(__v_253); rt.call(&__callable_250, __args_251)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/holds.py", 98, 98, "says.<locals>.<genexpr>", 10); Ok(()) }))? }; __args_244.positional.push(__v_245); rt.call(&__callable_243, __args_244)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -257,7 +257,7 @@ mod __py_8 { use super::*;
 // py: bot/memory/holds.py:101-106 the_line
 pub(super) fn the_line(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","memory","pattern"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/holds.py", 101, 106, "the_line");
+rt.trace_call_code("bot/memory/holds.py", 101, 106, "the_line", 11);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_254 = false; let __v_256 = { let __callable_259 = frame.load(rt, "lines")?; let mut __args_260 = CallArgs::default(); let __v_261 = frame.load(rt, "memory")?; __args_260.positional.push(__v_261); rt.call(&__callable_259, __args_260)? }; let __iter_257 = rt.iter(&__v_256)?;
@@ -287,7 +287,7 @@ mod __py_9 { use super::*;
 // py: bot/memory/holds.py:109-114 the_last_line
 pub(super) fn the_last_line(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","memory","pattern"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/holds.py", 109, 114, "the_last_line");
+rt.trace_call_code("bot/memory/holds.py", 109, 114, "the_last_line", 12);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_267 = false; let __v_269 = { let __callable_272 = frame.load(rt, "reversed")?; let mut __args_273 = CallArgs::default(); let __v_274 = { let __callable_275 = frame.load(rt, "lines")?; let mut __args_276 = CallArgs::default(); let __v_277 = frame.load(rt, "memory")?; __args_276.positional.push(__v_277); rt.call(&__callable_275, __args_276)? }; __args_273.positional.push(__v_274); rt.call(&__callable_272, __args_273)? }; let __iter_270 = rt.iter(&__v_269)?;

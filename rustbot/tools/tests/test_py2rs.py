@@ -214,6 +214,15 @@ LEAF_SOURCES = {name: (ROOT / f"reference/pybot/bot/understanding/{name}.py").re
 _TABLE_LITERAL = '[' + ','.join("{1:'first',True:'last','$tuple':[1,2],(1,2):3,'日本':'é😀','zero':-0.0,'inf':1e999}" for _ in range(24)) + ']'
 SOURCE += "\ndef literal_table():\n    return " + _TABLE_LITERAL + "\n"
 SOURCE += "\ndef literal_freshness():\n    a = literal_table()\n    b = literal_table()\n    a[0]['$tuple'].append(99)\n    return b[0]['$tuple'], a is b\n"
+SOURCE += '''
+def constant_sets():
+    return [list({'a', 'b', 'c', 'd', 'e'}),
+            list(set(['a', 'b', 'c', 'd', 'e'])),
+            list({('a', 1), ('b', 2), ('c', 3)}),
+            list({True, 1, 2.0, 2, -0.0, 0, 10000000000000000000000}),
+            list({1 + 2, 4, 5}), list({'a', 'b'}),
+            list({'a', 'b', *['c', 'd', 'e']})]
+'''
 
 
 class TranslatorTests(unittest.TestCase):
@@ -293,6 +302,21 @@ fn main(){for line in io::stdin().lock().lines(){let case:serde_json::Value=serd
     def test_compact_literal_data_preserves_types_keys_and_mutable_freshness(self):
         self.check_cases([("literal_table", ()), ("literal_freshness", ())])
 
+    def test_constant_set_folding_preserves_cpython_table_order(self):
+        # Python's hash secret is selected at process startup; pin the oracle
+        # even when unittest itself was launched without PYTHONHASHSEED=0.
+        oracle = "import json,sys;sys.path.insert(0,sys.argv[1]);from lib import canon;ns={};exec(sys.stdin.read(),ns);print(json.dumps(canon.encode(ns['constant_sets']())))"
+        env = {**os.environ, "PYTHONHASHSEED": "0"}
+        expected = subprocess.run([sys.executable, "-c", oracle, str(ROOT / "agent/checks")],
+                                  input=SOURCE, text=True, capture_output=True, check=True, env=env, timeout=15)
+        process = subprocess.run([str(self.target / "debug/py2rs-fixture")],
+                                 input=json.dumps({"name": "constant_sets", "args": []}) + "\n",
+                                 text=True, capture_output=True, check=True, timeout=15)
+        actual = json.loads(process.stdout)
+        self.assertIsNone(actual["exc"])
+        self.assertEqual(actual["result"], json.loads(expected.stdout))
+        self.assertNotEqual(actual["result"][0], actual["result"][1])
+
     def test_source_spans_come_from_compiled_code_objects(self):
         functions = self.translation.metadata["functions"]
         self.assertIn("make.<locals>.inner", {f["qualname"] for f in functions})
@@ -300,6 +324,18 @@ fn main(){for line in io::stdin().lock().lines(){let case:serde_json::Value=serd
             self.assertIn(f"// py: bot/fixture.py:{function['first']}-{function['last']} {function['qualname']}", self.translation.rust)
         self.assertNotIn("ast::", self.translation.rust)
         self.assertNotIn("eval_ast", self.translation.rust)
+
+    def test_distinct_code_objects_keep_distinct_stable_trace_ids(self):
+        source = "def f():\n    return any(x for x in (1,)) and any(x for x in (2,))\n"
+        first = translate(source, "fixture", "bot/fixture.py")
+        second = translate(source, "fixture", "bot/fixture.py")
+        spans = [span for span in first.metadata["trace_spans"] if "genexpr" in span["qualname"]]
+        self.assertEqual(len(spans), 2)
+        self.assertEqual([(span["first"], span["last"], span["qualname"]) for span in spans[:1]] * 2,
+                         [(span["first"], span["last"], span["qualname"]) for span in spans])
+        self.assertNotEqual(spans[0]["code_id"], spans[1]["code_id"])
+        self.assertEqual(first, second)
+        self.assertTrue(all(span["code_id"] > 0 for span in first.metadata["trace_spans"]))
 
     def test_unsupported_syntax_fails_without_stubs(self):
         with self.assertRaisesRegex(UnsupportedSyntax, "AsyncFunctionDef"):

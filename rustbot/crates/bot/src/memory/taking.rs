@@ -37,7 +37,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_flat",111,112),
 ("reply_for",364,409)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/taking.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/taking.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A bare \"what can i take\" is a question about the thing the chat is on.\n\nThe four words name nothing to take and nothing to take it for, so every reader that needs a\nsubject reads them off the words alone. On main the person who had just said \"i keep getting\nheartburn\" got a packing question, and the person who had just said \"my back is killing me\" got\nthe duty-free allowance:\n\n    i keep getting heartburn / is it normal / what can i take\n      -> \"What are you going to, and how long for? Then I can say what to take and what to leave.\"\n    my back is killing me / what can i take\n      -> \"Coming into the UK you can bring 4 litres of spirits, 18 litres of wine...\"\n\nThe knowledge base has the answer to the question the person is actually asking. What it cannot\ndo is see the thing the chat is on: a line with no subject in it reaches no entry. So this module\nputs the subject in and asks, in the words the entries are keyed on (\"what can i take for\nheartburn\", \"what can i take for back pain\"), and answers only when\n\n- the line is the bare ask and names nothing itself - a thing of its own (\"what can i take to\n  spain\", \"can i take ibuprofen\") is left to the readers that can read it,\n- the chat is not a trip, where the packing question is the right answer,\n- the chat says a subject with the person in it (\"my back is killing me\", not \"the boiler is\n  making a noise\" - nothing is taken for a boiler), and\n- the answer the entry gives names that subject and is not the answer already on the screen.\n\nEverything else is passed on, and the reply the person is getting today stands.\n"))?;
@@ -112,7 +112,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/taking.py:111-112 _flat
 pub(super) fn _flat(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 111, 112, "_flat");
+rt.trace_call_code("bot/memory/taking.py", 111, 112, "_flat", 2);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __callable_176 = { let __v_178 = Value::from(" "); rt.getattr(&__v_178, "join")? }; let mut __args_177 = CallArgs::default(); let __v_179 = { let __callable_180 = { let __v_182 = { let __callable_183 = frame.load(rt, "str")?; let mut __args_184 = CallArgs::default(); let __v_185 = { let mut __v_186 = frame.load(rt, "text")?; if !__v_186.is_truthy() { __v_186 = Value::from(""); } __v_186 }; __args_184.positional.push(__v_185); rt.call(&__callable_183, __args_184)? }; rt.getattr(&__v_182, "split")? }; let mut __args_181 = CallArgs::default(); rt.call(&__callable_180, __args_181)? }; __args_177.positional.push(__v_179); rt.call(&__callable_176, __args_177)? }));
 Ok(__Flow::Next)
@@ -126,7 +126,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/taking.py:115-120 _asks_what_to_take
 pub(super) fn _asks_what_to_take(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["said","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 115, 120, "_asks_what_to_take");
+rt.trace_call_code("bot/memory/taking.py", 115, 120, "_asks_what_to_take", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_187 = { let __callable_188 = { let __v_190 = { let __callable_191 = { let __v_193 = frame.load(rt, "FILLER")?; rt.getattr(&__v_193, "sub")? }; let mut __args_192 = CallArgs::default(); let __v_194 = Value::from(""); __args_192.positional.push(__v_194); let __v_195 = { let __callable_196 = { let __v_198 = { let __callable_199 = frame.load(rt, "_flat")?; let mut __args_200 = CallArgs::default(); let __v_201 = frame.load(rt, "text")?; __args_200.positional.push(__v_201); rt.call(&__callable_199, __args_200)? }; rt.getattr(&__v_198, "lower")? }; let mut __args_197 = CallArgs::default(); rt.call(&__callable_196, __args_197)? }; __args_192.positional.push(__v_195); rt.call(&__callable_191, __args_192)? }; rt.getattr(&__v_190, "strip")? }; let mut __args_189 = CallArgs::default(); rt.call(&__callable_188, __args_189)? };
@@ -148,7 +148,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/taking.py:123-150 _complaint_words
 pub(super) fn _complaint_words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["body","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 123, 150, "_complaint_words");
+rt.trace_call_code("bot/memory/taking.py", 123, 150, "_complaint_words", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_210 = { let __callable_211 = frame.load(rt, "set")?; let mut __args_212 = CallArgs::default(); rt.call(&__callable_211, __args_212)? };
@@ -173,7 +173,7 @@ Ok(__Flow::Next)
 };
 let __flow_227 = __outcome_213?; if !matches!(__flow_227, __Flow::Next) { return Ok(__flow_227); }
 let _ = { let __callable_228 = { let __v_230 = frame.load(rt, "words")?; rt.getattr(&__v_230, "update")? }; let mut __args_229 = CallArgs::default(); let __v_231 = { let __callable_232 = { let __v_234 = Value::from("\n        heartburn indigestion reflux nausea migraine headache toothache earache backache stomachache\n        cough coughing cold flu covid temperature fever cystitis thrush hayfever rash hives eczema\n        psoriasis dandruff ulcer blister sunburn burn sprain cramp cramping constipation diarrhoea\n        diarrea sick vomiting warts verruca sciatica gout arthritis ibs period swollen swelling\n        infected infection throat tooth teeth gum gums ear ears stomach tummy belly chest queasy\n        nauseous vomit vomiting dizzy faint fainted bleeding rash pregnancy pregnant\n        "); rt.getattr(&__v_234, "split")? }; let mut __args_233 = CallArgs::default(); rt.call(&__callable_232, __args_233)? }; __args_229.positional.push(__v_231); rt.call(&__callable_228, __args_229)? };
-return Ok(__Flow::Return({ let __callable_235 = frame.load(rt, "frozenset")?; let mut __args_236 = CallArgs::default(); let __v_237 = { let __comp_parent_238 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_238.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_238 = __comp_parent_238.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_238 = __comp_parent_238.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_238 = __comp_parent_238.clone(); Rc::new(move |rt, frame| {  Ok((frame.load(rt, "word")?).is_truthy()) }) }] }], { let __comp_parent_238 = __comp_parent_238.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) }, Rc::new(|rt| { rt.trace_call("bot/memory/taking.py", 150, 150, "_complaint_words.<locals>.<genexpr>"); Ok(()) }))? }; __args_236.positional.push(__v_237); rt.call(&__callable_235, __args_236)? }));
+return Ok(__Flow::Return({ let __callable_235 = frame.load(rt, "frozenset")?; let mut __args_236 = CallArgs::default(); let __v_237 = { let __comp_parent_238 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_238.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_238 = __comp_parent_238.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_238 = __comp_parent_238.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_238 = __comp_parent_238.clone(); Rc::new(move |rt, frame| {  Ok((frame.load(rt, "word")?).is_truthy()) }) }] }], { let __comp_parent_238 = __comp_parent_238.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/taking.py", 150, 150, "_complaint_words.<locals>.<genexpr>", 5); Ok(()) }))? }; __args_236.positional.push(__v_237); rt.call(&__callable_235, __args_236)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -185,7 +185,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/taking.py:157-165 _someone_else
 pub(super) fn _someone_else(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["body","phrases"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 157, 165, "_someone_else");
+rt.trace_call_code("bot/memory/taking.py", 157, 165, "_someone_else", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __outcome_239: PyResult<__Flow> = match (|| -> PyResult<__Flow> {
@@ -194,7 +194,7 @@ let __v_242 = rt.import_from("bot.knowledge", "body")?;
 frame.store("body", __v_242)?;
 let __v_243 = { let __callable_244 = frame.load(rt, "sorted")?; let mut __args_245 = CallArgs::default(); let __v_246 = { let __v_247 = frame.load(rt, "body")?; rt.getattr(&__v_247, "THIRD_PARTY")? }; __args_245.positional.push(__v_246); let __v_248 = frame.load(rt, "len")?; __args_245.keyword("key".into(), __v_248)?; let __v_249 = Value::Bool(true); __args_245.keyword("reverse".into(), __v_249)?; rt.call(&__callable_244, __args_245)? };
 frame.store("phrases", __v_243.clone())?;
-return Ok(__Flow::Return({ let __callable_250 = { let __v_252 = frame.load(rt, "re")?; rt.getattr(&__v_252, "compile")? }; let mut __args_251 = CallArgs::default(); let __v_253 = { let __v_254 = { let __v_256 = Value::from("\\b(?:"); let __v_257 = { let __callable_258 = { let __v_260 = Value::from("|"); rt.getattr(&__v_260, "join")? }; let mut __args_259 = CallArgs::default(); let __v_261 = { let __comp_parent_262 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_262.clone(), &["phrase"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_262 = __comp_parent_262.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "phrases")?) }) }, assign: { let __comp_parent_262 = __comp_parent_262.clone(); Rc::new(move |rt, frame, value| { frame.store("phrase", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_262 = __comp_parent_262.clone(); Rc::new(move |rt, frame| Ok({ let __callable_263 = { let __v_265 = frame.load(rt, "re")?; rt.getattr(&__v_265, "escape")? }; let mut __args_264 = CallArgs::default(); let __v_266 = frame.load(rt, "phrase")?; __args_264.positional.push(__v_266); rt.call(&__callable_263, __args_264)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/taking.py", 162, 162, "_someone_else.<locals>.<genexpr>"); Ok(()) }))? }; __args_259.positional.push(__v_261); rt.call(&__callable_258, __args_259)? }; pyrt::ops::add(&__v_256, &__v_257)? }; let __v_255 = Value::from(")\\b"); pyrt::ops::add(&__v_254, &__v_255)? }; __args_251.positional.push(__v_253); let __v_267 = { let __v_268 = frame.load(rt, "re")?; rt.getattr(&__v_268, "I")? }; __args_251.positional.push(__v_267); rt.call(&__callable_250, __args_251)? }));
+return Ok(__Flow::Return({ let __callable_250 = { let __v_252 = frame.load(rt, "re")?; rt.getattr(&__v_252, "compile")? }; let mut __args_251 = CallArgs::default(); let __v_253 = { let __v_254 = { let __v_256 = Value::from("\\b(?:"); let __v_257 = { let __callable_258 = { let __v_260 = Value::from("|"); rt.getattr(&__v_260, "join")? }; let mut __args_259 = CallArgs::default(); let __v_261 = { let __comp_parent_262 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_262.clone(), &["phrase"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_262 = __comp_parent_262.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "phrases")?) }) }, assign: { let __comp_parent_262 = __comp_parent_262.clone(); Rc::new(move |rt, frame, value| { frame.store("phrase", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_262 = __comp_parent_262.clone(); Rc::new(move |rt, frame| Ok({ let __callable_263 = { let __v_265 = frame.load(rt, "re")?; rt.getattr(&__v_265, "escape")? }; let mut __args_264 = CallArgs::default(); let __v_266 = frame.load(rt, "phrase")?; __args_264.positional.push(__v_266); rt.call(&__callable_263, __args_264)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/taking.py", 162, 162, "_someone_else.<locals>.<genexpr>", 7); Ok(()) }))? }; __args_259.positional.push(__v_261); rt.call(&__callable_258, __args_259)? }; pyrt::ops::add(&__v_256, &__v_257)? }; let __v_255 = Value::from(")\\b"); pyrt::ops::add(&__v_254, &__v_255)? }; __args_251.positional.push(__v_253); let __v_267 = { let __v_268 = frame.load(rt, "re")?; rt.getattr(&__v_268, "I")? }; __args_251.positional.push(__v_267); rt.call(&__callable_250, __args_251)? }));
 Ok(__Flow::Next)
 })() {
 Ok(__Flow::Next) => (|| -> PyResult<__Flow> {
@@ -219,12 +219,12 @@ mod __py_4 { use super::*;
 // py: bot/memory/taking.py:168-179 _a_complaint
 pub(super) fn _a_complaint(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["said","subject"], &["COMPLAINT","NOT_THEIRS"], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 168, 179, "_a_complaint");
+rt.trace_call_code("bot/memory/taking.py", 168, 179, "_a_complaint", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 
 let __v_270 = { let mut __v_271 = frame.load(rt, "COMPLAINT")?; let mut __matched_272 = true; if __matched_272 { let __v_273 = Value::None; __matched_272 = __v_271.is_identical(&__v_273); } Value::Bool(__matched_272) }; if __v_270.is_truthy() {
-let __v_274 = { let __callable_275 = { let __v_277 = frame.load(rt, "re")?; rt.getattr(&__v_277, "compile")? }; let mut __args_276 = CallArgs::default(); let __v_278 = { let __v_279 = { let __v_281 = Value::from("\\b(?:"); let __v_282 = { let __callable_283 = { let __v_285 = Value::from("|"); rt.getattr(&__v_285, "join")? }; let mut __args_284 = CallArgs::default(); let __v_286 = { let __comp_parent_287 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_287.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_287 = __comp_parent_287.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_288 = frame.load(rt, "sorted")?; let mut __args_289 = CallArgs::default(); let __v_290 = { let __callable_291 = frame.load(rt, "_complaint_words")?; let mut __args_292 = CallArgs::default(); rt.call(&__callable_291, __args_292)? }; __args_289.positional.push(__v_290); let __v_293 = frame.load(rt, "len")?; __args_289.keyword("key".into(), __v_293)?; let __v_294 = Value::Bool(true); __args_289.keyword("reverse".into(), __v_294)?; rt.call(&__callable_288, __args_289)? }) }) }, assign: { let __comp_parent_287 = __comp_parent_287.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_287 = __comp_parent_287.clone(); Rc::new(move |rt, frame| Ok({ let __callable_295 = { let __v_297 = frame.load(rt, "re")?; rt.getattr(&__v_297, "escape")? }; let mut __args_296 = CallArgs::default(); let __v_298 = frame.load(rt, "word")?; __args_296.positional.push(__v_298); rt.call(&__callable_295, __args_296)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/taking.py", 173, 174, "_a_complaint.<locals>.<genexpr>"); Ok(()) }))? }; __args_284.positional.push(__v_286); rt.call(&__callable_283, __args_284)? }; pyrt::ops::add(&__v_281, &__v_282)? }; let __v_280 = Value::from(")\\b"); pyrt::ops::add(&__v_279, &__v_280)? }; __args_276.positional.push(__v_278); let __v_299 = { let __v_300 = frame.load(rt, "re")?; rt.getattr(&__v_300, "I")? }; __args_276.positional.push(__v_299); rt.call(&__callable_275, __args_276)? };
+let __v_274 = { let __callable_275 = { let __v_277 = frame.load(rt, "re")?; rt.getattr(&__v_277, "compile")? }; let mut __args_276 = CallArgs::default(); let __v_278 = { let __v_279 = { let __v_281 = Value::from("\\b(?:"); let __v_282 = { let __callable_283 = { let __v_285 = Value::from("|"); rt.getattr(&__v_285, "join")? }; let mut __args_284 = CallArgs::default(); let __v_286 = { let __comp_parent_287 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_287.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_287 = __comp_parent_287.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_288 = frame.load(rt, "sorted")?; let mut __args_289 = CallArgs::default(); let __v_290 = { let __callable_291 = frame.load(rt, "_complaint_words")?; let mut __args_292 = CallArgs::default(); rt.call(&__callable_291, __args_292)? }; __args_289.positional.push(__v_290); let __v_293 = frame.load(rt, "len")?; __args_289.keyword("key".into(), __v_293)?; let __v_294 = Value::Bool(true); __args_289.keyword("reverse".into(), __v_294)?; rt.call(&__callable_288, __args_289)? }) }) }, assign: { let __comp_parent_287 = __comp_parent_287.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_287 = __comp_parent_287.clone(); Rc::new(move |rt, frame| Ok({ let __callable_295 = { let __v_297 = frame.load(rt, "re")?; rt.getattr(&__v_297, "escape")? }; let mut __args_296 = CallArgs::default(); let __v_298 = frame.load(rt, "word")?; __args_296.positional.push(__v_298); rt.call(&__callable_295, __args_296)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/taking.py", 173, 174, "_a_complaint.<locals>.<genexpr>", 9); Ok(()) }))? }; __args_284.positional.push(__v_286); rt.call(&__callable_283, __args_284)? }; pyrt::ops::add(&__v_281, &__v_282)? }; let __v_280 = Value::from(")\\b"); pyrt::ops::add(&__v_279, &__v_280)? }; __args_276.positional.push(__v_278); let __v_299 = { let __v_300 = frame.load(rt, "re")?; rt.getattr(&__v_300, "I")? }; __args_276.positional.push(__v_299); rt.call(&__callable_275, __args_276)? };
 frame.store("COMPLAINT", __v_274.clone())?;
 let __v_301 = { let __callable_302 = frame.load(rt, "_someone_else")?; let mut __args_303 = CallArgs::default(); rt.call(&__callable_302, __args_303)? };
 frame.store("NOT_THEIRS", __v_301.clone())?;
@@ -250,7 +250,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/taking.py:182-197 _subjects
 pub(super) fn _subjects(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","other","others","out","record","said","seen"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 182, 197, "_subjects");
+rt.trace_call_code("bot/memory/taking.py", 182, 197, "_subjects", 10);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_324 = { let __v_325 = { let __callable_326 = frame.load(rt, "isinstance")?; let mut __args_327 = CallArgs::default(); let __v_328 = frame.load(rt, "memory")?; __args_327.positional.push(__v_328); let __v_329 = frame.load(rt, "dict")?; __args_327.positional.push(__v_329); rt.call(&__callable_326, __args_327)? }; Value::Bool(!__v_325.is_truthy()) }; if __v_324.is_truthy() {
@@ -270,7 +270,7 @@ let _ = { let __callable_348 = { let __v_350 = frame.load(rt, "seen")?; rt.getat
 let __v_352 = { let __callable_353 = { let __v_355 = frame.load(rt, "memory")?; rt.getattr(&__v_355, "get")? }; let mut __args_354 = CallArgs::default(); let __v_356 = Value::from("topics"); __args_354.positional.push(__v_356); rt.call(&__callable_353, __args_354)? };
 frame.store("others", __v_352.clone())?;
 let __v_357 = { let __callable_358 = frame.load(rt, "isinstance")?; let mut __args_359 = CallArgs::default(); let __v_360 = frame.load(rt, "others")?; __args_359.positional.push(__v_360); let __v_361 = frame.load(rt, "list")?; __args_359.positional.push(__v_361); rt.call(&__callable_358, __args_359)? }; if __v_357.is_truthy() {
-let _ = { let __callable_362 = { let __v_364 = frame.load(rt, "seen")?; rt.getattr(&__v_364, "extend")? }; let mut __args_363 = CallArgs::default(); let __v_365 = { let __comp_parent_366 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_366.clone(), &["other"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_366 = __comp_parent_366.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_367 = frame.load(rt, "reversed")?; let mut __args_368 = CallArgs::default(); let __v_369 = frame.load(rt, "others")?; __args_368.positional.push(__v_369); rt.call(&__callable_367, __args_368)? }) }) }, assign: { let __comp_parent_366 = __comp_parent_366.clone(); Rc::new(move |rt, frame, value| { frame.store("other", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_366 = __comp_parent_366.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_370 = frame.load(rt, "isinstance")?; let mut __args_371 = CallArgs::default(); let __v_372 = frame.load(rt, "other")?; __args_371.positional.push(__v_372); let __v_373 = frame.load(rt, "dict")?; __args_371.positional.push(__v_373); rt.call(&__callable_370, __args_371)? }).is_truthy()) }) }] }], { let __comp_parent_366 = __comp_parent_366.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "other")?)) }, Rc::new(|rt| { rt.trace_call("bot/memory/taking.py", 192, 192, "_subjects.<locals>.<genexpr>"); Ok(()) }))? }; __args_363.positional.push(__v_365); rt.call(&__callable_362, __args_363)? };
+let _ = { let __callable_362 = { let __v_364 = frame.load(rt, "seen")?; rt.getattr(&__v_364, "extend")? }; let mut __args_363 = CallArgs::default(); let __v_365 = { let __comp_parent_366 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_366.clone(), &["other"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_366 = __comp_parent_366.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_367 = frame.load(rt, "reversed")?; let mut __args_368 = CallArgs::default(); let __v_369 = frame.load(rt, "others")?; __args_368.positional.push(__v_369); rt.call(&__callable_367, __args_368)? }) }) }, assign: { let __comp_parent_366 = __comp_parent_366.clone(); Rc::new(move |rt, frame, value| { frame.store("other", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_366 = __comp_parent_366.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_370 = frame.load(rt, "isinstance")?; let mut __args_371 = CallArgs::default(); let __v_372 = frame.load(rt, "other")?; __args_371.positional.push(__v_372); let __v_373 = frame.load(rt, "dict")?; __args_371.positional.push(__v_373); rt.call(&__callable_370, __args_371)? }).is_truthy()) }) }] }], { let __comp_parent_366 = __comp_parent_366.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "other")?)) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/taking.py", 192, 192, "_subjects.<locals>.<genexpr>", 11); Ok(()) }))? }; __args_363.positional.push(__v_365); rt.call(&__callable_362, __args_363)? };
 } else {
 
 }
@@ -303,7 +303,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/taking.py:200-216 _the_things_to_take_for
 pub(super) fn _the_things_to_take_for(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["subject","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 200, 216, "_the_things_to_take_for");
+rt.trace_call_code("bot/memory/taking.py", 200, 216, "_the_things_to_take_for", 12);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_400 = { let mut __items_401 = Vec::new(); Value::list(__items_401) };
@@ -357,7 +357,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/taking.py:219-226 _a_trip_above
 pub(super) fn _a_trip_above(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","text","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 219, 226, "_a_trip_above");
+rt.trace_call_code("bot/memory/taking.py", 219, 226, "_a_trip_above", 13);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_495 = { let __callable_496 = { let __v_498 = frame.load(rt, "TRIP")?; rt.getattr(&__v_498, "search")? }; let mut __args_497 = CallArgs::default(); let __v_499 = { let __callable_500 = frame.load(rt, "_flat")?; let mut __args_501 = CallArgs::default(); let __v_502 = frame.load(rt, "text")?; __args_501.positional.push(__v_502); rt.call(&__callable_500, __args_501)? }; __args_497.positional.push(__v_499); rt.call(&__callable_496, __args_497)? }; if __v_495.is_truthy() {
@@ -372,7 +372,7 @@ return Ok(__Flow::Return(Value::Bool(false)));
 }
 let __v_509 = { let __comp_parent_510 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_510.clone(), &["turn"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_510 = __comp_parent_510.clone(); Rc::new(move |rt, frame| {  Ok({ let mut __v_511 = { let __callable_512 = { let __v_514 = frame.load(rt, "memory")?; rt.getattr(&__v_514, "get")? }; let mut __args_513 = CallArgs::default(); let __v_515 = Value::from("turns"); __args_513.positional.push(__v_515); rt.call(&__callable_512, __args_513)? }; if !__v_511.is_truthy() { __v_511 = { let mut __items_516 = Vec::new(); Value::list(__items_516) }; } __v_511 }) }) }, assign: { let __comp_parent_510 = __comp_parent_510.clone(); Rc::new(move |rt, frame, value| { frame.store("turn", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_510 = __comp_parent_510.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_517 = frame.load(rt, "isinstance")?; let mut __args_518 = CallArgs::default(); let __v_519 = frame.load(rt, "turn")?; __args_518.positional.push(__v_519); let __v_520 = frame.load(rt, "dict")?; __args_518.positional.push(__v_520); rt.call(&__callable_517, __args_518)? }).is_truthy()) }) }] }], { let __comp_parent_510 = __comp_parent_510.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "turn")?)) })?) };
 frame.store("turns", __v_509.clone())?;
-return Ok(__Flow::Return({ let __callable_521 = frame.load(rt, "any")?; let mut __args_522 = CallArgs::default(); let __v_523 = { let __comp_parent_524 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_524.clone(), &["turn"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_524 = __comp_parent_524.clone(); Rc::new(move |rt, frame| {  Ok({ let __v_525 = frame.load(rt, "turns")?; let __v_527 = { let __v_529 = Value::Int("2".parse().expect("integer literal")); pyrt::ops::neg(&__v_529)? }; let __index_528 = if matches!(__v_527, Value::None) { None } else { let n = __v_527.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_525, __index_528, None, 1_i64)? }) }) }, assign: { let __comp_parent_524 = __comp_parent_524.clone(); Rc::new(move |rt, frame, value| { frame.store("turn", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_524 = __comp_parent_524.clone(); Rc::new(move |rt, frame| Ok({ let __callable_530 = { let __v_532 = frame.load(rt, "TRIP")?; rt.getattr(&__v_532, "search")? }; let mut __args_531 = CallArgs::default(); let __v_533 = { let __callable_534 = frame.load(rt, "_flat")?; let mut __args_535 = CallArgs::default(); let __v_536 = { let __callable_537 = { let __v_539 = frame.load(rt, "turn")?; rt.getattr(&__v_539, "get")? }; let mut __args_538 = CallArgs::default(); let __v_540 = Value::from("user"); __args_538.positional.push(__v_540); rt.call(&__callable_537, __args_538)? }; __args_535.positional.push(__v_536); rt.call(&__callable_534, __args_535)? }; __args_531.positional.push(__v_533); rt.call(&__callable_530, __args_531)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/taking.py", 226, 226, "_a_trip_above.<locals>.<genexpr>"); Ok(()) }))? }; __args_522.positional.push(__v_523); rt.call(&__callable_521, __args_522)? }));
+return Ok(__Flow::Return({ let __callable_521 = frame.load(rt, "any")?; let mut __args_522 = CallArgs::default(); let __v_523 = { let __comp_parent_524 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_524.clone(), &["turn"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_524 = __comp_parent_524.clone(); Rc::new(move |rt, frame| {  Ok({ let __v_525 = frame.load(rt, "turns")?; let __v_527 = { let __v_529 = Value::Int("2".parse().expect("integer literal")); pyrt::ops::neg(&__v_529)? }; let __index_528 = if matches!(__v_527, Value::None) { None } else { let n = __v_527.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_525, __index_528, None, 1_i64)? }) }) }, assign: { let __comp_parent_524 = __comp_parent_524.clone(); Rc::new(move |rt, frame, value| { frame.store("turn", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_524 = __comp_parent_524.clone(); Rc::new(move |rt, frame| Ok({ let __callable_530 = { let __v_532 = frame.load(rt, "TRIP")?; rt.getattr(&__v_532, "search")? }; let mut __args_531 = CallArgs::default(); let __v_533 = { let __callable_534 = frame.load(rt, "_flat")?; let mut __args_535 = CallArgs::default(); let __v_536 = { let __callable_537 = { let __v_539 = frame.load(rt, "turn")?; rt.getattr(&__v_539, "get")? }; let mut __args_538 = CallArgs::default(); let __v_540 = Value::from("user"); __args_538.positional.push(__v_540); rt.call(&__callable_537, __args_538)? }; __args_535.positional.push(__v_536); rt.call(&__callable_534, __args_535)? }; __args_531.positional.push(__v_533); rt.call(&__callable_530, __args_531)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/taking.py", 226, 226, "_a_trip_above.<locals>.<genexpr>", 14); Ok(()) }))? }; __args_522.positional.push(__v_523); rt.call(&__callable_521, __args_522)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -384,7 +384,7 @@ mod __py_8 { use super::*;
 // py: bot/memory/taking.py:229-240 _the_answer
 pub(super) fn _the_answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answers","fresh","key","memory","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 229, 240, "_the_answer");
+rt.trace_call_code("bot/memory/taking.py", 229, 240, "_the_answer", 15);
 let flow = (|| -> PyResult<__Flow> {
 
 let __module_541 = rt.import("bot.modules")?;
@@ -434,7 +434,7 @@ mod __py_9 { use super::*;
 // py: bot/memory/taking.py:243-248 _the_said_in_the_chat
 pub(super) fn _the_said_in_the_chat(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 243, 248, "_the_said_in_the_chat");
+rt.trace_call_code("bot/memory/taking.py", 243, 248, "_the_said_in_the_chat", 16);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_577 = { let __v_578 = { let __callable_579 = frame.load(rt, "isinstance")?; let mut __args_580 = CallArgs::default(); let __v_581 = frame.load(rt, "memory")?; __args_580.positional.push(__v_581); let __v_582 = frame.load(rt, "dict")?; __args_580.positional.push(__v_582); rt.call(&__callable_579, __args_580)? }; Value::Bool(!__v_578.is_truthy()) }; if __v_577.is_truthy() {
@@ -444,7 +444,7 @@ return Ok(__Flow::Return(Value::from("")));
 }
 let __v_583 = { let __comp_parent_584 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_584.clone(), &["turn"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_584 = __comp_parent_584.clone(); Rc::new(move |rt, frame| {  Ok({ let mut __v_585 = { let __callable_586 = { let __v_588 = frame.load(rt, "memory")?; rt.getattr(&__v_588, "get")? }; let mut __args_587 = CallArgs::default(); let __v_589 = Value::from("turns"); __args_587.positional.push(__v_589); rt.call(&__callable_586, __args_587)? }; if !__v_585.is_truthy() { __v_585 = { let mut __items_590 = Vec::new(); Value::list(__items_590) }; } __v_585 }) }) }, assign: { let __comp_parent_584 = __comp_parent_584.clone(); Rc::new(move |rt, frame, value| { frame.store("turn", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_584 = __comp_parent_584.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_591 = frame.load(rt, "isinstance")?; let mut __args_592 = CallArgs::default(); let __v_593 = frame.load(rt, "turn")?; __args_592.positional.push(__v_593); let __v_594 = frame.load(rt, "dict")?; __args_592.positional.push(__v_594); rt.call(&__callable_591, __args_592)? }).is_truthy()) }) }] }], { let __comp_parent_584 = __comp_parent_584.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "turn")?)) })?) };
 frame.store("turns", __v_583.clone())?;
-return Ok(__Flow::Return({ let __callable_595 = { let __v_597 = Value::from(" "); rt.getattr(&__v_597, "join")? }; let mut __args_596 = CallArgs::default(); let __v_598 = { let __comp_parent_599 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_599.clone(), &["turn"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_599 = __comp_parent_599.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "turns")?) }) }, assign: { let __comp_parent_599 = __comp_parent_599.clone(); Rc::new(move |rt, frame, value| { frame.store("turn", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_599 = __comp_parent_599.clone(); Rc::new(move |rt, frame| Ok({ let __callable_600 = frame.load(rt, "_flat")?; let mut __args_601 = CallArgs::default(); let __v_602 = { let __callable_603 = { let __v_605 = frame.load(rt, "turn")?; rt.getattr(&__v_605, "get")? }; let mut __args_604 = CallArgs::default(); let __v_606 = Value::from("user"); __args_604.positional.push(__v_606); rt.call(&__callable_603, __args_604)? }; __args_601.positional.push(__v_602); rt.call(&__callable_600, __args_601)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/taking.py", 248, 248, "_the_said_in_the_chat.<locals>.<genexpr>"); Ok(()) }))? }; __args_596.positional.push(__v_598); rt.call(&__callable_595, __args_596)? }));
+return Ok(__Flow::Return({ let __callable_595 = { let __v_597 = Value::from(" "); rt.getattr(&__v_597, "join")? }; let mut __args_596 = CallArgs::default(); let __v_598 = { let __comp_parent_599 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_599.clone(), &["turn"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_599 = __comp_parent_599.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "turns")?) }) }, assign: { let __comp_parent_599 = __comp_parent_599.clone(); Rc::new(move |rt, frame, value| { frame.store("turn", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_599 = __comp_parent_599.clone(); Rc::new(move |rt, frame| Ok({ let __callable_600 = frame.load(rt, "_flat")?; let mut __args_601 = CallArgs::default(); let __v_602 = { let __callable_603 = { let __v_605 = frame.load(rt, "turn")?; rt.getattr(&__v_605, "get")? }; let mut __args_604 = CallArgs::default(); let __v_606 = Value::from("user"); __args_604.positional.push(__v_606); rt.call(&__callable_603, __args_604)? }; __args_601.positional.push(__v_602); rt.call(&__callable_600, __args_601)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/taking.py", 248, 248, "_the_said_in_the_chat.<locals>.<genexpr>", 17); Ok(()) }))? }; __args_596.positional.push(__v_598); rt.call(&__callable_595, __args_596)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -456,7 +456,7 @@ mod __py_10 { use super::*;
 // py: bot/memory/taking.py:251-255 _the_last_reply
 pub(super) fn _the_last_reply(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 251, 255, "_the_last_reply");
+rt.trace_call_code("bot/memory/taking.py", 251, 255, "_the_last_reply", 18);
 let flow = (|| -> PyResult<__Flow> {
 let __v_607 = { let __v_608 = { let __callable_609 = frame.load(rt, "isinstance")?; let mut __args_610 = CallArgs::default(); let __v_611 = frame.load(rt, "memory")?; __args_610.positional.push(__v_611); let __v_612 = frame.load(rt, "dict")?; __args_610.positional.push(__v_612); rt.call(&__callable_609, __args_610)? }; Value::Bool(!__v_608.is_truthy()) }; if __v_607.is_truthy() {
 return Ok(__Flow::Return(Value::from("")));
@@ -477,7 +477,7 @@ mod __py_11 { use super::*;
 // py: bot/memory/taking.py:258-271 _the_situation_this_chat_is_in
 pub(super) fn _the_situation_this_chat_is_in(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["kept","memory","reply","said"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 258, 271, "_the_situation_this_chat_is_in");
+rt.trace_call_code("bot/memory/taking.py", 258, 271, "_the_situation_this_chat_is_in", 19);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_636 = { let __callable_637 = frame.load(rt, "_the_said_in_the_chat")?; let mut __args_638 = CallArgs::default(); let __v_639 = frame.load(rt, "memory")?; __args_638.positional.push(__v_639); rt.call(&__callable_637, __args_638)? };
@@ -506,7 +506,7 @@ mod __py_12 { use super::*;
 // py: bot/memory/taking.py:274-281 _the_answer_today
 pub(super) fn _the_answer_today(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answers","memory","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 274, 281, "_the_answer_today");
+rt.trace_call_code("bot/memory/taking.py", 274, 281, "_the_answer_today", 20);
 let flow = (|| -> PyResult<__Flow> {
 
 let __module_694 = rt.import("bot.modules")?;
@@ -538,7 +538,7 @@ mod __py_13 { use super::*;
 // py: bot/memory/taking.py:284-298 _the_same_answer
 pub(super) fn _the_same_answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","reply","text","today"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 284, 298, "_the_same_answer");
+rt.trace_call_code("bot/memory/taking.py", 284, 298, "_the_same_answer", 21);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_714 = { let __v_715 = frame.load(rt, "today")?; Value::Bool(!__v_715.is_truthy()) }; if __v_714.is_truthy() {
@@ -558,7 +558,7 @@ mod __py_14 { use super::*;
 // py: bot/memory/taking.py:301-309 _names
 pub(super) fn _names(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["other","reply","said","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 301, 309, "_names");
+rt.trace_call_code("bot/memory/taking.py", 301, 309, "_names", 22);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_745 = { let __callable_746 = { let __v_748 = { let __callable_749 = frame.load(rt, "_flat")?; let mut __args_750 = CallArgs::default(); let __v_751 = frame.load(rt, "reply")?; __args_750.positional.push(__v_751); rt.call(&__callable_749, __args_750)? }; rt.getattr(&__v_748, "lower")? }; let mut __args_747 = CallArgs::default(); rt.call(&__callable_746, __args_747)? };
@@ -595,7 +595,7 @@ mod __py_15 { use super::*;
 // py: bot/memory/taking.py:312-326 _the_answer_above
 pub(super) fn _the_answer_above(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","opening","reply","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 312, 326, "_the_answer_above");
+rt.trace_call_code("bot/memory/taking.py", 312, 326, "_the_answer_above", 23);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_774 = { let __v_775 = { let __callable_776 = frame.load(rt, "isinstance")?; let mut __args_777 = CallArgs::default(); let __v_778 = frame.load(rt, "memory")?; __args_777.positional.push(__v_778); let __v_779 = frame.load(rt, "dict")?; __args_777.positional.push(__v_779); rt.call(&__callable_776, __args_777)? }; Value::Bool(!__v_775.is_truthy()) }; if __v_774.is_truthy() {
@@ -629,7 +629,7 @@ mod __py_16 { use super::*;
 // py: bot/memory/taking.py:329-345 _the_subjects_to_answer
 pub(super) fn _the_subjects_to_answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","out","subject","text","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 329, 345, "_the_subjects_to_answer");
+rt.trace_call_code("bot/memory/taking.py", 329, 345, "_the_subjects_to_answer", 24);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_830 = { let mut __items_831 = Vec::new(); Value::list(__items_831) };
@@ -673,7 +673,7 @@ mod __py_17 { use super::*;
 // py: bot/memory/taking.py:348-361 the_ask_and_the_subject
 pub(super) fn the_ask_and_the_subject(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 348, 361, "the_ask_and_the_subject");
+rt.trace_call_code("bot/memory/taking.py", 348, 361, "the_ask_and_the_subject", 25);
 let flow = (|| -> PyResult<__Flow> {
 
 let __outcome_867: PyResult<__Flow> = match (|| -> PyResult<__Flow> {
@@ -712,7 +712,7 @@ mod __py_18 { use super::*;
 // py: bot/memory/taking.py:364-409 reply_for
 pub(super) fn reply_for(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["already","asked","formula","in_pain","memory","reply","subject","text","today","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taking.py", 364, 409, "reply_for");
+rt.trace_call_code("bot/memory/taking.py", 364, 409, "reply_for", 26);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_887 = { let __v_888 = { let __callable_889 = frame.load(rt, "_asks_what_to_take")?; let mut __args_890 = CallArgs::default(); let __v_891 = frame.load(rt, "text")?; __args_890.positional.push(__v_891); rt.call(&__callable_889, __args_890)? }; Value::Bool(!__v_888.is_truthy()) }; if __v_887.is_truthy() {

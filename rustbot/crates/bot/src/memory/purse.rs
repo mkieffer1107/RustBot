@@ -21,7 +21,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_a_number",74,79),
 ("against_the_bands.<locals>.<lambda>",169,169)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/purse.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/purse.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("Whether their money is enough: a price read against the price band the answer named.\n\n\"is that enough\" is about an amount the person gave, and the answer that priced the thing has the\nfigure in it. Money is the amount people ask it about most, and the one the answer writes as a\nband of prices rather than a number to reach:\n\n    what coat should i get for winter\n    -> Pick the coat by the weather you are actually out in: ... £80 to £150 buys a padded coat\n       that lasts a decade, £150 to £250 a waterproof shell that does not leak at the shoulders.\n    i have 80 pounds, is that enough\n    -> £80 is inside the £80 to £150 that answer named, and that buys a padded coat that lasts a\n       decade.\n\n    i have 200 pounds to spend on a bike\n    -> £400 to £700 buys a dependable new commuter, and £150 to £300 buys a sound second-hand one.\n    is that enough\n    -> £200 is inside the £150 to £300 that answer named, and that buys a sound second-hand one.\n\nOn main those two chats got \"I'm not sure about that one, sorry - I'd rather not guess.\" and\n\"Alright then - good luck with it.\", because the amounts the store reads in\n`bot/modules/memory_store.py` (`_AMOUNTS`) are all a unit that follows the count, and a price is\nwritten with the mark in front (\"£200\") or the word behind (\"200 pounds\"), so it was in no family\nat all and the two numbers were never read together. `bot/modules/memory_store.py` is the module\nthat answers \"is that enough\", and it calls `against_the_bands` from there.\n\nFences, each a test in `tests/test_a_purse_against_the_price_band.py`:\n\n* a band has to hold their money, or be the cheapest one above it - the one they cannot reach;\n  money over every band is left to the answer that named them, which usually says what more money\n  buys (\"£900\" after a Rome answer whose best line is the daily cost);\n* a band stated as a rate is the cost of a day, not the price of the thing (\"£55 to £95 a day per\n  person\"), so it is passed over;\n* the figure can be in the ask (\"is 40 pounds enough\") or in their own line just before it, and\n  the band can be in the answer one turn back, because a line that only says how much they have is\n  answered by the store asking what it has to stretch to;\n* a price named alone, with no band, is not stood against (\"You have 500 pounds for a laptop -\n  good, and everything I suggest will be within it\");\n* only pounds and quid are read, so the reply never puts a pound sign on somebody's euros.\n"))?;
@@ -54,7 +54,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/purse.py:74-79 _a_number
 pub(super) fn _a_number(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/purse.py", 74, 79, "_a_number");
+rt.trace_call_code("bot/memory/purse.py", 74, 79, "_a_number", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_65 = { let __callable_66 = { let __v_68 = { let __callable_69 = { let __v_71 = { let mut __v_72 = frame.load(rt, "word")?; if !__v_72.is_truthy() { __v_72 = Value::from(""); } __v_72 }; rt.getattr(&__v_71, "strip")? }; let mut __args_70 = CallArgs::default(); rt.call(&__callable_69, __args_70)? }; rt.getattr(&__v_68, "lower")? }; let mut __args_67 = CallArgs::default(); rt.call(&__callable_66, __args_67)? };
@@ -76,7 +76,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/purse.py:82-89 _money_in
 pub(super) fn _money_in(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","match","text","value"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/purse.py", 82, 89, "_money_in");
+rt.trace_call_code("bot/memory/purse.py", 82, 89, "_money_in", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_87 = { let mut __items_88 = Vec::new(); Value::list(__items_88) };
@@ -110,7 +110,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/purse.py:92-96 _the_money
 pub(super) fn _the_money(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["value"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/purse.py", 92, 96, "_the_money");
+rt.trace_call_code("bot/memory/purse.py", 92, 96, "_the_money", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_117 = { let __callable_118 = { let __v_120 = { let __callable_121 = frame.load(rt, "float")?; let mut __args_122 = CallArgs::default(); let __v_123 = frame.load(rt, "value")?; __args_122.positional.push(__v_123); rt.call(&__callable_121, __args_122)? }; rt.getattr(&__v_120, "is_integer")? }; let mut __args_119 = CallArgs::default(); rt.call(&__callable_118, __args_119)? }; if __v_117.is_truthy() {
@@ -130,7 +130,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/purse.py:99-109 _the_words_after
 pub(super) fn _the_words_after(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","at","cut","rest","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/purse.py", 99, 109, "_the_words_after");
+rt.trace_call_code("bot/memory/purse.py", 99, 109, "_the_words_after", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_133 = { let __v_134 = { let mut __v_138 = frame.load(rt, "answer")?; if !__v_138.is_truthy() { __v_138 = Value::from(""); } __v_138 }; let __v_136 = frame.load(rt, "at")?; let __index_137 = if matches!(__v_136, Value::None) { None } else { let n = __v_136.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_134, __index_137, None, 1_i64)? };
@@ -144,7 +144,7 @@ return Ok(__Flow::Return(Value::from("")));
 } else {
 
 }
-let __v_169 = { let mut __v_170 = { let mut __v_171 = Value::from("£"); let mut __matched_172 = true; if __matched_172 { let __v_173 = frame.load(rt, "words")?; __matched_172 = pyrt::ops::contains(&__v_173, &__v_171)?; } Value::Bool(__matched_172) }; if !__v_170.is_truthy() { __v_170 = { let __callable_174 = frame.load(rt, "any")?; let mut __args_175 = CallArgs::default(); let __v_176 = { let __comp_parent_177 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_177.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_177 = __comp_parent_177.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_178 = { let __v_180 = frame.load(rt, "words")?; rt.getattr(&__v_180, "split")? }; let mut __args_179 = CallArgs::default(); rt.call(&__callable_178, __args_179)? }) }) }, assign: { let __comp_parent_177 = __comp_parent_177.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_177 = __comp_parent_177.clone(); Rc::new(move |rt, frame| Ok({ let __callable_181 = { let __v_183 = frame.load(rt, "re")?; rt.getattr(&__v_183, "fullmatch")? }; let mut __args_182 = CallArgs::default(); let __v_184 = Value::from("\\d[\\d,]*\\.?\\d*"); __args_182.positional.push(__v_184); let __v_185 = frame.load(rt, "one")?; __args_182.positional.push(__v_185); rt.call(&__callable_181, __args_182)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/purse.py", 107, 107, "_the_words_after.<locals>.<genexpr>"); Ok(()) }))? }; __args_175.positional.push(__v_176); rt.call(&__callable_174, __args_175)? }; } __v_170 }; if __v_169.is_truthy() {
+let __v_169 = { let mut __v_170 = { let mut __v_171 = Value::from("£"); let mut __matched_172 = true; if __matched_172 { let __v_173 = frame.load(rt, "words")?; __matched_172 = pyrt::ops::contains(&__v_173, &__v_171)?; } Value::Bool(__matched_172) }; if !__v_170.is_truthy() { __v_170 = { let __callable_174 = frame.load(rt, "any")?; let mut __args_175 = CallArgs::default(); let __v_176 = { let __comp_parent_177 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_177.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_177 = __comp_parent_177.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_178 = { let __v_180 = frame.load(rt, "words")?; rt.getattr(&__v_180, "split")? }; let mut __args_179 = CallArgs::default(); rt.call(&__callable_178, __args_179)? }) }) }, assign: { let __comp_parent_177 = __comp_parent_177.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_177 = __comp_parent_177.clone(); Rc::new(move |rt, frame| Ok({ let __callable_181 = { let __v_183 = frame.load(rt, "re")?; rt.getattr(&__v_183, "fullmatch")? }; let mut __args_182 = CallArgs::default(); let __v_184 = Value::from("\\d[\\d,]*\\.?\\d*"); __args_182.positional.push(__v_184); let __v_185 = frame.load(rt, "one")?; __args_182.positional.push(__v_185); rt.call(&__callable_181, __args_182)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/purse.py", 107, 107, "_the_words_after.<locals>.<genexpr>", 6); Ok(()) }))? }; __args_175.positional.push(__v_176); rt.call(&__callable_174, __args_175)? }; } __v_170 }; if __v_169.is_truthy() {
 return Ok(__Flow::Return(Value::from("")));
 } else {
 
@@ -161,7 +161,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/purse.py:112-124 _money_bands
 pub(super) fn _money_bands(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","bands","first","high","low","match","second"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/purse.py", 112, 124, "_money_bands");
+rt.trace_call_code("bot/memory/purse.py", 112, 124, "_money_bands", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_186 = { let mut __items_187 = Vec::new(); Value::list(__items_187) };
@@ -205,7 +205,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/purse.py:127-173 against_the_bands
 pub(super) fn against_the_bands(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["above","after","answer","bands","high","inside","low","mine","said","spoken","text","theirs","turn","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/purse.py", 127, 173, "against_the_bands");
+rt.trace_call_code("bot/memory/purse.py", 127, 173, "against_the_bands", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_264 = { let __callable_265 = frame.load(rt, "_money_in")?; let mut __args_266 = CallArgs::default(); let __v_267 = frame.load(rt, "text")?; __args_266.positional.push(__v_267); rt.call(&__callable_265, __args_266)? };
@@ -285,7 +285,7 @@ return Ok(__Flow::Return({ let __v_399 = Value::from("%s is inside the %s that a
 } else {
 
 }
-let __v_405 = { let __callable_406 = frame.load(rt, "sorted")?; let mut __args_407 = CallArgs::default(); let __v_408 = { let __comp_parent_409 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_409.clone(), &["band"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_409 = __comp_parent_409.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "bands")?) }) }, assign: { let __comp_parent_409 = __comp_parent_409.clone(); Rc::new(move |rt, frame, value| { frame.store("band", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_409 = __comp_parent_409.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_410 = { let __v_412 = frame.load(rt, "band")?; let __v_413 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_412, &__v_413)? }; let mut __matched_411 = true; if __matched_411 { let __v_414 = frame.load(rt, "mine")?; __matched_411 = pyrt::ops::compare(&__v_410, &__v_414)?.is_some_and(|o| o.is_gt()); } Value::Bool(__matched_411) }).is_truthy()) }) }] }], { let __comp_parent_409 = __comp_parent_409.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "band")?)) }, Rc::new(|rt| { rt.trace_call("bot/memory/purse.py", 169, 169, "against_the_bands.<locals>.<genexpr>"); Ok(()) }))? }; __args_407.positional.push(__v_408); let __v_415 = { let __signature_417 = Signature { name: "<lambda>".into(), positional: vec!["band".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_419 = Value::dict(); __attrs_419.dict_set(Value::from("__doc__"), Value::None)?; __attrs_419.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_420 = Value::dict(); __attrs_419.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_416 = Frame::module(frame.globals.clone()); let mut __function_418 = NativeFunction::qualified_with_origin("<lambda>".into(), "against_the_bands.<locals>.<lambda>".into(), "bot.memory.purse".into(), __attrs_419, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/purse.py", first: 169, last: 169, qualname: "against_the_bands.<locals>.<lambda>" }, closure: __closure_416.clone(), freevars: vec![] }, move |rt, args| super::__py_6::__lambda(rt, __closure_416.clone(), &__signature_417, args)); __function_418 }; __args_407.keyword("key".into(), __v_415)?; rt.call(&__callable_406, __args_407)? };
+let __v_405 = { let __callable_406 = frame.load(rt, "sorted")?; let mut __args_407 = CallArgs::default(); let __v_408 = { let __comp_parent_409 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_409.clone(), &["band"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_409 = __comp_parent_409.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "bands")?) }) }, assign: { let __comp_parent_409 = __comp_parent_409.clone(); Rc::new(move |rt, frame, value| { frame.store("band", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_409 = __comp_parent_409.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_410 = { let __v_412 = frame.load(rt, "band")?; let __v_413 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_412, &__v_413)? }; let mut __matched_411 = true; if __matched_411 { let __v_414 = frame.load(rt, "mine")?; __matched_411 = pyrt::ops::compare(&__v_410, &__v_414)?.is_some_and(|o| o.is_gt()); } Value::Bool(__matched_411) }).is_truthy()) }) }] }], { let __comp_parent_409 = __comp_parent_409.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "band")?)) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/purse.py", 169, 169, "against_the_bands.<locals>.<genexpr>", 9); Ok(()) }))? }; __args_407.positional.push(__v_408); let __v_415 = { let __signature_417 = Signature { name: "<lambda>".into(), positional: vec!["band".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_419 = Value::dict(); __attrs_419.dict_set(Value::from("__doc__"), Value::None)?; __attrs_419.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_420 = Value::dict(); __attrs_419.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_416 = Frame::module(frame.globals.clone()); let mut __function_418 = NativeFunction::qualified_with_origin("<lambda>".into(), "against_the_bands.<locals>.<lambda>".into(), "bot.memory.purse".into(), __attrs_419, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/purse.py", first: 169, last: 169, qualname: "against_the_bands.<locals>.<lambda>" }, closure: __closure_416.clone(), freevars: vec![] }, move |rt, args| super::__py_6::__lambda(rt, __closure_416.clone(), &__signature_417, args)); __function_418 }; __args_407.keyword("key".into(), __v_415)?; rt.call(&__callable_406, __args_407)? };
 frame.store("above", __v_405.clone())?;
 let __v_421 = { let __v_422 = frame.load(rt, "above")?; Value::Bool(!__v_422.is_truthy()) }; if __v_421.is_truthy() {
 return Ok(__Flow::Return(Value::None));
@@ -304,7 +304,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/purse.py:169-169 against_the_bands.<locals>.<lambda>
 pub(super) fn __lambda(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["band"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/purse.py", 169, 169, "against_the_bands.<locals>.<lambda>");
+rt.trace_call_code("bot/memory/purse.py", 169, 169, "against_the_bands.<locals>.<lambda>", 10);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __v_447 = frame.load(rt, "band")?; let __v_448 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_447, &__v_448)? }));
 Ok(__Flow::Next)

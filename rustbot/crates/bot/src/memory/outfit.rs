@@ -23,7 +23,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_recent",118,131),
 ("written_out",302,346)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/outfit.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/outfit.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("What to wear, said about the occasion already on the table.\n\nPeople do not repeat the occasion. Once they have said the thing is happening, the next question\nabout it is only the part they have not worked out:\n\n    my sister is getting married in june\n    im not sure what to wear\n    and what about shoes\n\nOn its own, \"im not sure what to wear\" is a blank - the bot answered \"Thanks for telling me - I'm\nhere if you want to dig into any of that.\", which is the reply for a feeling, not for a person\nchoosing an outfit - and \"and what about shoes\" was a search hedge. Written out with the occasion\nin the words an entry is keyed on (\"what should i wear to my sister's wedding\", \"what shoes should\ni wear to a wedding\") the same two lines reach the outfit answer: not white or cream to a wedding,\na colour they feel good in, shoes they can stand in.\n\nWhat is in here:\n\n- `the_occasion(memory)` finds the occasion the chat is on - a wedding, an interview, a party, a\n  funeral - and says it as a thing: \"a wedding\", or \"my sister's wedding\" when the chat named\n  who it is. The entries answer \"to my sister's wedding\" and \"to a wedding\" alike, so the named\n  one is only used when the relation is the person's own.\n- `written_out(text, memory)` returns the question to answer, or None. It only fires when the\n  line is about what to wear and names no occasion of its own, so \"what should i wear to a\n  wedding\" is left alone, and a chat with nothing on the calendar keeps \"Tell me what the day is\n  - work, a meal out, a long walk - and I will say what to put on.\"\n"))?;
@@ -81,7 +81,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/outfit.py:118-131 _recent
 pub(super) fn _recent(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","said","text","turn"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/outfit.py", 118, 131, "_recent");
+rt.trace_call_code("bot/memory/outfit.py", 118, 131, "_recent", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_233 = { let __v_234 = { let __callable_235 = frame.load(rt, "isinstance")?; let mut __args_236 = CallArgs::default(); let __v_237 = frame.load(rt, "memory")?; __args_236.positional.push(__v_237); let __v_238 = frame.load(rt, "dict")?; __args_236.positional.push(__v_238); rt.call(&__callable_235, __args_236)? }; Value::Bool(!__v_234.is_truthy()) }; if __v_233.is_truthy() {
@@ -124,7 +124,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/outfit.py:134-136 _an
 pub(super) fn _an(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["phrase"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/outfit.py", 134, 136, "_an");
+rt.trace_call_code("bot/memory/outfit.py", 134, 136, "_an", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __v_290 = { let __v_292 = { let mut __v_293 = { let __v_295 = frame.load(rt, "phrase")?; let __v_297 = Value::Int("1".parse().expect("integer literal")); let __index_298 = if matches!(__v_297, Value::None) { None } else { let n = __v_297.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_295, None, __index_298, 1_i64)? }; let mut __matched_294 = true; if __matched_294 { let __v_299 = Value::from("aeiou"); __matched_294 = pyrt::ops::contains(&__v_299, &__v_293)?; } Value::Bool(__matched_294) }; if __v_292.is_truthy() { Value::from("an ") } else { Value::from("a ") } }; let __v_291 = frame.load(rt, "phrase")?; pyrt::ops::add(&__v_290, &__v_291)? }));
@@ -139,7 +139,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/outfit.py:151-167 the_occasion
 pub(super) fn the_occasion(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["_key","memory","pattern","phrase","said","text","who"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/outfit.py", 151, 167, "the_occasion");
+rt.trace_call_code("bot/memory/outfit.py", 151, 167, "the_occasion", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_300 = { let __callable_301 = frame.load(rt, "_recent")?; let mut __args_302 = CallArgs::default(); let __v_303 = frame.load(rt, "memory")?; __args_302.positional.push(__v_303); rt.call(&__callable_301, __args_302)? };
@@ -194,7 +194,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/outfit.py:170-177 _the_last_answer
 pub(super) fn _the_last_answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/outfit.py", 170, 177, "_the_last_answer");
+rt.trace_call_code("bot/memory/outfit.py", 170, 177, "_the_last_answer", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_353 = { let __v_354 = { let __callable_355 = frame.load(rt, "isinstance")?; let mut __args_356 = CallArgs::default(); let __v_357 = frame.load(rt, "memory")?; __args_356.positional.push(__v_357); let __v_358 = frame.load(rt, "dict")?; __args_356.positional.push(__v_358); rt.call(&__callable_355, __args_356)? }; Value::Bool(!__v_354.is_truthy()) }; if __v_353.is_truthy() {
@@ -221,7 +221,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/outfit.py:185-198 _the_answer_already_gave_it
 pub(super) fn _the_answer_already_gave_it(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["last","memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/outfit.py", 185, 198, "_the_answer_already_gave_it");
+rt.trace_call_code("bot/memory/outfit.py", 185, 198, "_the_answer_already_gave_it", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_394 = { let __callable_395 = frame.load(rt, "_the_last_answer")?; let mut __args_396 = CallArgs::default(); let __v_397 = frame.load(rt, "memory")?; __args_396.positional.push(__v_397); rt.call(&__callable_395, __args_396)? };
@@ -231,7 +231,7 @@ return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-return Ok(__Flow::Return({ let mut __v_400 = { let __callable_402 = frame.load(rt, "len")?; let mut __args_403 = CallArgs::default(); let __v_404 = { let __callable_405 = frame.load(rt, "set")?; let mut __args_406 = CallArgs::default(); let __v_407 = { let __comp_parent_408 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_408.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_408 = __comp_parent_408.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_409 = { let __v_411 = frame.load(rt, "CLOTHING_WORDS")?; rt.getattr(&__v_411, "findall")? }; let mut __args_410 = CallArgs::default(); let __v_412 = frame.load(rt, "last")?; __args_410.positional.push(__v_412); rt.call(&__callable_409, __args_410)? }) }) }, assign: { let __comp_parent_408 = __comp_parent_408.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_408 = __comp_parent_408.clone(); Rc::new(move |rt, frame| Ok({ let __callable_413 = { let __v_415 = frame.load(rt, "word")?; rt.getattr(&__v_415, "lower")? }; let mut __args_414 = CallArgs::default(); rt.call(&__callable_413, __args_414)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/outfit.py", 198, 198, "_the_answer_already_gave_it.<locals>.<genexpr>"); Ok(()) }))? }; __args_406.positional.push(__v_407); rt.call(&__callable_405, __args_406)? }; __args_403.positional.push(__v_404); rt.call(&__callable_402, __args_403)? }; let mut __matched_401 = true; if __matched_401 { let __v_416 = Value::Int("2".parse().expect("integer literal")); __matched_401 = pyrt::ops::compare(&__v_400, &__v_416)?.is_some_and(|o| !o.is_lt()); } Value::Bool(__matched_401) }));
+return Ok(__Flow::Return({ let mut __v_400 = { let __callable_402 = frame.load(rt, "len")?; let mut __args_403 = CallArgs::default(); let __v_404 = { let __callable_405 = frame.load(rt, "set")?; let mut __args_406 = CallArgs::default(); let __v_407 = { let __comp_parent_408 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_408.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_408 = __comp_parent_408.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_409 = { let __v_411 = frame.load(rt, "CLOTHING_WORDS")?; rt.getattr(&__v_411, "findall")? }; let mut __args_410 = CallArgs::default(); let __v_412 = frame.load(rt, "last")?; __args_410.positional.push(__v_412); rt.call(&__callable_409, __args_410)? }) }) }, assign: { let __comp_parent_408 = __comp_parent_408.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_408 = __comp_parent_408.clone(); Rc::new(move |rt, frame| Ok({ let __callable_413 = { let __v_415 = frame.load(rt, "word")?; rt.getattr(&__v_415, "lower")? }; let mut __args_414 = CallArgs::default(); rt.call(&__callable_413, __args_414)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/outfit.py", 198, 198, "_the_answer_already_gave_it.<locals>.<genexpr>", 7); Ok(()) }))? }; __args_406.positional.push(__v_407); rt.call(&__callable_405, __args_406)? }; __args_403.positional.push(__v_404); rt.call(&__callable_402, __args_403)? }; let mut __matched_401 = true; if __matched_401 { let __v_416 = Value::Int("2".parse().expect("integer literal")); __matched_401 = pyrt::ops::compare(&__v_400, &__v_416)?.is_some_and(|o| !o.is_lt()); } Value::Bool(__matched_401) }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -243,7 +243,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/outfit.py:217-273 the_sentence_answered
 pub(super) fn the_sentence_answered(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["last","lead","line","memory","sentence","sentences","text","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/outfit.py", 217, 273, "the_sentence_answered");
+rt.trace_call_code("bot/memory/outfit.py", 217, 273, "the_sentence_answered", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_417 = { let __v_418 = { let __callable_419 = frame.load(rt, "isinstance")?; let mut __args_420 = CallArgs::default(); let __v_421 = frame.load(rt, "text")?; __args_420.positional.push(__v_421); let __v_422 = frame.load(rt, "str")?; __args_420.positional.push(__v_422); rt.call(&__callable_419, __args_420)? }; Value::Bool(!__v_418.is_truthy()) }; if __v_417.is_truthy() {
@@ -356,9 +356,9 @@ mod __py_6 { use super::*;
 // py: bot/memory/outfit.py:276-277 _names_an_occasion
 pub(super) fn _names_an_occasion(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/outfit.py", 276, 277, "_names_an_occasion");
+rt.trace_call_code("bot/memory/outfit.py", 276, 277, "_names_an_occasion", 9);
 let flow = (|| -> PyResult<__Flow> {
-return Ok(__Flow::Return({ let __callable_622 = frame.load(rt, "any")?; let mut __args_623 = CallArgs::default(); let __v_624 = { let __comp_parent_625 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_625.clone(), &["_key","_phrase","pattern"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_625 = __comp_parent_625.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "OCCASIONS")?) }) }, assign: { let __comp_parent_625 = __comp_parent_625.clone(); Rc::new(move |rt, frame, value| { let __unpack_626 = pyrt::containers::unpack(rt, &value, 3, 0, false)?; frame.store("pattern", __unpack_626[0].clone())?; frame.store("_key", __unpack_626[1].clone())?; frame.store("_phrase", __unpack_626[2].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_625 = __comp_parent_625.clone(); Rc::new(move |rt, frame| Ok({ let __callable_627 = { let __v_629 = frame.load(rt, "pattern")?; rt.getattr(&__v_629, "search")? }; let mut __args_628 = CallArgs::default(); let __v_630 = frame.load(rt, "text")?; __args_628.positional.push(__v_630); rt.call(&__callable_627, __args_628)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/outfit.py", 277, 277, "_names_an_occasion.<locals>.<genexpr>"); Ok(()) }))? }; __args_623.positional.push(__v_624); rt.call(&__callable_622, __args_623)? }));
+return Ok(__Flow::Return({ let __callable_622 = frame.load(rt, "any")?; let mut __args_623 = CallArgs::default(); let __v_624 = { let __comp_parent_625 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_625.clone(), &["_key","_phrase","pattern"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_625 = __comp_parent_625.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "OCCASIONS")?) }) }, assign: { let __comp_parent_625 = __comp_parent_625.clone(); Rc::new(move |rt, frame, value| { let __unpack_626 = pyrt::containers::unpack(rt, &value, 3, 0, false)?; frame.store("pattern", __unpack_626[0].clone())?; frame.store("_key", __unpack_626[1].clone())?; frame.store("_phrase", __unpack_626[2].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_625 = __comp_parent_625.clone(); Rc::new(move |rt, frame| Ok({ let __callable_627 = { let __v_629 = frame.load(rt, "pattern")?; rt.getattr(&__v_629, "search")? }; let mut __args_628 = CallArgs::default(); let __v_630 = frame.load(rt, "text")?; __args_628.positional.push(__v_630); rt.call(&__callable_627, __args_628)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/outfit.py", 277, 277, "_names_an_occasion.<locals>.<genexpr>", 10); Ok(()) }))? }; __args_623.positional.push(__v_624); rt.call(&__callable_622, __args_623)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -370,7 +370,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/outfit.py:294-299 _names_its_own_outing
 pub(super) fn _names_its_own_outing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/outfit.py", 294, 299, "_names_its_own_outing");
+rt.trace_call_code("bot/memory/outfit.py", 294, 299, "_names_its_own_outing", 11);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_631 = { let __callable_632 = { let __v_634 = frame.load(rt, "GOING_SOMEWHERE")?; rt.getattr(&__v_634, "search")? }; let mut __args_633 = CallArgs::default(); let __v_635 = frame.load(rt, "text")?; __args_633.positional.push(__v_635); rt.call(&__callable_632, __args_633)? };
@@ -392,7 +392,7 @@ mod __py_8 { use super::*;
 // py: bot/memory/outfit.py:302-346 written_out
 pub(super) fn written_out(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","memory","occasion","part","shaped","text","worn"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/outfit.py", 302, 346, "written_out");
+rt.trace_call_code("bot/memory/outfit.py", 302, 346, "written_out", 12);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_642 = { let __v_643 = { let __callable_644 = frame.load(rt, "isinstance")?; let mut __args_645 = CallArgs::default(); let __v_646 = frame.load(rt, "text")?; __args_645.positional.push(__v_646); let __v_647 = frame.load(rt, "str")?; __args_645.positional.push(__v_647); rt.call(&__callable_644, __args_645)? }; Value::Bool(!__v_643.is_truthy()) }; if __v_642.is_truthy() {

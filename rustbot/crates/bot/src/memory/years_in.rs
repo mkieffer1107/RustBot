@@ -27,7 +27,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_a_job_word",55,66),
 ("the_years_in_their_doing",286,309)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/years_in.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/years_in.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("How long they have been doing the job they told me about, said back as a person would.\n\nTwo turns of a chat:\n\n    im a teacher\n    i have been doing it for 10 years\n\nThe first turn is answered well (\"Teacher - good to know. What do you like most about it?\"). The\nsecond is not: the whole bot says \"Got it - you have been doing it for 10 years\", which is the\nline said back with a receipt on it. It answers nothing, asks nothing, and does not know that ten\nyears is a thing worth a word. The person is not filing a fact, they are telling me how long they\nhave stuck at something.\n\nSo this reads the length, finds the job it is the length of - in the line (\"i've been teaching\")\nor in the store, where the job was filed two turns ago - and says something about it. It is a\nnarrow reading on purpose:\n\n- the line has to be only the length statement: no question, no ask, nothing else in it. \"i have\n  been doing it for 10 years and i hate it\" is a line about the last half, and the store's own\n  readers keep it.\n- there has to be a job: one filed in this chat, or one the line names with a job word. \"i've been\n  waiting for 10 years\" is a length, and it is not a job, so it is left alone.\n- the length has to be years or months. \"i've been doing it for 10 minutes\" is not a stint.\n"))?;
@@ -90,7 +90,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/years_in.py:55-66 _a_job_word
 pub(super) fn _a_job_word(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["doing","low","match","stem"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 55, 66, "_a_job_word");
+rt.trace_call_code("bot/memory/years_in.py", 55, 66, "_a_job_word", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_180 = { let __callable_181 = { let __v_183 = { let __callable_184 = { let __v_186 = frame.load(rt, "doing")?; rt.getattr(&__v_186, "strip")? }; let mut __args_185 = CallArgs::default(); rt.call(&__callable_184, __args_185)? }; rt.getattr(&__v_183, "lower")? }; let mut __args_182 = CallArgs::default(); rt.call(&__callable_181, __args_182)? };
@@ -110,7 +110,7 @@ frame.store("match", __v_193.clone())?;
 let __v_198 = frame.load(rt, "match")?; if __v_198.is_truthy() {
 let __v_199 = { let __callable_200 = { let __v_202 = frame.load(rt, "match")?; rt.getattr(&__v_202, "group")? }; let mut __args_201 = CallArgs::default(); let __v_203 = Value::from("stem"); __args_201.positional.push(__v_203); rt.call(&__callable_200, __args_201)? };
 frame.store("stem", __v_199.clone())?;
-return Ok(__Flow::Return({ let __callable_204 = frame.load(rt, "any")?; let mut __args_205 = CallArgs::default(); let __v_206 = { let __comp_parent_207 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_207.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_207 = __comp_parent_207.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "THE_JOB_NOUNS")?) }) }, assign: { let __comp_parent_207 = __comp_parent_207.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_207 = __comp_parent_207.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_208 = frame.load(rt, "stem")?; if __v_208.is_truthy() { __v_208 = { let __callable_209 = { let __v_211 = frame.load(rt, "word")?; rt.getattr(&__v_211, "startswith")? }; let mut __args_210 = CallArgs::default(); let __v_212 = frame.load(rt, "stem")?; __args_210.positional.push(__v_212); rt.call(&__callable_209, __args_210)? }; } __v_208 })) }, Rc::new(|rt| { rt.trace_call("bot/memory/years_in.py", 65, 65, "_a_job_word.<locals>.<genexpr>"); Ok(()) }))? }; __args_205.positional.push(__v_206); rt.call(&__callable_204, __args_205)? }));
+return Ok(__Flow::Return({ let __callable_204 = frame.load(rt, "any")?; let mut __args_205 = CallArgs::default(); let __v_206 = { let __comp_parent_207 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_207.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_207 = __comp_parent_207.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "THE_JOB_NOUNS")?) }) }, assign: { let __comp_parent_207 = __comp_parent_207.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_207 = __comp_parent_207.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_208 = frame.load(rt, "stem")?; if __v_208.is_truthy() { __v_208 = { let __callable_209 = { let __v_211 = frame.load(rt, "word")?; rt.getattr(&__v_211, "startswith")? }; let mut __args_210 = CallArgs::default(); let __v_212 = frame.load(rt, "stem")?; __args_210.positional.push(__v_212); rt.call(&__callable_209, __args_210)? }; } __v_208 })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/years_in.py", 65, 65, "_a_job_word.<locals>.<genexpr>", 3); Ok(()) }))? }; __args_205.positional.push(__v_206); rt.call(&__callable_204, __args_205)? }));
 } else {
 
 }
@@ -126,7 +126,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/years_in.py:69-77 _alike
 pub(super) fn _alike(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["a","b","doing","job"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 69, 77, "_alike");
+rt.trace_call_code("bot/memory/years_in.py", 69, 77, "_alike", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_213 = { let __callable_214 = { let __v_216 = frame.load(rt, "re")?; rt.getattr(&__v_216, "sub")? }; let mut __args_215 = CallArgs::default(); let __v_217 = Value::from("[^a-z]"); __args_215.positional.push(__v_217); let __v_218 = Value::from(""); __args_215.positional.push(__v_218); let __v_219 = { let __callable_220 = { let __v_222 = frame.load(rt, "doing")?; rt.getattr(&__v_222, "lower")? }; let mut __args_221 = CallArgs::default(); rt.call(&__callable_220, __args_221)? }; __args_215.positional.push(__v_219); rt.call(&__callable_214, __args_215)? };
@@ -155,7 +155,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/years_in.py:80-93 _the_filed_job
 pub(super) fn _the_filed_job(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["fact","job","log","memory","user","value"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 80, 93, "_the_filed_job");
+rt.trace_call_code("bot/memory/years_in.py", 80, 93, "_the_filed_job", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_256 = { let __v_257 = { let __callable_258 = frame.load(rt, "isinstance")?; let mut __args_259 = CallArgs::default(); let __v_260 = frame.load(rt, "memory")?; __args_259.positional.push(__v_260); let __v_261 = frame.load(rt, "dict")?; __args_259.positional.push(__v_261); rt.call(&__callable_258, __args_259)? }; if __v_257.is_truthy() { { let __callable_262 = { let __v_264 = frame.load(rt, "memory")?; rt.getattr(&__v_264, "get")? }; let mut __args_263 = CallArgs::default(); let __v_265 = Value::from("user"); __args_263.positional.push(__v_265); rt.call(&__callable_262, __args_263)? } } else { Value::None } };
@@ -206,7 +206,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/years_in.py:96-125 _the_doing_and_the_length
 pub(super) fn _the_doing_and_the_length(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["count","doing","filed","filing","match","memory","named","said","text","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 96, 125, "_the_doing_and_the_length");
+rt.trace_call_code("bot/memory/years_in.py", 96, 125, "_the_doing_and_the_length", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_338 = { let __v_339 = { let __callable_340 = frame.load(rt, "isinstance")?; let mut __args_341 = CallArgs::default(); let __v_342 = frame.load(rt, "text")?; __args_341.positional.push(__v_342); let __v_343 = frame.load(rt, "str")?; __args_341.positional.push(__v_343); rt.call(&__callable_340, __args_341)? }; Value::Bool(!__v_339.is_truthy()) }; if __v_338.is_truthy() {
@@ -269,7 +269,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/years_in.py:135-142 _the_count
 pub(super) fn _the_count(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["low","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 135, 142, "_the_count");
+rt.trace_call_code("bot/memory/years_in.py", 135, 142, "_the_count", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_466 = { let __callable_467 = { let __v_469 = { let __callable_470 = { let __v_472 = { let __callable_473 = frame.load(rt, "str")?; let mut __args_474 = CallArgs::default(); let __v_475 = { let mut __v_476 = frame.load(rt, "word")?; if !__v_476.is_truthy() { __v_476 = Value::from(""); } __v_476 }; __args_474.positional.push(__v_475); rt.call(&__callable_473, __args_474)? }; rt.getattr(&__v_472, "strip")? }; let mut __args_471 = CallArgs::default(); rt.call(&__callable_470, __args_471)? }; rt.getattr(&__v_469, "lower")? }; let mut __args_468 = CallArgs::default(); rt.call(&__callable_467, __args_468)? };
@@ -296,7 +296,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/years_in.py:145-153 _the_figure_in_words
 pub(super) fn _the_figure_in_words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["count","ones","tens","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 145, 153, "_the_figure_in_words");
+rt.trace_call_code("bot/memory/years_in.py", 145, 153, "_the_figure_in_words", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_510 = { let __callable_511 = frame.load(rt, "int")?; let mut __args_512 = CallArgs::default(); let __v_513 = { let __callable_514 = frame.load(rt, "round")?; let mut __args_515 = CallArgs::default(); let __v_516 = frame.load(rt, "count")?; __args_515.positional.push(__v_516); rt.call(&__callable_514, __args_515)? }; __args_512.positional.push(__v_513); rt.call(&__callable_511, __args_512)? };
@@ -325,7 +325,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/years_in.py:156-158 TENS_WORD
 pub(super) fn TENS_WORD(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["tens"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 156, 158, "TENS_WORD");
+rt.trace_call_code("bot/memory/years_in.py", 156, 158, "TENS_WORD", 9);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __v_556 = { let mut __v_557 = Value::Int("0".parse().expect("integer literal")); let mut __matched_558 = true; if __matched_558 { let __v_559 = frame.load(rt, "tens")?; __matched_558 = pyrt::ops::compare(&__v_557, &__v_559)?.is_some_and(|o| !o.is_gt()); __v_557 = __v_559; } if __matched_558 { let __v_560 = { let __callable_561 = frame.load(rt, "len")?; let mut __args_562 = CallArgs::default(); let __v_563 = frame.load(rt, "_TENS")?; __args_562.positional.push(__v_563); rt.call(&__callable_561, __args_562)? }; __matched_558 = pyrt::ops::compare(&__v_557, &__v_560)?.is_some_and(|o| o.is_lt()); } Value::Bool(__matched_558) }; if __v_556.is_truthy() { { let __v_564 = frame.load(rt, "_TENS")?; let __v_565 = frame.load(rt, "tens")?; pyrt::ops::getitem(&__v_564, &__v_565)? } } else { { let __callable_566 = frame.load(rt, "str")?; let mut __args_567 = CallArgs::default(); let __v_568 = frame.load(rt, "tens")?; __args_567.positional.push(__v_568); rt.call(&__callable_566, __args_567)? } } }));
@@ -340,7 +340,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/years_in.py:161-163 _with_an
 pub(super) fn _with_an(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 161, 163, "_with_an");
+rt.trace_call_code("bot/memory/years_in.py", 161, 163, "_with_an", 10);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __v_569 = { let __v_571 = { let mut __v_572 = { let __callable_574 = { let __v_576 = { let __v_577 = frame.load(rt, "word")?; let __v_579 = Value::Int("1".parse().expect("integer literal")); let __index_580 = if matches!(__v_579, Value::None) { None } else { let n = __v_579.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_577, None, __index_580, 1_i64)? }; rt.getattr(&__v_576, "lower")? }; let mut __args_575 = CallArgs::default(); rt.call(&__callable_574, __args_575)? }; let mut __matched_573 = true; if __matched_573 { let __v_581 = Value::from("aeiou"); __matched_573 = pyrt::ops::contains(&__v_581, &__v_572)?; } Value::Bool(__matched_573) }; if __v_571.is_truthy() { Value::from("an ") } else { Value::from("a ") } }; let __v_570 = frame.load(rt, "word")?; pyrt::ops::add(&__v_569, &__v_570)? }));
@@ -355,7 +355,7 @@ mod __py_8 { use super::*;
 // py: bot/memory/years_in.py:166-205 _the_stint
 pub(super) fn _the_stint(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["count","figure","frames","job","memory","said","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 166, 205, "_the_stint");
+rt.trace_call_code("bot/memory/years_in.py", 166, 205, "_the_stint", 11);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_582 = { let mut __v_583 = { let mut __v_584 = frame.load(rt, "unit")?; let mut __matched_585 = true; if __matched_585 { let __v_586 = Value::from("months"); __matched_585 = __v_584.equals(&__v_586)?; } Value::Bool(__matched_585) }; if __v_583.is_truthy() { __v_583 = { let mut __v_587 = frame.load(rt, "count")?; let mut __matched_588 = true; if __matched_588 { let __v_589 = Value::Int("24".parse().expect("integer literal")); __matched_588 = pyrt::ops::compare(&__v_587, &__v_589)?.is_some_and(|o| o.is_lt()); } Value::Bool(__matched_588) }; } __v_583 }; if __v_582.is_truthy() {
@@ -401,7 +401,7 @@ mod __py_9 { use super::*;
 // py: bot/memory/years_in.py:208-210 _as_a
 pub(super) fn _as_a(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["job"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 208, 210, "_as_a");
+rt.trace_call_code("bot/memory/years_in.py", 208, 210, "_as_a", 12);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __v_696 = Value::from("as "); let __v_697 = { let __callable_698 = frame.load(rt, "_with_an")?; let mut __args_699 = CallArgs::default(); let __v_700 = frame.load(rt, "job")?; __args_699.positional.push(__v_700); rt.call(&__callable_698, __args_699)? }; pyrt::ops::add(&__v_696, &__v_697)? }));
@@ -416,7 +416,7 @@ mod __py_10 { use super::*;
 // py: bot/memory/years_in.py:213-218 the_years_in_the_doing
 pub(super) fn the_years_in_the_doing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["count","job","memory","text","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 213, 218, "the_years_in_the_doing");
+rt.trace_call_code("bot/memory/years_in.py", 213, 218, "the_years_in_the_doing", 13);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_701 = { let __callable_702 = frame.load(rt, "_the_doing_and_the_length")?; let mut __args_703 = CallArgs::default(); let __v_704 = frame.load(rt, "text")?; __args_703.positional.push(__v_704); let __v_705 = frame.load(rt, "memory")?; __args_703.positional.push(__v_705); rt.call(&__callable_702, __args_703)? };
@@ -438,7 +438,7 @@ mod __py_11 { use super::*;
 // py: bot/memory/years_in.py:235-251 _the_person_holding_a_job
 pub(super) fn _the_person_holding_a_job(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["fact","fits","job","log","memory","relation","value","who"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 235, 251, "_the_person_holding_a_job");
+rt.trace_call_code("bot/memory/years_in.py", 235, 251, "_the_person_holding_a_job", 14);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_720 = { let __callable_721 = { let __v_723 = { let __dict_724 = Value::dict(); let __v_725 = Value::from("she"); let __v_726 = { let __v_727 = frame.load(rt, "facts")?; rt.getattr(&__v_727, "SHE")? }; __dict_724.dict_set(__v_725, __v_726)?; let __v_728 = Value::from("he"); let __v_729 = { let __v_730 = frame.load(rt, "facts")?; rt.getattr(&__v_730, "HE")? }; __dict_724.dict_set(__v_728, __v_729)?; __dict_724 }; rt.getattr(&__v_723, "get")? }; let mut __args_722 = CallArgs::default(); let __v_731 = frame.load(rt, "who")?; __args_722.positional.push(__v_731); let __v_732 = { let __v_733 = { let __v_735 = frame.load(rt, "facts")?; rt.getattr(&__v_735, "SHE")? }; let __v_734 = { let __v_736 = frame.load(rt, "facts")?; rt.getattr(&__v_736, "HE")? }; pyrt::ops::bitwise_rt(rt, "|", &__v_733, &__v_734)? }; __args_722.positional.push(__v_732); rt.call(&__callable_721, __args_722)? };
@@ -493,7 +493,7 @@ mod __py_12 { use super::*;
 // py: bot/memory/years_in.py:254-283 _their_stint
 pub(super) fn _their_stint(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["count","figure","frames","job","low","memory","relation","said","span","theirs","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 254, 283, "_their_stint");
+rt.trace_call_code("bot/memory/years_in.py", 254, 283, "_their_stint", 15);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_823 = { let __v_824 = Value::from("Your "); let __v_825 = frame.load(rt, "relation")?; pyrt::ops::add(&__v_824, &__v_825)? };
@@ -536,7 +536,7 @@ mod __py_13 { use super::*;
 // py: bot/memory/years_in.py:286-309 the_years_in_their_doing
 pub(super) fn the_years_in_their_doing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["count","doing","job","match","memory","months","named","relation","said","text","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/years_in.py", 286, 309, "the_years_in_their_doing");
+rt.trace_call_code("bot/memory/years_in.py", 286, 309, "the_years_in_their_doing", 16);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_934 = { let mut __v_935 = { let __v_936 = { let __callable_937 = frame.load(rt, "isinstance")?; let mut __args_938 = CallArgs::default(); let __v_939 = frame.load(rt, "text")?; __args_938.positional.push(__v_939); let __v_940 = frame.load(rt, "str")?; __args_938.positional.push(__v_940); rt.call(&__callable_937, __args_938)? }; Value::Bool(!__v_936.is_truthy()) }; if !__v_935.is_truthy() { __v_935 = { let __v_941 = { let __callable_942 = frame.load(rt, "isinstance")?; let mut __args_943 = CallArgs::default(); let __v_944 = frame.load(rt, "memory")?; __args_943.positional.push(__v_944); let __v_945 = frame.load(rt, "dict")?; __args_943.positional.push(__v_945); rt.call(&__callable_942, __args_943)? }; Value::Bool(!__v_941.is_truthy()) }; } __v_935 }; if __v_934.is_truthy() {

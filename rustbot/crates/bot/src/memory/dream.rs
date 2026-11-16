@@ -19,7 +19,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("the_scene",60,80),
 ("a_death_came_first",214,216)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/dream.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/dream.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("The reading of a line that is about a dream, and the scene the dream was made of.\n\nA dream is a scene rather than an event, and the words of one are the words of the real thing:\n\n    i dreamt my dad died              the loss composer offered sympathy for a death\n    i keep dreaming my teeth fall out a child's milk teeth were explained\n    i had a dream my house was on fire  \"ugh, that's a lot to carry\"\n\nOne reading serves all three, because the only thing that separates a dream from the event is the\nframe around it - `dreamt`, `dreamed`, `i had a dream`, `i keep dreaming`. It is here rather than\nin one module because three readers need it: `bot/modules/dreams.py` answers the dream,\n`bot/compose/loss.py` has to stand down when the death is inside one, and the knowledge entries\nhave to stand down when the tooth or the fire is inside one.\n\nThe frame is read the way the sentence is built: the dream verb comes *before* the scene it is\nabout, and the speaker is in it. That is what keeps two other lines out:\n\n    my dad died and i dreamt about him      the death is real, and it came first\n    why do we dream / what do dreams mean   nobody in the line is dreaming\n"))?;
@@ -71,7 +71,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/dream.py:60-80 the_scene
 pub(super) fn the_scene(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["before","found","line","scene","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/dream.py", 60, 80, "the_scene");
+rt.trace_call_code("bot/memory/dream.py", 60, 80, "the_scene", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_121 = { let __callable_122 = { let __v_124 = Value::from(" "); rt.getattr(&__v_124, "join")? }; let mut __args_123 = CallArgs::default(); let __v_125 = { let __callable_126 = { let __v_128 = { let __callable_129 = { let __v_131 = { let __callable_132 = frame.load(rt, "str")?; let mut __args_133 = CallArgs::default(); let __v_134 = { let mut __v_135 = frame.load(rt, "line")?; if !__v_135.is_truthy() { __v_135 = Value::from(""); } __v_135 }; __args_133.positional.push(__v_134); rt.call(&__callable_132, __args_133)? }; rt.getattr(&__v_131, "lower")? }; let mut __args_130 = CallArgs::default(); rt.call(&__callable_129, __args_130)? }; rt.getattr(&__v_128, "split")? }; let mut __args_127 = CallArgs::default(); rt.call(&__callable_126, __args_127)? }; __args_123.positional.push(__v_125); rt.call(&__callable_122, __args_123)? };
@@ -129,7 +129,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/dream.py:83-85 named
 pub(super) fn named(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/dream.py", 83, 85, "named");
+rt.trace_call_code("bot/memory/dream.py", 83, 85, "named", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let mut __v_218 = { let __callable_220 = frame.load(rt, "the_scene")?; let mut __args_221 = CallArgs::default(); let __v_222 = frame.load(rt, "line")?; __args_221.positional.push(__v_222); rt.call(&__callable_220, __args_221)? }; let mut __matched_219 = true; if __matched_219 { let __v_223 = Value::None; __matched_219 = !__v_218.is_identical(&__v_223); } Value::Bool(__matched_219) }));
@@ -144,7 +144,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/dream.py:88-98 dreamed_before
 pub(super) fn dreamed_before(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","pattern","scene","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/dream.py", 88, 98, "dreamed_before");
+rt.trace_call_code("bot/memory/dream.py", 88, 98, "dreamed_before", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_224 = { let __callable_225 = { let __v_227 = Value::from(" "); rt.getattr(&__v_227, "join")? }; let mut __args_226 = CallArgs::default(); let __v_228 = { let __callable_229 = { let __v_231 = { let __callable_232 = { let __v_234 = { let __callable_235 = frame.load(rt, "str")?; let mut __args_236 = CallArgs::default(); let __v_237 = { let mut __v_238 = frame.load(rt, "line")?; if !__v_238.is_truthy() { __v_238 = Value::from(""); } __v_238 }; __args_236.positional.push(__v_237); rt.call(&__callable_235, __args_236)? }; rt.getattr(&__v_234, "lower")? }; let mut __args_233 = CallArgs::default(); rt.call(&__callable_232, __args_233)? }; rt.getattr(&__v_231, "split")? }; let mut __args_230 = CallArgs::default(); rt.call(&__callable_229, __args_230)? }; __args_226.positional.push(__v_228); rt.call(&__callable_225, __args_226)? };
@@ -168,7 +168,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/dream.py:165-179 told_in_the_turn_before
 pub(super) fn told_in_the_turn_before(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["last","memory","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/dream.py", 165, 179, "told_in_the_turn_before");
+rt.trace_call_code("bot/memory/dream.py", 165, 179, "told_in_the_turn_before", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_266 = { let __v_267 = { let __callable_268 = frame.load(rt, "isinstance")?; let mut __args_269 = CallArgs::default(); let __v_270 = frame.load(rt, "memory")?; __args_269.positional.push(__v_270); let __v_271 = frame.load(rt, "dict")?; __args_269.positional.push(__v_271); rt.call(&__callable_268, __args_269)? }; if __v_267.is_truthy() { { let __callable_272 = { let __v_274 = { let mut __v_275 = frame.load(rt, "memory")?; if !__v_275.is_truthy() { __v_275 = { let __dict_276 = Value::dict(); __dict_276 }; } __v_275 }; rt.getattr(&__v_274, "get")? }; let mut __args_273 = CallArgs::default(); let __v_277 = Value::from("turns"); __args_273.positional.push(__v_277); rt.call(&__callable_272, __args_273)? } } else { Value::None } };
@@ -197,7 +197,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/dream.py:182-189 told_as_a_dream
 pub(super) fn told_as_a_dream(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/dream.py", 182, 189, "told_as_a_dream");
+rt.trace_call_code("bot/memory/dream.py", 182, 189, "told_as_a_dream", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let mut __v_322 = { let __callable_323 = frame.load(rt, "named")?; let mut __args_324 = CallArgs::default(); let __v_325 = frame.load(rt, "line")?; __args_324.positional.push(__v_325); rt.call(&__callable_323, __args_324)? }; if __v_322.is_truthy() { __v_322 = { let __callable_326 = frame.load(rt, "a_dream_is_not_happening")?; let mut __args_327 = CallArgs::default(); let __v_328 = frame.load(rt, "line")?; __args_327.positional.push(__v_328); rt.call(&__callable_326, __args_327)? }; } __v_322 }));
@@ -212,7 +212,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/dream.py:192-203 a_dream_is_not_happening
 pub(super) fn a_dream_is_not_happening(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/dream.py", 192, 203, "a_dream_is_not_happening");
+rt.trace_call_code("bot/memory/dream.py", 192, 203, "a_dream_is_not_happening", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_329 = { let __v_330 = frame.load(rt, "line")?; Value::Bool(!__v_330.is_truthy()) }; if __v_329.is_truthy() {
@@ -249,7 +249,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/dream.py:214-216 a_death_came_first
 pub(super) fn a_death_came_first(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/dream.py", 214, 216, "a_death_came_first");
+rt.trace_call_code("bot/memory/dream.py", 214, 216, "a_death_came_first", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_372 = frame.load(rt, "bool")?; let mut __args_373 = CallArgs::default(); let __v_374 = { let __callable_375 = { let __v_377 = frame.load(rt, "A_DEATH_BEFORE_THE_DREAM")?; rt.getattr(&__v_377, "search")? }; let mut __args_376 = CallArgs::default(); let __v_378 = { let __callable_379 = { let __v_381 = Value::from(" "); rt.getattr(&__v_381, "join")? }; let mut __args_380 = CallArgs::default(); let __v_382 = { let __callable_383 = { let __v_385 = { let __callable_386 = { let __v_388 = { let __callable_389 = frame.load(rt, "str")?; let mut __args_390 = CallArgs::default(); let __v_391 = { let mut __v_392 = frame.load(rt, "line")?; if !__v_392.is_truthy() { __v_392 = Value::from(""); } __v_392 }; __args_390.positional.push(__v_391); rt.call(&__callable_389, __args_390)? }; rt.getattr(&__v_388, "lower")? }; let mut __args_387 = CallArgs::default(); rt.call(&__callable_386, __args_387)? }; rt.getattr(&__v_385, "split")? }; let mut __args_384 = CallArgs::default(); rt.call(&__callable_383, __args_384)? }; __args_380.positional.push(__v_382); rt.call(&__callable_379, __args_380)? }; __args_376.positional.push(__v_378); rt.call(&__callable_375, __args_376)? }; __args_373.positional.push(__v_374); rt.call(&__callable_372, __args_373)? }));

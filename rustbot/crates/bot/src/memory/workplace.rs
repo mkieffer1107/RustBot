@@ -19,7 +19,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_the_same_line",94,98),
 ("the_place_the_person_works",178,198)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/workplace.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/workplace.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("Where they work, said as a fact about them and not as a how-to for the place.\n\nTwo lines from one chat, both about the person typing:\n\n    im a teacher\n    i work in a primary school\n      before: \"Apply through your council's school admissions service, not to the school: the\n               deadline is 31 October for a secondary place and 15 January ...\"\n      after:  \"A teacher in a primary school - how long have you been there?\"\n\n    im a teacher\n    i work from home\n      before: \"Ask in person after class with one specific thing ...\"\n      after:  \"A teacher working from home - does it leave you much time for yourself?\"\n\nThe store files the place (`user[\"workplace\"]`), so the fact is not lost; what was lost was the\nreply. A line that says where the work is answers in the frame of the job the chat already holds.\n\nIt reads only a line that is about the person's own work and nothing else. It passes on a\nquestion (\"how do i get a job in a school\"), on somebody else's work (\"my sister works at the\nhospital\"), on the conditions rather than the place (\"i work long hours\", \"i work nights\"), on a\njob said as the work (\"i work as a nurse\" - the store answers that one), and on a line that files\nanother fact as well, because then the thing said back is two things.\n"))?;
@@ -65,7 +65,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/workplace.py:94-98 _the_same_line
 pub(super) fn _the_same_line(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["a","b","clean"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/workplace.py", 94, 98, "_the_same_line");
+rt.trace_call_code("bot/memory/workplace.py", 94, 98, "_the_same_line", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 frame.store("clean", { let __signature_106 = Signature { name: "clean".into(), positional: vec!["said".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_108 = Value::dict(); __attrs_108.dict_set(Value::from("__doc__"), Value::None)?; __attrs_108.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_109 = Value::dict(); __attrs_108.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_105 = Frame::module(frame.globals.clone()); let mut __function_107 = NativeFunction::qualified_with_origin("clean".into(), "_the_same_line.<locals>.clean".into(), "bot.memory.workplace".into(), __attrs_108, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/workplace.py", first: 96, last: 97, qualname: "_the_same_line.<locals>.clean" }, closure: __closure_105.clone(), freevars: vec![] }, move |rt, args| super::__py_1::clean(rt, __closure_105.clone(), &__signature_106, args)); __function_107 })?;
@@ -81,7 +81,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/workplace.py:96-97 _the_same_line.<locals>.clean
 pub(super) fn clean(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["said"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/workplace.py", 96, 97, "_the_same_line.<locals>.clean");
+rt.trace_call_code("bot/memory/workplace.py", 96, 97, "_the_same_line.<locals>.clean", 3);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __callable_119 = { let __v_121 = { let __callable_122 = { let __v_124 = frame.load(rt, "re")?; rt.getattr(&__v_124, "sub")? }; let mut __args_123 = CallArgs::default(); let __v_125 = Value::from("[^a-z0-9 ]+"); __args_123.positional.push(__v_125); let __v_126 = Value::from(" "); __args_123.positional.push(__v_126); let __v_127 = { let __callable_128 = { let __v_130 = { let __callable_131 = frame.load(rt, "str")?; let mut __args_132 = CallArgs::default(); let __v_133 = { let mut __v_134 = frame.load(rt, "said")?; if !__v_134.is_truthy() { __v_134 = Value::from(""); } __v_134 }; __args_132.positional.push(__v_133); rt.call(&__callable_131, __args_132)? }; rt.getattr(&__v_130, "lower")? }; let mut __args_129 = CallArgs::default(); rt.call(&__callable_128, __args_129)? }; __args_123.positional.push(__v_127); rt.call(&__callable_122, __args_123)? }; rt.getattr(&__v_121, "split")? }; let mut __args_120 = CallArgs::default(); rt.call(&__callable_119, __args_120)? }));
 Ok(__Flow::Next)
@@ -95,7 +95,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/workplace.py:101-123 _the_job_the_chat_holds
 pub(super) fn _the_job_the_chat_holds(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["entries","entry","job","memory","text","user"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/workplace.py", 101, 123, "_the_job_the_chat_holds");
+rt.trace_call_code("bot/memory/workplace.py", 101, 123, "_the_job_the_chat_holds", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_135 = { let __v_136 = { let __callable_137 = frame.load(rt, "isinstance")?; let mut __args_138 = CallArgs::default(); let __v_139 = frame.load(rt, "memory")?; __args_138.positional.push(__v_139); let __v_140 = frame.load(rt, "dict")?; __args_138.positional.push(__v_140); rt.call(&__callable_137, __args_138)? }; if __v_136.is_truthy() { { let __callable_141 = { let __v_143 = { let mut __v_144 = frame.load(rt, "memory")?; if !__v_144.is_truthy() { __v_144 = { let __dict_145 = Value::dict(); __dict_145 }; } __v_144 }; rt.getattr(&__v_143, "get")? }; let mut __args_142 = CallArgs::default(); let __v_146 = Value::from("facts_log"); __args_142.positional.push(__v_146); rt.call(&__callable_141, __args_142)? } } else { Value::None } };
@@ -152,7 +152,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/workplace.py:126-132 _with_an_article
 pub(super) fn _with_an_article(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["article","job","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/workplace.py", 126, 132, "_with_an_article");
+rt.trace_call_code("bot/memory/workplace.py", 126, 132, "_with_an_article", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_240 = { let __callable_241 = { let __v_243 = { let __callable_244 = frame.load(rt, "str")?; let mut __args_245 = CallArgs::default(); let __v_246 = { let mut __v_247 = frame.load(rt, "job")?; if !__v_247.is_truthy() { __v_247 = Value::from(""); } __v_247 }; __args_245.positional.push(__v_246); rt.call(&__callable_244, __args_245)? }; rt.getattr(&__v_243, "strip")? }; let mut __args_242 = CallArgs::default(); rt.call(&__callable_241, __args_242)? };
@@ -176,7 +176,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/workplace.py:135-145 _a_clean_place
 pub(super) fn _a_clean_place(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["place","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/workplace.py", 135, 145, "_a_clean_place");
+rt.trace_call_code("bot/memory/workplace.py", 135, 145, "_a_clean_place", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_266 = { let __v_267 = { let __callable_269 = { let __v_271 = frame.load(rt, "re")?; rt.getattr(&__v_271, "split")? }; let mut __args_270 = CallArgs::default(); let __v_272 = Value::from("\\b(?:and|but|because|so|when|while|although|though|which|where|if)\\b"); __args_270.positional.push(__v_272); let __v_273 = { let __callable_274 = frame.load(rt, "str")?; let mut __args_275 = CallArgs::default(); let __v_276 = { let mut __v_277 = frame.load(rt, "place")?; if !__v_277.is_truthy() { __v_277 = Value::from(""); } __v_277 }; __args_275.positional.push(__v_276); rt.call(&__callable_274, __args_275)? }; __args_270.positional.push(__v_273); let __v_278 = Value::Int("1".parse().expect("integer literal")); __args_270.keyword("maxsplit".into(), __v_278)?; rt.call(&__callable_269, __args_270)? }; let __v_268 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_267, &__v_268)? };
@@ -205,7 +205,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/workplace.py:148-175 _the_place_the_line_said
 pub(super) fn _the_place_the_line_said(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clean","found","place","rest","said","tail","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/workplace.py", 148, 175, "_the_place_the_line_said");
+rt.trace_call_code("bot/memory/workplace.py", 148, 175, "_the_place_the_line_said", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_321 = { let __callable_322 = { let __v_324 = { let __callable_325 = frame.load(rt, "str")?; let mut __args_326 = CallArgs::default(); let __v_327 = { let mut __v_328 = frame.load(rt, "text")?; if !__v_328.is_truthy() { __v_328 = Value::from(""); } __v_328 }; __args_326.positional.push(__v_327); rt.call(&__callable_325, __args_326)? }; rt.getattr(&__v_324, "strip")? }; let mut __args_323 = CallArgs::default(); rt.call(&__callable_322, __args_323)? };
@@ -267,7 +267,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/workplace.py:178-198 the_place_the_person_works
 pub(super) fn the_place_the_person_works(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","home","job","memory","place","prep","text","where"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/workplace.py", 178, 198, "the_place_the_person_works");
+rt.trace_call_code("bot/memory/workplace.py", 178, 198, "the_place_the_person_works", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_439 = { let __callable_440 = frame.load(rt, "_the_place_the_line_said")?; let mut __args_441 = CallArgs::default(); let __v_442 = frame.load(rt, "text")?; __args_441.positional.push(__v_442); rt.call(&__callable_440, __args_441)? };

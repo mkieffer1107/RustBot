@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import ast
 from dataclasses import dataclass
+import dis
 import json
 import types
 
@@ -85,12 +86,30 @@ def literal_data(node: ast.expr, depth: int = 0):
     raise NotLiteral
 
 
+def folded_set(node: ast.Set) -> bool:
+    """Recognize CPython's constant frozenset update without executing code.
+
+    The optimizer also folds tuples and arithmetic inside a set, so matching
+    its emitted instruction shape avoids an incomplete constant allowlist.
+    No constant's hash-dependent iteration order is copied into the output.
+    """
+    if len(node.elts) < 3:
+        return False
+    instructions = list(dis.get_instructions(compile(ast.Expression(node), "<set literal>", "eval")))
+    instructions = [item for item in instructions if item.opname not in ("RESUME", "RETURN_VALUE")]
+    return (len(instructions) == 3
+            and instructions[0].opname == "BUILD_SET" and instructions[0].arg == 0
+            and instructions[1].opname == "LOAD_CONST" and type(instructions[1].argval) is frozenset
+            and instructions[2].opname == "SET_UPDATE" and instructions[2].arg == 1)
+
+
 class Compiler:
     def __init__(self, source: str, module: str, filename: str):
         self.source, self.module, self.filename = source, module, filename
         self.tree = ast.parse(source, filename)
         self.code = compile(source, filename, "exec")
         self.codes = code_spans(self.code)
+        self.code_ids = {id(code): index + 1 for index, code in enumerate([self.code, *self.codes])}
         self.functions: dict[int, dict] = {}
         self.function_nodes: list[ast.FunctionDef | ast.Lambda] = []
         self.classes = {}
@@ -128,7 +147,7 @@ class Compiler:
             if rust_name in {"self", "Self", "super", "crate"}: self.fail(node, "function identifier cannot be represented as a Rust identifier")
             if rust_name in RUST_KEYWORDS: rust_name = "r#" + rust_name
             info = {"id": index, "name": name, "rust_name": rust_name,
-                    "qualname": qualname, "code": code,
+                    "qualname": qualname, "code": code, "code_id": self.code_ids[id(code)],
                     "first": code.co_firstlineno,
                     "last": max((line for _, _, line in code.co_lines() if line),
                                 default=code.co_firstlineno)}
@@ -156,7 +175,7 @@ class Compiler:
             used = {id(info["code"]) for info in self.comprehensions.values()}
             code = next((c for c in self.codes if c.co_qualname == qualname and c.co_firstlineno == node.lineno and id(c) not in used), None)
             if code is None: self.fail(node, "cannot identify generator expression code span")
-            self.comprehensions[id(node)] = {"code": code, "qualname": qualname,
+            self.comprehensions[id(node)] = {"code": code, "qualname": qualname, "code_id": self.code_ids[id(code)],
                                             "first": code.co_firstlineno,
                                             "last": max((line for _, _, line in code.co_lines() if line), default=code.co_firstlineno)}
             self._discover(node.generators[0].iter, parent, in_function)
@@ -274,6 +293,11 @@ class Compiler:
                 else:
                     lines += [f"let {value} = {self.expr(item)};", f"{result}.insert({value})?;" if is_set else f"{result}.push({value});"]
             constructor = "Set" if is_set else "tuple" if isinstance(node, ast.Tuple) else "list"
+            if is_set and folded_set(node):
+                # CPython builds the constant's table in source order, then
+                # bulk-merges it into a fresh set. The merge can resize the
+                # destination and change iteration order versus direct inserts.
+                lines.append(f"let {result} = {result}.python_copy()?;")
             return "{ " + " ".join(lines) + f" Value::{constructor}({result}) }}"
         if isinstance(node, ast.Dict):
             result = self.temp("dict")
@@ -353,7 +377,7 @@ class Compiler:
         trace = ""
         if isinstance(node, ast.GeneratorExp):
             info = self.comprehensions[id(node)]
-            trace = f", Rc::new(|rt| {{ rt.trace_call({rust_string(self.filename)}, {info['first']}, {info['last']}, {rust_string(info['qualname'])}); Ok(()) }})"
+            trace = f", Rc::new(|rt| {{ rt.trace_call_code({rust_string(self.filename)}, {info['first']}, {info['last']}, {rust_string(info['qualname'])}, {info['code_id']}); Ok(()) }})"
         result = f"pyrt::comprehension::{name}(rt, {parent}.clone(), &[{','.join(rust_string(n) for n in sorted(set(declared)))}], vec![{','.join(levels)}], {emit_callback}{trace})?"
         if isinstance(node, ast.ListComp): result = f"Value::list({result})"
         return f"{{ let {parent} = {self.frame}.clone(); {result} }}"
@@ -659,7 +683,7 @@ class Compiler:
             return header + emit_generator(self, node, info) + "\n}\n}\n"
         body = self.body(node.body) if isinstance(node, ast.FunctionDef) else f"return Ok(__Flow::Return({self.expr(node.body)}));"
         return (header +
-                f"rt.trace_call({rust_string(self.filename)}, {info['first']}, {info['last']}, {rust_string(info['qualname'])});\n"
+                f"rt.trace_call_code({rust_string(self.filename)}, {info['first']}, {info['last']}, {rust_string(info['qualname'])}, {info['code_id']});\n"
                 f"let flow = (|| -> PyResult<__Flow> {{\n{body}\nOk(__Flow::Next)\n}})()?;\n"
                 f"match flow {{ __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error(\"invalid loop control outside a loop\")) }}\n"
                 "}\n}\n")
@@ -674,7 +698,7 @@ class Compiler:
                                   for info in self.functions.values()],
                     "initializer": "INIT",
                     "imports": sorted({n.name for node in ast.walk(self.tree) if isinstance(node, ast.Import) for n in node.names}),
-                    "trace_spans": [{"qualname": c.co_qualname, "first": c.co_firstlineno,
+                    "trace_spans": [{"qualname": c.co_qualname, "first": c.co_firstlineno, "code_id": self.code_ids[id(c)],
                                      "last": max((line for _, _, line in c.co_lines() if line), default=c.co_firstlineno)} for c in self.codes]}
         spans = ',\n'.join(f"({rust_string(i['qualname'])},{i['first']},{i['last']})" for i in metadata['trace_spans'])
         rust = (f"// @generated by py2rs from {self.filename}\n"
@@ -686,7 +710,7 @@ class Compiler:
                 "use pyrt::flow::Flow as __Flow;\n"
                 f"pub const PY_MODULE: &str = {rust_string(self.module)};\npub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[{spans}];\n"
                 "#[allow(clippy::all)]\npub const INIT: pyrt::runtime::ModuleInit = |rt, module| {\n"
-                f"rt.trace_call({rust_string(self.filename)}, 0, 0, \"<module>\");\n"
+                f"rt.trace_call_code({rust_string(self.filename)}, 0, 0, \"<module>\", 1);\n"
                 "let globals = rt.getattr(module, \"__dict__\")?;\nlet frame = Frame::module(globals);\n"
                 f"frame.store(\"__doc__\", {self.value(ast.get_docstring(self.tree, clean=False), self.tree)})?;\n"
                 f"let flow = (|| -> PyResult<__Flow> {{\n{module_body}\nOk(__Flow::Next)\n}})()?;\n"

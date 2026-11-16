@@ -19,7 +19,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_offered_choices",79,81),
 ("follow_up",177,190)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/prefer.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/prefer.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A taste named on the next line is a request for more of it, in the thing on the table.\n\n    what should i watch tonight / i like sci fi      -> the science fiction films\n    any good books / i like crime                    -> the crime books\n\nBoth used to be acknowledged and dropped (\"Got it - you like sci fi.\"), because \"i like sci fi\" on\nits own names no medium: the knowledge base knows science fiction films and science fiction books,\nand nothing in the line says which. The medium is in the answer just given, so the line carries it\nalong and the entry that answered the first turn answers this one too.\n\nThree things keep it from firing where it should not:\n\n  * the answer before it has to have offered choices (two named things to pick between) - \"any\n    good books for my son\" is answered with how to read with him, and a taste said next to that is\n    not asking for a list of books;\n  * a taste with nothing on the table is a fact about the person (\"i like crime\" on its own), and\n    stays one;\n  * a taste said twice running is served once (the second one would hand the same list back);\n  * the answer it reaches has to say something new, which is checked where the answer is made\n    (`bot/modules/answers.py`, `_same_as_the_last_answer`), because an entry with no picks for\n    that taste hands the same list back and the person hears what they have just heard.\n"))?;
@@ -67,7 +67,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/prefer.py:79-81 _offered_choices
 pub(super) fn _offered_choices(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["reply"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/prefer.py", 79, 81, "_offered_choices");
+rt.trace_call_code("bot/memory/prefer.py", 79, 81, "_offered_choices", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let mut __v_130 = { let __callable_132 = frame.load(rt, "len")?; let mut __args_133 = CallArgs::default(); let __v_134 = { let __callable_135 = { let __v_137 = frame.load(rt, "_TITLE")?; rt.getattr(&__v_137, "findall")? }; let mut __args_136 = CallArgs::default(); let __v_138 = { let __callable_139 = frame.load(rt, "str")?; let mut __args_140 = CallArgs::default(); let __v_141 = { let mut __v_142 = frame.load(rt, "reply")?; if !__v_142.is_truthy() { __v_142 = Value::from(""); } __v_142 }; __args_140.positional.push(__v_141); rt.call(&__callable_139, __args_140)? }; __args_136.positional.push(__v_138); rt.call(&__callable_135, __args_136)? }; __args_133.positional.push(__v_134); rt.call(&__callable_132, __args_133)? }; let mut __matched_131 = true; if __matched_131 { let __v_143 = Value::Int("2".parse().expect("integer literal")); __matched_131 = pyrt::ops::compare(&__v_130, &__v_143)?.is_some_and(|o| !o.is_lt()); } Value::Bool(__matched_131) }));
@@ -82,7 +82,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/prefer.py:84-94 _said_the_medium
 pub(super) fn _said_the_medium(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","best","found","low","medium","pattern","said"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/prefer.py", 84, 94, "_said_the_medium");
+rt.trace_call_code("bot/memory/prefer.py", 84, 94, "_said_the_medium", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_144 = { let __callable_145 = { let __v_147 = Value::from(" "); rt.getattr(&__v_147, "join")? }; let mut __args_146 = CallArgs::default(); let __v_148 = { let __callable_149 = { let __v_151 = { let __callable_152 = { let __v_154 = { let __callable_155 = frame.load(rt, "str")?; let mut __args_156 = CallArgs::default(); let __v_157 = { let mut __v_158 = frame.load(rt, "said")?; if !__v_158.is_truthy() { __v_158 = Value::from(""); } __v_158 }; __args_156.positional.push(__v_157); rt.call(&__callable_155, __args_156)? }; rt.getattr(&__v_154, "lower")? }; let mut __args_153 = CallArgs::default(); rt.call(&__callable_152, __args_153)? }; rt.getattr(&__v_151, "split")? }; let mut __args_150 = CallArgs::default(); rt.call(&__callable_149, __args_150)? }; __args_146.positional.push(__v_148); rt.call(&__callable_145, __args_146)? };
@@ -124,7 +124,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/prefer.py:97-102 _last_turn
 pub(super) fn _last_turn(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/prefer.py", 97, 102, "_last_turn");
+rt.trace_call_code("bot/memory/prefer.py", 97, 102, "_last_turn", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_197 = { let __comp_parent_198 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_198.clone(), &["t"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_198 = __comp_parent_198.clone(); Rc::new(move |rt, frame| {  Ok({ let mut __v_199 = { let __callable_200 = { let __v_202 = { let mut __v_203 = frame.load(rt, "memory")?; if !__v_203.is_truthy() { __v_203 = { let __dict_204 = Value::dict(); __dict_204 }; } __v_203 }; rt.getattr(&__v_202, "get")? }; let mut __args_201 = CallArgs::default(); let __v_205 = Value::from("turns"); __args_201.positional.push(__v_205); rt.call(&__callable_200, __args_201)? }; if !__v_199.is_truthy() { __v_199 = { let mut __items_206 = Vec::new(); Value::list(__items_206) }; } __v_199 }) }) }, assign: { let __comp_parent_198 = __comp_parent_198.clone(); Rc::new(move |rt, frame, value| { frame.store("t", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_198 = __comp_parent_198.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_207 = frame.load(rt, "isinstance")?; let mut __args_208 = CallArgs::default(); let __v_209 = frame.load(rt, "t")?; __args_208.positional.push(__v_209); let __v_210 = frame.load(rt, "dict")?; __args_208.positional.push(__v_210); rt.call(&__callable_207, __args_208)? }).is_truthy()) }) }] }], { let __comp_parent_198 = __comp_parent_198.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "t")?)) })?) };
@@ -146,7 +146,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/prefer.py:105-132 _taste
 pub(super) fn _taste(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","said","taste","text","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/prefer.py", 105, 132, "_taste");
+rt.trace_call_code("bot/memory/prefer.py", 105, 132, "_taste", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_241 = { let __callable_242 = { let __v_244 = { let __callable_245 = { let __v_247 = Value::from(" "); rt.getattr(&__v_247, "join")? }; let mut __args_246 = CallArgs::default(); let __v_248 = { let __callable_249 = { let __v_251 = { let __callable_252 = { let __v_254 = { let __callable_255 = frame.load(rt, "str")?; let mut __args_256 = CallArgs::default(); let __v_257 = { let mut __v_258 = frame.load(rt, "text")?; if !__v_258.is_truthy() { __v_258 = Value::from(""); } __v_258 }; __args_256.positional.push(__v_257); rt.call(&__callable_255, __args_256)? }; rt.getattr(&__v_254, "lower")? }; let mut __args_253 = CallArgs::default(); rt.call(&__callable_252, __args_253)? }; rt.getattr(&__v_251, "split")? }; let mut __args_250 = CallArgs::default(); rt.call(&__callable_249, __args_250)? }; __args_246.positional.push(__v_248); rt.call(&__callable_245, __args_246)? }; rt.getattr(&__v_244, "strip")? }; let mut __args_243 = CallArgs::default(); let __v_259 = Value::from(" .,!?"); __args_243.positional.push(__v_259); rt.call(&__callable_242, __args_243)? };
@@ -238,7 +238,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/prefer.py:148-159 about_the_medium
 pub(super) fn about_the_medium(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","answered","asked","medium","memory","pattern","said"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/prefer.py", 148, 159, "about_the_medium");
+rt.trace_call_code("bot/memory/prefer.py", 148, 159, "about_the_medium", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_358 = { let __callable_359 = frame.load(rt, "_last_turn")?; let mut __args_360 = CallArgs::default(); let __v_361 = frame.load(rt, "memory")?; __args_360.positional.push(__v_361); rt.call(&__callable_359, __args_360)? };
@@ -266,7 +266,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/prefer.py:162-174 served_already
 pub(super) fn served_already(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answered","asked","memory","taste","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/prefer.py", 162, 174, "served_already");
+rt.trace_call_code("bot/memory/prefer.py", 162, 174, "served_already", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_398 = { let __callable_399 = frame.load(rt, "_taste")?; let mut __args_400 = CallArgs::default(); let __v_401 = frame.load(rt, "text")?; __args_400.positional.push(__v_401); rt.call(&__callable_399, __args_400)? };
@@ -290,7 +290,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/prefer.py:177-190 follow_up
 pub(super) fn follow_up(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answered","asked","medium","memory","taste","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/prefer.py", 177, 190, "follow_up");
+rt.trace_call_code("bot/memory/prefer.py", 177, 190, "follow_up", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_419 = { let __callable_420 = frame.load(rt, "_taste")?; let mut __args_421 = CallArgs::default(); let __v_422 = frame.load(rt, "text")?; __args_421.positional.push(__v_422); rt.call(&__callable_420, __args_421)? };

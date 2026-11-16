@@ -15,7 +15,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("the_deadline",66,76),
 ("follow_up",90,103)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/deadline.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/deadline.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A line that is only a deadline is a deadline on the plan the chat is already on.\n\n\"we want to save 3000 pounds\" / \"by december\" is a person adding the date to a goal they have just\ngiven, and the bot answered \"I'm listening - say more if it helps.\" Nothing in \"by december\" can\nbe looked up on its own, so the lookup finds nothing, and every reader that wants a thing named\npasses it by. The plan being paced is the one said a turn ago, and the date is the only new fact\nin the line.\n\nSo the line is read as the plan with the date on it (\"we want to save 3000 pounds by december\"),\nand the entry that answered the goal answers that: the saving entry works the per-month figure out\nfrom the date, where the goal alone gets the general advice. The words of the plan are never\ninvented - they are the turn before this one, unchanged - and the module passes on everything\nelse:\n\n* a deadline needs a plan in front of it. \"by december\" as the first thing said is a fragment,\n  and a conversation that opens with it has nothing to pace yet.\n* the plan has to be a plan: the line before has to ask for nothing and carry a goal in it (\"we\n  want to save 3000 pounds\", \"i need to get the kitchen done\"). A date after a question is a\n  date for that question's answer, and after a plain statement of fact (\"my exam is in june\") it\n  is not a deadline at all.\n* the line has to name nothing but a date. \"by december i want to be in a flat\" names what they\n  want and keeps its own turn.\n"))?;
@@ -46,7 +46,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/deadline.py:66-76 the_deadline
 pub(super) fn the_deadline(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","text","when"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/deadline.py", 66, 76, "the_deadline");
+rt.trace_call_code("bot/memory/deadline.py", 66, 76, "the_deadline", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_47 = { let __v_48 = { let __callable_49 = frame.load(rt, "isinstance")?; let mut __args_50 = CallArgs::default(); let __v_51 = frame.load(rt, "text")?; __args_50.positional.push(__v_51); let __v_52 = frame.load(rt, "str")?; __args_50.positional.push(__v_52); rt.call(&__callable_49, __args_50)? }; Value::Bool(!__v_48.is_truthy()) }; if __v_47.is_truthy() {
@@ -80,7 +80,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/deadline.py:79-87 _a_plan
 pub(super) fn _a_plan(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["said","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/deadline.py", 79, 87, "_a_plan");
+rt.trace_call_code("bot/memory/deadline.py", 79, 87, "_a_plan", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_83 = { let __callable_84 = { let __v_86 = Value::from(" "); rt.getattr(&__v_86, "join")? }; let mut __args_85 = CallArgs::default(); let __v_87 = { let __callable_88 = { let __v_90 = { let __callable_91 = { let __v_93 = { let __callable_94 = frame.load(rt, "str")?; let mut __args_95 = CallArgs::default(); let __v_96 = { let mut __v_97 = frame.load(rt, "said")?; if !__v_97.is_truthy() { __v_97 = Value::from(""); } __v_97 }; __args_95.positional.push(__v_96); rt.call(&__callable_94, __args_95)? }; rt.getattr(&__v_93, "lower")? }; let mut __args_92 = CallArgs::default(); rt.call(&__callable_91, __args_92)? }; rt.getattr(&__v_90, "split")? }; let mut __args_89 = CallArgs::default(); rt.call(&__callable_88, __args_89)? }; __args_85.positional.push(__v_87); rt.call(&__callable_84, __args_85)? };
@@ -109,7 +109,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/deadline.py:90-103 follow_up
 pub(super) fn follow_up(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","plan","said","text","turn","turns","when"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/deadline.py", 90, 103, "follow_up");
+rt.trace_call_code("bot/memory/deadline.py", 90, 103, "follow_up", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_123 = { let __callable_124 = frame.load(rt, "the_deadline")?; let mut __args_125 = CallArgs::default(); let __v_126 = frame.load(rt, "text")?; __args_125.positional.push(__v_126); rt.call(&__callable_124, __args_125)? };

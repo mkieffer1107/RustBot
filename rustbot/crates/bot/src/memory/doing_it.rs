@@ -19,7 +19,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_is_doing",51,69),
 ("the_ask_behind_a_moan",156,175)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/doing_it.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/doing_it.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("An ask about how long to do a thing, written out with the thing the chat is about.\n\n    i started learning guitar last month\n    my fingers hurt\n    how long should i practise          -> \"About six weeks for most bones - six for a wrist or\n                                            collarbone, six to eight for an arm ...\"\n\nThe last line is a question about the practice, and the chat is on the guitar: an answer about a\nfracture is the wrong answer to a person who has said nothing about a break. The line was read\nagainst the line before it, whose words are a complaint about fingers, and the entry on bone\nhealing keys both \"fingers\" and \"how long\", so it took the turn.\n\nThe doing word in the line (\"practise\") is what the ask is about, and the thing it is done with\n(\"guitar\") is what the chat has been doing. Written out with that thing - \"how long should i\npractise guitar?\" - the entry filed for the instrument answers seven words, which is the answer\nthe person wanted. The module only offers the rewrites: the caller looks each one up and takes the\nfirst that answers with a length, so a line whose thing reaches nothing keeps the turn it had.\n"))?;
@@ -59,7 +59,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/doing_it.py:51-69 _is_doing
 pub(super) fn _is_doing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["doing","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/doing_it.py", 51, 69, "_is_doing");
+rt.trace_call_code("bot/memory/doing_it.py", 51, 69, "_is_doing", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_86 = { let mut __v_87 = { let mut __v_88 = frame.load(rt, "word")?; let mut __matched_89 = true; if __matched_89 { let __v_90 = frame.load(rt, "NOT_A_THING_DONE")?; __matched_89 = pyrt::ops::contains(&__v_90, &__v_88)?; } Value::Bool(__matched_89) }; if !__v_87.is_truthy() { __v_87 = { let mut __v_91 = { let __callable_93 = { let __v_95 = frame.load(rt, "topics")?; rt.getattr(&__v_95, "stem")? }; let mut __args_94 = CallArgs::default(); let __v_96 = frame.load(rt, "word")?; __args_94.positional.push(__v_96); rt.call(&__callable_93, __args_94)? }; let mut __matched_92 = true; if __matched_92 { let __v_97 = frame.load(rt, "NOT_A_THING_DONE")?; __matched_92 = pyrt::ops::contains(&__v_97, &__v_91)?; } Value::Bool(__matched_92) }; } __v_87 }; if __v_86.is_truthy() {
@@ -109,7 +109,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/doing_it.py:72-77 doing_word
 pub(super) fn doing_word(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/doing_it.py", 72, 77, "doing_word");
+rt.trace_call_code("bot/memory/doing_it.py", 72, 77, "doing_word", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_146 = false; let __v_148 = { let __callable_151 = { let __v_153 = frame.load(rt, "topics")?; rt.getattr(&__v_153, "words")? }; let mut __args_152 = CallArgs::default(); let __v_154 = frame.load(rt, "text")?; __args_152.positional.push(__v_154); rt.call(&__callable_151, __args_152)? }; let __iter_149 = rt.iter(&__v_148)?;
@@ -139,7 +139,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/doing_it.py:80-85 asks_about_doing
 pub(super) fn asks_about_doing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/doing_it.py", 80, 85, "asks_about_doing");
+rt.trace_call_code("bot/memory/doing_it.py", 80, 85, "asks_about_doing", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_159 = { let __callable_160 = frame.load(rt, "str")?; let mut __args_161 = CallArgs::default(); let __v_162 = { let mut __v_163 = frame.load(rt, "text")?; if !__v_163.is_truthy() { __v_163 = Value::from(""); } __v_163 }; __args_161.positional.push(__v_162); rt.call(&__callable_160, __args_161)? };
@@ -161,7 +161,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/doing_it.py:88-110 _the_things
 pub(super) fn _the_things(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","out","record","text","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/doing_it.py", 88, 110, "_the_things");
+rt.trace_call_code("bot/memory/doing_it.py", 88, 110, "_the_things", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_176 = { let mut __items_177 = Vec::new(); Value::list(__items_177) };
@@ -220,7 +220,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/doing_it.py:113-132 written_out
 pub(super) fn written_out(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","out","said","text","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/doing_it.py", 113, 132, "written_out");
+rt.trace_call_code("bot/memory/doing_it.py", 113, 132, "written_out", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_256 = { let __callable_257 = { let __v_259 = { let __callable_260 = { let __v_262 = Value::from(" "); rt.getattr(&__v_262, "join")? }; let mut __args_261 = CallArgs::default(); let __v_263 = { let __callable_264 = { let __v_266 = { let __callable_267 = frame.load(rt, "str")?; let mut __args_268 = CallArgs::default(); let __v_269 = { let mut __v_270 = frame.load(rt, "text")?; if !__v_270.is_truthy() { __v_270 = Value::from(""); } __v_270 }; __args_268.positional.push(__v_269); rt.call(&__callable_267, __args_268)? }; rt.getattr(&__v_266, "split")? }; let mut __args_265 = CallArgs::default(); rt.call(&__callable_264, __args_265)? }; __args_261.positional.push(__v_263); rt.call(&__callable_260, __args_261)? }; rt.getattr(&__v_259, "rstrip")? }; let mut __args_258 = CallArgs::default(); let __v_271 = Value::from("?.! "); __args_258.positional.push(__v_271); rt.call(&__callable_257, __args_258)? };
@@ -230,7 +230,7 @@ return Ok(__Flow::Return({ let mut __items_277 = Vec::new(); Value::tuple(__item
 } else {
 
 }
-let __v_278 = { let __callable_279 = frame.load(rt, "any")?; let mut __args_280 = CallArgs::default(); let __v_281 = { let __comp_parent_282 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_282.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_282 = __comp_parent_282.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_283 = { let __v_285 = { let __callable_286 = { let __v_288 = frame.load(rt, "said")?; rt.getattr(&__v_288, "lower")? }; let mut __args_287 = CallArgs::default(); rt.call(&__callable_286, __args_287)? }; rt.getattr(&__v_285, "split")? }; let mut __args_284 = CallArgs::default(); rt.call(&__callable_283, __args_284)? }) }) }, assign: { let __comp_parent_282 = __comp_parent_282.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_282 = __comp_parent_282.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_289 = { let mut __v_290 = frame.load(rt, "word")?; let mut __matched_291 = true; if __matched_291 { let __v_292 = frame.load(rt, "ASK_WORDS")?; __matched_291 = !pyrt::ops::contains(&__v_292, &__v_290)?; } Value::Bool(__matched_291) }; if __v_289.is_truthy() { __v_289 = { let __v_293 = { let __callable_294 = frame.load(rt, "_is_doing")?; let mut __args_295 = CallArgs::default(); let __v_296 = frame.load(rt, "word")?; __args_295.positional.push(__v_296); rt.call(&__callable_294, __args_295)? }; Value::Bool(!__v_293.is_truthy()) }; } __v_289 })) }, Rc::new(|rt| { rt.trace_call("bot/memory/doing_it.py", 123, 123, "written_out.<locals>.<genexpr>"); Ok(()) }))? }; __args_280.positional.push(__v_281); rt.call(&__callable_279, __args_280)? }; if __v_278.is_truthy() {
+let __v_278 = { let __callable_279 = frame.load(rt, "any")?; let mut __args_280 = CallArgs::default(); let __v_281 = { let __comp_parent_282 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_282.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_282 = __comp_parent_282.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_283 = { let __v_285 = { let __callable_286 = { let __v_288 = frame.load(rt, "said")?; rt.getattr(&__v_288, "lower")? }; let mut __args_287 = CallArgs::default(); rt.call(&__callable_286, __args_287)? }; rt.getattr(&__v_285, "split")? }; let mut __args_284 = CallArgs::default(); rt.call(&__callable_283, __args_284)? }) }) }, assign: { let __comp_parent_282 = __comp_parent_282.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_282 = __comp_parent_282.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_289 = { let mut __v_290 = frame.load(rt, "word")?; let mut __matched_291 = true; if __matched_291 { let __v_292 = frame.load(rt, "ASK_WORDS")?; __matched_291 = !pyrt::ops::contains(&__v_292, &__v_290)?; } Value::Bool(__matched_291) }; if __v_289.is_truthy() { __v_289 = { let __v_293 = { let __callable_294 = frame.load(rt, "_is_doing")?; let mut __args_295 = CallArgs::default(); let __v_296 = frame.load(rt, "word")?; __args_295.positional.push(__v_296); rt.call(&__callable_294, __args_295)? }; Value::Bool(!__v_293.is_truthy()) }; } __v_289 })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/doing_it.py", 123, 123, "written_out.<locals>.<genexpr>", 7); Ok(()) }))? }; __args_280.positional.push(__v_281); rt.call(&__callable_279, __args_280)? }; if __v_278.is_truthy() {
 return Ok(__Flow::Return({ let mut __items_297 = Vec::new(); Value::tuple(__items_297) }));
 } else {
 
@@ -266,7 +266,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/doing_it.py:156-175 the_ask_behind_a_moan
 pub(super) fn the_ask_behind_a_moan(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["match","said","text","thing","verb"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/doing_it.py", 156, 175, "the_ask_behind_a_moan");
+rt.trace_call_code("bot/memory/doing_it.py", 156, 175, "the_ask_behind_a_moan", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_338 = { let __callable_339 = { let __v_341 = Value::from(" "); rt.getattr(&__v_341, "join")? }; let mut __args_340 = CallArgs::default(); let __v_342 = { let __callable_343 = { let __v_345 = { let __callable_346 = frame.load(rt, "str")?; let mut __args_347 = CallArgs::default(); let __v_348 = { let mut __v_349 = frame.load(rt, "text")?; if !__v_349.is_truthy() { __v_349 = Value::from(""); } __v_349 }; __args_347.positional.push(__v_348); rt.call(&__callable_346, __args_347)? }; rt.getattr(&__v_345, "split")? }; let mut __args_344 = CallArgs::default(); rt.call(&__callable_343, __args_344)? }; __args_340.positional.push(__v_342); rt.call(&__callable_339, __args_340)? };

@@ -167,8 +167,8 @@ class _Generator:
         cleanup = " ".join(f"{iterator} = None;" for iterator in self.iterators)
         arms = "\n".join(f"{i} => {{ {code} }}" for i, code in enumerate(self.states))
         assert all(code is not None for code in self.states)
-        trace = (f"rt.trace_call({rust_string(c.filename)}, {info['first']}, {info['last']}, "
-                 f"{rust_string(info['qualname'])});")
+        trace = (f"rt.trace_call_code({rust_string(c.filename)}, {info['first']}, {info['last']}, "
+                 f"{rust_string(info['qualname'])}, {info['code_id']});")
         return (f"let mut __gen_pc: usize = {entry};\n{declarations}\n"
                 "let mut __gen_frame = Some(frame);\n"
                 "Ok(pyrt::object::IteratorObject::value(move |rt| {\n"

@@ -15,7 +15,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("somebody_was_named",47,63),
 ("somebody_elses_body",74,76)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/whose_body.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/whose_body.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("Whose body a line is about when it says \"he\", \"she\" or \"they\" and no name.\n\n\"my dad is 70\" then \"hes got a bad hip\" is one person's trouble told over two turns, and the\nsecond turn names nobody: the \"he\" is the dad the chat has just named. Read as the speaker's own\nbody it got \"Sorry to hear it - go easy on yourself today, and see someone if it's not shifting in\na few days\", which is advice for a body that is not the one that hurts, and it tells the person\ntyping to see someone about their father's hip.\n\nSo this answers one question only - is a body on this line somebody else's? - for the composer's\ncarer reading to use. It needs both halves: a third-person pronoun carrying the body, and somebody\nnamed in the chat within the last few turns. \"i told my dad about my back\" says \"my\", so the body\nis the speaker's and this says nothing.\n"))?;
@@ -45,7 +45,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/whose_body.py:47-63 somebody_was_named
 pub(super) fn somebody_was_named(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","said","turn","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whose_body.py", 47, 63, "somebody_was_named");
+rt.trace_call_code("bot/memory/whose_body.py", 47, 63, "somebody_was_named", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __outcome_49: PyResult<__Flow> = match (|| -> PyResult<__Flow> {
@@ -108,7 +108,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/whose_body.py:66-71 a_body_of_a_pronoun
 pub(super) fn a_body_of_a_pronoun(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clean","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whose_body.py", 66, 71, "a_body_of_a_pronoun");
+rt.trace_call_code("bot/memory/whose_body.py", 66, 71, "a_body_of_a_pronoun", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_106 = { let __callable_107 = frame.load(rt, "str")?; let mut __args_108 = CallArgs::default(); let __v_109 = { let mut __v_110 = frame.load(rt, "clean")?; if !__v_110.is_truthy() { __v_110 = Value::from(""); } __v_110 }; __args_108.positional.push(__v_109); rt.call(&__callable_107, __args_108)? };
@@ -130,7 +130,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/whose_body.py:74-76 somebody_elses_body
 pub(super) fn somebody_elses_body(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clean","memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whose_body.py", 74, 76, "somebody_elses_body");
+rt.trace_call_code("bot/memory/whose_body.py", 74, 76, "somebody_elses_body", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let mut __v_123 = { let __callable_124 = frame.load(rt, "a_body_of_a_pronoun")?; let mut __args_125 = CallArgs::default(); let __v_126 = frame.load(rt, "clean")?; __args_125.positional.push(__v_126); rt.call(&__callable_124, __args_125)? }; if __v_123.is_truthy() { __v_123 = { let __callable_127 = frame.load(rt, "somebody_was_named")?; let mut __args_128 = CallArgs::default(); let __v_129 = frame.load(rt, "memory")?; __args_128.positional.push(__v_129); rt.call(&__callable_127, __args_128)? }; } __v_123 }));

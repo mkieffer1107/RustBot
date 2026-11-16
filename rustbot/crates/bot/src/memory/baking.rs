@@ -14,7 +14,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_the_name",45,65),
 ("written_out",87,107)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/baking.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/baking.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A line that names a kind of cake is a question about that cake, not about its vegetable.\n\n\"im thinking of baking a cake\" then \"what about a carrot cake\" was answered with green\nvegetables, because the word the entries key on is \"carrot\" and the entry for carrots is a\nside dish. The same line about a coffee cake fell to the search hedge, and \"what about lemon\ndrizzle\" reached the entry about drizzling a sauce over a joint. The person is still in the\ncake they named three words ago: written out as \"how do i make a carrot cake\" the line\nreaches the cake entries, which answer it.\n\nOnly an ask takes this route - a report (\"i baked a carrot cake\") or a taste (\"i love carrot\ncake\") is not a how-to question, and the turn stays with whatever answers a report. Anything\nthat is not a compound name of a bake has no line here and passes to the entries untouched.\n"))?;
@@ -49,7 +49,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/baking.py:45-65 _the_name
 pub(super) fn _the_name(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["named","noun","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/baking.py", 45, 65, "_the_name");
+rt.trace_call_code("bot/memory/baking.py", 45, 65, "_the_name", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_65 = { let __comp_parent_66 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_66.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_66 = __comp_parent_66.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_67 = { let __v_69 = frame.load(rt, "noun")?; rt.getattr(&__v_69, "split")? }; let mut __args_68 = CallArgs::default(); rt.call(&__callable_67, __args_68)? }) }) }, assign: { let __comp_parent_66 = __comp_parent_66.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_66 = __comp_parent_66.clone(); Rc::new(move |rt, frame| {  Ok((frame.load(rt, "word")?).is_truthy()) }) }] }], { let __comp_parent_66 = __comp_parent_66.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })?) };
@@ -115,7 +115,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/baking.py:87-107 written_out
 pub(super) fn written_out(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","line","memory","noun","rest","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/baking.py", 87, 107, "written_out");
+rt.trace_call_code("bot/memory/baking.py", 87, 107, "written_out", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_146 = { let __v_147 = { let __callable_148 = frame.load(rt, "isinstance")?; let mut __args_149 = CallArgs::default(); let __v_150 = frame.load(rt, "text")?; __args_149.positional.push(__v_150); let __v_151 = frame.load(rt, "str")?; __args_149.positional.push(__v_151); rt.call(&__callable_148, __args_149)? }; Value::Bool(!__v_147.is_truthy()) }; if __v_146.is_truthy() {

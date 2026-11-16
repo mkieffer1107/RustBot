@@ -15,7 +15,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("without_filler",31,52),
 ("without_the_shrug",83,90)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/filler.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/filler.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("The chat-speak people hang off the end of a line, and the line without it.\n\nIt is not part of what they told you: the fact is \"my sister is called meg\", and \"you said your\nsister is called meg to be honest\" says the fact back with a shrug on it. The reply that notes a\nline, the summary that quotes it, and the plan the store keeps all read this, so the words that\nare only a shrug are dropped in one place rather than three.\n"))?;
@@ -41,7 +41,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/filler.py:31-52 without_filler
 pub(super) fn without_filler(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["changed","cut","low","phrase","said","stripped","text","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/filler.py", 31, 52, "without_filler");
+rt.trace_call_code("bot/memory/filler.py", 31, 52, "without_filler", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_60 = { let __callable_61 = { let __v_63 = { let __callable_64 = frame.load(rt, "str")?; let mut __args_65 = CallArgs::default(); let __v_66 = { let mut __v_67 = frame.load(rt, "said")?; if !__v_67.is_truthy() { __v_67 = Value::from(""); } __v_67 }; __args_65.positional.push(__v_66); rt.call(&__callable_64, __args_65)? }; rt.getattr(&__v_63, "split")? }; let mut __args_62 = CallArgs::default(); rt.call(&__callable_61, __args_62)? };
@@ -114,7 +114,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/filler.py:65-80 without_the_end_shrug
 pub(super) fn without_the_end_shrug(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["changed","cut","low","phrase","said","stripped","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/filler.py", 65, 80, "without_the_end_shrug");
+rt.trace_call_code("bot/memory/filler.py", 65, 80, "without_the_end_shrug", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_155 = { let __callable_156 = { let __v_158 = Value::from(" "); rt.getattr(&__v_158, "join")? }; let mut __args_157 = CallArgs::default(); let __v_159 = { let __callable_160 = { let __v_162 = { let __callable_163 = frame.load(rt, "str")?; let mut __args_164 = CallArgs::default(); let __v_165 = { let mut __v_166 = frame.load(rt, "said")?; if !__v_166.is_truthy() { __v_166 = Value::from(""); } __v_166 }; __args_164.positional.push(__v_165); rt.call(&__callable_163, __args_164)? }; rt.getattr(&__v_162, "split")? }; let mut __args_161 = CallArgs::default(); rt.call(&__callable_160, __args_161)? }; __args_157.positional.push(__v_159); rt.call(&__callable_156, __args_157)? };
@@ -174,7 +174,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/filler.py:83-90 without_the_shrug
 pub(super) fn without_the_shrug(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["kept","said","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/filler.py", 83, 90, "without_the_shrug");
+rt.trace_call_code("bot/memory/filler.py", 83, 90, "without_the_shrug", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_229 = { let __callable_230 = { let __v_232 = { let __callable_233 = frame.load(rt, "str")?; let mut __args_234 = CallArgs::default(); let __v_235 = { let mut __v_236 = frame.load(rt, "said")?; if !__v_236.is_truthy() { __v_236 = Value::from(""); } __v_236 }; __args_234.positional.push(__v_235); rt.call(&__callable_233, __args_234)? }; rt.getattr(&__v_232, "split")? }; let mut __args_231 = CallArgs::default(); rt.call(&__callable_230, __args_231)? };

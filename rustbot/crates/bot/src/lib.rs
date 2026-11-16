@@ -13,7 +13,7 @@ pub const PY_MODULE: &str = "bot";
 pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/__init__.py", 0, 0, "<module>");
+rt.trace_call_code("bot/__init__.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A standard-library chatbot with a fixed input/output interface."))?;

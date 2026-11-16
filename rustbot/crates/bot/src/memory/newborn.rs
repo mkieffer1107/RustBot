@@ -15,7 +15,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_the_lines",42,59),
 ("the_baby_is_new",88,90)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/newborn.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/newborn.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A new baby in the chat is what the next few lines are about.\n\nPeople tell you the news and then talk about it for a while without naming it again: \"my sister\nhad her baby on tuesday\", \"a girl, 7lb 2oz\", then \"what should i get them\". The store keeps the\nturns, so a line that names no subject can still be read as being about the baby. This answers one\nquestion only - is the chat about a new baby - and leaves what to say to whoever asked.\n"))?;
@@ -49,7 +49,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/newborn.py:42-59 _the_lines
 pub(super) fn _the_lines(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["current","lines","memory","record","said","text","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/newborn.py", 42, 59, "_the_lines");
+rt.trace_call_code("bot/memory/newborn.py", 42, 59, "_the_lines", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_60 = { let mut __items_61 = Vec::new(); Value::list(__items_61) };
@@ -105,7 +105,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/newborn.py:62-85 the_thread_has_a_new_baby
 pub(super) fn the_thread_has_a_new_baby(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","memory","reading","said","together","understood","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/newborn.py", 62, 85, "the_thread_has_a_new_baby");
+rt.trace_call_code("bot/memory/newborn.py", 62, 85, "the_thread_has_a_new_baby", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_150 = { let __v_151 = { let __callable_152 = frame.load(rt, "isinstance")?; let mut __args_153 = CallArgs::default(); let __v_154 = frame.load(rt, "memory")?; __args_153.positional.push(__v_154); let __v_155 = frame.load(rt, "dict")?; __args_153.positional.push(__v_155); rt.call(&__callable_152, __args_153)? }; Value::Bool(!__v_151.is_truthy()) }; if __v_150.is_truthy() {
@@ -165,7 +165,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/newborn.py:88-90 the_baby_is_new
 pub(super) fn the_baby_is_new(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","understood"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/newborn.py", 88, 90, "the_baby_is_new");
+rt.trace_call_code("bot/memory/newborn.py", 88, 90, "the_baby_is_new", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_244 = frame.load(rt, "the_thread_has_a_new_baby")?; let mut __args_245 = CallArgs::default(); let __v_246 = frame.load(rt, "memory")?; __args_245.positional.push(__v_246); let __v_247 = frame.load(rt, "understood")?; __args_245.positional.push(__v_247); rt.call(&__callable_244, __args_245)? }));

@@ -19,7 +19,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_a_fault_that_is_not_undone",82,
 ("no_broken_car_or_none",142,144)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/understanding/cars.py", 0, 0, "<module>");
+rt.trace_call_code("bot/understanding/cars.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A car with something wrong with it, which is not a question about learning to drive.\n\nThe two things share a word. \"drive\" is the verb of a lesson and the verb of a broken car, so a\nchat about a car that has gone wrong collects the learning-to-drive rows:\n\n    my punto makes a clicking noise when i turn\n    is it safe to drive\n    what will it cost roughly   -> \"Most people need around 45 hours of lessons...\"\n\nThe price of a repair answered with the price of lessons. Nothing in the third line says which\ncar it is: the fault is two lines back, and a bare \"what will it cost roughly\" is the same\nsentence for a clutch and for a test. So the reading is made from the chat, once per turn: a car\nand something wrong with it in the last few lines, and nothing in this line about learning.\n\nA line that does name the learning keeps its own row - \"how much do driving lessons cost\" after a\ncar fault is still the lessons question - so the learning words here take the reading back.\n"))?;
@@ -56,7 +56,7 @@ mod __py_0 { use super::*;
 // py: bot/understanding/cars.py:82-93 _a_fault_that_is_not_undone
 pub(super) fn _a_fault_that_is_not_undone(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["after","before","clause","match"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/cars.py", 82, 93, "_a_fault_that_is_not_undone");
+rt.trace_call_code("bot/understanding/cars.py", 82, 93, "_a_fault_that_is_not_undone", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_65 = false; let __v_67 = { let __callable_70 = { let __v_72 = frame.load(rt, "FAULT")?; rt.getattr(&__v_72, "finditer")? }; let mut __args_71 = CallArgs::default(); let __v_73 = frame.load(rt, "clause")?; __args_71.positional.push(__v_73); rt.call(&__callable_70, __args_71)? }; let __iter_68 = rt.iter(&__v_67)?;
@@ -96,7 +96,7 @@ mod __py_1 { use super::*;
 // py: bot/understanding/cars.py:96-103 _the_car_in
 pub(super) fn _the_car_in(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["before","clause","match"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/cars.py", 96, 103, "_the_car_in");
+rt.trace_call_code("bot/understanding/cars.py", 96, 103, "_the_car_in", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_136 = false; let __v_138 = { let __callable_141 = { let __v_143 = frame.load(rt, "CAR")?; rt.getattr(&__v_143, "finditer")? }; let mut __args_142 = CallArgs::default(); let __v_144 = frame.load(rt, "clause")?; __args_142.positional.push(__v_144); rt.call(&__callable_141, __args_142)? }; let __iter_139 = rt.iter(&__v_138)?;
@@ -129,7 +129,7 @@ mod __py_2 { use super::*;
 // py: bot/understanding/cars.py:106-112 _says_a_broken_car
 pub(super) fn _says_a_broken_car(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","low","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/cars.py", 106, 112, "_says_a_broken_car");
+rt.trace_call_code("bot/understanding/cars.py", 106, 112, "_says_a_broken_car", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_169 = { let __callable_170 = { let __v_172 = { let mut __v_173 = frame.load(rt, "text")?; if !__v_173.is_truthy() { __v_173 = Value::from(""); } __v_173 }; rt.getattr(&__v_172, "lower")? }; let mut __args_171 = CallArgs::default(); rt.call(&__callable_170, __args_171)? };
@@ -161,7 +161,7 @@ mod __py_3 { use super::*;
 // py: bot/understanding/cars.py:115-128 a_broken_car_is_the_subject
 pub(super) fn a_broken_car_is_the_subject(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["earlier","low","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/cars.py", 115, 128, "a_broken_car_is_the_subject");
+rt.trace_call_code("bot/understanding/cars.py", 115, 128, "a_broken_car_is_the_subject", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_191 = { let __callable_192 = { let __v_194 = { let mut __v_195 = frame.load(rt, "text")?; if !__v_195.is_truthy() { __v_195 = Value::from(""); } __v_195 }; rt.getattr(&__v_194, "lower")? }; let mut __args_193 = CallArgs::default(); rt.call(&__callable_192, __args_193)? };
@@ -176,7 +176,7 @@ return Ok(__Flow::Return(Value::Bool(true)));
 } else {
 
 }
-return Ok(__Flow::Return({ let __callable_205 = frame.load(rt, "any")?; let mut __args_206 = CallArgs::default(); let __v_207 = { let __comp_parent_208 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_208.clone(), &["line"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_208 = __comp_parent_208.clone(); Rc::new(move |rt, frame| {  Ok({ let __v_209 = { let __callable_214 = frame.load(rt, "list")?; let mut __args_215 = CallArgs::default(); let __v_216 = frame.load(rt, "earlier")?; __args_215.positional.push(__v_216); rt.call(&__callable_214, __args_215)? }; let __v_211 = { let __v_213 = frame.load(rt, "LOOKBACK")?; pyrt::ops::neg(&__v_213)? }; let __index_212 = if matches!(__v_211, Value::None) { None } else { let n = __v_211.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_209, __index_212, None, 1_i64)? }) }) }, assign: { let __comp_parent_208 = __comp_parent_208.clone(); Rc::new(move |rt, frame, value| { frame.store("line", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_208 = __comp_parent_208.clone(); Rc::new(move |rt, frame| Ok({ let __callable_217 = frame.load(rt, "_says_a_broken_car")?; let mut __args_218 = CallArgs::default(); let __v_219 = frame.load(rt, "line")?; __args_218.positional.push(__v_219); rt.call(&__callable_217, __args_218)? })) }, Rc::new(|rt| { rt.trace_call("bot/understanding/cars.py", 128, 128, "a_broken_car_is_the_subject.<locals>.<genexpr>"); Ok(()) }))? }; __args_206.positional.push(__v_207); rt.call(&__callable_205, __args_206)? }));
+return Ok(__Flow::Return({ let __callable_205 = frame.load(rt, "any")?; let mut __args_206 = CallArgs::default(); let __v_207 = { let __comp_parent_208 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_208.clone(), &["line"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_208 = __comp_parent_208.clone(); Rc::new(move |rt, frame| {  Ok({ let __v_209 = { let __callable_214 = frame.load(rt, "list")?; let mut __args_215 = CallArgs::default(); let __v_216 = frame.load(rt, "earlier")?; __args_215.positional.push(__v_216); rt.call(&__callable_214, __args_215)? }; let __v_211 = { let __v_213 = frame.load(rt, "LOOKBACK")?; pyrt::ops::neg(&__v_213)? }; let __index_212 = if matches!(__v_211, Value::None) { None } else { let n = __v_211.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_209, __index_212, None, 1_i64)? }) }) }, assign: { let __comp_parent_208 = __comp_parent_208.clone(); Rc::new(move |rt, frame, value| { frame.store("line", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_208 = __comp_parent_208.clone(); Rc::new(move |rt, frame| Ok({ let __callable_217 = frame.load(rt, "_says_a_broken_car")?; let mut __args_218 = CallArgs::default(); let __v_219 = frame.load(rt, "line")?; __args_218.positional.push(__v_219); rt.call(&__callable_217, __args_218)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/understanding/cars.py", 128, 128, "a_broken_car_is_the_subject.<locals>.<genexpr>", 6); Ok(()) }))? }; __args_206.positional.push(__v_207); rt.call(&__callable_205, __args_206)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -188,7 +188,7 @@ mod __py_4 { use super::*;
 // py: bot/understanding/cars.py:131-139 no_broken_car
 pub(super) fn no_broken_car(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["understood"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/cars.py", 131, 139, "no_broken_car");
+rt.trace_call_code("bot/understanding/cars.py", 131, 139, "no_broken_car", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __v_220 = { let mut __v_221 = { let __callable_222 = frame.load(rt, "isinstance")?; let mut __args_223 = CallArgs::default(); let __v_224 = frame.load(rt, "understood")?; __args_223.positional.push(__v_224); let __v_225 = frame.load(rt, "dict")?; __args_223.positional.push(__v_225); rt.call(&__callable_222, __args_223)? }; if __v_221.is_truthy() { __v_221 = { let __callable_226 = { let __v_228 = frame.load(rt, "understood")?; rt.getattr(&__v_228, "get")? }; let mut __args_227 = CallArgs::default(); let __v_229 = Value::from("car_fault"); __args_227.positional.push(__v_229); rt.call(&__callable_226, __args_227)? }; } __v_221 }; Value::Bool(!__v_220.is_truthy()) }));
@@ -203,7 +203,7 @@ mod __py_5 { use super::*;
 // py: bot/understanding/cars.py:142-144 no_broken_car_or_none
 pub(super) fn no_broken_car_or_none(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["understood"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/cars.py", 142, 144, "no_broken_car_or_none");
+rt.trace_call_code("bot/understanding/cars.py", 142, 144, "no_broken_car_or_none", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_230 = frame.load(rt, "bool")?; let mut __args_231 = CallArgs::default(); let __v_232 = { let mut __v_233 = { let __callable_234 = frame.load(rt, "isinstance")?; let mut __args_235 = CallArgs::default(); let __v_236 = frame.load(rt, "understood")?; __args_235.positional.push(__v_236); let __v_237 = frame.load(rt, "dict")?; __args_235.positional.push(__v_237); rt.call(&__callable_234, __args_235)? }; if __v_233.is_truthy() { __v_233 = { let __callable_238 = { let __v_240 = frame.load(rt, "understood")?; rt.getattr(&__v_240, "get")? }; let mut __args_239 = CallArgs::default(); let __v_241 = Value::from("car_fault"); __args_239.positional.push(__v_241); rt.call(&__callable_238, __args_239)? }; } __v_233 }; __args_231.positional.push(__v_232); rt.call(&__callable_230, __args_231)? }));

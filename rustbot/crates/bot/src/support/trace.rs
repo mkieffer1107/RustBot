@@ -4,7 +4,7 @@
 //! respond invocation, then passes only the winning handler's spans here.
 //! Source tables are supplied separately so native and WASM builds can load
 //! the same generated norm.json and lines.json without embedding Python.
-use pyrt::{PyResult, runtime::SourceSpan};
+use pyrt::{PyResult, runtime::TraceEvent};
 use serde_json::{Value as Json, json};
 use std::collections::{BTreeMap, HashSet, VecDeque};
 
@@ -181,7 +181,7 @@ pub fn respond_from_metadata(
 pub fn build_trace(
     reply: &str,
     winner: Option<&str>,
-    spans: &[SourceSpan],
+    spans: &[TraceEvent],
     respond: Option<(&str, u32, u32)>,
     sources: &SourceIndex,
 ) -> PyResult<Json> {
@@ -189,11 +189,18 @@ pub fn build_trace(
     let mut calls: BTreeMap<String, Vec<Json>> = BTreeMap::new();
     let mut seen = HashSet::new();
     if winner.is_some() {
-        for span in spans {
+        for event in spans {
+            let span = event.span;
             if !span.file.starts_with("bot/") {
                 continue;
             }
-            let identity = (span.file, span.first, span.last, span.qualname);
+            // Generated IDs distinguish different code objects with identical
+            // display spans. Legacy events fall back to their span identity.
+            let identity = if event.code_id == 0 {
+                (span.file, 0, span.first, span.last, span.qualname)
+            } else {
+                (span.file, event.code_id, 0, 0, "")
+            };
             if !seen.insert(identity) {
                 continue;
             }
@@ -218,6 +225,7 @@ pub fn build_trace(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use pyrt::runtime::SourceSpan;
     fn index(norm: Json, lines: Json) -> SourceIndex {
         SourceIndex::from_json(
             &serde_json::to_vec(&norm).unwrap(),
@@ -363,10 +371,15 @@ mod tests {
             last: 1,
             qualname: "f",
         });
+        let events: Vec<_> = spans
+            .iter()
+            .copied()
+            .map(|span| TraceEvent { span, code_id: 0 })
+            .collect();
         let value = build_trace(
             "  hello\u{1c}world  ",
             Some("demo"),
-            &spans,
+            &events,
             Some(("bot/modules/demo.py", 2, 5)),
             &source,
         )
@@ -377,8 +390,35 @@ mod tests {
         assert_eq!(value["calls"]["bot/z.py"], json!([]));
         assert_eq!(value["respond"], json!(["bot/modules/demo.py", 2, 5]));
         assert_eq!(
-            build_trace("", None, &spans, None, &source).unwrap()["reply"],
+            build_trace("", None, &events, None, &source).unwrap()["reply"],
             "Hello!"
+        );
+    }
+    #[test]
+    fn distinct_code_objects_with_identical_display_spans_are_kept() {
+        let source = index(json!({}), json!({}));
+        let span = SourceSpan {
+            file: "bot/memory/ack.py",
+            first: 5373,
+            last: 5373,
+            qualname: "_a_condition_they_wonder_about.<locals>.<genexpr>",
+        };
+        let events = [
+            TraceEvent { span, code_id: 4 },
+            TraceEvent { span, code_id: 4 },
+            TraceEvent { span, code_id: 5 },
+        ];
+        let value = build_trace("answer", Some("demo"), &events, None, &source).unwrap();
+        let calls = value["calls"]["bot/memory/ack.py"].as_array().unwrap();
+        assert_eq!(calls.len(), 2);
+        assert_eq!(calls[0], calls[1]);
+        assert_eq!(
+            calls[0],
+            json!([
+                5373,
+                5373,
+                "_a_condition_they_wonder_about.<locals>.<genexpr>"
+            ])
         );
     }
     #[test]

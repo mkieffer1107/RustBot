@@ -18,7 +18,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_clauses",76,78),
 ("answer",157,172)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/pending.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/pending.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A plan with something still missing is the question the person did not ask.\n\nPeople announce the occasion and the gap in one breath, and the store files both:\n\n    ive got a wedding in 3 weeks and i still havent got an outfit\n      -> \"Noted: you've got a wedding in 3 weeks and you still haven't got an outfit.\"\n\nFiling it is right - the follow-up turns need the wedding and the deadline - but it is not an\nanswer, and the ask they left out is one the knowledge base already has:\n\n    what should i wear to a wedding in 3 weeks\n      -> \"White and cream are the one thing to avoid at a wedding ...\"\n    what should i get for a wedding\n      -> \"About fifty pounds is the usual gift from a friend ...\"\n\nSo a line that names what it has not got, and names an occasion it is for, is read as that\nquestion and answered from the entry it reaches. Three rules keep it honest: the line has to say\nin its own words that the thing is not got yet (not that it is wanted, not that it is lost), the\nthing has to be one of the kinds an occasion actually raises - something worn, or something given\n- and the rewritten question has to reach an entry, because a plan the knowledge base has nothing\nfor is left to the reply that files it, exactly as before.\n"))?;
@@ -64,7 +64,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/pending.py:76-78 _clauses
 pub(super) fn _clauses(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/pending.py", 76, 78, "_clauses");
+rt.trace_call_code("bot/memory/pending.py", 76, 78, "_clauses", 2);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __comp_parent_118 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_118.clone(), &["part"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_118 = __comp_parent_118.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_119 = { let __v_121 = frame.load(rt, "re")?; rt.getattr(&__v_121, "split")? }; let mut __args_120 = CallArgs::default(); let __v_122 = Value::from("\\s*(?:,|;|\\band\\b|\\bbut\\b|\\bso\\b|\\bbecause\\b)\\s*"); __args_120.positional.push(__v_122); let __v_123 = { let __callable_124 = { let __v_126 = { let __callable_127 = frame.load(rt, "str")?; let mut __args_128 = CallArgs::default(); let __v_129 = { let mut __v_130 = frame.load(rt, "text")?; if !__v_130.is_truthy() { __v_130 = Value::from(""); } __v_130 }; __args_128.positional.push(__v_129); rt.call(&__callable_127, __args_128)? }; rt.getattr(&__v_126, "lower")? }; let mut __args_125 = CallArgs::default(); rt.call(&__callable_124, __args_125)? }; __args_120.positional.push(__v_123); rt.call(&__callable_119, __args_120)? }) }) }, assign: { let __comp_parent_118 = __comp_parent_118.clone(); Rc::new(move |rt, frame, value| { frame.store("part", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_118 = __comp_parent_118.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_131 = { let __v_133 = frame.load(rt, "part")?; rt.getattr(&__v_133, "strip")? }; let mut __args_132 = CallArgs::default(); rt.call(&__callable_131, __args_132)? }).is_truthy()) }) }] }], { let __comp_parent_118 = __comp_parent_118.clone(); Rc::new(move |rt, frame| Ok({ let __callable_134 = { let __v_136 = frame.load(rt, "part")?; rt.getattr(&__v_136, "strip")? }; let mut __args_135 = CallArgs::default(); let __v_137 = Value::from(" .!?,"); __args_135.positional.push(__v_137); rt.call(&__callable_134, __args_135)? })) })?) }));
 Ok(__Flow::Next)
@@ -78,7 +78,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/pending.py:85-86 _content
 pub(super) fn _content(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/pending.py", 85, 86, "_content");
+rt.trace_call_code("bot/memory/pending.py", 85, 86, "_content", 3);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __comp_parent_138 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_138.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_138 = __comp_parent_138.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_139 = { let __v_141 = frame.load(rt, "re")?; rt.getattr(&__v_141, "findall")? }; let mut __args_140 = CallArgs::default(); let __v_142 = Value::from("[a-z']+"); __args_140.positional.push(__v_142); let __v_143 = { let __callable_144 = { let __v_146 = { let __callable_147 = frame.load(rt, "str")?; let mut __args_148 = CallArgs::default(); let __v_149 = { let mut __v_150 = frame.load(rt, "text")?; if !__v_150.is_truthy() { __v_150 = Value::from(""); } __v_150 }; __args_148.positional.push(__v_149); rt.call(&__callable_147, __args_148)? }; rt.getattr(&__v_146, "lower")? }; let mut __args_145 = CallArgs::default(); rt.call(&__callable_144, __args_145)? }; __args_140.positional.push(__v_143); rt.call(&__callable_139, __args_140)? }) }) }, assign: { let __comp_parent_138 = __comp_parent_138.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_138 = __comp_parent_138.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_151 = frame.load(rt, "word")?; let mut __matched_152 = true; if __matched_152 { let __v_153 = frame.load(rt, "STOP")?; __matched_152 = !pyrt::ops::contains(&__v_153, &__v_151)?; } Value::Bool(__matched_152) }).is_truthy()) }) }] }], { let __comp_parent_138 = __comp_parent_138.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })? }));
 Ok(__Flow::Next)
@@ -92,7 +92,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/pending.py:89-102 _what_is_missing
 pub(super) fn _what_is_missing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","found","frame","phrase","text","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/pending.py", 89, 102, "_what_is_missing");
+rt.trace_call_code("bot/memory/pending.py", 89, 102, "_what_is_missing", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_154 = false; let __v_156 = { let __callable_159 = frame.load(rt, "_clauses")?; let mut __args_160 = CallArgs::default(); let __v_161 = frame.load(rt, "text")?; __args_160.positional.push(__v_161); rt.call(&__callable_159, __args_160)? }; let __iter_157 = rt.iter(&__v_156)?;
@@ -144,7 +144,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/pending.py:105-130 _the_occasion
 pub(super) fn _the_occasion(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["after","clause","found","found_all","head","missing","occ","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/pending.py", 105, 130, "_the_occasion");
+rt.trace_call_code("bot/memory/pending.py", 105, 130, "_the_occasion", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_203 = { let mut __items_204 = Vec::new(); Value::list(__items_204) };
@@ -212,7 +212,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/pending.py:133-154 as_question
 pub(super) fn as_question(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["missing","occasion","phrase","said","text","thing","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/pending.py", 133, 154, "as_question");
+rt.trace_call_code("bot/memory/pending.py", 133, 154, "as_question", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_306 = { let mut __v_307 = { let __v_308 = { let __callable_309 = frame.load(rt, "isinstance")?; let mut __args_310 = CallArgs::default(); let __v_311 = frame.load(rt, "text")?; __args_310.positional.push(__v_311); let __v_312 = frame.load(rt, "str")?; __args_310.positional.push(__v_312); rt.call(&__callable_309, __args_310)? }; Value::Bool(!__v_308.is_truthy()) }; if !__v_307.is_truthy() { __v_307 = { let __v_313 = { let __callable_314 = { let __v_316 = frame.load(rt, "text")?; rt.getattr(&__v_316, "strip")? }; let mut __args_315 = CallArgs::default(); rt.call(&__callable_314, __args_315)? }; Value::Bool(!__v_313.is_truthy()) }; } __v_307 }; if __v_306.is_truthy() {
@@ -272,7 +272,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/pending.py:157-172 answer
 pub(super) fn answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["entry","memory","question","reply","store","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/pending.py", 157, 172, "answer");
+rt.trace_call_code("bot/memory/pending.py", 157, 172, "answer", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_375 = { let __callable_376 = frame.load(rt, "as_question")?; let mut __args_377 = CallArgs::default(); let __v_378 = frame.load(rt, "text")?; __args_377.positional.push(__v_378); rt.call(&__callable_376, __args_377)? };

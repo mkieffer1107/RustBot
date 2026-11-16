@@ -18,7 +18,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_a_routine",29,59),
 ("is_a_time_ask",202,221)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/times.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/times.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("The hours a person's own day runs on: the times they give, and the ask that wants them back.\n\n\"i get up at six thirty\" is filed against the doing, newest winning, and \"what time do i get up\"\nthree turns later is answered from it. The reader moved here out of `bot/modules/memory_store.py`\nbecause that file is at the Hub's 1 MB limit and every reader that leaves it buys back room; the\nbehaviour is the same, so the move is a pure one and every reply it makes is byte-identical.\n"))?;
@@ -67,7 +67,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/times.py:29-59 _a_routine
 pub(super) fn _a_routine(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["ask","low","phrase","work"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/times.py", 29, 59, "_a_routine");
+rt.trace_call_code("bot/memory/times.py", 29, 59, "_a_routine", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_115 = { let __callable_116 = { let __v_118 = Value::from(" "); rt.getattr(&__v_118, "join")? }; let mut __args_117 = CallArgs::default(); let __v_119 = { let __callable_120 = { let __v_122 = { let __callable_123 = { let __v_125 = frame.load(rt, "re")?; rt.getattr(&__v_125, "sub")? }; let mut __args_124 = CallArgs::default(); let __v_126 = Value::from("[^a-z' ]"); __args_124.positional.push(__v_126); let __v_127 = Value::from(" "); __args_124.positional.push(__v_127); let __v_128 = { let __callable_129 = { let __v_131 = frame.load(rt, "phrase")?; rt.getattr(&__v_131, "lower")? }; let mut __args_130 = CallArgs::default(); rt.call(&__callable_129, __args_130)? }; __args_124.positional.push(__v_128); rt.call(&__callable_123, __args_124)? }; rt.getattr(&__v_122, "split")? }; let mut __args_121 = CallArgs::default(); rt.call(&__callable_120, __args_121)? }; __args_117.positional.push(__v_119); rt.call(&__callable_116, __args_117)? };
@@ -135,7 +135,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/times.py:62-66 _the_times
 pub(super) fn _the_times(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/times.py", 62, 66, "_the_times");
+rt.trace_call_code("bot/memory/times.py", 62, 66, "_the_times", 3);
 let flow = (|| -> PyResult<__Flow> {
 let __v_194 = { let __callable_195 = { let __v_197 = frame.load(rt, "memory")?; rt.getattr(&__v_197, "get")? }; let mut __args_196 = CallArgs::default(); let __v_198 = Value::from("times"); __args_196.positional.push(__v_198); rt.call(&__callable_195, __args_196)? };
 frame.store("held", __v_194.clone())?;
@@ -157,7 +157,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/times.py:69-84 _keep_a_time
 pub(super) fn _keep_a_time(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","held","item","memory","said","turn","what"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/times.py", 69, 84, "_keep_a_time");
+rt.trace_call_code("bot/memory/times.py", 69, 84, "_keep_a_time", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_207 = { let __callable_208 = { let __v_210 = { let __callable_211 = frame.load(rt, "str")?; let mut __args_212 = CallArgs::default(); let __v_213 = { let mut __v_214 = frame.load(rt, "at")?; if !__v_214.is_truthy() { __v_214 = Value::from(""); } __v_214 }; __args_212.positional.push(__v_213); rt.call(&__callable_211, __args_212)? }; rt.getattr(&__v_210, "strip")? }; let mut __args_209 = CallArgs::default(); let __v_215 = Value::from(" .,!;:-"); __args_209.positional.push(__v_215); rt.call(&__callable_208, __args_209)? };
@@ -205,7 +205,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/times.py:106-153 keep
 pub(super) fn keep(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["filed","fixed","held","last","low","match","memory","more","said","start","text","was","what","which"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/times.py", 106, 153, "keep");
+rt.trace_call_code("bot/memory/times.py", 106, 153, "keep", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_282 = { let mut __v_283 = { let __v_284 = { let __callable_285 = frame.load(rt, "isinstance")?; let mut __args_286 = CallArgs::default(); let __v_287 = frame.load(rt, "text")?; __args_286.positional.push(__v_287); let __v_288 = frame.load(rt, "str")?; __args_286.positional.push(__v_288); rt.call(&__callable_285, __args_286)? }; Value::Bool(!__v_284.is_truthy()) }; if !__v_283.is_truthy() { __v_283 = { let __v_289 = { let __callable_290 = frame.load(rt, "isinstance")?; let mut __args_291 = CallArgs::default(); let __v_292 = frame.load(rt, "memory")?; __args_291.positional.push(__v_292); let __v_293 = frame.load(rt, "dict")?; __args_291.positional.push(__v_293); rt.call(&__callable_290, __args_291)? }; Value::Bool(!__v_289.is_truthy()) }; } __v_283 }; if __v_282.is_truthy() {
@@ -326,7 +326,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/times.py:166-199 answer
 pub(super) fn answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","at","end_at","held","memory","rest","said_back","start_at","text","what","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/times.py", 166, 199, "answer");
+rt.trace_call_code("bot/memory/times.py", 166, 199, "answer", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_579 = { let mut __v_580 = { let __v_581 = { let __callable_582 = frame.load(rt, "isinstance")?; let mut __args_583 = CallArgs::default(); let __v_584 = frame.load(rt, "text")?; __args_583.positional.push(__v_584); let __v_585 = frame.load(rt, "str")?; __args_583.positional.push(__v_585); rt.call(&__callable_582, __args_583)? }; Value::Bool(!__v_581.is_truthy()) }; if !__v_580.is_truthy() { __v_580 = { let __v_586 = { let __callable_587 = frame.load(rt, "isinstance")?; let mut __args_588 = CallArgs::default(); let __v_589 = frame.load(rt, "memory")?; __args_588.positional.push(__v_589); let __v_590 = frame.load(rt, "dict")?; __args_588.positional.push(__v_590); rt.call(&__callable_587, __args_588)? }; Value::Bool(!__v_586.is_truthy()) }; } __v_580 }; if __v_579.is_truthy() {
@@ -402,7 +402,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/times.py:202-221 is_a_time_ask
 pub(super) fn is_a_time_ask(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","memory","rest","text","what","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/times.py", 202, 221, "is_a_time_ask");
+rt.trace_call_code("bot/memory/times.py", 202, 221, "is_a_time_ask", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_722 = { let __v_723 = { let __callable_724 = frame.load(rt, "answer")?; let mut __args_725 = CallArgs::default(); let __v_726 = frame.load(rt, "text")?; __args_725.positional.push(__v_726); let __v_727 = frame.load(rt, "memory")?; __args_725.positional.push(__v_727); rt.call(&__callable_724, __args_725)? }; Value::Bool(!__v_723.is_truthy()) }; if __v_722.is_truthy() {

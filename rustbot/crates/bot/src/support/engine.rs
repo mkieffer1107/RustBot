@@ -5,7 +5,7 @@ use pyrt::{
     PyExc, PyResult, Value,
     object::{CallArgs, NativeFunction},
     random::RandomState,
-    runtime::{Runtime, SourceSpan},
+    runtime::{Runtime, TraceEvent},
 };
 use serde_json::{Value as Json, json};
 use std::{cell::RefCell, collections::BTreeMap, rc::Rc};
@@ -13,7 +13,7 @@ use std::{cell::RefCell, collections::BTreeMap, rc::Rc};
 /// Own respond spans keyed by module name, obtained from generated metadata or
 /// an exact handler/closure lookup. Absent names remain unresolved.
 pub type RespondSpans = BTreeMap<String, (String, u32, u32)>;
-type Captured = Rc<RefCell<BTreeMap<String, Vec<SourceSpan>>>>;
+type Captured = Rc<RefCell<BTreeMap<String, Vec<TraceEvent>>>>;
 struct Tracing {
     responds: RespondSpans,
     captured: Captured,
@@ -123,7 +123,7 @@ impl Session {
                 parts[2] = NativeFunction::value(format!("trace_{name}"), move |rt, args| {
                     rt.begin_trace();
                     let result = rt.call(&original, args);
-                    let spans = rt.end_trace();
+                    let spans = rt.end_trace_events();
                     sink.borrow_mut().insert(label.clone(), spans);
                     result
                 });

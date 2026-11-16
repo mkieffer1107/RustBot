@@ -18,7 +18,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("a_doing_after_to",101,117),
 ("the_visit",199,216)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/not_a_trip.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/not_a_trip.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("Whether a \"going to ...\" line is going anywhere at all.\n\nEvery \"going to\" line was read as a trip: the words after \"to\" became the place, and the person\nwas asked about it as if they were packing.\n\n    im thinking of going back to uni next year  ->  \"Uni, lovely. When is it?\"\n    im going to start a small business          ->  \"Start, lovely. When is it?\"\n\nNobody is going anywhere: one is a decision to weigh, and the other is a doing. The place is the\ncode that happens to follow \"to\", and both of these are what a noun phrase cannot be:\n\n- a determiner after the first word says that word is a verb - \"start a small business\" cannot be\n  a place called Start, because a place does not put \"a\" after its own name (\"the Lake District\"\n  keeps its \"the\" in front, which is where a determiner belongs);\n- a particle after it says the same thing. \"think about it\" and \"save up first\" are a verb and its\n  particle, and the words after \"to\" are read as a place word for word: \"Think About It, lovely.\n  When is it?\". The particles here are the ones no place name uses - \"upon\", \"on\" and \"of\" are\n  absent because Stratford upon Avon, Henley on Thames and the isle of wight are journeys, and\n  \"in\" is absent for \"Barton in the Clay\";\n- a verb of the body or the feelings after \"to\" is the doing itself, and nobody asks when a\n  person is going to cry: \"im going to cry\", \"im going to throw up\", \"im going to die of\n  embarrassment\" were answered \"Cry, lovely. When is it?\" and \"Die of Embarrassment - nice.\n  When are you going?\". A place is never a bare verb, so one word is enough to know;\n- a place of ordinary life is not a trip. School, work, the gym and the shops are already known\n  here, and uni, college and the nursery are the same errand: going back to one of those is not a\n  holiday and nobody wants their month asked about.\n"))?;
@@ -65,7 +65,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/not_a_trip.py:101-117 a_doing_after_to
 pub(super) fn a_doing_after_to(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["first","going_words","kept","second"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_a_trip.py", 101, 117, "a_doing_after_to");
+rt.trace_call_code("bot/memory/not_a_trip.py", 101, 117, "a_doing_after_to", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_118 = { let __comp_parent_119 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_119.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_119 = __comp_parent_119.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "going_words")?) }) }, assign: { let __comp_parent_119 = __comp_parent_119.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_119 = __comp_parent_119.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_120 = { let __callable_122 = { let __v_124 = { let __callable_125 = frame.load(rt, "str")?; let mut __args_126 = CallArgs::default(); let __v_127 = frame.load(rt, "word")?; __args_126.positional.push(__v_127); rt.call(&__callable_125, __args_126)? }; rt.getattr(&__v_124, "strip")? }; let mut __args_123 = CallArgs::default(); let __v_128 = Value::from(" ,.;:!?'’"); __args_123.positional.push(__v_128); rt.call(&__callable_122, __args_123)? }; let mut __matched_121 = true; if __matched_121 { let __v_129 = { let mut __items_130 = Vec::new(); let __v_131 = Value::from(""); __items_130.push(__v_131); Value::tuple(__items_130) }; __matched_121 = !pyrt::ops::contains(&__v_129, &__v_120)?; } Value::Bool(__matched_121) }).is_truthy()) }) }] }], { let __comp_parent_119 = __comp_parent_119.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })?) };
@@ -107,7 +107,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/not_a_trip.py:120-126 a_place_of_ordinary_life
 pub(super) fn a_place_of_ordinary_life(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["place","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_a_trip.py", 120, 126, "a_place_of_ordinary_life");
+rt.trace_call_code("bot/memory/not_a_trip.py", 120, 126, "a_place_of_ordinary_life", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_195 = { let __comp_parent_196 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_196.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_196 = __comp_parent_196.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_197 = { let __v_199 = { let __callable_200 = frame.load(rt, "str")?; let mut __args_201 = CallArgs::default(); let __v_202 = { let mut __v_203 = frame.load(rt, "place")?; if !__v_203.is_truthy() { __v_203 = Value::from(""); } __v_203 }; __args_201.positional.push(__v_202); rt.call(&__callable_200, __args_201)? }; rt.getattr(&__v_199, "split")? }; let mut __args_198 = CallArgs::default(); let __v_204 = Value::from(" "); __args_198.positional.push(__v_204); rt.call(&__callable_197, __args_198)? }) }) }, assign: { let __comp_parent_196 = __comp_parent_196.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_196 = __comp_parent_196.clone(); Rc::new(move |rt, frame| Ok({ let __callable_205 = { let __v_207 = { let __callable_208 = { let __v_210 = frame.load(rt, "word")?; rt.getattr(&__v_210, "lower")? }; let mut __args_209 = CallArgs::default(); rt.call(&__callable_208, __args_209)? }; rt.getattr(&__v_207, "strip")? }; let mut __args_206 = CallArgs::default(); let __v_211 = Value::from(" ,.;:!?'’"); __args_206.positional.push(__v_211); rt.call(&__callable_205, __args_206)? })) })?) };
@@ -132,7 +132,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/not_a_trip.py:129-131 not_a_destination
 pub(super) fn not_a_destination(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["going_words","place"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_a_trip.py", 129, 131, "not_a_destination");
+rt.trace_call_code("bot/memory/not_a_trip.py", 129, 131, "not_a_destination", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let mut __v_235 = { let __callable_236 = frame.load(rt, "a_doing_after_to")?; let mut __args_237 = CallArgs::default(); let __v_238 = frame.load(rt, "going_words")?; __args_237.positional.push(__v_238); rt.call(&__callable_236, __args_237)? }; if !__v_235.is_truthy() { __v_235 = { let __callable_239 = frame.load(rt, "a_place_of_ordinary_life")?; let mut __args_240 = CallArgs::default(); let __v_241 = frame.load(rt, "place")?; __args_240.positional.push(__v_241); rt.call(&__callable_239, __args_240)? }; } __v_235 }));
@@ -147,7 +147,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/not_a_trip.py:158-169 _the_person_in
 pub(super) fn _the_person_in(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","said","thing","who"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_a_trip.py", 158, 169, "_the_person_in");
+rt.trace_call_code("bot/memory/not_a_trip.py", 158, 169, "_the_person_in", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_242 = { let __callable_243 = { let __v_245 = Value::from(" "); rt.getattr(&__v_245, "join")? }; let mut __args_244 = CallArgs::default(); let __v_246 = { let __callable_247 = { let __v_249 = { let __callable_250 = { let __v_252 = { let __callable_253 = { let __v_255 = frame.load(rt, "found")?; rt.getattr(&__v_255, "group")? }; let mut __args_254 = CallArgs::default(); let __v_256 = Value::from("person"); __args_254.positional.push(__v_256); rt.call(&__callable_253, __args_254)? }; rt.getattr(&__v_252, "lower")? }; let mut __args_251 = CallArgs::default(); rt.call(&__callable_250, __args_251)? }; rt.getattr(&__v_249, "split")? }; let mut __args_248 = CallArgs::default(); rt.call(&__callable_247, __args_248)? }; __args_244.positional.push(__v_246); rt.call(&__callable_243, __args_244)? };
@@ -174,7 +174,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/not_a_trip.py:172-175 a_person
 pub(super) fn a_person(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","place"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_a_trip.py", 172, 175, "a_person");
+rt.trace_call_code("bot/memory/not_a_trip.py", 172, 175, "a_person", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_292 = { let __callable_293 = { let __v_295 = frame.load(rt, "THEIR_PERSON")?; rt.getattr(&__v_295, "match")? }; let mut __args_294 = CallArgs::default(); let __v_296 = { let __callable_297 = frame.load(rt, "str")?; let mut __args_298 = CallArgs::default(); let __v_299 = { let mut __v_300 = frame.load(rt, "place")?; if !__v_300.is_truthy() { __v_300 = Value::from(""); } __v_300 }; __args_298.positional.push(__v_299); rt.call(&__callable_297, __args_298)? }; __args_294.positional.push(__v_296); rt.call(&__callable_293, __args_294)? };
@@ -191,7 +191,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/not_a_trip.py:199-216 the_visit
 pub(super) fn the_visit(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["before","found","line","said"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_a_trip.py", 199, 216, "the_visit");
+rt.trace_call_code("bot/memory/not_a_trip.py", 199, 216, "the_visit", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_305 = { let __callable_306 = frame.load(rt, "str")?; let mut __args_307 = CallArgs::default(); let __v_308 = { let mut __v_309 = frame.load(rt, "line")?; if !__v_309.is_truthy() { __v_309 = Value::from(""); } __v_309 }; __args_307.positional.push(__v_308); rt.call(&__callable_306, __args_307)? };

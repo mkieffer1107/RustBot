@@ -16,7 +16,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("left_open",27,36),
 ("sentences",77,105)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/quotes.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/quotes.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("The words an answer hands over to say, kept whole when the answer is cut down.\n\nA lot of the knowledge base's best answers end in the words the person can send: a letter to a\nlandlord, a message to a neighbour, the sentence to say at a counter. Those words sit inside\nquotation marks, and they have full stops of their own - a letter is two or three sentences long.\n\nEvery short form of an answer is made by cutting it at a full stop. That is right for a paragraph\nof advice, and wrong for a quoted letter: the cut landed inside the quotes and the person was\ngiven\n\n    Keep it short, dated and specific, and ask for a date: \"Hi — I reported the boiler on [date]\n    and nothing has been done.\n\n- half a letter, with the opening quotation mark never closed. Said after \"how do i ask him\nagain\", that is what the bot printed. Half a quotation is not a shorter version of the answer,\nit is a broken one.\n\nSo the two marks are counted, and a cut that stops with a quote still open is carried on until the\nquote closes. Nothing else about the cut changes: a reply with no quotation in it comes back\nexactly as the caller would have cut it.\n"))?;
@@ -41,7 +41,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/quotes.py:27-36 left_open
 pub(super) fn left_open(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["said"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/quotes.py", 27, 36, "left_open");
+rt.trace_call_code("bot/memory/quotes.py", 27, 36, "left_open", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_35 = { let __callable_36 = frame.load(rt, "str")?; let mut __args_37 = CallArgs::default(); let __v_38 = { let mut __v_39 = frame.load(rt, "said")?; if !__v_39.is_truthy() { __v_39 = Value::from(""); } __v_39 }; __args_37.positional.push(__v_38); rt.call(&__callable_36, __args_37)? };
@@ -63,7 +63,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/quotes.py:39-53 closed
 pub(super) fn closed(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["part","rest","said","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/quotes.py", 39, 53, "closed");
+rt.trace_call_code("bot/memory/quotes.py", 39, 53, "closed", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_58 = { let __callable_59 = { let __v_61 = { let __callable_62 = frame.load(rt, "str")?; let mut __args_63 = CallArgs::default(); let __v_64 = { let mut __v_65 = frame.load(rt, "said")?; if !__v_65.is_truthy() { __v_65 = Value::from(""); } __v_65 }; __args_63.positional.push(__v_64); rt.call(&__callable_62, __args_63)? }; rt.getattr(&__v_61, "strip")? }; let mut __args_60 = CallArgs::default(); rt.call(&__callable_59, __args_60)? };
@@ -102,7 +102,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/quotes.py:66-74 a_name
 pub(super) fn a_name(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["after","before","end","start","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/quotes.py", 66, 74, "a_name");
+rt.trace_call_code("bot/memory/quotes.py", 66, 74, "a_name", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_103 = { let __callable_104 = { let __v_106 = { let __callable_107 = frame.load(rt, "str")?; let mut __args_108 = CallArgs::default(); let __v_109 = { let __v_110 = frame.load(rt, "text")?; let __v_112 = frame.load(rt, "start")?; let __index_113 = if matches!(__v_112, Value::None) { None } else { let n = __v_112.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; let __v_114 = frame.load(rt, "end")?; let __index_115 = if matches!(__v_114, Value::None) { None } else { let n = __v_114.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_110, __index_113, __index_115, 1_i64)? }; __args_108.positional.push(__v_109); rt.call(&__callable_107, __args_108)? }; rt.getattr(&__v_106, "strip")? }; let mut __args_105 = CallArgs::default(); rt.call(&__callable_104, __args_105)? };
@@ -131,7 +131,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/quotes.py:77-105 sentences
 pub(super) fn sentences(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["end","out","part","parts","splitter","start","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/quotes.py", 77, 105, "sentences");
+rt.trace_call_code("bot/memory/quotes.py", 77, 105, "sentences", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_146 = { let __callable_147 = frame.load(rt, "str")?; let mut __args_148 = CallArgs::default(); let __v_149 = { let mut __v_150 = frame.load(rt, "text")?; if !__v_150.is_truthy() { __v_150 = Value::from(""); } __v_150 }; __args_148.positional.push(__v_149); rt.call(&__callable_147, __args_148)? };

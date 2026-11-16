@@ -20,7 +20,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_a_whole_step",85,105),
 ("reply_for.<locals>.<genexpr>",315,315)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/carried_on.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/carried_on.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A follow-up that says which step of the last answer they have done gets the step after it.\n\n\"how do i get red wine out of a cream carpet\" / \"it happened last night and i blotted it\" was\nanswered \"Thanks for telling me - I'm here if you want to dig into any of that\", which is the one\nreply a follow-up must never get. The person has not asked anything new: they have told the bot\nwhere they are in the job, and the useful thing a friend says next is the next bit of the job -\nin the words the answer already used, because those words are the ones they are following.\n\n    how do i get red wine out of a cream carpet\n      Blot it, don't rub, with kitchen paper, then pour on cold water and blot again, ...\n    it happened last night and i blotted it\n      Good - blotting first is right. Now pour on cold water and blot again.\n\nThe reading is deliberately narrow, because the same words after a different kind of answer are\nnot a report on it:\n\n* the turn before must have been an answer from `answers` that gave instructions, and the line\n  before it must have been a how-to ask (\"how do i\", \"how to\", \"what's the best way\");\n* the line must be short and carry no question of its own, so \"i blotted it, will that be\n  enough?\" is still a question and is answered as one;\n* the person has to be in the line, saying what they did (\"i blotted it\", \"we gave it a go\"): \"it\n  boiled over\" and \"it happened last night\" report the thing, not a step of theirs;\n* it must name the step, in one of the two ways a person does that: an action in the past\n  (\"blotted\", \"scrubbed\") that the answer used, or a thing they finished with a completion verb\n  in front of it (\"i did the bicarbonate bit\", \"i used the vinegar\"). The words are matched\n  against the answer, never a list of jobs here;\n* it must not be a different kind of line wearing the same words - a lack (\"i dont have any\n  vinegar\"), a mishap (\"i boiled it dry\", \"it boiled over\"), or a feeling (\"i hate this kettle\")\n  is something to answer, never praise for a step nobody took;\n* the clause the action came from must not be one the answer forbade (\"don't rub\"), so a person\n  who rubbed it is not told they did the right thing;\n* something must come after that step in the answer, and it must be an instruction rather than\n  the other half of a pair (\"or a sachet of citric acid\" belongs to the step before it). If they\n  have done the last one, this has nothing to say and passes the turn back.\n"))?;
@@ -83,7 +83,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/carried_on.py:85-105 _a_whole_step
 pub(super) fn _a_whole_step(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","said","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/carried_on.py", 85, 105, "_a_whole_step");
+rt.trace_call_code("bot/memory/carried_on.py", 85, 105, "_a_whole_step", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_147 = { let __callable_148 = { let __v_150 = frame.load(rt, "said")?; rt.getattr(&__v_150, "split")? }; let mut __args_149 = CallArgs::default(); rt.call(&__callable_148, __args_149)? };
@@ -137,7 +137,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/carried_on.py:141-149 _stem
 pub(super) fn _stem(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/carried_on.py", 141, 149, "_stem");
+rt.trace_call_code("bot/memory/carried_on.py", 141, 149, "_stem", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_262 = { let __callable_263 = { let __v_265 = { let __callable_266 = frame.load(rt, "str")?; let mut __args_267 = CallArgs::default(); let __v_268 = { let mut __v_269 = frame.load(rt, "word")?; if !__v_269.is_truthy() { __v_269 = Value::from(""); } __v_269 }; __args_267.positional.push(__v_268); rt.call(&__callable_266, __args_267)? }; rt.getattr(&__v_265, "lower")? }; let mut __args_264 = CallArgs::default(); rt.call(&__callable_263, __args_264)? };
@@ -168,7 +168,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/carried_on.py:152-153 _words
 pub(super) fn _words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/carried_on.py", 152, 153, "_words");
+rt.trace_call_code("bot/memory/carried_on.py", 152, 153, "_words", 4);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __comp_parent_325 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_325.clone(), &["w"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_325 = __comp_parent_325.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_326 = { let __v_328 = frame.load(rt, "WORD")?; rt.getattr(&__v_328, "findall")? }; let mut __args_327 = CallArgs::default(); let __v_329 = { let __callable_330 = { let __v_332 = { let __callable_333 = { let __v_335 = { let __callable_336 = frame.load(rt, "str")?; let mut __args_337 = CallArgs::default(); let __v_338 = { let mut __v_339 = frame.load(rt, "text")?; if !__v_339.is_truthy() { __v_339 = Value::from(""); } __v_339 }; __args_337.positional.push(__v_338); rt.call(&__callable_336, __args_337)? }; rt.getattr(&__v_335, "lower")? }; let mut __args_334 = CallArgs::default(); rt.call(&__callable_333, __args_334)? }; rt.getattr(&__v_332, "replace")? }; let mut __args_331 = CallArgs::default(); let __v_340 = Value::from("’"); __args_331.positional.push(__v_340); let __v_341 = Value::from("'"); __args_331.positional.push(__v_341); rt.call(&__callable_330, __args_331)? }; __args_327.positional.push(__v_329); rt.call(&__callable_326, __args_327)? }) }) }, assign: { let __comp_parent_325 = __comp_parent_325.clone(); Rc::new(move |rt, frame, value| { frame.store("w", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_325 = __comp_parent_325.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "w")?)) })?) }));
 Ok(__Flow::Next)
@@ -182,7 +182,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/carried_on.py:180-195 _steps
 pub(super) fn _steps(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","out","part","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/carried_on.py", 180, 195, "_steps");
+rt.trace_call_code("bot/memory/carried_on.py", 180, 195, "_steps", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_342 = { let mut __items_343 = Vec::new(); Value::list(__items_343) };
@@ -232,7 +232,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/carried_on.py:198-220 _doing
 pub(super) fn _doing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["base","low","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/carried_on.py", 198, 220, "_doing");
+rt.trace_call_code("bot/memory/carried_on.py", 198, 220, "_doing", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_400 = { let __callable_401 = { let __v_403 = { let __callable_404 = frame.load(rt, "str")?; let mut __args_405 = CallArgs::default(); let __v_406 = { let mut __v_407 = frame.load(rt, "word")?; if !__v_407.is_truthy() { __v_407 = Value::from(""); } __v_407 }; __args_405.positional.push(__v_406); rt.call(&__callable_404, __args_405)? }; rt.getattr(&__v_403, "lower")? }; let mut __args_402 = CallArgs::default(); rt.call(&__callable_401, __args_402)? };
@@ -291,7 +291,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/carried_on.py:223-240 _the_action
 pub(super) fn _the_action(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","stem","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/carried_on.py", 223, 240, "_the_action");
+rt.trace_call_code("bot/memory/carried_on.py", 223, 240, "_the_action", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_556 = { let __comp_parent_557 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_557.clone(), &["w"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_557 = __comp_parent_557.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_558 = frame.load(rt, "_words")?; let mut __args_559 = CallArgs::default(); let __v_560 = frame.load(rt, "line")?; __args_559.positional.push(__v_560); rt.call(&__callable_558, __args_559)? }) }) }, assign: { let __comp_parent_557 = __comp_parent_557.clone(); Rc::new(move |rt, frame, value| { frame.store("w", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_557 = __comp_parent_557.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_561 = frame.load(rt, "w")?; let mut __matched_562 = true; if __matched_562 { let __v_563 = frame.load(rt, "FRAME")?; __matched_562 = !pyrt::ops::contains(&__v_563, &__v_561)?; } Value::Bool(__matched_562) }).is_truthy()) }) }] }], { let __comp_parent_557 = __comp_parent_557.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "w")?)) })?) };
@@ -335,7 +335,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/carried_on.py:243-344 reply_for
 pub(super) fn reply_for(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["action","after","asked","at","done","first","first_word","last","lead","line","memory","named","named_word","said","shapes","step","steps","text","things","turns","which"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/carried_on.py", 243, 344, "reply_for");
+rt.trace_call_code("bot/memory/carried_on.py", 243, 344, "reply_for", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_602 = { let __callable_603 = { let __v_605 = Value::from(" "); rt.getattr(&__v_605, "join")? }; let mut __args_604 = CallArgs::default(); let __v_606 = { let __callable_607 = frame.load(rt, "_words")?; let mut __args_608 = CallArgs::default(); let __v_609 = frame.load(rt, "text")?; __args_608.positional.push(__v_609); rt.call(&__callable_607, __args_608)? }; __args_604.positional.push(__v_606); rt.call(&__callable_603, __args_604)? };
@@ -468,7 +468,7 @@ return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_854 = { let __callable_855 = frame.load(rt, "all")?; let mut __args_856 = CallArgs::default(); let __v_857 = { let __comp_parent_858 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_858.clone(), &["w"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_858 = __comp_parent_858.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_859 = frame.load(rt, "_words")?; let mut __args_860 = CallArgs::default(); let __v_861 = frame.load(rt, "said")?; __args_860.positional.push(__v_861); rt.call(&__callable_859, __args_860)? }) }) }, assign: { let __comp_parent_858 = __comp_parent_858.clone(); Rc::new(move |rt, frame, value| { frame.store("w", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_858 = __comp_parent_858.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_862 = frame.load(rt, "w")?; let mut __matched_863 = true; if __matched_863 { let __v_864 = frame.load(rt, "POINTS_BACK")?; __matched_863 = pyrt::ops::contains(&__v_864, &__v_862)?; } Value::Bool(__matched_863) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/carried_on.py", 315, 315, "reply_for.<locals>.<genexpr>"); Ok(()) }))? }; __args_856.positional.push(__v_857); rt.call(&__callable_855, __args_856)? }; if __v_854.is_truthy() {
+let __v_854 = { let __callable_855 = frame.load(rt, "all")?; let mut __args_856 = CallArgs::default(); let __v_857 = { let __comp_parent_858 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_858.clone(), &["w"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_858 = __comp_parent_858.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_859 = frame.load(rt, "_words")?; let mut __args_860 = CallArgs::default(); let __v_861 = frame.load(rt, "said")?; __args_860.positional.push(__v_861); rt.call(&__callable_859, __args_860)? }) }) }, assign: { let __comp_parent_858 = __comp_parent_858.clone(); Rc::new(move |rt, frame, value| { frame.store("w", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_858 = __comp_parent_858.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_862 = frame.load(rt, "w")?; let mut __matched_863 = true; if __matched_863 { let __v_864 = frame.load(rt, "POINTS_BACK")?; __matched_863 = pyrt::ops::contains(&__v_864, &__v_862)?; } Value::Bool(__matched_863) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/carried_on.py", 315, 315, "reply_for.<locals>.<genexpr>", 9); Ok(()) }))? }; __args_856.positional.push(__v_857); rt.call(&__callable_855, __args_856)? }; if __v_854.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 

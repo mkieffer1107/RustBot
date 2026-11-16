@@ -22,7 +22,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_the_age_of_the_group",46,59),
 ("the_age_of_the_person_they_mean",232,249)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/people.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/people.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("The person a line is about, when the chat already knows one: who, and how old they are.\n\nThe store keeps facts about other people in `memory[\"others\"]` (`bot/memory/__init__.py`), one\nrecord per person: `{\"who\": \"son\", \"age\": 4}` from `my son is 4`. An answer that needs something\nabout that person - a present for their birthday, how long they should sleep - can only use it\nif it can say *which* of the people in the store the line means. That is all this module does:\n\n    my son is 4 / what should i get him for his birthday\n    -> {\"who\": \"son\", \"age\": 4}, so the present is a four-year-old's and not a grown-up's\n\nA line that names the relation (\"my daughter\", \"my mum\") is the sure case. A line that says only\n`him` or `her` is read by the gender of the relation the store holds, and only when the store\nholds exactly one person of it: two sons and a `him` is nobody in particular, and a guess about\nwhose age it is is worse than saying nothing. Everyone else returns None, so a module that asks\nfalls back to the answer it had before.\n"))?;
@@ -60,7 +60,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/people.py:46-59 _the_age_of_the_group
 pub(super) fn _the_age_of_the_group(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["age","memory","theirs"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/people.py", 46, 59, "_the_age_of_the_group");
+rt.trace_call_code("bot/memory/people.py", 46, 59, "_the_age_of_the_group", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_92 = { let __v_93 = { let __callable_94 = frame.load(rt, "isinstance")?; let mut __args_95 = CallArgs::default(); let __v_96 = frame.load(rt, "memory")?; __args_95.positional.push(__v_96); let __v_97 = frame.load(rt, "dict")?; __args_95.positional.push(__v_97); rt.call(&__callable_94, __args_95)? }; if __v_93.is_truthy() { { let __callable_98 = { let __v_100 = frame.load(rt, "memory")?; rt.getattr(&__v_100, "get")? }; let mut __args_99 = CallArgs::default(); let __v_101 = Value::from("their_age"); __args_99.positional.push(__v_101); rt.call(&__callable_98, __args_99)? } } else { Value::None } };
@@ -88,7 +88,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/people.py:62-68 _with_an_age
 pub(super) fn _with_an_age(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["record"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/people.py", 62, 68, "_with_an_age");
+rt.trace_call_code("bot/memory/people.py", 62, 68, "_with_an_age", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_122 = { let __v_123 = { let __callable_124 = frame.load(rt, "isinstance")?; let mut __args_125 = CallArgs::default(); let __v_126 = frame.load(rt, "record")?; __args_125.positional.push(__v_126); let __v_127 = frame.load(rt, "dict")?; __args_125.positional.push(__v_127); rt.call(&__callable_124, __args_125)? }; Value::Bool(!__v_123.is_truthy()) }; if __v_122.is_truthy() {
@@ -101,7 +101,7 @@ return Ok(__Flow::Return(Value::Bool(true)));
 } else {
 
 }
-return Ok(__Flow::Return({ let __callable_145 = frame.load(rt, "any")?; let mut __args_146 = CallArgs::default(); let __v_147 = { let __comp_parent_148 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_148.clone(), &["age"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_148 = __comp_parent_148.clone(); Rc::new(move |rt, frame| {  Ok({ let mut __v_149 = { let __callable_150 = { let __v_152 = frame.load(rt, "record")?; rt.getattr(&__v_152, "get")? }; let mut __args_151 = CallArgs::default(); let __v_153 = Value::from("ages"); __args_151.positional.push(__v_153); rt.call(&__callable_150, __args_151)? }; if !__v_149.is_truthy() { __v_149 = { let mut __items_154 = Vec::new(); Value::tuple(__items_154) }; } __v_149 }) }) }, assign: { let __comp_parent_148 = __comp_parent_148.clone(); Rc::new(move |rt, frame, value| { frame.store("age", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_148 = __comp_parent_148.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_155 = { let __callable_156 = frame.load(rt, "isinstance")?; let mut __args_157 = CallArgs::default(); let __v_158 = frame.load(rt, "age")?; __args_157.positional.push(__v_158); let __v_159 = frame.load(rt, "int")?; __args_157.positional.push(__v_159); rt.call(&__callable_156, __args_157)? }; if __v_155.is_truthy() { __v_155 = { let mut __v_160 = frame.load(rt, "age")?; let mut __matched_161 = true; if __matched_161 { let __v_162 = Value::Int("0".parse().expect("integer literal")); __matched_161 = pyrt::ops::compare(&__v_160, &__v_162)?.is_some_and(|o| o.is_gt()); } Value::Bool(__matched_161) }; } __v_155 })) }, Rc::new(|rt| { rt.trace_call("bot/memory/people.py", 68, 68, "_with_an_age.<locals>.<genexpr>"); Ok(()) }))? }; __args_146.positional.push(__v_147); rt.call(&__callable_145, __args_146)? }));
+return Ok(__Flow::Return({ let __callable_145 = frame.load(rt, "any")?; let mut __args_146 = CallArgs::default(); let __v_147 = { let __comp_parent_148 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_148.clone(), &["age"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_148 = __comp_parent_148.clone(); Rc::new(move |rt, frame| {  Ok({ let mut __v_149 = { let __callable_150 = { let __v_152 = frame.load(rt, "record")?; rt.getattr(&__v_152, "get")? }; let mut __args_151 = CallArgs::default(); let __v_153 = Value::from("ages"); __args_151.positional.push(__v_153); rt.call(&__callable_150, __args_151)? }; if !__v_149.is_truthy() { __v_149 = { let mut __items_154 = Vec::new(); Value::tuple(__items_154) }; } __v_149 }) }) }, assign: { let __comp_parent_148 = __comp_parent_148.clone(); Rc::new(move |rt, frame, value| { frame.store("age", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_148 = __comp_parent_148.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_155 = { let __callable_156 = frame.load(rt, "isinstance")?; let mut __args_157 = CallArgs::default(); let __v_158 = frame.load(rt, "age")?; __args_157.positional.push(__v_158); let __v_159 = frame.load(rt, "int")?; __args_157.positional.push(__v_159); rt.call(&__callable_156, __args_157)? }; if __v_155.is_truthy() { __v_155 = { let mut __v_160 = frame.load(rt, "age")?; let mut __matched_161 = true; if __matched_161 { let __v_162 = Value::Int("0".parse().expect("integer literal")); __matched_161 = pyrt::ops::compare(&__v_160, &__v_162)?.is_some_and(|o| o.is_gt()); } Value::Bool(__matched_161) }; } __v_155 })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/people.py", 68, 68, "_with_an_age.<locals>.<genexpr>", 4); Ok(()) }))? }; __args_146.positional.push(__v_147); rt.call(&__callable_145, __args_146)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -113,7 +113,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/people.py:71-78 _age
 pub(super) fn _age(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["age","record"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/people.py", 71, 78, "_age");
+rt.trace_call_code("bot/memory/people.py", 71, 78, "_age", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_163 = { let __callable_164 = frame.load(rt, "isinstance")?; let mut __args_165 = CallArgs::default(); let __v_166 = { let __callable_167 = { let __v_169 = frame.load(rt, "record")?; rt.getattr(&__v_169, "get")? }; let mut __args_168 = CallArgs::default(); let __v_170 = Value::from("age"); __args_168.positional.push(__v_170); rt.call(&__callable_167, __args_168)? }; __args_165.positional.push(__v_166); let __v_171 = frame.load(rt, "int")?; __args_165.positional.push(__v_171); rt.call(&__callable_164, __args_165)? }; if __v_163.is_truthy() {
@@ -148,7 +148,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/people.py:81-123 a_person_with_an_age
 pub(super) fn a_person_with_an_age(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","line","memory","named","one","others","people","person","reading","said_her","said_him","understood","wanted"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/people.py", 81, 123, "a_person_with_an_age");
+rt.trace_call_code("bot/memory/people.py", 81, 123, "a_person_with_an_age", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __module_190 = rt.import("bot.memory")?;
@@ -229,7 +229,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/people.py:126-133 _the_group_record
 pub(super) fn _the_group_record(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["age","line","memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/people.py", 126, 133, "_the_group_record");
+rt.trace_call_code("bot/memory/people.py", 126, 133, "_the_group_record", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_331 = { let __v_332 = { let __callable_333 = { let __v_335 = frame.load(rt, "THEM_SAID")?; rt.getattr(&__v_335, "search")? }; let mut __args_334 = CallArgs::default(); let __v_336 = { let mut __v_337 = frame.load(rt, "line")?; if !__v_337.is_truthy() { __v_337 = Value::from(""); } __v_337 }; __args_334.positional.push(__v_336); rt.call(&__callable_333, __args_334)? }; Value::Bool(!__v_332.is_truthy()) }; if __v_331.is_truthy() {
@@ -256,7 +256,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/people.py:136-150 _the_ones_a_them_points_at
 pub(super) fn _the_ones_a_them_points_at(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["ages","people","with_an_age"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/people.py", 136, 150, "_the_ones_a_them_points_at");
+rt.trace_call_code("bot/memory/people.py", 136, 150, "_the_ones_a_them_points_at", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_349 = { let __comp_parent_350 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_350.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_350 = __comp_parent_350.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "people")?) }) }, assign: { let __comp_parent_350 = __comp_parent_350.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_350 = __comp_parent_350.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_351 = frame.load(rt, "_with_an_age")?; let mut __args_352 = CallArgs::default(); let __v_353 = frame.load(rt, "one")?; __args_352.positional.push(__v_353); rt.call(&__callable_351, __args_352)? }).is_truthy()) }) }] }], { let __comp_parent_350 = __comp_parent_350.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "one")?)) })?) };
@@ -285,7 +285,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/people.py:159-167 the_people
 pub(super) fn the_people(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","memory","one","others"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/people.py", 159, 167, "the_people");
+rt.trace_call_code("bot/memory/people.py", 159, 167, "the_people", 9);
 let flow = (|| -> PyResult<__Flow> {
 
 let __module_370 = rt.import("bot.memory")?;
@@ -312,7 +312,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/people.py:170-229 a_child_the_chat_is_about
 pub(super) fn a_child_the_chat_is_about(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["age","ages","line","memory","named","of_that_kind","one","people","person","reading","said_her","said_him","understood","wanted","who"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/people.py", 170, 229, "a_child_the_chat_is_about");
+rt.trace_call_code("bot/memory/people.py", 170, 229, "a_child_the_chat_is_about", 10);
 let flow = (|| -> PyResult<__Flow> {
 
 let __module_413 = rt.import("bot.memory.topics")?;
@@ -439,7 +439,7 @@ mod __py_8 { use super::*;
 // py: bot/memory/people.py:232-249 the_age_of_the_person_they_mean
 pub(super) fn the_age_of_the_person_they_mean(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","held","line","memory","reading","understood"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/people.py", 232, 249, "the_age_of_the_person_they_mean");
+rt.trace_call_code("bot/memory/people.py", 232, 249, "the_age_of_the_person_they_mean", 11);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_613 = { let __callable_614 = frame.load(rt, "a_person_with_an_age")?; let mut __args_615 = CallArgs::default(); let __v_616 = frame.load(rt, "memory")?; __args_615.positional.push(__v_616); let __v_617 = frame.load(rt, "understood")?; __args_615.positional.push(__v_617); rt.call(&__callable_614, __args_615)? };

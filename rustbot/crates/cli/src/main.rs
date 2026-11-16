@@ -2,6 +2,7 @@ use serde_json::{Value as Json, json};
 use std::collections::BTreeMap;
 use std::io::{self, BufRead, Write};
 mod isolation;
+mod terminal;
 
 fn main() {
     if let Err(message) = run() {
@@ -15,7 +16,7 @@ fn run() -> Result<(), String> {
     match args.first().map(String::as_str) {
         Some("--version") | Some("-V") => println!("rustbot {}", env!("CARGO_PKG_VERSION")),
         Some("--help") | Some("-h") => println!(
-            "RustBot port under development.\nUsage: rustbot pyrt-check <kind> < cases.jsonl\n{}",
+            "RustBot port under development.\nUsage: rustbot [-p TEXT] [-i] [-s N] [-v]\n       rustbot replay [--trace] [--seed N] [--clock ISO] < conversations.jsonl\n       rustbot hook MODULE HOOK < hooks.jsonl\n       rustbot call DOTTED.NAME < functions.jsonl\n       rustbot pyrt-check KIND < cases.jsonl\n{}",
             bot::PORT_STATUS
         ),
         Some("pyrt-check") if args.len() == 2 => {
@@ -33,7 +34,7 @@ fn run() -> Result<(), String> {
         Some("call") if args.len() == 2 => call_records(&args[1], None)?,
         Some("hook") if args.len() == 3 => call_records(&args[1], Some(&args[2]))?,
         Some("replay") => replay_records(&args[1..])?,
-        _ => return Err("bot translation is not implemented yet; use --help".into()),
+        _ => terminal::run(&args)?,
     }
     Ok(())
 }

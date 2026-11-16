@@ -19,7 +19,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_vary",37,43),
 ("the_part_asked",124,163)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/whathurts.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/whathurts.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("The part of them that hurts, and which one it is.\n\nThe store keeps one complaint of the person's in ``user[\"hurts\"]`` (the part, the side, the place\non it, and the part a put-right came from). These readers answer the lines about it. They live\nhere rather than in ``bot/modules/memory_store.py`` because that file is at the 1 MiB cap the\nworld enforces and a reader added to it cannot be submitted.\n"))?;
@@ -68,7 +68,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/whathurts.py:37-43 _vary
 pub(super) fn _vary(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["fresh","memory","options","recent","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whathurts.py", 37, 43, "_vary");
+rt.trace_call_code("bot/memory/whathurts.py", 37, 43, "_vary", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_112 = { let mut __v_113 = { let __callable_114 = { let __v_116 = frame.load(rt, "memory")?; rt.getattr(&__v_116, "get")? }; let mut __args_115 = CallArgs::default(); let __v_117 = Value::from("turns"); __args_115.positional.push(__v_117); rt.call(&__callable_114, __args_115)? }; if !__v_113.is_truthy() { __v_113 = { let mut __items_118 = Vec::new(); Value::list(__items_118) }; } __v_113 };
@@ -89,7 +89,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/whathurts.py:46-52 which_one_is_a_side
 pub(super) fn which_one_is_a_side(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","low"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whathurts.py", 46, 52, "which_one_is_a_side");
+rt.trace_call_code("bot/memory/whathurts.py", 46, 52, "which_one_is_a_side", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_150 = { let __callable_151 = { let __v_153 = frame.load(rt, "AFTER_WHICH_ONE")?; rt.getattr(&__v_153, "search")? }; let mut __args_152 = CallArgs::default(); let __v_154 = frame.load(rt, "low")?; __args_152.positional.push(__v_154); rt.call(&__callable_151, __args_152)? };
@@ -111,7 +111,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/whathurts.py:55-58 before
 pub(super) fn before(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whathurts.py", 55, 58, "before");
+rt.trace_call_code("bot/memory/whathurts.py", 55, 58, "before", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_174 = { let mut __v_175 = { let __callable_176 = { let __v_178 = { let mut __v_179 = { let __callable_180 = { let __v_182 = frame.load(rt, "memory")?; rt.getattr(&__v_182, "get")? }; let mut __args_181 = CallArgs::default(); let __v_183 = Value::from("user"); __args_181.positional.push(__v_183); rt.call(&__callable_180, __args_181)? }; if !__v_179.is_truthy() { __v_179 = { let __dict_184 = Value::dict(); __dict_184 }; } __v_179 }; rt.getattr(&__v_178, "get")? }; let mut __args_177 = CallArgs::default(); let __v_185 = Value::from("hurts"); __args_177.positional.push(__v_185); rt.call(&__callable_176, __args_177)? }; if !__v_175.is_truthy() { __v_175 = { let __dict_186 = Value::dict(); __dict_186 }; } __v_175 };
@@ -128,7 +128,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/whathurts.py:61-68 after
 pub(super) fn after(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","held_before","memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whathurts.py", 61, 68, "after");
+rt.trace_call_code("bot/memory/whathurts.py", 61, 68, "after", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_200 = { let __callable_201 = { let __v_203 = { let mut __v_204 = { let __callable_205 = { let __v_207 = frame.load(rt, "memory")?; rt.getattr(&__v_207, "get")? }; let mut __args_206 = CallArgs::default(); let __v_208 = Value::from("user"); __args_206.positional.push(__v_208); rt.call(&__callable_205, __args_206)? }; if !__v_204.is_truthy() { __v_204 = { let __dict_209 = Value::dict(); __dict_209 }; } __v_204 }; rt.getattr(&__v_203, "get")? }; let mut __args_202 = CallArgs::default(); let __v_210 = Value::from("hurts"); __args_202.positional.push(__v_210); rt.call(&__callable_201, __args_202)? };
@@ -150,7 +150,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/whathurts.py:77-78 _a_question_about_a_part
 pub(super) fn _a_question_about_a_part(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whathurts.py", 77, 78, "_a_question_about_a_part");
+rt.trace_call_code("bot/memory/whathurts.py", 77, 78, "_a_question_about_a_part", 6);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __callable_231 = frame.load(rt, "bool")?; let mut __args_232 = CallArgs::default(); let __v_233 = { let __callable_234 = { let __v_236 = frame.load(rt, "ASKED_ABOUT_A_PART")?; rt.getattr(&__v_236, "search")? }; let mut __args_235 = CallArgs::default(); let __v_237 = { let __callable_238 = frame.load(rt, "str")?; let mut __args_239 = CallArgs::default(); let __v_240 = { let mut __v_241 = frame.load(rt, "line")?; if !__v_241.is_truthy() { __v_241 = Value::from(""); } __v_241 }; __args_239.positional.push(__v_240); rt.call(&__callable_238, __args_239)? }; __args_235.positional.push(__v_237); rt.call(&__callable_234, __args_235)? }; __args_232.positional.push(__v_233); rt.call(&__callable_231, __args_232)? }));
 Ok(__Flow::Next)
@@ -164,7 +164,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/whathurts.py:81-121 what_is_hurting_reply
 pub(super) fn what_is_hurting_reply(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","held","low","memory","one","part","previous","side","verb","was","what"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whathurts.py", 81, 121, "what_is_hurting_reply");
+rt.trace_call_code("bot/memory/whathurts.py", 81, 121, "what_is_hurting_reply", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_242 = { let mut __v_243 = { let __v_244 = { let __callable_245 = { let __v_247 = frame.load(rt, "HURTING_ASK")?; rt.getattr(&__v_247, "search")? }; let mut __args_246 = CallArgs::default(); let __v_248 = frame.load(rt, "low")?; __args_246.positional.push(__v_248); rt.call(&__callable_245, __args_246)? }; Value::Bool(!__v_244.is_truthy()) }; if !__v_243.is_truthy() { __v_243 = { let __v_249 = { let __callable_250 = { let __v_252 = frame.load(rt, "re")?; rt.getattr(&__v_252, "search")? }; let mut __args_251 = CallArgs::default(); let __v_253 = Value::from("\\bsa(?:y|id)\\b|\\bwhat .*\\b(?:hurt|sore|pain)\\b"); __args_251.positional.push(__v_253); let __v_254 = frame.load(rt, "low")?; __args_251.positional.push(__v_254); rt.call(&__callable_250, __args_251)? }; Value::Bool(!__v_249.is_truthy()) }; } __v_243 }; if __v_242.is_truthy() {
@@ -222,7 +222,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/whathurts.py:124-163 the_part_asked
 pub(super) fn the_part_asked(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","held","low","memory","part","place","previous","said","side"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whathurts.py", 124, 163, "the_part_asked");
+rt.trace_call_code("bot/memory/whathurts.py", 124, 163, "the_part_asked", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_480 = { let __v_481 = { let __callable_482 = { let __v_484 = frame.load(rt, "WHICH_PART")?; rt.getattr(&__v_484, "search")? }; let mut __args_483 = CallArgs::default(); let __v_485 = frame.load(rt, "low")?; __args_483.positional.push(__v_485); rt.call(&__callable_482, __args_483)? }; Value::Bool(!__v_481.is_truthy()) }; if __v_480.is_truthy() {

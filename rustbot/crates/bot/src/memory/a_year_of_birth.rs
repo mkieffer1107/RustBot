@@ -18,7 +18,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_today",47,48),
 ("observe",94,122)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/a_year_of_birth.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/a_year_of_birth.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A year of birth told in chat is the age, said the long way.\n\n    i was born in 1990\n    how old am i          -> main: \"You haven't told me your age yet.\"\n\nThe store has always answered \"how old am i\" from the age it was told (\"You told me you're 34\"),\nand it reads a figure after \"i am\" or \"i'm\". A year of birth is the same fact in other words, and\nnothing read it: the person says when they were born, asks their age a turn later, and is told\nthey never said.\n\nSo the year is filed as the age this chat would work out from it, and the store's own answer does\nthe rest - which is what the person hears in the wording the store already uses, not a second\nvoice saying the same thing in its own way.\n\nOnly the person's own year is taken. Somebody else's (\"my son was born in 2015\") is a fact about a\nperson the store keeps, and the readers that answer \"how old is my son\" own it. A line that gives\nboth keeps them apart: \"i was born in 1990 and im 35\" leaves the age it states.\n"))?;
@@ -50,7 +50,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/a_year_of_birth.py:47-48 _today
 pub(super) fn _today(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &[], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/a_year_of_birth.py", 47, 48, "_today");
+rt.trace_call_code("bot/memory/a_year_of_birth.py", 47, 48, "_today", 2);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __callable_54 = { let __v_56 = { let __v_57 = frame.load(rt, "datetime")?; rt.getattr(&__v_57, "date")? }; rt.getattr(&__v_56, "today")? }; let mut __args_55 = CallArgs::default(); rt.call(&__callable_54, __args_55)? }));
 Ok(__Flow::Next)
@@ -64,7 +64,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/a_year_of_birth.py:51-53 _the_store
 pub(super) fn _the_store(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","user"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/a_year_of_birth.py", 51, 53, "_the_store");
+rt.trace_call_code("bot/memory/a_year_of_birth.py", 51, 53, "_the_store", 3);
 let flow = (|| -> PyResult<__Flow> {
 let __module_58 = rt.import("bot.memory")?;
 let __v_59 = rt.import_from("bot.memory", "user")?;
@@ -81,7 +81,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/a_year_of_birth.py:56-64 _a_slip
 pub(super) fn _a_slip(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["born","clean","rest"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/a_year_of_birth.py", 56, 64, "_a_slip");
+rt.trace_call_code("bot/memory/a_year_of_birth.py", 56, 64, "_a_slip", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_63 = { let __callable_64 = { let __v_66 = { let __callable_67 = frame.load(rt, "str")?; let mut __args_68 = CallArgs::default(); let __v_69 = { let mut __v_70 = frame.load(rt, "clean")?; if !__v_70.is_truthy() { __v_70 = Value::from(""); } __v_70 }; __args_68.positional.push(__v_69); rt.call(&__callable_67, __args_68)? }; rt.getattr(&__v_66, "strip")? }; let mut __args_65 = CallArgs::default(); rt.call(&__callable_64, __args_65)? };
@@ -106,7 +106,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/a_year_of_birth.py:67-91 reply
 pub(super) fn reply(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","pick","said","stated","text","turned","year"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/a_year_of_birth.py", 67, 91, "reply");
+rt.trace_call_code("bot/memory/a_year_of_birth.py", 67, 91, "reply", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_107 = { let __callable_108 = frame.load(rt, "str")?; let mut __args_109 = CallArgs::default(); let __v_110 = { let mut __v_111 = frame.load(rt, "text")?; if !__v_111.is_truthy() { __v_111 = Value::from(""); } __v_111 }; __args_109.positional.push(__v_110); rt.call(&__callable_108, __args_109)? };
@@ -171,7 +171,7 @@ return Ok(__Flow::Return(Value::None));
 let __module_193 = rt.import("bot.compose")?;
 let __v_194 = rt.import_from("bot.compose", "pick")?;
 frame.store("pick", __v_194)?;
-return Ok(__Flow::Return({ let __callable_195 = frame.load(rt, "pick")?; let mut __args_196 = CallArgs::default(); let __v_197 = { let __callable_198 = frame.load(rt, "tuple")?; let mut __args_199 = CallArgs::default(); let __v_200 = { let __comp_parent_201 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_201.clone(), &["line"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_201 = __comp_parent_201.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "A_BIRTH_YEAR")?) }) }, assign: { let __comp_parent_201 = __comp_parent_201.clone(); Rc::new(move |rt, frame, value| { frame.store("line", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_201 = __comp_parent_201.clone(); Rc::new(move |rt, frame| Ok({ let __callable_202 = { let __v_204 = frame.load(rt, "line")?; rt.getattr(&__v_204, "format")? }; let mut __args_203 = CallArgs::default(); let __v_205 = frame.load(rt, "year")?; __args_203.keyword("born".into(), __v_205)?; let __v_206 = frame.load(rt, "turned")?; __args_203.keyword("turned".into(), __v_206)?; rt.call(&__callable_202, __args_203)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/a_year_of_birth.py", 91, 91, "reply.<locals>.<genexpr>"); Ok(()) }))? }; __args_199.positional.push(__v_200); rt.call(&__callable_198, __args_199)? }; __args_196.positional.push(__v_197); let __v_207 = frame.load(rt, "memory")?; __args_196.positional.push(__v_207); let __v_208 = frame.load(rt, "said")?; __args_196.positional.push(__v_208); rt.call(&__callable_195, __args_196)? }));
+return Ok(__Flow::Return({ let __callable_195 = frame.load(rt, "pick")?; let mut __args_196 = CallArgs::default(); let __v_197 = { let __callable_198 = frame.load(rt, "tuple")?; let mut __args_199 = CallArgs::default(); let __v_200 = { let __comp_parent_201 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_201.clone(), &["line"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_201 = __comp_parent_201.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "A_BIRTH_YEAR")?) }) }, assign: { let __comp_parent_201 = __comp_parent_201.clone(); Rc::new(move |rt, frame, value| { frame.store("line", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_201 = __comp_parent_201.clone(); Rc::new(move |rt, frame| Ok({ let __callable_202 = { let __v_204 = frame.load(rt, "line")?; rt.getattr(&__v_204, "format")? }; let mut __args_203 = CallArgs::default(); let __v_205 = frame.load(rt, "year")?; __args_203.keyword("born".into(), __v_205)?; let __v_206 = frame.load(rt, "turned")?; __args_203.keyword("turned".into(), __v_206)?; rt.call(&__callable_202, __args_203)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/a_year_of_birth.py", 91, 91, "reply.<locals>.<genexpr>", 6); Ok(()) }))? }; __args_199.positional.push(__v_200); rt.call(&__callable_198, __args_199)? }; __args_196.positional.push(__v_197); let __v_207 = frame.load(rt, "memory")?; __args_196.positional.push(__v_207); let __v_208 = frame.load(rt, "said")?; __args_196.positional.push(__v_208); rt.call(&__callable_195, __args_196)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -183,7 +183,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/a_year_of_birth.py:94-122 observe
 pub(super) fn observe(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["born","facts","memory","remember","said","text","this_year","turned","year"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/a_year_of_birth.py", 94, 122, "observe");
+rt.trace_call_code("bot/memory/a_year_of_birth.py", 94, 122, "observe", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_209 = { let __callable_210 = frame.load(rt, "str")?; let mut __args_211 = CallArgs::default(); let __v_212 = { let mut __v_213 = frame.load(rt, "text")?; if !__v_213.is_truthy() { __v_213 = Value::from(""); } __v_213 }; __args_211.positional.push(__v_212); rt.call(&__callable_210, __args_211)? };

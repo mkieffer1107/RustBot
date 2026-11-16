@@ -18,7 +18,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_a_figure_before",147,156),
 ("senses.<locals>.<genexpr>",207,208)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/understanding/senses.py", 0, 0, "<module>");
+rt.trace_call_code("bot/understanding/senses.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A word that names two everyday things, read from the whole line rather than the word.\n\nSome words are the name of one thing in a line and another thing in the next. \"room\" is the space\nin a kitchen and a bed for the night; \"bat\" is a wooden thing you hit a ball with even though the\nline says nothing about a game. The knowledge base matches on words, so a row that owns one sense\nanswers the other sense's line: \"i have no room in my kitchen\" was sent the hotel-overbooking card,\nbecause \"room\" and \"no room\" are that row's key, and the same line typed \"no room in my kitchen\"\nreached the storage answer. The rows had fenced each other with phrases (\"have no room\" was on the\nstorage row's `avoid` list to stop a hotel line being told to put a shelf up), so the same words\nmeant two things and only the phrase said which.\n\nWhich sense a line means is not in the word: it is in the rest of the sentence. \"in my kitchen\",\n\"cupboard\", \"put away\", \"too much stuff\" say the space; \"hotel\", \"booking\", \"two nights\",\n\"reception\" say the bed. So this module reads the whole line - every word of it, wherever the word\nstands - and reports the sense the line supports.\n\nThe trick is the word nobody says: a line that says nothing either way gets **no reading**, and the\nrows that own a sense stand aside instead of guessing. \"my bat is broken\" names a bat and a break,\nand nothing in it says the animal or the game, so `senses()` says nothing about it and a row keyed\non the game does not answer it. Guessing is what put the cricket coaching on a broken bat.\n\n`understand()` reports the lot under one key, `sense`: a dict of word to the sense the line\nsupports, holding only the words the line actually settles. A row guards on it with a plain test,\nso a word added here is a row's guard away from fixing every line about it.\n"))?;
@@ -44,7 +44,7 @@ mod __py_0 { use super::*;
 // py: bot/understanding/senses.py:147-156 _a_figure_before
 pub(super) fn _a_figure_before(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["before","forms","i","line","token","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/senses.py", 147, 156, "_a_figure_before");
+rt.trace_call_code("bot/understanding/senses.py", 147, 156, "_a_figure_before", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_150 = { let __callable_151 = frame.load(rt, "_forms")?; let mut __args_152 = CallArgs::default(); let __v_153 = frame.load(rt, "word")?; __args_152.positional.push(__v_153); rt.call(&__callable_151, __args_152)? };
@@ -83,7 +83,7 @@ mod __py_1 { use super::*;
 // py: bot/understanding/senses.py:159-166 _forms
 pub(super) fn _forms(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["forms","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/senses.py", 159, 166, "_forms");
+rt.trace_call_code("bot/understanding/senses.py", 159, 166, "_forms", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_208 = { let __items_209 = pyrt::sets::PySet::new(); let __v_210 = frame.load(rt, "word")?; __items_209.insert(__v_210)?; Value::Set(__items_209) };
@@ -110,7 +110,7 @@ mod __py_2 { use super::*;
 // py: bot/understanding/senses.py:169-177 _the_words
 pub(super) fn _the_words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clean","line","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/senses.py", 169, 177, "_the_words");
+rt.trace_call_code("bot/understanding/senses.py", 169, 177, "_the_words", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_258 = { let mut __items_259 = Vec::new(); Value::list(__items_259) };
@@ -145,7 +145,7 @@ mod __py_3 { use super::*;
 // py: bot/understanding/senses.py:180-188 _how_many_words
 pub(super) fn _how_many_words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["cues","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/senses.py", 180, 188, "_how_many_words");
+rt.trace_call_code("bot/understanding/senses.py", 180, 188, "_how_many_words", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_305 = frame.load(rt, "len")?; let mut __args_306 = CallArgs::default(); let __v_307 = { let __comp_parent_308 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_308.clone(), &["cue","form"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_308 = __comp_parent_308.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "cues")?) }) }, assign: { let __comp_parent_308 = __comp_parent_308.clone(); Rc::new(move |rt, frame, value| { frame.store("cue", value)?; Ok(()) }) }, filters: vec![] },pyrt::comprehension::Level { iterable: { let __comp_parent_308 = __comp_parent_308.clone(); Rc::new(move |rt, frame| {  Ok({ let __v_309 = { let __callable_311 = frame.load(rt, "_forms")?; let mut __args_312 = CallArgs::default(); let __v_313 = frame.load(rt, "cue")?; __args_312.positional.push(__v_313); rt.call(&__callable_311, __args_312)? }; let __v_310 = frame.load(rt, "words")?; pyrt::ops::bitwise_rt(rt, "&", &__v_309, &__v_310)? }) }) }, assign: { let __comp_parent_308 = __comp_parent_308.clone(); Rc::new(move |rt, frame, value| { frame.store("form", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_308 = __comp_parent_308.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "form")?)) })? }; __args_306.positional.push(__v_307); rt.call(&__callable_305, __args_306)? }));
@@ -160,7 +160,7 @@ mod __py_4 { use super::*;
 // py: bot/understanding/senses.py:191-220 senses
 pub(super) fn senses(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["by_sense","found","line","scored","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/senses.py", 191, 220, "senses");
+rt.trace_call_code("bot/understanding/senses.py", 191, 220, "senses", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_314 = { let __v_315 = { let __callable_316 = frame.load(rt, "isinstance")?; let mut __args_317 = CallArgs::default(); let __v_318 = frame.load(rt, "line")?; __args_317.positional.push(__v_318); let __v_319 = frame.load(rt, "dict")?; __args_317.positional.push(__v_319); rt.call(&__callable_316, __args_317)? }; Value::Bool(!__v_315.is_truthy()) }; if __v_314.is_truthy() {
@@ -185,7 +185,7 @@ return Ok(__Flow::Continue);
 } else {
 
 }
-let __v_346 = { let __callable_347 = frame.load(rt, "sorted")?; let mut __args_348 = CallArgs::default(); let __v_349 = { let __comp_parent_350 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_350.clone(), &["cues","sense"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_350 = __comp_parent_350.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_351 = { let __v_353 = frame.load(rt, "by_sense")?; rt.getattr(&__v_353, "items")? }; let mut __args_352 = CallArgs::default(); rt.call(&__callable_351, __args_352)? }) }) }, assign: { let __comp_parent_350 = __comp_parent_350.clone(); Rc::new(move |rt, frame, value| { let __unpack_354 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("sense", __unpack_354[0].clone())?; frame.store("cues", __unpack_354[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_350 = __comp_parent_350.clone(); Rc::new(move |rt, frame| Ok({ let mut __items_355 = Vec::new(); let __v_356 = { let __callable_357 = frame.load(rt, "_how_many_words")?; let mut __args_358 = CallArgs::default(); let __v_359 = frame.load(rt, "cues")?; __args_358.positional.push(__v_359); let __v_360 = frame.load(rt, "words")?; __args_358.positional.push(__v_360); rt.call(&__callable_357, __args_358)? }; __items_355.push(__v_356); let __v_361 = frame.load(rt, "sense")?; __items_355.push(__v_361); Value::tuple(__items_355) })) }, Rc::new(|rt| { rt.trace_call("bot/understanding/senses.py", 207, 208, "senses.<locals>.<genexpr>"); Ok(()) }))? }; __args_348.positional.push(__v_349); let __v_362 = Value::Bool(true); __args_348.keyword("reverse".into(), __v_362)?; rt.call(&__callable_347, __args_348)? };
+let __v_346 = { let __callable_347 = frame.load(rt, "sorted")?; let mut __args_348 = CallArgs::default(); let __v_349 = { let __comp_parent_350 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_350.clone(), &["cues","sense"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_350 = __comp_parent_350.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_351 = { let __v_353 = frame.load(rt, "by_sense")?; rt.getattr(&__v_353, "items")? }; let mut __args_352 = CallArgs::default(); rt.call(&__callable_351, __args_352)? }) }) }, assign: { let __comp_parent_350 = __comp_parent_350.clone(); Rc::new(move |rt, frame, value| { let __unpack_354 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("sense", __unpack_354[0].clone())?; frame.store("cues", __unpack_354[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_350 = __comp_parent_350.clone(); Rc::new(move |rt, frame| Ok({ let mut __items_355 = Vec::new(); let __v_356 = { let __callable_357 = frame.load(rt, "_how_many_words")?; let mut __args_358 = CallArgs::default(); let __v_359 = frame.load(rt, "cues")?; __args_358.positional.push(__v_359); let __v_360 = frame.load(rt, "words")?; __args_358.positional.push(__v_360); rt.call(&__callable_357, __args_358)? }; __items_355.push(__v_356); let __v_361 = frame.load(rt, "sense")?; __items_355.push(__v_361); Value::tuple(__items_355) })) }, Rc::new(|rt| { rt.trace_call_code("bot/understanding/senses.py", 207, 208, "senses.<locals>.<genexpr>", 7); Ok(()) }))? }; __args_348.positional.push(__v_349); let __v_362 = Value::Bool(true); __args_348.keyword("reverse".into(), __v_362)?; rt.call(&__callable_347, __args_348)? };
 frame.store("scored", __v_346.clone())?;
 let __v_363 = { let mut __v_364 = { let __callable_366 = frame.load(rt, "len")?; let mut __args_367 = CallArgs::default(); let __v_368 = frame.load(rt, "scored")?; __args_367.positional.push(__v_368); rt.call(&__callable_366, __args_367)? }; let mut __matched_365 = true; if __matched_365 { let __v_369 = Value::Int("2".parse().expect("integer literal")); __matched_365 = pyrt::ops::compare(&__v_364, &__v_369)?.is_some_and(|o| o.is_lt()); } Value::Bool(__matched_365) }; if __v_363.is_truthy() {
 return Ok(__Flow::Continue);

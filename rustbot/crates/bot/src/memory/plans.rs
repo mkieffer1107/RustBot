@@ -27,7 +27,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_a_first_day",61,71),
 ("follow_up",341,450)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/plans.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/plans.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A plan announced is the question the plan implies.\n\nPeople do not ask for help with a plan, they announce it:\n\n    im planning a trip           -> Noted: you're planning a trip.\n    im getting married in june   -> Noted: you're getting married in june.\n    im moving house next month   -> Noted: you're moving house next month.\n    i start a new job on monday  -> Noted: you start a new job on monday.\n\nFiling it is right - the follow-up turns need the plan remembered - but it is not an answer, and\nthe knowledge base already holds the answer to the question the announcement implies:\n\n    how do i plan a trip             -> Two months out: check the passport has six months left...\n    how do i plan a wedding          -> Guest list first, because it sets the cost of everything...\n    what do i need to do to move house -> Do the paper trail in one afternoon: tell the council...\n    first day at a new job           -> Dress one step smarter than the job's everyday clothes...\n\nSo the announcement is read as that question, and answered from the entry it reaches. Two rules\nkeep it honest: the line must be the person's own plan, said as a statement (not a question, not a\nplan they are arguing with, not somebody else's), and the rewrite must reach an entry - a plan the\nknowledge base has no answer for is left to the reply that files it, exactly as before.\n"))?;
@@ -112,7 +112,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/plans.py:61-71 _a_first_day
 pub(super) fn _a_first_day(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["after","found","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 61, 71, "_a_first_day");
+rt.trace_call_code("bot/memory/plans.py", 61, 71, "_a_first_day", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_287 = { let __callable_288 = { let __v_290 = frame.load(rt, "_NEW_JOB")?; rt.getattr(&__v_290, "search")? }; let mut __args_289 = CallArgs::default(); let __v_291 = { let mut __v_292 = frame.load(rt, "text")?; if !__v_292.is_truthy() { __v_292 = Value::from(""); } __v_292 }; __args_289.positional.push(__v_291); rt.call(&__callable_288, __args_289)? };
@@ -146,7 +146,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/plans.py:100-103 as_question
 pub(super) fn as_question(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["_","question","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 100, 103, "as_question");
+rt.trace_call_code("bot/memory/plans.py", 100, 103, "as_question", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_332 = { let __callable_333 = frame.load(rt, "_implied")?; let mut __args_334 = CallArgs::default(); let __v_335 = frame.load(rt, "text")?; __args_334.positional.push(__v_335); rt.call(&__callable_333, __args_334)? };
@@ -163,7 +163,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/plans.py:106-132 _implied
 pub(super) fn _implied(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["ask","clean","found","test","text","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 106, 132, "_implied");
+rt.trace_call_code("bot/memory/plans.py", 106, 132, "_implied", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_337 = { let __callable_338 = { let __v_340 = Value::from(" "); rt.getattr(&__v_340, "join")? }; let mut __args_339 = CallArgs::default(); let __v_341 = { let __callable_342 = { let __v_344 = { let __callable_345 = { let __v_347 = { let __callable_348 = frame.load(rt, "str")?; let mut __args_349 = CallArgs::default(); let __v_350 = { let mut __v_351 = frame.load(rt, "text")?; if !__v_351.is_truthy() { __v_351 = Value::from(""); } __v_351 }; __args_349.positional.push(__v_350); rt.call(&__callable_348, __args_349)? }; rt.getattr(&__v_347, "lower")? }; let mut __args_346 = CallArgs::default(); rt.call(&__callable_345, __args_346)? }; rt.getattr(&__v_344, "split")? }; let mut __args_343 = CallArgs::default(); rt.call(&__callable_342, __args_343)? }; __args_339.positional.push(__v_341); rt.call(&__callable_338, __args_339)? };
@@ -225,7 +225,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/plans.py:135-152 _the_reply
 pub(super) fn _the_reply(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["entry","memory","question","reply"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 135, 152, "_the_reply");
+rt.trace_call_code("bot/memory/plans.py", 135, 152, "_the_reply", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_443 = { let __callable_444 = frame.load(rt, "getattr")?; let mut __args_445 = CallArgs::default(); let __v_446 = frame.load(rt, "entry")?; __args_445.positional.push(__v_446); let __v_447 = Value::from("reply"); __args_445.positional.push(__v_447); let __v_448 = Value::None; __args_445.positional.push(__v_448); rt.call(&__callable_444, __args_445)? };
@@ -267,7 +267,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/plans.py:155-178 answer
 pub(super) fn answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["by_hand","entry","memory","question","reply","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 155, 178, "answer");
+rt.trace_call_code("bot/memory/plans.py", 155, 178, "answer", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_501 = { let __callable_502 = frame.load(rt, "_implied")?; let mut __args_503 = CallArgs::default(); let __v_504 = frame.load(rt, "text")?; __args_503.positional.push(__v_504); rt.call(&__callable_502, __args_503)? };
@@ -327,7 +327,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/plans.py:191-198 _about_planning
 pub(super) fn _about_planning(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["entry","part","piece","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 191, 198, "_about_planning");
+rt.trace_call_code("bot/memory/plans.py", 191, 198, "_about_planning", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_565 = { let __callable_566 = frame.load(rt, "set")?; let mut __args_567 = CallArgs::default(); rt.call(&__callable_566, __args_567)? };
@@ -375,7 +375,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/plans.py:232-234 _the_clauses
 pub(super) fn _the_clauses(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["detail"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 232, 234, "_the_clauses");
+rt.trace_call_code("bot/memory/plans.py", 232, 234, "_the_clauses", 8);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __comp_parent_621 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_621.clone(), &["part"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_621 = __comp_parent_621.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_622 = { let __v_624 = frame.load(rt, "re")?; rt.getattr(&__v_624, "split")? }; let mut __args_623 = CallArgs::default(); let __v_625 = Value::from(",\\s*|;\\s*|\\s+and\\s+"); __args_623.positional.push(__v_625); let __v_626 = frame.load(rt, "detail")?; __args_623.positional.push(__v_626); rt.call(&__callable_622, __args_623)? }) }) }, assign: { let __comp_parent_621 = __comp_parent_621.clone(); Rc::new(move |rt, frame, value| { frame.store("part", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_621 = __comp_parent_621.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_627 = { let __v_629 = frame.load(rt, "part")?; rt.getattr(&__v_629, "strip")? }; let mut __args_628 = CallArgs::default(); let __v_630 = Value::from(" .;"); __args_628.positional.push(__v_630); rt.call(&__callable_627, __args_628)? }).is_truthy()) }) }] }], { let __comp_parent_621 = __comp_parent_621.clone(); Rc::new(move |rt, frame| Ok({ let __callable_631 = { let __v_633 = frame.load(rt, "part")?; rt.getattr(&__v_633, "strip")? }; let mut __args_632 = CallArgs::default(); let __v_634 = Value::from(" .;"); __args_632.positional.push(__v_634); rt.call(&__callable_631, __args_632)? })) })?) }));
 Ok(__Flow::Next)
@@ -389,7 +389,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/plans.py:237-248 _the_step
 pub(super) fn _the_step(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["best","best_hit","clause","clauses","detail","first_only","hit","wanted"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 237, 248, "_the_step");
+rt.trace_call_code("bot/memory/plans.py", 237, 248, "_the_step", 9);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_635 = frame.load(rt, "first_only")?; if __v_635.is_truthy() {
@@ -433,7 +433,7 @@ mod __py_8 { use super::*;
 // py: bot/memory/plans.py:254-276 _the_first_step
 pub(super) fn _the_first_step(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["part","parts","sentence","step","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 254, 276, "_the_first_step");
+rt.trace_call_code("bot/memory/plans.py", 254, 276, "_the_first_step", 10);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_690 = { let __callable_691 = { let __v_693 = { let __callable_694 = { let __v_696 = Value::from(" "); rt.getattr(&__v_696, "join")? }; let mut __args_695 = CallArgs::default(); let __v_697 = { let __callable_698 = { let __v_700 = { let __callable_701 = frame.load(rt, "str")?; let mut __args_702 = CallArgs::default(); let __v_703 = { let mut __v_704 = frame.load(rt, "sentence")?; if !__v_704.is_truthy() { __v_704 = Value::from(""); } __v_704 }; __args_702.positional.push(__v_703); rt.call(&__callable_701, __args_702)? }; rt.getattr(&__v_700, "split")? }; let mut __args_699 = CallArgs::default(); rt.call(&__callable_698, __args_699)? }; __args_695.positional.push(__v_697); rt.call(&__callable_694, __args_695)? }; rt.getattr(&__v_693, "rstrip")? }; let mut __args_692 = CallArgs::default(); let __v_705 = Value::from("."); __args_692.positional.push(__v_705); rt.call(&__callable_691, __args_692)? };
@@ -487,7 +487,7 @@ mod __py_9 { use super::*;
 // py: bot/memory/plans.py:279-289 _a_countdown_step
 pub(super) fn _a_countdown_step(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["about_the_start","detail","head","said","step","wanted"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 279, 289, "_a_countdown_step");
+rt.trace_call_code("bot/memory/plans.py", 279, 289, "_a_countdown_step", 11);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_776 = { let __callable_777 = frame.load(rt, "_the_step")?; let mut __args_778 = CallArgs::default(); let __v_779 = frame.load(rt, "detail")?; __args_778.positional.push(__v_779); let __v_780 = frame.load(rt, "wanted")?; __args_778.positional.push(__v_780); let __v_781 = frame.load(rt, "about_the_start")?; __args_778.positional.push(__v_781); rt.call(&__callable_777, __args_778)? };
@@ -511,10 +511,10 @@ mod __py_10 { use super::*;
 // py: bot/memory/plans.py:299-302 _another_thing
 pub(super) fn _another_thing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["said_words","wanted"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 299, 302, "_another_thing");
+rt.trace_call_code("bot/memory/plans.py", 299, 302, "_another_thing", 12);
 let flow = (|| -> PyResult<__Flow> {
 
-return Ok(__Flow::Return({ let __callable_813 = frame.load(rt, "any")?; let mut __args_814 = CallArgs::default(); let __v_815 = { let __comp_parent_816 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_816.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_816 = __comp_parent_816.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "wanted")?) }) }, assign: { let __comp_parent_816 = __comp_parent_816.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_816 = __comp_parent_816.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_817 = { let mut __v_818 = frame.load(rt, "word")?; let mut __matched_819 = true; if __matched_819 { let __v_820 = frame.load(rt, "_ASK_WORDS")?; __matched_819 = !pyrt::ops::contains(&__v_820, &__v_818)?; } Value::Bool(__matched_819) }; if __v_817.is_truthy() { __v_817 = { let mut __v_821 = { let __callable_823 = frame.load(rt, "len")?; let mut __args_824 = CallArgs::default(); let __v_825 = frame.load(rt, "word")?; __args_824.positional.push(__v_825); rt.call(&__callable_823, __args_824)? }; let mut __matched_822 = true; if __matched_822 { let __v_826 = Value::Int("3".parse().expect("integer literal")); __matched_822 = pyrt::ops::compare(&__v_821, &__v_826)?.is_some_and(|o| o.is_gt()); } Value::Bool(__matched_822) }; } if __v_817.is_truthy() { __v_817 = { let mut __v_827 = frame.load(rt, "word")?; let mut __matched_828 = true; if __matched_828 { let __v_829 = frame.load(rt, "said_words")?; __matched_828 = !pyrt::ops::contains(&__v_829, &__v_827)?; } Value::Bool(__matched_828) }; } __v_817 })) }, Rc::new(|rt| { rt.trace_call("bot/memory/plans.py", 301, 302, "_another_thing.<locals>.<genexpr>"); Ok(()) }))? }; __args_814.positional.push(__v_815); rt.call(&__callable_813, __args_814)? }));
+return Ok(__Flow::Return({ let __callable_813 = frame.load(rt, "any")?; let mut __args_814 = CallArgs::default(); let __v_815 = { let __comp_parent_816 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_816.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_816 = __comp_parent_816.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "wanted")?) }) }, assign: { let __comp_parent_816 = __comp_parent_816.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_816 = __comp_parent_816.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_817 = { let mut __v_818 = frame.load(rt, "word")?; let mut __matched_819 = true; if __matched_819 { let __v_820 = frame.load(rt, "_ASK_WORDS")?; __matched_819 = !pyrt::ops::contains(&__v_820, &__v_818)?; } Value::Bool(__matched_819) }; if __v_817.is_truthy() { __v_817 = { let mut __v_821 = { let __callable_823 = frame.load(rt, "len")?; let mut __args_824 = CallArgs::default(); let __v_825 = frame.load(rt, "word")?; __args_824.positional.push(__v_825); rt.call(&__callable_823, __args_824)? }; let mut __matched_822 = true; if __matched_822 { let __v_826 = Value::Int("3".parse().expect("integer literal")); __matched_822 = pyrt::ops::compare(&__v_821, &__v_826)?.is_some_and(|o| o.is_gt()); } Value::Bool(__matched_822) }; } if __v_817.is_truthy() { __v_817 = { let mut __v_827 = frame.load(rt, "word")?; let mut __matched_828 = true; if __matched_828 { let __v_829 = frame.load(rt, "said_words")?; __matched_828 = !pyrt::ops::contains(&__v_829, &__v_827)?; } Value::Bool(__matched_828) }; } __v_817 })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/plans.py", 301, 302, "_another_thing.<locals>.<genexpr>", 13); Ok(()) }))? }; __args_814.positional.push(__v_815); rt.call(&__callable_813, __args_814)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -526,7 +526,7 @@ mod __py_11 { use super::*;
 // py: bot/memory/plans.py:322-324 _part_words
 pub(super) fn _part_words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 322, 324, "_part_words");
+rt.trace_call_code("bot/memory/plans.py", 322, 324, "_part_words", 14);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __comp_parent_830 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_830.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_830 = __comp_parent_830.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_831 = { let __v_833 = frame.load(rt, "re")?; rt.getattr(&__v_833, "findall")? }; let mut __args_832 = CallArgs::default(); let __v_834 = Value::from("[a-z']+"); __args_832.positional.push(__v_834); let __v_835 = { let __callable_836 = { let __v_838 = Value::from(" "); rt.getattr(&__v_838, "join")? }; let mut __args_837 = CallArgs::default(); let __v_839 = { let __callable_840 = { let __v_842 = { let __callable_843 = { let __v_845 = { let __callable_846 = frame.load(rt, "str")?; let mut __args_847 = CallArgs::default(); let __v_848 = { let mut __v_849 = frame.load(rt, "text")?; if !__v_849.is_truthy() { __v_849 = Value::from(""); } __v_849 }; __args_847.positional.push(__v_848); rt.call(&__callable_846, __args_847)? }; rt.getattr(&__v_845, "lower")? }; let mut __args_844 = CallArgs::default(); rt.call(&__callable_843, __args_844)? }; rt.getattr(&__v_842, "split")? }; let mut __args_841 = CallArgs::default(); rt.call(&__callable_840, __args_841)? }; __args_837.positional.push(__v_839); rt.call(&__callable_836, __args_837)? }; __args_832.positional.push(__v_835); rt.call(&__callable_831, __args_832)? }) }) }, assign: { let __comp_parent_830 = __comp_parent_830.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_830 = __comp_parent_830.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_850 = { let mut __v_851 = frame.load(rt, "word")?; let mut __matched_852 = true; if __matched_852 { let __v_853 = frame.load(rt, "_PART_WORDS")?; __matched_852 = !pyrt::ops::contains(&__v_853, &__v_851)?; } Value::Bool(__matched_852) }; if __v_850.is_truthy() { __v_850 = { let mut __v_854 = { let __callable_856 = frame.load(rt, "len")?; let mut __args_857 = CallArgs::default(); let __v_858 = frame.load(rt, "word")?; __args_857.positional.push(__v_858); rt.call(&__callable_856, __args_857)? }; let mut __matched_855 = true; if __matched_855 { let __v_859 = Value::Int("2".parse().expect("integer literal")); __matched_855 = pyrt::ops::compare(&__v_854, &__v_859)?.is_some_and(|o| o.is_gt()); } Value::Bool(__matched_855) }; } __v_850 }).is_truthy()) }) }] }], { let __comp_parent_830 = __comp_parent_830.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })? }));
 Ok(__Flow::Next)
@@ -540,7 +540,7 @@ mod __py_12 { use super::*;
 // py: bot/memory/plans.py:327-334 _was_a_plan
 pub(super) fn _was_a_plan(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clean","line"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 327, 334, "_was_a_plan");
+rt.trace_call_code("bot/memory/plans.py", 327, 334, "_was_a_plan", 15);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_860 = { let __callable_861 = { let __v_863 = Value::from(" "); rt.getattr(&__v_863, "join")? }; let mut __args_862 = CallArgs::default(); let __v_864 = { let __callable_865 = { let __v_867 = { let __callable_868 = { let __v_870 = { let __callable_871 = frame.load(rt, "str")?; let mut __args_872 = CallArgs::default(); let __v_873 = { let mut __v_874 = frame.load(rt, "line")?; if !__v_874.is_truthy() { __v_874 = Value::from(""); } __v_874 }; __args_872.positional.push(__v_873); rt.call(&__callable_871, __args_872)? }; rt.getattr(&__v_870, "lower")? }; let mut __args_869 = CallArgs::default(); rt.call(&__callable_868, __args_869)? }; rt.getattr(&__v_867, "split")? }; let mut __args_866 = CallArgs::default(); rt.call(&__callable_865, __args_866)? }; __args_862.positional.push(__v_864); rt.call(&__callable_861, __args_862)? };
@@ -567,7 +567,7 @@ mod __py_13 { use super::*;
 // py: bot/memory/plans.py:341-450 follow_up
 pub(super) fn follow_up(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["announced","asked_about","best","best_hit","colon","detail","head","hit","kept","last","memory","opening","reply","said","sentence","sentences","span","text","told","turns","wanted","whole","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/plans.py", 341, 450, "follow_up");
+rt.trace_call_code("bot/memory/plans.py", 341, 450, "follow_up", 16);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_890 = { let mut __v_891 = { let __v_892 = { let __callable_893 = frame.load(rt, "isinstance")?; let mut __args_894 = CallArgs::default(); let __v_895 = frame.load(rt, "memory")?; __args_894.positional.push(__v_895); let __v_896 = frame.load(rt, "dict")?; __args_894.positional.push(__v_896); rt.call(&__callable_893, __args_894)? }; Value::Bool(!__v_892.is_truthy()) }; if !__v_891.is_truthy() { __v_891 = { let __v_897 = { let __callable_898 = frame.load(rt, "isinstance")?; let mut __args_899 = CallArgs::default(); let __v_900 = frame.load(rt, "text")?; __args_899.positional.push(__v_900); let __v_901 = frame.load(rt, "str")?; __args_899.positional.push(__v_901); rt.call(&__callable_898, __args_899)? }; Value::Bool(!__v_897.is_truthy()) }; } __v_891 }; if __v_890.is_truthy() {

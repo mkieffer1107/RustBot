@@ -21,7 +21,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_the_chat_has",65,74),
 ("a_bare_return",272,293)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/returns.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/returns.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A line that takes the chat back to something said earlier, and asks about it.\n\n    im going to lisbon in may\n    my son starts school in september\n    back to lisbon, what should i see\n\nThe last line names the thing it returns to and then asks about it. Read whole, it reached the\nback-pain entry: \"back\" is the return in \"back to\", not the body part, and the thing the person\nnamed - Lisbon - never got to the question. So `find()` answered \"A back like that: give it two\nto six weeks\". The same shape is a hedge when the thing does have an entry but the question no\nlonger names it: \"so about the washing machine, what should i get\" reached nothing at all.\n\nWhat this reads is the two parts separately: the opener is the return, the thing after it is what\nthe question is about, and the ask is the rest. The ask is then put back together with the thing\nin it - after the first question word when the ask has one (\"what should i get\" / \"washing\nmachine\" -> \"what washing machine should i get\", which is how English asks it), and at the end\notherwise (\"what should i see\" + \"lisbon\") - and only a version that reaches a real entry, that\nnames the thing, and that is not the entry the whole line already reached, is handed on.\n\nNothing is invented: the ask is the person's words and the reply comes from the entry. A line\nwith no ask (\"back to lisbon\" alone), a thing the chat never mentioned, or no entry for it all\nleave the turn exactly as it was.\n"))?;
@@ -64,7 +64,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/returns.py:65-74 _the_chat_has
 pub(super) fn _the_chat_has(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","said","turn","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/returns.py", 65, 74, "_the_chat_has");
+rt.trace_call_code("bot/memory/returns.py", 65, 74, "_the_chat_has", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_100 = { let __callable_101 = frame.load(rt, "isinstance")?; let mut __args_102 = CallArgs::default(); let __v_103 = frame.load(rt, "memory")?; __args_102.positional.push(__v_103); let __v_104 = frame.load(rt, "dict")?; __args_102.positional.push(__v_104); rt.call(&__callable_101, __args_102)? }; if __v_100.is_truthy() {
@@ -105,7 +105,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/returns.py:77-110 _the_parts
 pub(super) fn _the_parts(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["ask","found","match","named","rest","text","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/returns.py", 77, 110, "_the_parts");
+rt.trace_call_code("bot/memory/returns.py", 77, 110, "_the_parts", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_154 = { let __callable_155 = { let __v_157 = frame.load(rt, "OPENERS")?; rt.getattr(&__v_157, "match")? }; let mut __args_156 = CallArgs::default(); let __v_158 = { let __callable_159 = { let __v_161 = frame.load(rt, "STORE_FRAME")?; rt.getattr(&__v_161, "sub")? }; let mut __args_160 = CallArgs::default(); let __v_162 = Value::from(""); __args_160.positional.push(__v_162); let __v_163 = { let __callable_164 = frame.load(rt, "str")?; let mut __args_165 = CallArgs::default(); let __v_166 = { let mut __v_167 = frame.load(rt, "text")?; if !__v_167.is_truthy() { __v_167 = Value::from(""); } __v_167 }; __args_165.positional.push(__v_166); rt.call(&__callable_164, __args_165)? }; __args_160.positional.push(__v_163); rt.call(&__callable_159, __args_160)? }; __args_156.positional.push(__v_158); rt.call(&__callable_155, __args_156)? };
@@ -175,7 +175,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/returns.py:113-132 _the_lines
 pub(super) fn _the_lines(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["after","ask","first","measure","named","space","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/returns.py", 113, 132, "_the_lines");
+rt.trace_call_code("bot/memory/returns.py", 113, 132, "_the_lines", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_281 = { let __callable_282 = { let __v_284 = Value::from(" "); rt.getattr(&__v_284, "join")? }; let mut __args_283 = CallArgs::default(); let __v_285 = frame.load(rt, "named")?; __args_283.positional.push(__v_285); rt.call(&__callable_282, __args_283)? };
@@ -211,7 +211,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/returns.py:135-160 _the_domain_of_the_chat
 pub(super) fn _the_domain_of_the_chat(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["item","line","memory","named","said","turn"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/returns.py", 135, 160, "_the_domain_of_the_chat");
+rt.trace_call_code("bot/memory/returns.py", 135, 160, "_the_domain_of_the_chat", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_372 = { let __v_373 = { let __callable_374 = frame.load(rt, "isinstance")?; let mut __args_375 = CallArgs::default(); let __v_376 = frame.load(rt, "memory")?; __args_375.positional.push(__v_376); let __v_377 = frame.load(rt, "dict")?; __args_375.positional.push(__v_377); rt.call(&__callable_374, __args_375)? }; Value::Bool(!__v_373.is_truthy()) }; if __v_372.is_truthy() {
@@ -272,7 +272,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/returns.py:163-201 a_return_to_the_topic
 pub(super) fn a_return_to_the_topic(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["ask","domain","item","line","memory","named","parts","text","whole","without"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/returns.py", 163, 201, "a_return_to_the_topic");
+rt.trace_call_code("bot/memory/returns.py", 163, 201, "a_return_to_the_topic", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_442 = { let __callable_443 = frame.load(rt, "_the_parts")?; let mut __args_444 = CallArgs::default(); let __v_445 = frame.load(rt, "text")?; __args_444.positional.push(__v_445); rt.call(&__callable_443, __args_444)? };
@@ -368,7 +368,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/returns.py:204-212 the_thing_named
 pub(super) fn the_thing_named(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["match","rest","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/returns.py", 204, 212, "the_thing_named");
+rt.trace_call_code("bot/memory/returns.py", 204, 212, "the_thing_named", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_534 = { let __callable_535 = { let __v_537 = frame.load(rt, "OPENERS")?; rt.getattr(&__v_537, "match")? }; let mut __args_536 = CallArgs::default(); let __v_538 = { let __callable_539 = frame.load(rt, "str")?; let mut __args_540 = CallArgs::default(); let __v_541 = { let mut __v_542 = frame.load(rt, "text")?; if !__v_542.is_truthy() { __v_542 = Value::from(""); } __v_542 }; __args_540.positional.push(__v_541); rt.call(&__callable_539, __args_540)? }; __args_536.positional.push(__v_538); rt.call(&__callable_535, __args_536)? };
@@ -397,7 +397,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/returns.py:225-230 _the_sentence_with_the_amount
 pub(super) fn _the_sentence_with_the_amount(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/returns.py", 225, 230, "_the_sentence_with_the_amount");
+rt.trace_call_code("bot/memory/returns.py", 225, 230, "_the_sentence_with_the_amount", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_568 = false; let __v_570 = { let __callable_573 = { let __v_575 = frame.load(rt, "re")?; rt.getattr(&__v_575, "split")? }; let mut __args_574 = CallArgs::default(); let __v_576 = Value::from("(?<=[.!?])\\s+"); __args_574.positional.push(__v_576); let __v_577 = { let __callable_578 = frame.load(rt, "str")?; let mut __args_579 = CallArgs::default(); let __v_580 = { let mut __v_581 = frame.load(rt, "answer")?; if !__v_581.is_truthy() { __v_581 = Value::from(""); } __v_581 }; __args_579.positional.push(__v_580); rt.call(&__callable_578, __args_579)? }; __args_574.positional.push(__v_577); rt.call(&__callable_573, __args_574)? }; let __iter_571 = rt.iter(&__v_570)?;
@@ -427,7 +427,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/returns.py:233-269 as_the_same_answer
 pub(super) fn as_the_same_answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["ask","named","reply","same_again","short","text","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/returns.py", 233, 269, "as_the_same_answer");
+rt.trace_call_code("bot/memory/returns.py", 233, 269, "as_the_same_answer", 9);
 let flow = (|| -> PyResult<__Flow> {
 
 let __module_594 = rt.import("bot.memory")?;
@@ -464,7 +464,7 @@ mod __py_8 { use super::*;
 // py: bot/memory/returns.py:272-293 a_bare_return
 pub(super) fn a_bare_return(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["match","memory","named","rest","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/returns.py", 272, 293, "a_bare_return");
+rt.trace_call_code("bot/memory/returns.py", 272, 293, "a_bare_return", 10);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_679 = { let __callable_680 = { let __v_682 = frame.load(rt, "OPENERS")?; rt.getattr(&__v_682, "match")? }; let mut __args_681 = CallArgs::default(); let __v_683 = { let __callable_684 = { let __v_686 = frame.load(rt, "STORE_FRAME")?; rt.getattr(&__v_686, "sub")? }; let mut __args_685 = CallArgs::default(); let __v_687 = Value::from(""); __args_685.positional.push(__v_687); let __v_688 = { let __callable_689 = frame.load(rt, "str")?; let mut __args_690 = CallArgs::default(); let __v_691 = { let mut __v_692 = frame.load(rt, "text")?; if !__v_692.is_truthy() { __v_692 = Value::from(""); } __v_692 }; __args_690.positional.push(__v_691); rt.call(&__callable_689, __args_690)? }; __args_685.positional.push(__v_688); rt.call(&__callable_684, __args_685)? }; __args_681.positional.push(__v_683); rt.call(&__callable_680, __args_681)? };

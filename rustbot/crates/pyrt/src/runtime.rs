@@ -21,6 +21,14 @@ pub struct SourceSpan {
     pub qualname: &'static str,
 }
 
+/// A source span with identity of the originating Python code object.
+/// `code_id == 0` is reserved for legacy callers lacking an identity.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct TraceEvent {
+    pub span: SourceSpan,
+    pub code_id: u64,
+}
+
 struct RuntimeState {
     modules: RefCell<HashMap<String, Value>>,
     initializers: RefCell<HashMap<String, ModuleInit>>,
@@ -28,7 +36,7 @@ struct RuntimeState {
     depth: Cell<usize>,
     exceptions: RefCell<Vec<PyExc>>,
     tracing: Cell<bool>,
-    calls: RefCell<Vec<SourceSpan>>,
+    calls: RefCell<Vec<TraceEvent>>,
     namespaces: RefCell<Vec<Weak<Namespace>>>,
 }
 
@@ -260,6 +268,7 @@ impl Runtime {
         let _guard = Guard(self.state.clone());
         body(self)
     }
+    /// Record a legacy span without a generated code-object identity.
     pub fn trace_call(
         &mut self,
         file: &'static str,
@@ -267,12 +276,26 @@ impl Runtime {
         last: u32,
         qualname: &'static str,
     ) {
+        self.trace_call_code(file, first, last, qualname, 0);
+    }
+    /// Record a span and its stable per-file Python code-object identity.
+    pub fn trace_call_code(
+        &mut self,
+        file: &'static str,
+        first: u32,
+        last: u32,
+        qualname: &'static str,
+        code_id: u64,
+    ) {
         if self.state.tracing.get() {
-            self.state.calls.borrow_mut().push(SourceSpan {
-                file,
-                first,
-                last,
-                qualname,
+            self.state.calls.borrow_mut().push(TraceEvent {
+                span: SourceSpan {
+                    file,
+                    first,
+                    last,
+                    qualname,
+                },
+                code_id,
             });
         }
     }
@@ -280,9 +303,17 @@ impl Runtime {
         self.state.calls.borrow_mut().clear();
         self.state.tracing.set(true);
     }
-    pub fn end_trace(&mut self) -> Vec<SourceSpan> {
+    /// Finish tracing while retaining distinct code-object identities.
+    pub fn end_trace_events(&mut self) -> Vec<TraceEvent> {
         self.state.tracing.set(false);
         std::mem::take(&mut *self.state.calls.borrow_mut())
+    }
+    /// Legacy convenience API that omits code-object identity.
+    pub fn end_trace(&mut self) -> Vec<SourceSpan> {
+        self.end_trace_events()
+            .into_iter()
+            .map(|event| event.span)
+            .collect()
     }
     pub fn getattr(&mut self, value: &Value, name: &str) -> PyResult<Value> {
         if matches!(value, Value::Date(_) | Value::DateTime(_))

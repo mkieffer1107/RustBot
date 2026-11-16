@@ -18,7 +18,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_asks",41,55),
 ("reply_for",120,131)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/kidcount.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/kidcount.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("The number of children, counted from the children the chat already holds.\n\nNo single line has to state a number for the count to be known. `my son is 6` and `and my\ndaughter is 9` are two children with their ages, and the ask after them, `how many children do i\nhave`, was answered \"You've mentioned your son - how many have you got altogether?\": the store\nreads a count off one line, and a line about one child gives one child.\n\nSo the count is read off what the store holds: each child relation the person named is one child,\na child named on their own is one however they came in (`my son jack is 6` and `my son sam is 9`\nare two), and the same child said twice is still one. A child who belongs to somebody else is not\ncounted, and one child keeps the honest ask for a number.\n\nOnly the ask is answered: `reply_for` returns None on every other line, and on a chat that\nalready has a number, because the store answers that one.\n"))?;
@@ -57,7 +57,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/kidcount.py:41-55 _asks
 pub(super) fn _asks(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["low","match","rest","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kidcount.py", 41, 55, "_asks");
+rt.trace_call_code("bot/memory/kidcount.py", 41, 55, "_asks", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_124 = { let __callable_125 = { let __v_127 = { let __callable_128 = { let __v_130 = { let __callable_131 = frame.load(rt, "str")?; let mut __args_132 = CallArgs::default(); let __v_133 = { let mut __v_134 = frame.load(rt, "text")?; if !__v_134.is_truthy() { __v_134 = Value::from(""); } __v_134 }; __args_132.positional.push(__v_133); rt.call(&__callable_131, __args_132)? }; rt.getattr(&__v_130, "strip")? }; let mut __args_129 = CallArgs::default(); rt.call(&__callable_128, __args_129)? }; rt.getattr(&__v_127, "lower")? }; let mut __args_126 = CallArgs::default(); rt.call(&__callable_125, __args_126)? };
@@ -98,7 +98,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/kidcount.py:58-73 _named_children
 pub(super) fn _named_children(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["entry","held","memory","name","who"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kidcount.py", 58, 73, "_named_children");
+rt.trace_call_code("bot/memory/kidcount.py", 58, 73, "_named_children", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_180 = { let __callable_181 = frame.load(rt, "set")?; let mut __args_182 = CallArgs::default(); rt.call(&__callable_181, __args_182)? };
@@ -149,7 +149,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/kidcount.py:76-89 _relations
 pub(super) fn _relations(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["entry","held","memory","who","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kidcount.py", 76, 89, "_relations");
+rt.trace_call_code("bot/memory/kidcount.py", 76, 89, "_relations", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_262 = { let mut __items_263 = Vec::new(); Value::list(__items_263) };
@@ -205,7 +205,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/kidcount.py:92-105 count
 pub(super) fn count(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","memory","named","relations","user"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kidcount.py", 92, 105, "count");
+rt.trace_call_code("bot/memory/kidcount.py", 92, 105, "count", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_348 = { let mut __v_349 = { let __callable_350 = { let __v_352 = frame.load(rt, "memory")?; rt.getattr(&__v_352, "get")? }; let mut __args_351 = CallArgs::default(); let __v_353 = Value::from("user"); __args_351.positional.push(__v_353); rt.call(&__callable_350, __args_351)? }; if !__v_349.is_truthy() { __v_349 = { let __dict_354 = Value::dict(); __dict_354 }; } __v_349 };
@@ -238,7 +238,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/kidcount.py:112-117 _vary
 pub(super) fn _vary(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["fresh","memory","options","recent","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kidcount.py", 112, 117, "_vary");
+rt.trace_call_code("bot/memory/kidcount.py", 112, 117, "_vary", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_383 = { let mut __v_384 = { let __callable_385 = { let __v_387 = frame.load(rt, "memory")?; rt.getattr(&__v_387, "get")? }; let mut __args_386 = CallArgs::default(); let __v_388 = Value::from("turns"); __args_386.positional.push(__v_388); rt.call(&__callable_385, __args_386)? }; if !__v_384.is_truthy() { __v_384 = { let mut __items_389 = Vec::new(); Value::list(__items_389) }; } __v_384 };
@@ -259,7 +259,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/kidcount.py:120-131 reply_for
 pub(super) fn reply_for(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","memory","noun","text","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/kidcount.py", 120, 131, "reply_for");
+rt.trace_call_code("bot/memory/kidcount.py", 120, 131, "reply_for", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_425 = { let mut __v_426 = { let __v_427 = { let __callable_428 = frame.load(rt, "isinstance")?; let mut __args_429 = CallArgs::default(); let __v_430 = frame.load(rt, "memory")?; __args_429.positional.push(__v_430); let __v_431 = frame.load(rt, "dict")?; __args_429.positional.push(__v_431); rt.call(&__callable_428, __args_429)? }; Value::Bool(!__v_427.is_truthy()) }; if !__v_426.is_truthy() { __v_426 = { let __v_432 = { let __callable_433 = frame.load(rt, "_asks")?; let mut __args_434 = CallArgs::default(); let __v_435 = frame.load(rt, "text")?; __args_434.positional.push(__v_435); rt.call(&__callable_433, __args_434)? }; Value::Bool(!__v_432.is_truthy()) }; } __v_426 }; if __v_425.is_truthy() {

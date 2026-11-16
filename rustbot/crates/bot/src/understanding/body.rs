@@ -35,7 +35,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_an_abscess_elsewhere",166,178),
 ("_someone_else",666,671)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/understanding/body.py", 0, 0, "<module>");
+rt.trace_call_code("bot/understanding/body.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("Which part of the body the line says is unwell, when the illness is the speaker's own.\n\nOne reading for everybody: \"i have a migraine\" and \"my throat is killing me\" are the same kind\nof line as \"i have a cold\", and the only thing that tells them apart is the part named. The\ncomposer keeps a pool of lines per part (`ill` is the cold's), so this reading says which pool\nthe line is asking for instead of every module matching the words again.\n\nThree things are checked, and all are needed:\n\n* the part, from the words people use for it (\"migraine\", \"sore throat\", \"fever\", \"throwing up\",\n  \"chest infection\");\n* whose it is. \"my son has a fever\" is the child's illness and the child's advice, \"she gets\n  migraines\" is hers, and only the speaker's own comes here. \"My\" counts only when the part\n  itself follows it - \"my head\" is the speaker's, \"my room temperature is 40\" is a room's - and\n  anything else needs the speaker in front of it (\"i have a headache\", \"ive been throwing up\");\n* that it is the body and not the word: hay fever is not a fever, and \"i feel sick about going\n  to the dentist\" is dread rather than a stomach.\n\nThe reading is `None` on every line that names no part - a cold, the flu and \"i feel ill\" stay\nwith the plain illness pool, which is what those lines want.\n"))?;
@@ -181,7 +181,7 @@ mod __py_0 { use super::*;
 // py: bot/understanding/body.py:166-178 _an_abscess_elsewhere
 pub(super) fn _an_abscess_elsewhere(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 166, 178, "_an_abscess_elsewhere");
+rt.trace_call_code("bot/understanding/body.py", 166, 178, "_an_abscess_elsewhere", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_524 = { let __v_525 = { let __callable_526 = { let __v_528 = frame.load(rt, "AN_ABSCESS")?; rt.getattr(&__v_528, "search")? }; let mut __args_527 = CallArgs::default(); let __v_529 = frame.load(rt, "text")?; __args_527.positional.push(__v_529); rt.call(&__callable_526, __args_527)? }; Value::Bool(!__v_525.is_truthy()) }; if __v_524.is_truthy() {
@@ -201,7 +201,7 @@ mod __py_1 { use super::*;
 // py: bot/understanding/body.py:264-272 _one_letter_apart
 pub(super) fn _one_letter_apart(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["long_","short","spelled","typed"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 264, 272, "_one_letter_apart");
+rt.trace_call_code("bot/understanding/body.py", 264, 272, "_one_letter_apart", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_550 = { let mut __v_551 = { let __callable_553 = frame.load(rt, "abs")?; let mut __args_554 = CallArgs::default(); let __v_555 = { let __v_556 = { let __callable_558 = frame.load(rt, "len")?; let mut __args_559 = CallArgs::default(); let __v_560 = frame.load(rt, "typed")?; __args_559.positional.push(__v_560); rt.call(&__callable_558, __args_559)? }; let __v_557 = { let __callable_561 = frame.load(rt, "len")?; let mut __args_562 = CallArgs::default(); let __v_563 = frame.load(rt, "spelled")?; __args_562.positional.push(__v_563); rt.call(&__callable_561, __args_562)? }; pyrt::ops::sub_rt(rt, &__v_556, &__v_557)? }; __args_554.positional.push(__v_555); rt.call(&__callable_553, __args_554)? }; let mut __matched_552 = true; if __matched_552 { let __v_564 = Value::Int("1".parse().expect("integer literal")); __matched_552 = pyrt::ops::compare(&__v_551, &__v_564)?.is_some_and(|o| o.is_gt()); } Value::Bool(__matched_552) }; if __v_550.is_truthy() {
@@ -210,13 +210,13 @@ return Ok(__Flow::Return(Value::Bool(false)));
 
 }
 let __v_565 = { let mut __v_566 = { let __callable_568 = frame.load(rt, "len")?; let mut __args_569 = CallArgs::default(); let __v_570 = frame.load(rt, "typed")?; __args_569.positional.push(__v_570); rt.call(&__callable_568, __args_569)? }; let mut __matched_567 = true; if __matched_567 { let __v_571 = { let __callable_572 = frame.load(rt, "len")?; let mut __args_573 = CallArgs::default(); let __v_574 = frame.load(rt, "spelled")?; __args_573.positional.push(__v_574); rt.call(&__callable_572, __args_573)? }; __matched_567 = __v_566.equals(&__v_571)?; } Value::Bool(__matched_567) }; if __v_565.is_truthy() {
-return Ok(__Flow::Return({ let mut __v_575 = { let __callable_577 = frame.load(rt, "sum")?; let mut __args_578 = CallArgs::default(); let __v_579 = { let __comp_parent_580 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_580.clone(), &["spelled_at","typed_at"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_580 = __comp_parent_580.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_581 = frame.load(rt, "zip")?; let mut __args_582 = CallArgs::default(); let __v_583 = frame.load(rt, "typed")?; __args_582.positional.push(__v_583); let __v_584 = frame.load(rt, "spelled")?; __args_582.positional.push(__v_584); rt.call(&__callable_581, __args_582)? }) }) }, assign: { let __comp_parent_580 = __comp_parent_580.clone(); Rc::new(move |rt, frame, value| { let __unpack_585 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("typed_at", __unpack_585[0].clone())?; frame.store("spelled_at", __unpack_585[1].clone())?; Ok(()) }) }, filters: vec![{ let __comp_parent_580 = __comp_parent_580.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_586 = frame.load(rt, "typed_at")?; let mut __matched_587 = true; if __matched_587 { let __v_588 = frame.load(rt, "spelled_at")?; __matched_587 = !__v_586.equals(&__v_588)?; } Value::Bool(__matched_587) }).is_truthy()) }) }] }], { let __comp_parent_580 = __comp_parent_580.clone(); Rc::new(move |rt, frame| Ok(Value::Int("1".parse().expect("integer literal")))) }, Rc::new(|rt| { rt.trace_call("bot/understanding/body.py", 269, 270, "_one_letter_apart.<locals>.<genexpr>"); Ok(()) }))? }; __args_578.positional.push(__v_579); rt.call(&__callable_577, __args_578)? }; let mut __matched_576 = true; if __matched_576 { let __v_589 = Value::Int("1".parse().expect("integer literal")); __matched_576 = __v_575.equals(&__v_589)?; } Value::Bool(__matched_576) }));
+return Ok(__Flow::Return({ let mut __v_575 = { let __callable_577 = frame.load(rt, "sum")?; let mut __args_578 = CallArgs::default(); let __v_579 = { let __comp_parent_580 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_580.clone(), &["spelled_at","typed_at"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_580 = __comp_parent_580.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_581 = frame.load(rt, "zip")?; let mut __args_582 = CallArgs::default(); let __v_583 = frame.load(rt, "typed")?; __args_582.positional.push(__v_583); let __v_584 = frame.load(rt, "spelled")?; __args_582.positional.push(__v_584); rt.call(&__callable_581, __args_582)? }) }) }, assign: { let __comp_parent_580 = __comp_parent_580.clone(); Rc::new(move |rt, frame, value| { let __unpack_585 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("typed_at", __unpack_585[0].clone())?; frame.store("spelled_at", __unpack_585[1].clone())?; Ok(()) }) }, filters: vec![{ let __comp_parent_580 = __comp_parent_580.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_586 = frame.load(rt, "typed_at")?; let mut __matched_587 = true; if __matched_587 { let __v_588 = frame.load(rt, "spelled_at")?; __matched_587 = !__v_586.equals(&__v_588)?; } Value::Bool(__matched_587) }).is_truthy()) }) }] }], { let __comp_parent_580 = __comp_parent_580.clone(); Rc::new(move |rt, frame| Ok(Value::Int("1".parse().expect("integer literal")))) }, Rc::new(|rt| { rt.trace_call_code("bot/understanding/body.py", 269, 270, "_one_letter_apart.<locals>.<genexpr>", 4); Ok(()) }))? }; __args_578.positional.push(__v_579); rt.call(&__callable_577, __args_578)? }; let mut __matched_576 = true; if __matched_576 { let __v_589 = Value::Int("1".parse().expect("integer literal")); __matched_576 = __v_575.equals(&__v_589)?; } Value::Bool(__matched_576) }));
 } else {
 
 }
 let __v_590 = { let __callable_591 = frame.load(rt, "sorted")?; let mut __args_592 = CallArgs::default(); let __v_593 = { let mut __items_594 = Vec::new(); let __v_595 = frame.load(rt, "typed")?; __items_594.push(__v_595); let __v_596 = frame.load(rt, "spelled")?; __items_594.push(__v_596); Value::tuple(__items_594) }; __args_592.positional.push(__v_593); let __v_597 = frame.load(rt, "len")?; __args_592.keyword("key".into(), __v_597)?; rt.call(&__callable_591, __args_592)? };
 let __unpack_598 = pyrt::containers::unpack(rt, &__v_590.clone(), 2, 0, false)?; frame.store("short", __unpack_598[0].clone())?; frame.store("long_", __unpack_598[1].clone())?;
-return Ok(__Flow::Return({ let __callable_599 = frame.load(rt, "any")?; let mut __args_600 = CallArgs::default(); let __v_601 = { let __comp_parent_602 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_602.clone(), &["at"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_602 = __comp_parent_602.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_603 = frame.load(rt, "range")?; let mut __args_604 = CallArgs::default(); let __v_605 = { let __callable_606 = frame.load(rt, "len")?; let mut __args_607 = CallArgs::default(); let __v_608 = frame.load(rt, "long_")?; __args_607.positional.push(__v_608); rt.call(&__callable_606, __args_607)? }; __args_604.positional.push(__v_605); rt.call(&__callable_603, __args_604)? }) }) }, assign: { let __comp_parent_602 = __comp_parent_602.clone(); Rc::new(move |rt, frame, value| { frame.store("at", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_602 = __comp_parent_602.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_609 = { let __v_611 = { let __v_613 = frame.load(rt, "long_")?; let __v_615 = frame.load(rt, "at")?; let __index_616 = if matches!(__v_615, Value::None) { None } else { let n = __v_615.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_613, None, __index_616, 1_i64)? }; let __v_612 = { let __v_617 = frame.load(rt, "long_")?; let __v_619 = { let __v_621 = frame.load(rt, "at")?; let __v_622 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::add(&__v_621, &__v_622)? }; let __index_620 = if matches!(__v_619, Value::None) { None } else { let n = __v_619.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_617, __index_620, None, 1_i64)? }; pyrt::ops::add(&__v_611, &__v_612)? }; let mut __matched_610 = true; if __matched_610 { let __v_623 = frame.load(rt, "short")?; __matched_610 = __v_609.equals(&__v_623)?; } Value::Bool(__matched_610) })) }, Rc::new(|rt| { rt.trace_call("bot/understanding/body.py", 272, 272, "_one_letter_apart.<locals>.<genexpr>"); Ok(()) }))? }; __args_600.positional.push(__v_601); rt.call(&__callable_599, __args_600)? }));
+return Ok(__Flow::Return({ let __callable_599 = frame.load(rt, "any")?; let mut __args_600 = CallArgs::default(); let __v_601 = { let __comp_parent_602 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_602.clone(), &["at"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_602 = __comp_parent_602.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_603 = frame.load(rt, "range")?; let mut __args_604 = CallArgs::default(); let __v_605 = { let __callable_606 = frame.load(rt, "len")?; let mut __args_607 = CallArgs::default(); let __v_608 = frame.load(rt, "long_")?; __args_607.positional.push(__v_608); rt.call(&__callable_606, __args_607)? }; __args_604.positional.push(__v_605); rt.call(&__callable_603, __args_604)? }) }) }, assign: { let __comp_parent_602 = __comp_parent_602.clone(); Rc::new(move |rt, frame, value| { frame.store("at", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_602 = __comp_parent_602.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_609 = { let __v_611 = { let __v_613 = frame.load(rt, "long_")?; let __v_615 = frame.load(rt, "at")?; let __index_616 = if matches!(__v_615, Value::None) { None } else { let n = __v_615.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_613, None, __index_616, 1_i64)? }; let __v_612 = { let __v_617 = frame.load(rt, "long_")?; let __v_619 = { let __v_621 = frame.load(rt, "at")?; let __v_622 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::add(&__v_621, &__v_622)? }; let __index_620 = if matches!(__v_619, Value::None) { None } else { let n = __v_619.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_617, __index_620, None, 1_i64)? }; pyrt::ops::add(&__v_611, &__v_612)? }; let mut __matched_610 = true; if __matched_610 { let __v_623 = frame.load(rt, "short")?; __matched_610 = __v_609.equals(&__v_623)?; } Value::Bool(__matched_610) })) }, Rc::new(|rt| { rt.trace_call_code("bot/understanding/body.py", 272, 272, "_one_letter_apart.<locals>.<genexpr>", 5); Ok(()) }))? }; __args_600.positional.push(__v_601); rt.call(&__callable_599, __args_600)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -228,7 +228,7 @@ mod __py_2 { use super::*;
 // py: bot/understanding/body.py:275-284 _a_part_typed_with_one_letter_wrong
 pub(super) fn _a_part_typed_with_one_letter_wrong(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["fits","length","noun","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 275, 284, "_a_part_typed_with_one_letter_wrong");
+rt.trace_call_code("bot/understanding/body.py", 275, 284, "_a_part_typed_with_one_letter_wrong", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_624 = { let __callable_625 = frame.load(rt, "set")?; let mut __args_626 = CallArgs::default(); rt.call(&__callable_625, __args_626)? };
@@ -275,7 +275,7 @@ mod __py_3 { use super::*;
 // py: bot/understanding/body.py:300-310 _a_word_rather_than_a_typo
 pub(super) fn _a_word_rather_than_a_typo(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["CONDITIONS","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 300, 310, "_a_word_rather_than_a_typo");
+rt.trace_call_code("bot/understanding/body.py", 300, 310, "_a_word_rather_than_a_typo", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_688 = { let mut __v_689 = { let mut __v_690 = frame.load(rt, "word")?; let mut __matched_691 = true; if __matched_691 { let __v_692 = frame.load(rt, "COMMON_WORDS")?; __matched_691 = pyrt::ops::contains(&__v_692, &__v_690)?; } Value::Bool(__matched_691) }; if !__v_689.is_truthy() { __v_689 = { let mut __v_693 = frame.load(rt, "word")?; let mut __matched_694 = true; if __matched_694 { let __v_695 = frame.load(rt, "A_WORD_OF_ITS_OWN")?; __matched_694 = pyrt::ops::contains(&__v_695, &__v_693)?; } Value::Bool(__matched_694) }; } __v_689 }; if __v_688.is_truthy() {
@@ -298,7 +298,7 @@ mod __py_4 { use super::*;
 // py: bot/understanding/body.py:313-322 _spell_the_parts
 pub(super) fn _spell_the_parts(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["part","repaired","text","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 313, 322, "_spell_the_parts");
+rt.trace_call_code("bot/understanding/body.py", 313, 322, "_spell_the_parts", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_701 = frame.load(rt, "text")?;
@@ -338,7 +338,7 @@ mod __py_5 { use super::*;
 // py: bot/understanding/body.py:325-337 _the_gut_is_settled
 pub(super) fn _the_gut_is_settled(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 325, 337, "_the_gut_is_settled");
+rt.trace_call_code("bot/understanding/body.py", 325, 337, "_the_gut_is_settled", 9);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_743 = { let __callable_744 = frame.load(rt, "set")?; let mut __args_745 = CallArgs::default(); let __v_746 = { let __callable_747 = { let __v_749 = frame.load(rt, "re")?; rt.getattr(&__v_749, "findall")? }; let mut __args_748 = CallArgs::default(); let __v_750 = Value::from("[a-z']+"); __args_748.positional.push(__v_750); let __v_751 = { let __callable_752 = { let __v_754 = frame.load(rt, "text")?; rt.getattr(&__v_754, "lower")? }; let mut __args_753 = CallArgs::default(); rt.call(&__callable_752, __args_753)? }; __args_748.positional.push(__v_751); rt.call(&__callable_747, __args_748)? }; __args_745.positional.push(__v_746); rt.call(&__callable_744, __args_745)? };
@@ -360,7 +360,7 @@ mod __py_6 { use super::*;
 // py: bot/understanding/body.py:340-372 read
 pub(super) fn read(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["match","name","nouns","pattern","sample","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 340, 372, "read");
+rt.trace_call_code("bot/understanding/body.py", 340, 372, "read", 10);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_777 = { let mut __v_778 = { let __v_779 = { let __callable_780 = frame.load(rt, "isinstance")?; let mut __args_781 = CallArgs::default(); let __v_782 = frame.load(rt, "text")?; __args_781.positional.push(__v_782); let __v_783 = frame.load(rt, "str")?; __args_781.positional.push(__v_783); rt.call(&__callable_780, __args_781)? }; Value::Bool(!__v_779.is_truthy()) }; if !__v_778.is_truthy() { __v_778 = { let __v_784 = { let __callable_785 = { let __v_787 = frame.load(rt, "text")?; rt.getattr(&__v_787, "strip")? }; let mut __args_786 = CallArgs::default(); rt.call(&__callable_785, __args_786)? }; Value::Bool(!__v_784.is_truthy()) }; } __v_778 }; if __v_777.is_truthy() {
@@ -434,7 +434,7 @@ mod __py_7 { use super::*;
 // py: bot/understanding/body.py:375-413 _the_speakers
 pub(super) fn _the_speakers(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","began","index","nouns","owner","start","tail","text","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 375, 413, "_the_speakers");
+rt.trace_call_code("bot/understanding/body.py", 375, 413, "_the_speakers", 11);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_905 = { let __callable_906 = { let __v_908 = frame.load(rt, "re")?; rt.getattr(&__v_908, "findall")? }; let mut __args_907 = CallArgs::default(); let __v_909 = Value::from("[a-z']+"); __args_907.positional.push(__v_909); let __v_910 = { let __v_911 = frame.load(rt, "text")?; let __v_913 = frame.load(rt, "at")?; let __index_914 = if matches!(__v_913, Value::None) { None } else { let n = __v_913.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_911, None, __index_914, 1_i64)? }; __args_907.positional.push(__v_910); rt.call(&__callable_906, __args_907)? };
@@ -514,7 +514,7 @@ mod __py_8 { use super::*;
 // py: bot/understanding/body.py:433-439 _only_the_fillers_between
 pub(super) fn _only_the_fillers_between(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["between"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 433, 439, "_only_the_fillers_between");
+rt.trace_call_code("bot/understanding/body.py", 433, 439, "_only_the_fillers_between", 12);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1061 = { let mut __v_1062 = frame.load(rt, "between")?; if __v_1062.is_truthy() { __v_1062 = { let mut __v_1063 = { let __v_1065 = frame.load(rt, "between")?; let __v_1066 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_1065, &__v_1066)? }; let mut __matched_1064 = true; if __matched_1064 { let __v_1067 = frame.load(rt, "_A_MAYBE")?; __matched_1064 = pyrt::ops::contains(&__v_1067, &__v_1063)?; } Value::Bool(__matched_1064) }; } __v_1062 }; if __v_1061.is_truthy() {
@@ -528,7 +528,7 @@ frame.store("between", __v_1082.clone())?;
 } else {
 
 }
-return Ok(__Flow::Return({ let __callable_1087 = frame.load(rt, "all")?; let mut __args_1088 = CallArgs::default(); let __v_1089 = { let __comp_parent_1090 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1090.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1090 = __comp_parent_1090.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "between")?) }) }, assign: { let __comp_parent_1090 = __comp_parent_1090.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1090 = __comp_parent_1090.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_1091 = frame.load(rt, "word")?; let mut __matched_1092 = true; if __matched_1092 { let __v_1093 = frame.load(rt, "_BEFORE_THE_COMPLAINT")?; __matched_1092 = pyrt::ops::contains(&__v_1093, &__v_1091)?; } Value::Bool(__matched_1092) })) }, Rc::new(|rt| { rt.trace_call("bot/understanding/body.py", 439, 439, "_only_the_fillers_between.<locals>.<genexpr>"); Ok(()) }))? }; __args_1088.positional.push(__v_1089); rt.call(&__callable_1087, __args_1088)? }));
+return Ok(__Flow::Return({ let __callable_1087 = frame.load(rt, "all")?; let mut __args_1088 = CallArgs::default(); let __v_1089 = { let __comp_parent_1090 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1090.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1090 = __comp_parent_1090.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "between")?) }) }, assign: { let __comp_parent_1090 = __comp_parent_1090.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1090 = __comp_parent_1090.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_1091 = frame.load(rt, "word")?; let mut __matched_1092 = true; if __matched_1092 { let __v_1093 = frame.load(rt, "_BEFORE_THE_COMPLAINT")?; __matched_1092 = pyrt::ops::contains(&__v_1093, &__v_1091)?; } Value::Bool(__matched_1092) })) }, Rc::new(|rt| { rt.trace_call_code("bot/understanding/body.py", 439, 439, "_only_the_fillers_between.<locals>.<genexpr>", 13); Ok(()) }))? }; __args_1088.positional.push(__v_1089); rt.call(&__callable_1087, __args_1088)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -540,7 +540,7 @@ mod __py_9 { use super::*;
 // py: bot/understanding/body.py:442-455 _the_speaker_is_the_subject
 pub(super) fn _the_speaker_is_the_subject(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["began","index","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 442, 455, "_the_speaker_is_the_subject");
+rt.trace_call_code("bot/understanding/body.py", 442, 455, "_the_speaker_is_the_subject", 14);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_1094 = false; let __v_1096 = { let __callable_1099 = frame.load(rt, "range")?; let mut __args_1100 = CallArgs::default(); let __v_1101 = { let __v_1102 = { let __callable_1104 = frame.load(rt, "len")?; let mut __args_1105 = CallArgs::default(); let __v_1106 = frame.load(rt, "words")?; __args_1105.positional.push(__v_1106); rt.call(&__callable_1104, __args_1105)? }; let __v_1103 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::sub_rt(rt, &__v_1102, &__v_1103)? }; __args_1100.positional.push(__v_1101); let __v_1107 = { let __v_1108 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::neg(&__v_1108)? }; __args_1100.positional.push(__v_1107); let __v_1109 = { let __v_1110 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::neg(&__v_1110)? }; __args_1100.positional.push(__v_1109); rt.call(&__callable_1099, __args_1100)? }; let __iter_1097 = rt.iter(&__v_1096)?;
@@ -575,7 +575,7 @@ mod __py_10 { use super::*;
 // py: bot/understanding/body.py:558-567 _an_unwell_word
 pub(super) fn _an_unwell_word(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 558, 567, "_an_unwell_word");
+rt.trace_call_code("bot/understanding/body.py", 558, 567, "_an_unwell_word", 15);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1132 = { let __v_1133 = frame.load(rt, "words")?; let __v_1134 = frame.load(rt, "at")?; pyrt::ops::getitem(&__v_1133, &__v_1134)? };
@@ -607,7 +607,7 @@ mod __py_11 { use super::*;
 // py: bot/understanding/body.py:570-583 _pain_after
 pub(super) fn _pain_after(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","index","step","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 570, 583, "_pain_after");
+rt.trace_call_code("bot/understanding/body.py", 570, 583, "_pain_after", 16);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_1163 = false; let __v_1165 = { let __callable_1168 = frame.load(rt, "range")?; let mut __args_1169 = CallArgs::default(); let __v_1170 = Value::Int("1".parse().expect("integer literal")); __args_1169.positional.push(__v_1170); let __v_1171 = { let __v_1172 = frame.load(rt, "PAIN_REACH")?; let __v_1173 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::add(&__v_1172, &__v_1173)? }; __args_1169.positional.push(__v_1171); rt.call(&__callable_1168, __args_1169)? }; let __iter_1166 = rt.iter(&__v_1165)?;
@@ -654,7 +654,7 @@ mod __py_12 { use super::*;
 // py: bot/understanding/body.py:586-598 _phrase_after
 pub(super) fn _phrase_after(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","index","phrase","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 586, 598, "_phrase_after");
+rt.trace_call_code("bot/understanding/body.py", 586, 598, "_phrase_after", 17);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_1218 = false; let __v_1220 = frame.load(rt, "PAIN_PHRASE")?; let __iter_1221 = rt.iter(&__v_1220)?;
@@ -702,7 +702,7 @@ mod __py_13 { use super::*;
 // py: bot/understanding/body.py:601-629 _said_about_itself
 pub(super) fn _said_about_itself(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["_pattern","found","in_front","index","name","nouns","text","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 601, 629, "_said_about_itself");
+rt.trace_call_code("bot/understanding/body.py", 601, 629, "_said_about_itself", 18);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1263 = { let __callable_1264 = frame.load(rt, "list")?; let mut __args_1265 = CallArgs::default(); let __v_1266 = { let __callable_1267 = { let __v_1269 = frame.load(rt, "re")?; rt.getattr(&__v_1269, "finditer")? }; let mut __args_1268 = CallArgs::default(); let __v_1270 = Value::from("[a-z']+"); __args_1268.positional.push(__v_1270); let __v_1271 = frame.load(rt, "text")?; __args_1268.positional.push(__v_1271); rt.call(&__callable_1267, __args_1268)? }; __args_1265.positional.push(__v_1266); rt.call(&__callable_1264, __args_1265)? };
@@ -778,7 +778,7 @@ mod __py_14 { use super::*;
 // py: bot/understanding/body.py:632-642 _the_part_word
 pub(super) fn _the_part_word(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["bare","nouns","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 632, 642, "_the_part_word");
+rt.trace_call_code("bot/understanding/body.py", 632, 642, "_the_part_word", 19);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1376 = { let mut __v_1377 = frame.load(rt, "word")?; let mut __matched_1378 = true; if __matched_1378 { let __v_1379 = frame.load(rt, "nouns")?; __matched_1378 = pyrt::ops::contains(&__v_1379, &__v_1377)?; } Value::Bool(__matched_1378) }; if __v_1376.is_truthy() {
@@ -811,14 +811,14 @@ mod __py_15 { use super::*;
 // py: bot/understanding/body.py:645-649 _just_the_part_words
 pub(super) fn _just_the_part_words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["allowed","index","rest","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 645, 649, "_just_the_part_words");
+rt.trace_call_code("bot/understanding/body.py", 645, 649, "_just_the_part_words", 20);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1407 = { let __v_1408 = { let __v_1410 = frame.load(rt, "words")?; let __v_1412 = frame.load(rt, "index")?; let __index_1413 = if matches!(__v_1412, Value::None) { None } else { let n = __v_1412.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_1410, None, __index_1413, 1_i64)? }; let __v_1409 = { let __v_1414 = frame.load(rt, "words")?; let __v_1416 = { let __v_1418 = frame.load(rt, "index")?; let __v_1419 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::add(&__v_1418, &__v_1419)? }; let __index_1417 = if matches!(__v_1416, Value::None) { None } else { let n = __v_1416.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_1414, __index_1417, None, 1_i64)? }; pyrt::ops::add(&__v_1408, &__v_1409)? };
 frame.store("rest", __v_1407.clone())?;
 let __v_1420 = { let __v_1421 = { let __v_1423 = { let __v_1425 = frame.load(rt, "FILLER")?; let __v_1426 = frame.load(rt, "PLAIN_PAIN")?; pyrt::ops::bitwise_rt(rt, "|", &__v_1425, &__v_1426)? }; let __v_1424 = frame.load(rt, "PLAIN_UNWELL")?; pyrt::ops::bitwise_rt(rt, "|", &__v_1423, &__v_1424)? }; let __v_1422 = frame.load(rt, "PAIN_BETWEEN")?; pyrt::ops::bitwise_rt(rt, "|", &__v_1421, &__v_1422)? };
 frame.store("allowed", __v_1420.clone())?;
-return Ok(__Flow::Return({ let __callable_1427 = frame.load(rt, "all")?; let mut __args_1428 = CallArgs::default(); let __v_1429 = { let __comp_parent_1430 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1430.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1430 = __comp_parent_1430.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "rest")?) }) }, assign: { let __comp_parent_1430 = __comp_parent_1430.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1430 = __comp_parent_1430.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_1431 = frame.load(rt, "word")?; let mut __matched_1432 = true; if __matched_1432 { let __v_1433 = frame.load(rt, "allowed")?; __matched_1432 = pyrt::ops::contains(&__v_1433, &__v_1431)?; } Value::Bool(__matched_1432) })) }, Rc::new(|rt| { rt.trace_call("bot/understanding/body.py", 649, 649, "_just_the_part_words.<locals>.<genexpr>"); Ok(()) }))? }; __args_1428.positional.push(__v_1429); rt.call(&__callable_1427, __args_1428)? }));
+return Ok(__Flow::Return({ let __callable_1427 = frame.load(rt, "all")?; let mut __args_1428 = CallArgs::default(); let __v_1429 = { let __comp_parent_1430 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1430.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1430 = __comp_parent_1430.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "rest")?) }) }, assign: { let __comp_parent_1430 = __comp_parent_1430.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1430 = __comp_parent_1430.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_1431 = frame.load(rt, "word")?; let mut __matched_1432 = true; if __matched_1432 { let __v_1433 = frame.load(rt, "allowed")?; __matched_1432 = pyrt::ops::contains(&__v_1433, &__v_1431)?; } Value::Bool(__matched_1432) })) }, Rc::new(|rt| { rt.trace_call_code("bot/understanding/body.py", 649, 649, "_just_the_part_words.<locals>.<genexpr>", 21); Ok(()) }))? }; __args_1428.positional.push(__v_1429); rt.call(&__callable_1427, __args_1428)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -830,14 +830,14 @@ mod __py_16 { use super::*;
 // py: bot/understanding/body.py:652-663 _just_the_part
 pub(super) fn _just_the_part(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["match","rest","text","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 652, 663, "_just_the_part");
+rt.trace_call_code("bot/understanding/body.py", 652, 663, "_just_the_part", 22);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1434 = { let __callable_1435 = { let __v_1437 = { let __v_1438 = { let __v_1440 = { let __v_1442 = frame.load(rt, "text")?; let __v_1444 = { let __callable_1446 = { let __v_1448 = frame.load(rt, "match")?; rt.getattr(&__v_1448, "start")? }; let mut __args_1447 = CallArgs::default(); rt.call(&__callable_1446, __args_1447)? }; let __index_1445 = if matches!(__v_1444, Value::None) { None } else { let n = __v_1444.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_1442, None, __index_1445, 1_i64)? }; let __v_1441 = Value::from(" "); pyrt::ops::add(&__v_1440, &__v_1441)? }; let __v_1439 = { let __v_1449 = frame.load(rt, "text")?; let __v_1451 = { let __callable_1453 = { let __v_1455 = frame.load(rt, "match")?; rt.getattr(&__v_1455, "end")? }; let mut __args_1454 = CallArgs::default(); rt.call(&__callable_1453, __args_1454)? }; let __index_1452 = if matches!(__v_1451, Value::None) { None } else { let n = __v_1451.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_1449, __index_1452, None, 1_i64)? }; pyrt::ops::add(&__v_1438, &__v_1439)? }; rt.getattr(&__v_1437, "strip")? }; let mut __args_1436 = CallArgs::default(); rt.call(&__callable_1435, __args_1436)? };
 frame.store("rest", __v_1434.clone())?;
 let __v_1456 = { let __callable_1457 = { let __v_1459 = frame.load(rt, "re")?; rt.getattr(&__v_1459, "findall")? }; let mut __args_1458 = CallArgs::default(); let __v_1460 = Value::from("[a-z']+"); __args_1458.positional.push(__v_1460); let __v_1461 = frame.load(rt, "rest")?; __args_1458.positional.push(__v_1461); rt.call(&__callable_1457, __args_1458)? };
 frame.store("words", __v_1456.clone())?;
-return Ok(__Flow::Return({ let __callable_1462 = frame.load(rt, "all")?; let mut __args_1463 = CallArgs::default(); let __v_1464 = { let __comp_parent_1465 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1465.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1465 = __comp_parent_1465.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_1465 = __comp_parent_1465.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1465 = __comp_parent_1465.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_1466 = { let mut __v_1467 = frame.load(rt, "word")?; let mut __matched_1468 = true; if __matched_1468 { let __v_1469 = frame.load(rt, "FILLER")?; __matched_1468 = pyrt::ops::contains(&__v_1469, &__v_1467)?; } Value::Bool(__matched_1468) }; if !__v_1466.is_truthy() { __v_1466 = { let mut __v_1470 = frame.load(rt, "word")?; let mut __matched_1471 = true; if __matched_1471 { let __v_1472 = frame.load(rt, "WHEN_IT_HAPPENED")?; __matched_1471 = pyrt::ops::contains(&__v_1472, &__v_1470)?; } Value::Bool(__matched_1471) }; } if !__v_1466.is_truthy() { __v_1466 = { let mut __v_1473 = frame.load(rt, "word")?; let mut __matched_1474 = true; if __matched_1474 { let __v_1475 = frame.load(rt, "_A_HELPER_BEFORE")?; __matched_1474 = pyrt::ops::contains(&__v_1475, &__v_1473)?; } Value::Bool(__matched_1474) }; } if !__v_1466.is_truthy() { __v_1466 = { let __callable_1476 = { let __v_1478 = frame.load(rt, "word")?; rt.getattr(&__v_1478, "isdigit")? }; let mut __args_1477 = CallArgs::default(); rt.call(&__callable_1476, __args_1477)? }; } __v_1466 })) }, Rc::new(|rt| { rt.trace_call("bot/understanding/body.py", 662, 663, "_just_the_part.<locals>.<genexpr>"); Ok(()) }))? }; __args_1463.positional.push(__v_1464); rt.call(&__callable_1462, __args_1463)? }));
+return Ok(__Flow::Return({ let __callable_1462 = frame.load(rt, "all")?; let mut __args_1463 = CallArgs::default(); let __v_1464 = { let __comp_parent_1465 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1465.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1465 = __comp_parent_1465.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_1465 = __comp_parent_1465.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1465 = __comp_parent_1465.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_1466 = { let mut __v_1467 = frame.load(rt, "word")?; let mut __matched_1468 = true; if __matched_1468 { let __v_1469 = frame.load(rt, "FILLER")?; __matched_1468 = pyrt::ops::contains(&__v_1469, &__v_1467)?; } Value::Bool(__matched_1468) }; if !__v_1466.is_truthy() { __v_1466 = { let mut __v_1470 = frame.load(rt, "word")?; let mut __matched_1471 = true; if __matched_1471 { let __v_1472 = frame.load(rt, "WHEN_IT_HAPPENED")?; __matched_1471 = pyrt::ops::contains(&__v_1472, &__v_1470)?; } Value::Bool(__matched_1471) }; } if !__v_1466.is_truthy() { __v_1466 = { let mut __v_1473 = frame.load(rt, "word")?; let mut __matched_1474 = true; if __matched_1474 { let __v_1475 = frame.load(rt, "_A_HELPER_BEFORE")?; __matched_1474 = pyrt::ops::contains(&__v_1475, &__v_1473)?; } Value::Bool(__matched_1474) }; } if !__v_1466.is_truthy() { __v_1466 = { let __callable_1476 = { let __v_1478 = frame.load(rt, "word")?; rt.getattr(&__v_1478, "isdigit")? }; let mut __args_1477 = CallArgs::default(); rt.call(&__callable_1476, __args_1477)? }; } __v_1466 })) }, Rc::new(|rt| { rt.trace_call_code("bot/understanding/body.py", 662, 663, "_just_the_part.<locals>.<genexpr>", 23); Ok(()) }))? }; __args_1463.positional.push(__v_1464); rt.call(&__callable_1462, __args_1463)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -849,7 +849,7 @@ mod __py_17 { use super::*;
 // py: bot/understanding/body.py:666-671 _someone_else
 pub(super) fn _someone_else(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/understanding/body.py", 666, 671, "_someone_else");
+rt.trace_call_code("bot/understanding/body.py", 666, 671, "_someone_else", 24);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_1479 = false; let __v_1481 = { let __callable_1484 = { let __v_1486 = frame.load(rt, "re")?; rt.getattr(&__v_1486, "findall")? }; let mut __args_1485 = CallArgs::default(); let __v_1487 = Value::from("[a-z']+"); __args_1485.positional.push(__v_1487); let __v_1488 = frame.load(rt, "text")?; __args_1485.positional.push(__v_1488); rt.call(&__callable_1484, __args_1485)? }; let __iter_1482 = rt.iter(&__v_1481)?;

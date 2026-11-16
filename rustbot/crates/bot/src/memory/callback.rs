@@ -20,7 +20,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_the_person_held",49,76),
 ("_choose",228,240)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/callback.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/callback.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A question about a person the chat already holds: answer it with what the chat holds.\n\n    my mum is in hospital / she had a fall / she is 82 / how is she doing\n        -> \"Same as before: Falls are usually several small things adding up ...\"\n\nA friend asked how their mum was doing, and the bot read the word \"doing\" as the fall it had\nalready answered and said the same paragraph again, headed \"Same as before\". The person was not\nasking for the advice twice; they were asking after their mum, and the only thing the bot knows\nabout her is what they told it.\n\nSo the reply is what the chat holds, said in one line: the person (\"your mum\"), what they said\nabout her (\"had a fall\"), her age if it was given, and the one thing a friend asks - whether\nthere is any word since. When the chat holds nobody, there is nothing to answer with and the\nmodule stands down.\n"))?;
@@ -64,7 +64,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/callback.py:49-76 _the_person_held
 pub(super) fn _the_person_held(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["age","found","held","line","memory","name","named","one","relation","the_others","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/callback.py", 49, 76, "_the_person_held");
+rt.trace_call_code("bot/memory/callback.py", 49, 76, "_the_person_held", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __module_88 = rt.import("bot.memory")?;
@@ -145,7 +145,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/callback.py:79-106 _the_news_about
 pub(super) fn _the_news_about(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","line","low","memory","name","relation","rest","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/callback.py", 79, 106, "_the_news_about");
+rt.trace_call_code("bot/memory/callback.py", 79, 106, "_the_news_about", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_212 = { let __v_213 = { let __v_215 = { let mut __items_217 = Vec::new(); let __v_218 = frame.load(rt, "relation")?; __items_217.push(__v_218); Value::list(__items_217) }; let __v_216 = { let __v_219 = frame.load(rt, "name")?; if __v_219.is_truthy() { { let mut __items_220 = Vec::new(); let __v_221 = frame.load(rt, "name")?; __items_220.push(__v_221); Value::list(__items_220) } } else { { let mut __items_222 = Vec::new(); Value::list(__items_222) } } }; pyrt::ops::add(&__v_215, &__v_216)? }; let __v_214 = { let __callable_223 = frame.load(rt, "list")?; let mut __args_224 = CallArgs::default(); let __v_225 = { let __callable_226 = frame.load(rt, "_the_pronouns")?; let mut __args_227 = CallArgs::default(); let __v_228 = frame.load(rt, "relation")?; __args_227.positional.push(__v_228); rt.call(&__callable_226, __args_227)? }; __args_224.positional.push(__v_225); rt.call(&__callable_223, __args_224)? }; pyrt::ops::add(&__v_213, &__v_214)? };
@@ -213,7 +213,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/callback.py:109-114 _the_pronouns
 pub(super) fn _the_pronouns(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["relation"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/callback.py", 109, 114, "_the_pronouns");
+rt.trace_call_code("bot/memory/callback.py", 109, 114, "_the_pronouns", 4);
 let flow = (|| -> PyResult<__Flow> {
 let __v_345 = { let mut __v_346 = frame.load(rt, "relation")?; let mut __matched_347 = true; if __matched_347 { let __v_348 = { let __v_349 = frame.load(rt, "facts")?; rt.getattr(&__v_349, "HE")? }; __matched_347 = pyrt::ops::contains(&__v_348, &__v_346)?; } Value::Bool(__matched_347) }; if __v_345.is_truthy() {
 return Ok(__Flow::Return({ let mut __items_350 = Vec::new(); let __v_351 = Value::from("he"); __items_350.push(__v_351); Value::tuple(__items_350) }));
@@ -237,7 +237,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/callback.py:117-148 _the_ask
 pub(super) fn _the_ask(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","match","memory","pointed","said","text","wanted","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/callback.py", 117, 148, "_the_ask");
+rt.trace_call_code("bot/memory/callback.py", 117, 148, "_the_ask", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_361 = { let __v_362 = { let __callable_363 = frame.load(rt, "isinstance")?; let mut __args_364 = CallArgs::default(); let __v_365 = frame.load(rt, "memory")?; __args_364.positional.push(__v_365); let __v_366 = frame.load(rt, "dict")?; __args_364.positional.push(__v_366); rt.call(&__callable_363, __args_364)? }; Value::Bool(!__v_362.is_truthy()) }; if __v_361.is_truthy() {
@@ -312,7 +312,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/callback.py:167-172 _a_medical_episode
 pub(super) fn _a_medical_episode(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/callback.py", 167, 172, "_a_medical_episode");
+rt.trace_call_code("bot/memory/callback.py", 167, 172, "_a_medical_episode", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_477 = false; let __v_479 = { let __v_482 = { let __callable_487 = { let __v_489 = frame.load(rt, "earlier")?; rt.getattr(&__v_489, "lines")? }; let mut __args_488 = CallArgs::default(); let __v_490 = frame.load(rt, "memory")?; __args_488.positional.push(__v_490); rt.call(&__callable_487, __args_488)? }; let __v_484 = { let __v_486 = frame.load(rt, "EPISODE_TURNS")?; pyrt::ops::neg(&__v_486)? }; let __index_485 = if matches!(__v_484, Value::None) { None } else { let n = __v_484.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_482, __index_485, None, 1_i64)? }; let __iter_480 = rt.iter(&__v_479)?;
@@ -342,7 +342,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/callback.py:175-214 reply_for
 pub(super) fn reply_for(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["age","held","memory","name","news","pool","relation","since","text","who"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/callback.py", 175, 214, "reply_for");
+rt.trace_call_code("bot/memory/callback.py", 175, 214, "reply_for", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_499 = { let mut __v_500 = { let __v_501 = { let __callable_502 = frame.load(rt, "isinstance")?; let mut __args_503 = CallArgs::default(); let __v_504 = frame.load(rt, "memory")?; __args_503.positional.push(__v_504); let __v_505 = frame.load(rt, "dict")?; __args_503.positional.push(__v_505); rt.call(&__callable_502, __args_503)? }; Value::Bool(!__v_501.is_truthy()) }; if !__v_500.is_truthy() { __v_500 = { let __v_506 = { let __callable_507 = { let __v_509 = frame.load(rt, "earlier")?; rt.getattr(&__v_509, "there_is_one")? }; let mut __args_508 = CallArgs::default(); let __v_510 = frame.load(rt, "memory")?; __args_508.positional.push(__v_510); rt.call(&__callable_507, __args_508)? }; Value::Bool(!__v_506.is_truthy()) }; } __v_500 }; if __v_499.is_truthy() {
@@ -402,7 +402,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/callback.py:217-225 claims
 pub(super) fn claims(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/callback.py", 217, 225, "claims");
+rt.trace_call_code("bot/memory/callback.py", 217, 225, "claims", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_648 = frame.load(rt, "bool")?; let mut __args_649 = CallArgs::default(); let __v_650 = { let __callable_651 = frame.load(rt, "reply_for")?; let mut __args_652 = CallArgs::default(); let __v_653 = frame.load(rt, "text")?; __args_652.positional.push(__v_653); let __v_654 = frame.load(rt, "memory")?; __args_652.positional.push(__v_654); rt.call(&__callable_651, __args_652)? }; __args_649.positional.push(__v_650); rt.call(&__callable_648, __args_649)? }));
@@ -417,7 +417,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/callback.py:228-240 _choose
 pub(super) fn _choose(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["fresh","memory","pool","random","said"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/callback.py", 228, 240, "_choose");
+rt.trace_call_code("bot/memory/callback.py", 228, 240, "_choose", 9);
 let flow = (|| -> PyResult<__Flow> {
 
 let __module_655 = rt.import("random")?;

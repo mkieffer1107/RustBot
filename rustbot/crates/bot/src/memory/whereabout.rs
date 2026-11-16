@@ -14,7 +14,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("the_place",81,110),
 ("the_question_with_the_place",113,140)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/whereabout.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/whereabout.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A place said on its own is the question just asked, in that place.\n\n    any ideas for a cheap day out with kids\n      -> Free ones that work: a walk with a purpose (a park, a canal, the woods) ...\n    near leeds\n      -> I'm listening - say more if it helps.                              (main)\n\n\"near leeds\" is not news about the person, and it is not a question of its own. It is the question\nthey asked a turn ago with a place put on it, and the knowledge base answers that question: \"Day\ntrips from Leeds: York (25 minutes by train), the Yorkshire Dales (an hour by car), Harrogate for\na spa afternoon\". Main had nothing to do with the place, so it handed the line to the filler that\nasks for more, which is the one thing a place is not.\n\nSo this reads the place out of the line, puts the question back with the place in it, and hands\nthat back as the line to answer. It decides nothing about the reply: the caller answers the\nquestion it returns the way it answers any other question, and drops it when the answer it gets is\nthe hedge or the answer already on screen. That last part is what keeps a place said after a\nquestion no place can narrow (\"im knackered\" then \"near leeds\") from being answered as if it were\nthe question.\n\nA place is not only a name. \"somewhere warm and cheap\" after \"i need a holiday\" is the same\nshape said as a wish: it is the question with what they want put on it, and the knowledge base\nanswers the two together (\"The cheapest sun is the Algarve or the Costa Blanca outside July and\nAugust\"). Main answered the wish with \"Thanks for telling me - I'm here if you want to dig into\nany of that.\"\n\nThe rule is narrow on purpose:\n* the line has to be a place and nothing else - \"near leeds\", \"somewhere near leeds\", \"in\n  birmingham\", \"round here\" - so \"its near leeds and the traffic was awful\" stays a line of its\n  own, and a bare \"leeds\" is left alone because a town on its own is as likely to be a plan as a\n  place to go;\n* the place has to be a place, so \"in june\", \"in the morning\", \"near the oven\" and \"in bed\" are\n  not read as one;\n* there has to be a question in the turn just finished, and one a place narrows (\"where\", \"any\n  ideas\", \"what should i do\", \"can you recommend\"), so a place said after a statement is left\n  alone;\n* the place must be one the answer on screen does not already say, so an answer that named Leeds\n  is not the whole question asked again.\n"))?;
@@ -41,7 +41,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/whereabout.py:81-110 the_place
 pub(super) fn the_place(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["first","line","match","place","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whereabout.py", 81, 110, "the_place");
+rt.trace_call_code("bot/memory/whereabout.py", 81, 110, "the_place", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_40 = { let __callable_41 = { let __v_43 = { let __callable_44 = { let __v_46 = { let __callable_47 = { let __v_49 = { let mut __v_50 = frame.load(rt, "line")?; if !__v_50.is_truthy() { __v_50 = Value::from(""); } __v_50 }; rt.getattr(&__v_49, "strip")? }; let mut __args_48 = CallArgs::default(); rt.call(&__callable_47, __args_48)? }; rt.getattr(&__v_46, "strip")? }; let mut __args_45 = CallArgs::default(); let __v_51 = Value::from(" .!,"); __args_45.positional.push(__v_51); rt.call(&__callable_44, __args_45)? }; rt.getattr(&__v_43, "lower")? }; let mut __args_42 = CallArgs::default(); rt.call(&__callable_41, __args_42)? };
@@ -100,7 +100,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/whereabout.py:113-140 the_question_with_the_place
 pub(super) fn the_question_with_the_place(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","memory","place","said","text","turn","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/whereabout.py", 113, 140, "the_question_with_the_place");
+rt.trace_call_code("bot/memory/whereabout.py", 113, 140, "the_question_with_the_place", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_123 = { let __callable_124 = frame.load(rt, "the_place")?; let mut __args_125 = CallArgs::default(); let __v_126 = frame.load(rt, "text")?; __args_125.positional.push(__v_126); rt.call(&__callable_124, __args_125)? };

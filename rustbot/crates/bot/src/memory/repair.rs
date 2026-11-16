@@ -58,7 +58,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_the_thing",156,214),
 ("the_thing_they_meant",1060,1183)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/repair.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/repair.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("They swapped the thing they were asking about: \"no i meant the front room\".\n\nA person asks about one thing, gets an answer, and then says the thing they meant was a different\none. It is a repair, and it keeps the ask: the question is the same question about a different\nthing. Main reads only the value side of that - `no i said 700`, `sorry, i meant the 13th of june`\n- and there the store has a fact to move. When the thing swapped is the *subject* of the ask and\nno fact holds it, the line was left to the composer, and the person who corrected themselves got\nno answer at all:\n\n```\ni need to pick a paint colour for the hall\n  -> \"Pick the thing you cannot change - the floor, the tiles, the worktop...\"\nno i meant the front room\n  -> \"Thanks for telling me - I'm here if you want to dig into any of that.\"\nits quite dark in there\n  -> \"It's quite dark in there - noted.\"\n```\n\nTwo turns lost after a good answer. What they asked for is the same advice about the front room,\nand the bot has it: read as the ask they would have said if they had said it right the first time,\nit answers.\n\nSo this module builds that ask. The thing the last line named is its last content word - the plan\nis kept as the sentence it arrived in (\"Pick a paint colour for the hall\"), so the word that moves\nis the one at the end of it - and the new thing takes its place:\n\n    i need to pick a paint colour for the hall  ->  i need to pick a paint colour for the front room\n\nThree rules keep it to the lines it is good at:\n\n* the whole line has to be the repair and a thing: \"no i meant the front room\", \"sorry, i meant\n  the other one\" is refused because a pronoun names no thing, and \"no i meant 500\" is refused\n  because a value is the store's own correction to make, not a subject to re-ask.\n* the thing has to replace something: a word of its own already in the line (\"no i meant the\n  hall\" after the hall) leaves the ask exactly as it was, and answering it again is a repeat.\n* the answers have to have something to say about the ask they would have made. When they do not\n  (\"i live in bristol\" / \"no i meant leeds\" is a fact to change, not an ask to answer) this module\n  says nothing and the turn goes back to the rest of the bot, which knows how to move a fact.\n\nThe store also keeps the swap, so the turns after it are about the thing they meant: the topic is\nthe corrected line and the plan says the new thing, or \"its quite dark in there\" is answered about\nthe hall they have just taken back.\n"))?;
@@ -188,7 +188,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/repair.py:156-214 _the_thing
 pub(super) fn _the_thing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["bare","match","said","text","thing","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 156, 214, "_the_thing");
+rt.trace_call_code("bot/memory/repair.py", 156, 214, "_the_thing", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_382 = { let __callable_383 = { let __v_385 = Value::from(" "); rt.getattr(&__v_385, "join")? }; let mut __args_384 = CallArgs::default(); let __v_386 = { let __callable_387 = { let __v_389 = { let __callable_390 = frame.load(rt, "str")?; let mut __args_391 = CallArgs::default(); let __v_392 = { let mut __v_393 = frame.load(rt, "text")?; if !__v_393.is_truthy() { __v_393 = Value::from(""); } __v_393 }; __args_391.positional.push(__v_392); rt.call(&__callable_390, __args_391)? }; rt.getattr(&__v_389, "split")? }; let mut __args_388 = CallArgs::default(); rt.call(&__callable_387, __args_388)? }; __args_384.positional.push(__v_386); rt.call(&__callable_383, __args_384)? };
@@ -241,7 +241,7 @@ return Ok(__Flow::Return(Value::None));
 }
 let __v_454 = { let __comp_parent_455 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_455.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_455 = __comp_parent_455.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_456 = { let __v_458 = frame.load(rt, "re")?; rt.getattr(&__v_458, "findall")? }; let mut __args_457 = CallArgs::default(); let __v_459 = Value::from("[a-z0-9']+"); __args_457.positional.push(__v_459); let __v_460 = { let __callable_461 = { let __v_463 = frame.load(rt, "thing")?; rt.getattr(&__v_463, "lower")? }; let mut __args_462 = CallArgs::default(); rt.call(&__callable_461, __args_462)? }; __args_457.positional.push(__v_460); rt.call(&__callable_456, __args_457)? }) }) }, assign: { let __comp_parent_455 = __comp_parent_455.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_455 = __comp_parent_455.clone(); Rc::new(move |rt, frame| Ok({ let __callable_464 = { let __v_466 = frame.load(rt, "word")?; rt.getattr(&__v_466, "strip")? }; let mut __args_465 = CallArgs::default(); let __v_467 = Value::from("'"); __args_465.positional.push(__v_467); rt.call(&__callable_464, __args_465)? })) })?) };
 frame.store("words", __v_454.clone())?;
-let __v_468 = { let mut __v_469 = { let __v_470 = frame.load(rt, "words")?; Value::Bool(!__v_470.is_truthy()) }; if !__v_469.is_truthy() { __v_469 = { let __callable_471 = frame.load(rt, "all")?; let mut __args_472 = CallArgs::default(); let __v_473 = { let __comp_parent_474 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_474.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_474 = __comp_parent_474.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_474 = __comp_parent_474.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_474 = __comp_parent_474.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_475 = frame.load(rt, "word")?; let mut __matched_476 = true; if __matched_476 { let __v_477 = frame.load(rt, "NOT_A_THING")?; __matched_476 = pyrt::ops::contains(&__v_477, &__v_475)?; } Value::Bool(__matched_476) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/repair.py", 189, 189, "_the_thing.<locals>.<genexpr>"); Ok(()) }))? }; __args_472.positional.push(__v_473); rt.call(&__callable_471, __args_472)? }; } __v_469 }; if __v_468.is_truthy() {
+let __v_468 = { let mut __v_469 = { let __v_470 = frame.load(rt, "words")?; Value::Bool(!__v_470.is_truthy()) }; if !__v_469.is_truthy() { __v_469 = { let __callable_471 = frame.load(rt, "all")?; let mut __args_472 = CallArgs::default(); let __v_473 = { let __comp_parent_474 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_474.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_474 = __comp_parent_474.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_474 = __comp_parent_474.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_474 = __comp_parent_474.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_475 = frame.load(rt, "word")?; let mut __matched_476 = true; if __matched_476 { let __v_477 = frame.load(rt, "NOT_A_THING")?; __matched_476 = pyrt::ops::contains(&__v_477, &__v_475)?; } Value::Bool(__matched_476) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/repair.py", 189, 189, "_the_thing.<locals>.<genexpr>", 3); Ok(()) }))? }; __args_472.positional.push(__v_473); rt.call(&__callable_471, __args_472)? }; } __v_469 }; if __v_468.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 
@@ -256,12 +256,12 @@ return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_491 = { let mut __v_492 = frame.load(rt, "bare")?; if __v_492.is_truthy() { __v_492 = { let __callable_493 = frame.load(rt, "all")?; let mut __args_494 = CallArgs::default(); let __v_495 = { let __comp_parent_496 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_496.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_496 = __comp_parent_496.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_496 = __comp_parent_496.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_496 = __comp_parent_496.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_497 = frame.load(rt, "word")?; let mut __matched_498 = true; if __matched_498 { let __v_499 = frame.load(rt, "NOT_THE_THING")?; __matched_498 = !pyrt::ops::contains(&__v_499, &__v_497)?; } Value::Bool(__matched_498) }).is_truthy()) }) }] }], { let __comp_parent_496 = __comp_parent_496.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_500 = frame.load(rt, "word")?; let mut __matched_501 = true; if __matched_501 { let __v_502 = frame.load(rt, "NOT_A_SWAP")?; __matched_501 = pyrt::ops::contains(&__v_502, &__v_500)?; } Value::Bool(__matched_501) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/repair.py", 201, 201, "_the_thing.<locals>.<genexpr>"); Ok(()) }))? }; __args_494.positional.push(__v_495); rt.call(&__callable_493, __args_494)? }; } __v_492 }; if __v_491.is_truthy() {
+let __v_491 = { let mut __v_492 = frame.load(rt, "bare")?; if __v_492.is_truthy() { __v_492 = { let __callable_493 = frame.load(rt, "all")?; let mut __args_494 = CallArgs::default(); let __v_495 = { let __comp_parent_496 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_496.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_496 = __comp_parent_496.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_496 = __comp_parent_496.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_496 = __comp_parent_496.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_497 = frame.load(rt, "word")?; let mut __matched_498 = true; if __matched_498 { let __v_499 = frame.load(rt, "NOT_THE_THING")?; __matched_498 = !pyrt::ops::contains(&__v_499, &__v_497)?; } Value::Bool(__matched_498) }).is_truthy()) }) }] }], { let __comp_parent_496 = __comp_parent_496.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_500 = frame.load(rt, "word")?; let mut __matched_501 = true; if __matched_501 { let __v_502 = frame.load(rt, "NOT_A_SWAP")?; __matched_501 = pyrt::ops::contains(&__v_502, &__v_500)?; } Value::Bool(__matched_501) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/repair.py", 201, 201, "_the_thing.<locals>.<genexpr>", 4); Ok(()) }))? }; __args_494.positional.push(__v_495); rt.call(&__callable_493, __args_494)? }; } __v_492 }; if __v_491.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_503 = { let mut __v_504 = frame.load(rt, "bare")?; if __v_504.is_truthy() { __v_504 = { let __callable_505 = frame.load(rt, "any")?; let mut __args_506 = CallArgs::default(); let __v_507 = { let __comp_parent_508 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_508.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_508 = __comp_parent_508.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_508 = __comp_parent_508.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_508 = __comp_parent_508.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_509 = frame.load(rt, "word")?; let mut __matched_510 = true; if __matched_510 { let __v_511 = frame.load(rt, "A_VERB_IN_THE_THING")?; __matched_510 = pyrt::ops::contains(&__v_511, &__v_509)?; } Value::Bool(__matched_510) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/repair.py", 203, 203, "_the_thing.<locals>.<genexpr>"); Ok(()) }))? }; __args_506.positional.push(__v_507); rt.call(&__callable_505, __args_506)? }; } __v_504 }; if __v_503.is_truthy() {
+let __v_503 = { let mut __v_504 = frame.load(rt, "bare")?; if __v_504.is_truthy() { __v_504 = { let __callable_505 = frame.load(rt, "any")?; let mut __args_506 = CallArgs::default(); let __v_507 = { let __comp_parent_508 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_508.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_508 = __comp_parent_508.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_508 = __comp_parent_508.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_508 = __comp_parent_508.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_509 = frame.load(rt, "word")?; let mut __matched_510 = true; if __matched_510 { let __v_511 = frame.load(rt, "A_VERB_IN_THE_THING")?; __matched_510 = pyrt::ops::contains(&__v_511, &__v_509)?; } Value::Bool(__matched_510) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/repair.py", 203, 203, "_the_thing.<locals>.<genexpr>", 5); Ok(()) }))? }; __args_506.positional.push(__v_507); rt.call(&__callable_505, __args_506)? }; } __v_504 }; if __v_503.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 
@@ -272,7 +272,7 @@ return Ok(__Flow::Return(Value::None));
 
 }
 let __v_518 = { let mut __v_519 = { let mut __v_520 = { let __v_522 = frame.load(rt, "words")?; let __v_523 = { let __v_524 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::neg(&__v_524)? }; pyrt::ops::getitem(&__v_522, &__v_523)? }; let mut __matched_521 = true; if __matched_521 { let __v_525 = frame.load(rt, "NOT_A_THING")?; __matched_521 = pyrt::ops::contains(&__v_525, &__v_520)?; } Value::Bool(__matched_521) }; if __v_519.is_truthy() { __v_519 = { let mut __v_526 = { let __v_528 = frame.load(rt, "words")?; let __v_529 = { let __v_530 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::neg(&__v_530)? }; pyrt::ops::getitem(&__v_528, &__v_529)? }; let mut __matched_527 = true; if __matched_527 { let __v_531 = { let __v_532 = frame.load(rt, "words")?; let __v_533 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_532, &__v_533)? }; __matched_527 = !__v_526.equals(&__v_531)?; } Value::Bool(__matched_527) }; } __v_519 }; if __v_518.is_truthy() {
-return Ok(__Flow::Return({ let __v_534 = { let __v_535 = { let __callable_536 = frame.load(rt, "all")?; let mut __args_537 = CallArgs::default(); let __v_538 = { let __comp_parent_539 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_539.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_539 = __comp_parent_539.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_539 = __comp_parent_539.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_539 = __comp_parent_539.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_540 = frame.load(rt, "word")?; let mut __matched_541 = true; if __matched_541 { let __v_542 = { let __v_543 = frame.load(rt, "NOT_A_THING")?; let __v_544 = frame.load(rt, "NOT_THE_THING")?; pyrt::ops::bitwise_rt(rt, "|", &__v_543, &__v_544)? }; __matched_541 = pyrt::ops::contains(&__v_542, &__v_540)?; } Value::Bool(__matched_541) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/repair.py", 213, 213, "_the_thing.<locals>.<genexpr>"); Ok(()) }))? }; __args_537.positional.push(__v_538); rt.call(&__callable_536, __args_537)? }; Value::Bool(!__v_535.is_truthy()) }; if __v_534.is_truthy() { frame.load(rt, "thing")? } else { Value::None } }));
+return Ok(__Flow::Return({ let __v_534 = { let __v_535 = { let __callable_536 = frame.load(rt, "all")?; let mut __args_537 = CallArgs::default(); let __v_538 = { let __comp_parent_539 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_539.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_539 = __comp_parent_539.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "words")?) }) }, assign: { let __comp_parent_539 = __comp_parent_539.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_539 = __comp_parent_539.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_540 = frame.load(rt, "word")?; let mut __matched_541 = true; if __matched_541 { let __v_542 = { let __v_543 = frame.load(rt, "NOT_A_THING")?; let __v_544 = frame.load(rt, "NOT_THE_THING")?; pyrt::ops::bitwise_rt(rt, "|", &__v_543, &__v_544)? }; __matched_541 = pyrt::ops::contains(&__v_542, &__v_540)?; } Value::Bool(__matched_541) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/repair.py", 213, 213, "_the_thing.<locals>.<genexpr>", 6); Ok(()) }))? }; __args_537.positional.push(__v_538); rt.call(&__callable_536, __args_537)? }; Value::Bool(!__v_535.is_truthy()) }; if __v_534.is_truthy() { frame.load(rt, "thing")? } else { Value::None } }));
 } else {
 
 }
@@ -288,7 +288,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/repair.py:217-230 _a_different_thing
 pub(super) fn _a_different_thing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","old","said","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 217, 230, "_a_different_thing");
+rt.trace_call_code("bot/memory/repair.py", 217, 230, "_a_different_thing", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_545 = { let __callable_546 = frame.load(rt, "_content_words")?; let mut __args_547 = CallArgs::default(); let __v_548 = frame.load(rt, "old")?; __args_547.positional.push(__v_548); rt.call(&__callable_546, __args_547)? };
@@ -312,7 +312,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/repair.py:233-237 _content_words
 pub(super) fn _content_words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 233, 237, "_content_words");
+rt.trace_call_code("bot/memory/repair.py", 233, 237, "_content_words", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_560 = { let __comp_parent_561 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_561.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_561 = __comp_parent_561.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_562 = { let __v_564 = frame.load(rt, "re")?; rt.getattr(&__v_564, "findall")? }; let mut __args_563 = CallArgs::default(); let __v_565 = Value::from("[a-z0-9']+"); __args_563.positional.push(__v_565); let __v_566 = { let __callable_567 = { let __v_569 = { let __callable_570 = frame.load(rt, "str")?; let mut __args_571 = CallArgs::default(); let __v_572 = { let mut __v_573 = frame.load(rt, "text")?; if !__v_573.is_truthy() { __v_573 = Value::from(""); } __v_573 }; __args_571.positional.push(__v_572); rt.call(&__callable_570, __args_571)? }; rt.getattr(&__v_569, "lower")? }; let mut __args_568 = CallArgs::default(); rt.call(&__callable_567, __args_568)? }; __args_563.positional.push(__v_566); rt.call(&__callable_562, __args_563)? }) }) }, assign: { let __comp_parent_561 = __comp_parent_561.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_561 = __comp_parent_561.clone(); Rc::new(move |rt, frame| Ok({ let __callable_574 = { let __v_576 = frame.load(rt, "word")?; rt.getattr(&__v_576, "strip")? }; let mut __args_575 = CallArgs::default(); let __v_577 = Value::from("'"); __args_575.positional.push(__v_577); rt.call(&__callable_574, __args_575)? })) })?) };
@@ -329,7 +329,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/repair.py:246-261 _the_reading
 pub(super) fn _the_reading(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","read","said","understand"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 246, 261, "_the_reading");
+rt.trace_call_code("bot/memory/repair.py", 246, 261, "_the_reading", 9);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_598 = { let __callable_599 = frame.load(rt, "str")?; let mut __args_600 = CallArgs::default(); let __v_601 = { let mut __v_602 = frame.load(rt, "line")?; if !__v_602.is_truthy() { __v_602 = Value::from(""); } __v_602 }; __args_600.positional.push(__v_601); rt.call(&__callable_599, __args_600)? };
@@ -384,7 +384,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/repair.py:264-302 _the_thing_the_reading_named
 pub(super) fn _the_thing_the_reading_named(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","before","found","index","line","one","read","said","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 264, 302, "_the_thing_the_reading_named");
+rt.trace_call_code("bot/memory/repair.py", 264, 302, "_the_thing_the_reading_named", 10);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_646 = { let __callable_647 = frame.load(rt, "_the_reading")?; let mut __args_648 = CallArgs::default(); let __v_649 = frame.load(rt, "line")?; __args_648.positional.push(__v_649); rt.call(&__callable_647, __args_648)? };
@@ -463,7 +463,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/repair.py:292-292 _the_thing_the_reading_named.<locals>.<lambda>
 pub(super) fn __lambda(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["pair"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 292, 292, "_the_thing_the_reading_named.<locals>.<lambda>");
+rt.trace_call_code("bot/memory/repair.py", 292, 292, "_the_thing_the_reading_named.<locals>.<lambda>", 11);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let mut __items_810 = Vec::new(); let __v_811 = { let mut __v_812 = { let __v_814 = frame.load(rt, "pair")?; let __v_815 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_814, &__v_815)? }; let mut __matched_813 = true; if __matched_813 { let __v_816 = Value::None; __matched_813 = __v_812.is_identical(&__v_816); } Value::Bool(__matched_813) }; __items_810.push(__v_811); let __v_817 = { let __v_818 = frame.load(rt, "pair")?; let __v_819 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_818, &__v_819)? }; __items_810.push(__v_817); Value::tuple(__items_810) }));
 Ok(__Flow::Next)
@@ -477,7 +477,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/repair.py:305-326 _the_thing_the_last_line_named
 pub(super) fn _the_thing_the_last_line_named(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 305, 326, "_the_thing_the_last_line_named");
+rt.trace_call_code("bot/memory/repair.py", 305, 326, "_the_thing_the_last_line_named", 12);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_820 = { let __comp_parent_821 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_821.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_821 = __comp_parent_821.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_822 = { let __v_824 = frame.load(rt, "re")?; rt.getattr(&__v_824, "findall")? }; let mut __args_823 = CallArgs::default(); let __v_825 = Value::from("[a-z0-9']+"); __args_823.positional.push(__v_825); let __v_826 = { let __callable_827 = { let __v_829 = { let __callable_830 = frame.load(rt, "str")?; let mut __args_831 = CallArgs::default(); let __v_832 = { let mut __v_833 = frame.load(rt, "line")?; if !__v_833.is_truthy() { __v_833 = Value::from(""); } __v_833 }; __args_831.positional.push(__v_832); rt.call(&__callable_830, __args_831)? }; rt.getattr(&__v_829, "lower")? }; let mut __args_828 = CallArgs::default(); rt.call(&__callable_827, __args_828)? }; __args_823.positional.push(__v_826); rt.call(&__callable_822, __args_823)? }) }) }, assign: { let __comp_parent_821 = __comp_parent_821.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_821 = __comp_parent_821.clone(); Rc::new(move |rt, frame| Ok({ let __callable_834 = { let __v_836 = frame.load(rt, "word")?; rt.getattr(&__v_836, "strip")? }; let mut __args_835 = CallArgs::default(); let __v_837 = Value::from("'"); __args_835.positional.push(__v_837); rt.call(&__callable_834, __args_835)? })) })?) };
@@ -520,7 +520,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/repair.py:335-351 _the_noun_the_line_named
 pub(super) fn _the_noun_the_line_named(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 335, 351, "_the_noun_the_line_named");
+rt.trace_call_code("bot/memory/repair.py", 335, 351, "_the_noun_the_line_named", 13);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_877 = { let __comp_parent_878 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_878.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_878 = __comp_parent_878.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_879 = { let __v_881 = frame.load(rt, "re")?; rt.getattr(&__v_881, "findall")? }; let mut __args_880 = CallArgs::default(); let __v_882 = Value::from("[a-z0-9']+"); __args_880.positional.push(__v_882); let __v_883 = { let __callable_884 = { let __v_886 = { let __callable_887 = frame.load(rt, "str")?; let mut __args_888 = CallArgs::default(); let __v_889 = { let mut __v_890 = frame.load(rt, "line")?; if !__v_890.is_truthy() { __v_890 = Value::from(""); } __v_890 }; __args_888.positional.push(__v_889); rt.call(&__callable_887, __args_888)? }; rt.getattr(&__v_886, "lower")? }; let mut __args_885 = CallArgs::default(); rt.call(&__callable_884, __args_885)? }; __args_880.positional.push(__v_883); rt.call(&__callable_879, __args_880)? }) }) }, assign: { let __comp_parent_878 = __comp_parent_878.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_878 = __comp_parent_878.clone(); Rc::new(move |rt, frame| Ok({ let __callable_891 = { let __v_893 = frame.load(rt, "word")?; rt.getattr(&__v_893, "strip")? }; let mut __args_892 = CallArgs::default(); let __v_894 = Value::from("'"); __args_892.positional.push(__v_894); rt.call(&__callable_891, __args_892)? })) })?) };
@@ -563,7 +563,7 @@ mod __py_8 { use super::*;
 // py: bot/memory/repair.py:354-370 _the_pointer_refines
 pub(super) fn _the_pointer_refines(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","mods","noun","thing","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 354, 370, "_the_pointer_refines");
+rt.trace_call_code("bot/memory/repair.py", 354, 370, "_the_pointer_refines", 14);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_934 = { let __comp_parent_935 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_935.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_935 = __comp_parent_935.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_936 = { let __v_938 = frame.load(rt, "re")?; rt.getattr(&__v_938, "findall")? }; let mut __args_937 = CallArgs::default(); let __v_939 = Value::from("[a-z0-9']+"); __args_937.positional.push(__v_939); let __v_940 = { let __callable_941 = { let __v_943 = { let __callable_944 = frame.load(rt, "str")?; let mut __args_945 = CallArgs::default(); let __v_946 = { let mut __v_947 = frame.load(rt, "thing")?; if !__v_947.is_truthy() { __v_947 = Value::from(""); } __v_947 }; __args_945.positional.push(__v_946); rt.call(&__callable_944, __args_945)? }; rt.getattr(&__v_943, "lower")? }; let mut __args_942 = CallArgs::default(); rt.call(&__callable_941, __args_942)? }; __args_937.positional.push(__v_940); rt.call(&__callable_936, __args_937)? }) }) }, assign: { let __comp_parent_935 = __comp_parent_935.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_935 = __comp_parent_935.clone(); Rc::new(move |rt, frame| Ok({ let __callable_948 = { let __v_950 = frame.load(rt, "word")?; rt.getattr(&__v_950, "strip")? }; let mut __args_949 = CallArgs::default(); let __v_951 = Value::from("'"); __args_949.positional.push(__v_951); rt.call(&__callable_948, __args_949)? })) })?) };
@@ -599,7 +599,7 @@ mod __py_9 { use super::*;
 // py: bot/memory/repair.py:373-392 _the_relation
 pub(super) fn _the_relation(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["plain","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 373, 392, "_the_relation");
+rt.trace_call_code("bot/memory/repair.py", 373, 392, "_the_relation", 15);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1000 = { let __callable_1001 = { let __v_1003 = { let __callable_1004 = { let __v_1006 = { let __callable_1007 = { let __v_1009 = { let __callable_1010 = frame.load(rt, "str")?; let mut __args_1011 = CallArgs::default(); let __v_1012 = { let mut __v_1013 = frame.load(rt, "word")?; if !__v_1013.is_truthy() { __v_1013 = Value::from(""); } __v_1013 }; __args_1011.positional.push(__v_1012); rt.call(&__callable_1010, __args_1011)? }; rt.getattr(&__v_1009, "strip")? }; let mut __args_1008 = CallArgs::default(); rt.call(&__callable_1007, __args_1008)? }; rt.getattr(&__v_1006, "lower")? }; let mut __args_1005 = CallArgs::default(); rt.call(&__callable_1004, __args_1005)? }; rt.getattr(&__v_1003, "strip")? }; let mut __args_1002 = CallArgs::default(); let __v_1014 = Value::from("'"); __args_1002.positional.push(__v_1014); rt.call(&__callable_1001, __args_1002)? };
@@ -643,10 +643,10 @@ mod __py_10 { use super::*;
 // py: bot/memory/repair.py:395-412 _the_person_the_line_named
 pub(super) fn _the_person_the_line_named(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","named","person","thing","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 395, 412, "_the_person_the_line_named");
+rt.trace_call_code("bot/memory/repair.py", 395, 412, "_the_person_the_line_named", 16);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_1063 = { let __comp_parent_1064 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_1064.clone(), &["person"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame| {  Ok({ let __comp_parent_1065 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1065.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_1066 = { let __v_1068 = frame.load(rt, "re")?; rt.getattr(&__v_1068, "findall")? }; let mut __args_1067 = CallArgs::default(); let __v_1069 = Value::from("[a-z']+"); __args_1067.positional.push(__v_1069); let __v_1070 = { let __callable_1071 = { let __v_1073 = { let __callable_1074 = frame.load(rt, "str")?; let mut __args_1075 = CallArgs::default(); let __v_1076 = { let mut __v_1077 = frame.load(rt, "thing")?; if !__v_1077.is_truthy() { __v_1077 = Value::from(""); } __v_1077 }; __args_1075.positional.push(__v_1076); rt.call(&__callable_1074, __args_1075)? }; rt.getattr(&__v_1073, "lower")? }; let mut __args_1072 = CallArgs::default(); rt.call(&__callable_1071, __args_1072)? }; __args_1067.positional.push(__v_1070); rt.call(&__callable_1066, __args_1067)? }) }) }, assign: { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame| Ok({ let __callable_1078 = frame.load(rt, "_the_relation")?; let mut __args_1079 = CallArgs::default(); let __v_1080 = frame.load(rt, "word")?; __args_1079.positional.push(__v_1080); rt.call(&__callable_1078, __args_1079)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/repair.py", 403, 404, "_the_person_the_line_named.<locals>.<genexpr>"); Ok(()) }))? }) }) }, assign: { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame, value| { frame.store("person", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame| {  Ok((frame.load(rt, "person")?).is_truthy()) }) }] }], { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "person")?)) })? };
+let __v_1063 = { let __comp_parent_1064 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_1064.clone(), &["person"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame| {  Ok({ let __comp_parent_1065 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1065.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_1066 = { let __v_1068 = frame.load(rt, "re")?; rt.getattr(&__v_1068, "findall")? }; let mut __args_1067 = CallArgs::default(); let __v_1069 = Value::from("[a-z']+"); __args_1067.positional.push(__v_1069); let __v_1070 = { let __callable_1071 = { let __v_1073 = { let __callable_1074 = frame.load(rt, "str")?; let mut __args_1075 = CallArgs::default(); let __v_1076 = { let mut __v_1077 = frame.load(rt, "thing")?; if !__v_1077.is_truthy() { __v_1077 = Value::from(""); } __v_1077 }; __args_1075.positional.push(__v_1076); rt.call(&__callable_1074, __args_1075)? }; rt.getattr(&__v_1073, "lower")? }; let mut __args_1072 = CallArgs::default(); rt.call(&__callable_1071, __args_1072)? }; __args_1067.positional.push(__v_1070); rt.call(&__callable_1066, __args_1067)? }) }) }, assign: { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame| Ok({ let __callable_1078 = frame.load(rt, "_the_relation")?; let mut __args_1079 = CallArgs::default(); let __v_1080 = frame.load(rt, "word")?; __args_1079.positional.push(__v_1080); rt.call(&__callable_1078, __args_1079)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/repair.py", 403, 404, "_the_person_the_line_named.<locals>.<genexpr>", 17); Ok(()) }))? }) }) }, assign: { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame, value| { frame.store("person", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame| {  Ok((frame.load(rt, "person")?).is_truthy()) }) }] }], { let __comp_parent_1064 = __comp_parent_1064.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "person")?)) })? };
 frame.store("named", __v_1063.clone())?;
 let __v_1081 = { let __v_1082 = frame.load(rt, "named")?; Value::Bool(!__v_1082.is_truthy()) }; if __v_1081.is_truthy() {
 return Ok(__Flow::Return(Value::None));
@@ -682,7 +682,7 @@ mod __py_11 { use super::*;
 // py: bot/memory/repair.py:415-436 _swapped
 pub(super) fn _swapped(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["before","line","match","new","old","out","said","tail","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 415, 436, "_swapped");
+rt.trace_call_code("bot/memory/repair.py", 415, 436, "_swapped", 18);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1109 = { let __callable_1110 = { let __v_1112 = Value::from(" "); rt.getattr(&__v_1112, "join")? }; let mut __args_1111 = CallArgs::default(); let __v_1113 = { let __callable_1114 = { let __v_1116 = { let __callable_1117 = frame.load(rt, "str")?; let mut __args_1118 = CallArgs::default(); let __v_1119 = { let mut __v_1120 = frame.load(rt, "line")?; if !__v_1120.is_truthy() { __v_1120 = Value::from(""); } __v_1120 }; __args_1118.positional.push(__v_1119); rt.call(&__callable_1117, __args_1118)? }; rt.getattr(&__v_1116, "split")? }; let mut __args_1115 = CallArgs::default(); rt.call(&__callable_1114, __args_1115)? }; __args_1111.positional.push(__v_1113); rt.call(&__callable_1110, __args_1111)? };
@@ -722,7 +722,7 @@ mod __py_12 { use super::*;
 // py: bot/memory/repair.py:439-453 _no_repeat
 pub(super) fn _no_repeat(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","out","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 439, 453, "_no_repeat");
+rt.trace_call_code("bot/memory/repair.py", 439, 453, "_no_repeat", 19);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1228 = { let __callable_1229 = { let __v_1231 = frame.load(rt, "line")?; rt.getattr(&__v_1231, "split")? }; let mut __args_1230 = CallArgs::default(); rt.call(&__callable_1229, __args_1230)? };
@@ -757,7 +757,7 @@ mod __py_13 { use super::*;
 // py: bot/memory/repair.py:456-491 _the_answer
 pub(super) fn _the_answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answers","fresh","key","line","memory","reply","understand"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 456, 491, "_the_answer");
+rt.trace_call_code("bot/memory/repair.py", 456, 491, "_the_answer", 20);
 let flow = (|| -> PyResult<__Flow> {
 
 let __module_1261 = rt.import("bot.modules")?;
@@ -833,7 +833,7 @@ mod __py_14 { use super::*;
 // py: bot/memory/repair.py:494-503 _the_plain_answer
 pub(super) fn _the_plain_answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answers","memory","reply","said","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 494, 503, "_the_plain_answer");
+rt.trace_call_code("bot/memory/repair.py", 494, 503, "_the_plain_answer", 21);
 let flow = (|| -> PyResult<__Flow> {
 
 let __module_1338 = rt.import("bot.modules")?;
@@ -869,7 +869,7 @@ mod __py_15 { use super::*;
 // py: bot/memory/repair.py:506-517 _about_the_same_thing
 pub(super) fn _about_the_same_thing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["first","left","right","second"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 506, 517, "_about_the_same_thing");
+rt.trace_call_code("bot/memory/repair.py", 506, 517, "_about_the_same_thing", 22);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1362 = { let __comp_parent_1363 = frame.clone(); pyrt::comprehension::collect_set(rt, __comp_parent_1363.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1363 = __comp_parent_1363.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_1364 = frame.load(rt, "keywords")?; let mut __args_1365 = CallArgs::default(); let __v_1366 = { let __callable_1367 = frame.load(rt, "str")?; let mut __args_1368 = CallArgs::default(); let __v_1369 = { let mut __v_1370 = frame.load(rt, "first")?; if !__v_1370.is_truthy() { __v_1370 = Value::from(""); } __v_1370 }; __args_1368.positional.push(__v_1369); rt.call(&__callable_1367, __args_1368)? }; __args_1365.positional.push(__v_1366); rt.call(&__callable_1364, __args_1365)? }) }) }, assign: { let __comp_parent_1363 = __comp_parent_1363.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_1363 = __comp_parent_1363.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_1371 = { let __callable_1373 = frame.load(rt, "len")?; let mut __args_1374 = CallArgs::default(); let __v_1375 = frame.load(rt, "word")?; __args_1374.positional.push(__v_1375); rt.call(&__callable_1373, __args_1374)? }; let mut __matched_1372 = true; if __matched_1372 { let __v_1376 = Value::Int("3".parse().expect("integer literal")); __matched_1372 = pyrt::ops::compare(&__v_1371, &__v_1376)?.is_some_and(|o| o.is_gt()); } Value::Bool(__matched_1372) }).is_truthy()) }) }] }], { let __comp_parent_1363 = __comp_parent_1363.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })? };
@@ -888,7 +888,7 @@ mod __py_16 { use super::*;
 // py: bot/memory/repair.py:520-546 _the_shape_the_swap_had
 pub(super) fn _the_shape_the_swap_had(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["last","line","memory","old","older","tail","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 520, 546, "_the_shape_the_swap_had");
+rt.trace_call_code("bot/memory/repair.py", 520, 546, "_the_shape_the_swap_had", 23);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1397 = { let __callable_1398 = frame.load(rt, "str")?; let mut __args_1399 = CallArgs::default(); let __v_1400 = { let mut __v_1401 = { let __callable_1402 = frame.load(rt, "last_user")?; let mut __args_1403 = CallArgs::default(); let __v_1404 = frame.load(rt, "memory")?; __args_1403.positional.push(__v_1404); rt.call(&__callable_1402, __args_1403)? }; if !__v_1401.is_truthy() { __v_1401 = Value::from(""); } __v_1401 }; __args_1399.positional.push(__v_1400); rt.call(&__callable_1398, __args_1399)? };
@@ -923,7 +923,7 @@ mod __py_17 { use super::*;
 // py: bot/memory/repair.py:549-558 _a_state_not_a_thing
 pub(super) fn _a_state_not_a_thing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","pattern","tail"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 549, 558, "_a_state_not_a_thing");
+rt.trace_call_code("bot/memory/repair.py", 549, 558, "_a_state_not_a_thing", 24);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1432 = { let __v_1433 = { let __v_1435 = Value::from("\\b(?:is|are|was|were|isn'?t|aren'?t|wasn'?t|weren'?t|feels?|seems?|looks?|gets?|got|goes|went|has|have|had|keeps?|stays?|stops?)\\s+"); let __v_1436 = { let __callable_1437 = { let __v_1439 = frame.load(rt, "re")?; rt.getattr(&__v_1439, "escape")? }; let mut __args_1438 = CallArgs::default(); let __v_1440 = { let __callable_1441 = frame.load(rt, "str")?; let mut __args_1442 = CallArgs::default(); let __v_1443 = frame.load(rt, "tail")?; __args_1442.positional.push(__v_1443); rt.call(&__callable_1441, __args_1442)? }; __args_1438.positional.push(__v_1440); rt.call(&__callable_1437, __args_1438)? }; pyrt::ops::add(&__v_1435, &__v_1436)? }; let __v_1434 = Value::from("\\b"); pyrt::ops::add(&__v_1433, &__v_1434)? };
@@ -940,7 +940,7 @@ mod __py_18 { use super::*;
 // py: bot/memory/repair.py:561-591 _keep_the_swap
 pub(super) fn _keep_the_swap(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["entry","held","key","known","line","memory","moved","old","record","thing","topics","value"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 561, 591, "_keep_the_swap");
+rt.trace_call_code("bot/memory/repair.py", 561, 591, "_keep_the_swap", 25);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1458 = { let __callable_1459 = frame.load(rt, "_the_shape_the_swap_had")?; let mut __args_1460 = CallArgs::default(); let __v_1461 = frame.load(rt, "memory")?; __args_1460.positional.push(__v_1461); let __v_1462 = frame.load(rt, "line")?; __args_1460.positional.push(__v_1462); let __v_1463 = frame.load(rt, "old")?; __args_1460.positional.push(__v_1463); let __v_1464 = frame.load(rt, "thing")?; __args_1460.positional.push(__v_1464); rt.call(&__callable_1459, __args_1460)? };
@@ -1041,7 +1041,7 @@ mod __py_19 { use super::*;
 // py: bot/memory/repair.py:594-633 _the_paragraph_already_given
 pub(super) fn _the_paragraph_already_given(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","earlier","memory","old","other","said","shared","thing","turn","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 594, 633, "_the_paragraph_already_given");
+rt.trace_call_code("bot/memory/repair.py", 594, 633, "_the_paragraph_already_given", 26);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1625 = { let __callable_1626 = frame.load(rt, "set")?; let mut __args_1627 = CallArgs::default(); let __v_1628 = { let __callable_1629 = { let __v_1631 = frame.load(rt, "re")?; rt.getattr(&__v_1631, "findall")? }; let mut __args_1630 = CallArgs::default(); let __v_1632 = Value::from("[a-z0-9']+"); __args_1630.positional.push(__v_1632); let __v_1633 = { let __callable_1634 = { let __v_1636 = Value::from(" "); rt.getattr(&__v_1636, "join")? }; let mut __args_1635 = CallArgs::default(); let __v_1637 = { let __callable_1638 = { let __v_1640 = { let __callable_1641 = { let __v_1643 = { let __callable_1644 = frame.load(rt, "str")?; let mut __args_1645 = CallArgs::default(); let __v_1646 = { let mut __v_1647 = frame.load(rt, "answer")?; if !__v_1647.is_truthy() { __v_1647 = Value::from(""); } __v_1647 }; __args_1645.positional.push(__v_1646); rt.call(&__callable_1644, __args_1645)? }; rt.getattr(&__v_1643, "lower")? }; let mut __args_1642 = CallArgs::default(); rt.call(&__callable_1641, __args_1642)? }; rt.getattr(&__v_1640, "split")? }; let mut __args_1639 = CallArgs::default(); rt.call(&__callable_1638, __args_1639)? }; __args_1635.positional.push(__v_1637); rt.call(&__callable_1634, __args_1635)? }; __args_1630.positional.push(__v_1633); rt.call(&__callable_1629, __args_1630)? }; __args_1627.positional.push(__v_1628); rt.call(&__callable_1626, __args_1627)? };
@@ -1117,7 +1117,7 @@ mod __py_20 { use super::*;
 // py: bot/memory/repair.py:636-649 _names
 pub(super) fn _names(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["one","wanted","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 636, 649, "_names");
+rt.trace_call_code("bot/memory/repair.py", 636, 649, "_names", 27);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_1776 = false; let __v_1778 = frame.load(rt, "wanted")?; let __iter_1779 = rt.iter(&__v_1778)?;
@@ -1164,7 +1164,7 @@ mod __py_21 { use super::*;
 // py: bot/memory/repair.py:652-655 _without_the_repeat_lead
 pub(super) fn _without_the_repeat_lead(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","said"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 652, 655, "_without_the_repeat_lead");
+rt.trace_call_code("bot/memory/repair.py", 652, 655, "_without_the_repeat_lead", 28);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1813 = { let __callable_1814 = { let __v_1816 = frame.load(rt, "REPEAT_LEAD")?; rt.getattr(&__v_1816, "sub")? }; let mut __args_1815 = CallArgs::default(); let __v_1817 = Value::from(""); __args_1815.positional.push(__v_1817); let __v_1818 = { let __callable_1819 = { let __v_1821 = Value::from(" "); rt.getattr(&__v_1821, "join")? }; let mut __args_1820 = CallArgs::default(); let __v_1822 = { let __callable_1823 = { let __v_1825 = { let __callable_1826 = frame.load(rt, "str")?; let mut __args_1827 = CallArgs::default(); let __v_1828 = { let mut __v_1829 = frame.load(rt, "answer")?; if !__v_1829.is_truthy() { __v_1829 = Value::from(""); } __v_1829 }; __args_1827.positional.push(__v_1828); rt.call(&__callable_1826, __args_1827)? }; rt.getattr(&__v_1825, "split")? }; let mut __args_1824 = CallArgs::default(); rt.call(&__callable_1823, __args_1824)? }; __args_1820.positional.push(__v_1822); rt.call(&__callable_1819, __args_1820)? }; __args_1815.positional.push(__v_1818); rt.call(&__callable_1814, __args_1815)? };
@@ -1181,7 +1181,7 @@ mod __py_22 { use super::*;
 // py: bot/memory/repair.py:658-676 _still_the_old_thing
 pub(super) fn _still_the_old_thing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","old","opening","said","thing","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 658, 676, "_still_the_old_thing");
+rt.trace_call_code("bot/memory/repair.py", 658, 676, "_still_the_old_thing", 29);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1837 = { let __callable_1838 = { let __v_1840 = Value::from(" "); rt.getattr(&__v_1840, "join")? }; let mut __args_1839 = CallArgs::default(); let __v_1841 = { let __callable_1842 = { let __v_1844 = { let __callable_1845 = { let __v_1847 = { let __callable_1848 = frame.load(rt, "str")?; let mut __args_1849 = CallArgs::default(); let __v_1850 = { let mut __v_1851 = frame.load(rt, "answer")?; if !__v_1851.is_truthy() { __v_1851 = Value::from(""); } __v_1851 }; __args_1849.positional.push(__v_1850); rt.call(&__callable_1848, __args_1849)? }; rt.getattr(&__v_1847, "lower")? }; let mut __args_1846 = CallArgs::default(); rt.call(&__callable_1845, __args_1846)? }; rt.getattr(&__v_1844, "split")? }; let mut __args_1843 = CallArgs::default(); rt.call(&__callable_1842, __args_1843)? }; __args_1839.positional.push(__v_1841); rt.call(&__callable_1838, __args_1839)? };
@@ -1193,7 +1193,7 @@ return Ok(__Flow::Return(Value::Bool(false)));
 }
 let __v_1854 = { let __callable_1855 = frame.load(rt, "set")?; let mut __args_1856 = CallArgs::default(); let __v_1857 = { let __callable_1858 = { let __v_1860 = frame.load(rt, "re")?; rt.getattr(&__v_1860, "findall")? }; let mut __args_1859 = CallArgs::default(); let __v_1861 = Value::from("[a-z']+"); __args_1859.positional.push(__v_1861); let __v_1862 = frame.load(rt, "said")?; __args_1859.positional.push(__v_1862); rt.call(&__callable_1858, __args_1859)? }; __args_1856.positional.push(__v_1857); rt.call(&__callable_1855, __args_1856)? };
 frame.store("words", __v_1854.clone())?;
-let __v_1863 = { let __v_1864 = { let __callable_1865 = frame.load(rt, "any")?; let mut __args_1866 = CallArgs::default(); let __v_1867 = { let __comp_parent_1868 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1868.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1868 = __comp_parent_1868.clone(); Rc::new(move |rt, frame| {  Ok({ let mut __v_1869 = { let __callable_1870 = frame.load(rt, "keywords")?; let mut __args_1871 = CallArgs::default(); let __v_1872 = frame.load(rt, "old")?; __args_1871.positional.push(__v_1872); rt.call(&__callable_1870, __args_1871)? }; if !__v_1869.is_truthy() { __v_1869 = { let mut __items_1873 = Vec::new(); Value::tuple(__items_1873) }; } __v_1869 }) }) }, assign: { let __comp_parent_1868 = __comp_parent_1868.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1868 = __comp_parent_1868.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_1874 = { let __callable_1876 = { let __v_1878 = { let __callable_1879 = frame.load(rt, "str")?; let mut __args_1880 = CallArgs::default(); let __v_1881 = frame.load(rt, "word")?; __args_1880.positional.push(__v_1881); rt.call(&__callable_1879, __args_1880)? }; rt.getattr(&__v_1878, "lower")? }; let mut __args_1877 = CallArgs::default(); rt.call(&__callable_1876, __args_1877)? }; let mut __matched_1875 = true; if __matched_1875 { let __v_1882 = frame.load(rt, "words")?; __matched_1875 = pyrt::ops::contains(&__v_1882, &__v_1874)?; } Value::Bool(__matched_1875) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/repair.py", 670, 670, "_still_the_old_thing.<locals>.<genexpr>"); Ok(()) }))? }; __args_1866.positional.push(__v_1867); rt.call(&__callable_1865, __args_1866)? }; Value::Bool(!__v_1864.is_truthy()) }; if __v_1863.is_truthy() {
+let __v_1863 = { let __v_1864 = { let __callable_1865 = frame.load(rt, "any")?; let mut __args_1866 = CallArgs::default(); let __v_1867 = { let __comp_parent_1868 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_1868.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_1868 = __comp_parent_1868.clone(); Rc::new(move |rt, frame| {  Ok({ let mut __v_1869 = { let __callable_1870 = frame.load(rt, "keywords")?; let mut __args_1871 = CallArgs::default(); let __v_1872 = frame.load(rt, "old")?; __args_1871.positional.push(__v_1872); rt.call(&__callable_1870, __args_1871)? }; if !__v_1869.is_truthy() { __v_1869 = { let mut __items_1873 = Vec::new(); Value::tuple(__items_1873) }; } __v_1869 }) }) }, assign: { let __comp_parent_1868 = __comp_parent_1868.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_1868 = __comp_parent_1868.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_1874 = { let __callable_1876 = { let __v_1878 = { let __callable_1879 = frame.load(rt, "str")?; let mut __args_1880 = CallArgs::default(); let __v_1881 = frame.load(rt, "word")?; __args_1880.positional.push(__v_1881); rt.call(&__callable_1879, __args_1880)? }; rt.getattr(&__v_1878, "lower")? }; let mut __args_1877 = CallArgs::default(); rt.call(&__callable_1876, __args_1877)? }; let mut __matched_1875 = true; if __matched_1875 { let __v_1882 = frame.load(rt, "words")?; __matched_1875 = pyrt::ops::contains(&__v_1882, &__v_1874)?; } Value::Bool(__matched_1875) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/repair.py", 670, 670, "_still_the_old_thing.<locals>.<genexpr>", 30); Ok(()) }))? }; __args_1866.positional.push(__v_1867); rt.call(&__callable_1865, __args_1866)? }; Value::Bool(!__v_1864.is_truthy()) }; if __v_1863.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
@@ -1227,7 +1227,7 @@ mod __py_23 { use super::*;
 // py: bot/memory/repair.py:679-685 _bare
 pub(super) fn _bare(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["thing","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 679, 685, "_bare");
+rt.trace_call_code("bot/memory/repair.py", 679, 685, "_bare", 31);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1923 = { let __callable_1924 = { let __v_1926 = { let __callable_1927 = { let __v_1929 = { let __callable_1930 = { let __v_1932 = Value::from(" "); rt.getattr(&__v_1932, "join")? }; let mut __args_1931 = CallArgs::default(); let __v_1933 = { let __callable_1934 = { let __v_1936 = { let __callable_1937 = frame.load(rt, "str")?; let mut __args_1938 = CallArgs::default(); let __v_1939 = { let mut __v_1940 = frame.load(rt, "thing")?; if !__v_1940.is_truthy() { __v_1940 = Value::from(""); } __v_1940 }; __args_1938.positional.push(__v_1939); rt.call(&__callable_1937, __args_1938)? }; rt.getattr(&__v_1936, "split")? }; let mut __args_1935 = CallArgs::default(); rt.call(&__callable_1934, __args_1935)? }; __args_1931.positional.push(__v_1933); rt.call(&__callable_1930, __args_1931)? }; rt.getattr(&__v_1929, "strip")? }; let mut __args_1928 = CallArgs::default(); let __v_1941 = Value::from(" .,"); __args_1928.positional.push(__v_1941); rt.call(&__callable_1927, __args_1928)? }; rt.getattr(&__v_1926, "split")? }; let mut __args_1925 = CallArgs::default(); rt.call(&__callable_1924, __args_1925)? };
@@ -1249,7 +1249,7 @@ mod __py_24 { use super::*;
 // py: bot/memory/repair.py:688-705 _said_before
 pub(super) fn _said_before(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","memory","opening","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 688, 705, "_said_before");
+rt.trace_call_code("bot/memory/repair.py", 688, 705, "_said_before", 32);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_1980 = { let __callable_1981 = { let __v_1983 = frame.load(rt, "memory")?; rt.getattr(&__v_1983, "get")? }; let mut __args_1982 = CallArgs::default(); let __v_1984 = Value::from("turns"); __args_1982.positional.push(__v_1984); rt.call(&__callable_1981, __args_1982)? };
@@ -1266,7 +1266,7 @@ return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-return Ok(__Flow::Return({ let __callable_2017 = frame.load(rt, "any")?; let mut __args_2018 = CallArgs::default(); let __v_2019 = { let __comp_parent_2020 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_2020.clone(), &["turn"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_2020 = __comp_parent_2020.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "turns")?) }) }, assign: { let __comp_parent_2020 = __comp_parent_2020.clone(); Rc::new(move |rt, frame, value| { frame.store("turn", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_2020 = __comp_parent_2020.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_2021 = frame.load(rt, "opening")?; let mut __matched_2022 = true; if __matched_2022 { let __v_2023 = { let __callable_2024 = { let __v_2026 = Value::from(" "); rt.getattr(&__v_2026, "join")? }; let mut __args_2025 = CallArgs::default(); let __v_2027 = { let __callable_2028 = { let __v_2030 = { let __callable_2031 = { let __v_2033 = { let __callable_2034 = frame.load(rt, "str")?; let mut __args_2035 = CallArgs::default(); let __v_2036 = { let mut __v_2037 = { let __callable_2038 = { let __v_2040 = { let mut __v_2041 = frame.load(rt, "turn")?; if !__v_2041.is_truthy() { __v_2041 = { let __dict_2042 = Value::dict(); __dict_2042 }; } __v_2041 }; rt.getattr(&__v_2040, "get")? }; let mut __args_2039 = CallArgs::default(); let __v_2043 = Value::from("bot"); __args_2039.positional.push(__v_2043); rt.call(&__callable_2038, __args_2039)? }; if !__v_2037.is_truthy() { __v_2037 = Value::from(""); } __v_2037 }; __args_2035.positional.push(__v_2036); rt.call(&__callable_2034, __args_2035)? }; rt.getattr(&__v_2033, "lower")? }; let mut __args_2032 = CallArgs::default(); rt.call(&__callable_2031, __args_2032)? }; rt.getattr(&__v_2030, "split")? }; let mut __args_2029 = CallArgs::default(); rt.call(&__callable_2028, __args_2029)? }; __args_2025.positional.push(__v_2027); rt.call(&__callable_2024, __args_2025)? }; __matched_2022 = pyrt::ops::contains(&__v_2023, &__v_2021)?; } Value::Bool(__matched_2022) })) }, Rc::new(|rt| { rt.trace_call("bot/memory/repair.py", 704, 705, "_said_before.<locals>.<genexpr>"); Ok(()) }))? }; __args_2018.positional.push(__v_2019); rt.call(&__callable_2017, __args_2018)? }));
+return Ok(__Flow::Return({ let __callable_2017 = frame.load(rt, "any")?; let mut __args_2018 = CallArgs::default(); let __v_2019 = { let __comp_parent_2020 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_2020.clone(), &["turn"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_2020 = __comp_parent_2020.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "turns")?) }) }, assign: { let __comp_parent_2020 = __comp_parent_2020.clone(); Rc::new(move |rt, frame, value| { frame.store("turn", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_2020 = __comp_parent_2020.clone(); Rc::new(move |rt, frame| Ok({ let mut __v_2021 = frame.load(rt, "opening")?; let mut __matched_2022 = true; if __matched_2022 { let __v_2023 = { let __callable_2024 = { let __v_2026 = Value::from(" "); rt.getattr(&__v_2026, "join")? }; let mut __args_2025 = CallArgs::default(); let __v_2027 = { let __callable_2028 = { let __v_2030 = { let __callable_2031 = { let __v_2033 = { let __callable_2034 = frame.load(rt, "str")?; let mut __args_2035 = CallArgs::default(); let __v_2036 = { let mut __v_2037 = { let __callable_2038 = { let __v_2040 = { let mut __v_2041 = frame.load(rt, "turn")?; if !__v_2041.is_truthy() { __v_2041 = { let __dict_2042 = Value::dict(); __dict_2042 }; } __v_2041 }; rt.getattr(&__v_2040, "get")? }; let mut __args_2039 = CallArgs::default(); let __v_2043 = Value::from("bot"); __args_2039.positional.push(__v_2043); rt.call(&__callable_2038, __args_2039)? }; if !__v_2037.is_truthy() { __v_2037 = Value::from(""); } __v_2037 }; __args_2035.positional.push(__v_2036); rt.call(&__callable_2034, __args_2035)? }; rt.getattr(&__v_2033, "lower")? }; let mut __args_2032 = CallArgs::default(); rt.call(&__callable_2031, __args_2032)? }; rt.getattr(&__v_2030, "split")? }; let mut __args_2029 = CallArgs::default(); rt.call(&__callable_2028, __args_2029)? }; __args_2025.positional.push(__v_2027); rt.call(&__callable_2024, __args_2025)? }; __matched_2022 = pyrt::ops::contains(&__v_2023, &__v_2021)?; } Value::Bool(__matched_2022) })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/repair.py", 704, 705, "_said_before.<locals>.<genexpr>", 33); Ok(()) }))? }; __args_2018.positional.push(__v_2019); rt.call(&__callable_2017, __args_2018)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -1278,7 +1278,7 @@ mod __py_25 { use super::*;
 // py: bot/memory/repair.py:737-748 _the_same_words
 pub(super) fn _the_same_words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["one","other","stemmed"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 737, 748, "_the_same_words");
+rt.trace_call_code("bot/memory/repair.py", 737, 748, "_the_same_words", 34);
 let flow = (|| -> PyResult<__Flow> {
 
 frame.store("stemmed", { let __signature_2045 = Signature { name: "stemmed".into(), positional: vec!["sentence".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_2047 = Value::dict(); __attrs_2047.dict_set(Value::from("__doc__"), Value::None)?; __attrs_2047.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_2048 = Value::dict(); __attrs_2047.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_2044 = Frame::module(frame.globals.clone()); let mut __function_2046 = NativeFunction::qualified_with_origin("stemmed".into(), "_the_same_words.<locals>.stemmed".into(), "bot.memory.repair".into(), __attrs_2047, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/repair.py", first: 744, last: 746, qualname: "_the_same_words.<locals>.stemmed" }, closure: __closure_2044.clone(), freevars: vec![] }, move |rt, args| super::__py_26::stemmed(rt, __closure_2044.clone(), &__signature_2045, args)); __function_2046 })?;
@@ -1294,7 +1294,7 @@ mod __py_26 { use super::*;
 // py: bot/memory/repair.py:744-746 _the_same_words.<locals>.stemmed
 pub(super) fn stemmed(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["sentence","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 744, 746, "_the_same_words.<locals>.stemmed");
+rt.trace_call_code("bot/memory/repair.py", 744, 746, "_the_same_words.<locals>.stemmed", 35);
 let flow = (|| -> PyResult<__Flow> {
 let __v_2058 = { let __callable_2059 = { let __v_2061 = { let __callable_2062 = { let __v_2064 = frame.load(rt, "FIGURE_OR_WORD")?; rt.getattr(&__v_2064, "sub")? }; let mut __args_2063 = CallArgs::default(); let __v_2065 = Value::from("#"); __args_2063.positional.push(__v_2065); let __v_2066 = { let __callable_2067 = { let __v_2069 = { let __callable_2070 = frame.load(rt, "str")?; let mut __args_2071 = CallArgs::default(); let __v_2072 = { let mut __v_2073 = frame.load(rt, "sentence")?; if !__v_2073.is_truthy() { __v_2073 = Value::from(""); } __v_2073 }; __args_2071.positional.push(__v_2072); rt.call(&__callable_2070, __args_2071)? }; rt.getattr(&__v_2069, "lower")? }; let mut __args_2068 = CallArgs::default(); rt.call(&__callable_2067, __args_2068)? }; __args_2063.positional.push(__v_2066); rt.call(&__callable_2062, __args_2063)? }; rt.getattr(&__v_2061, "split")? }; let mut __args_2060 = CallArgs::default(); rt.call(&__callable_2059, __args_2060)? };
 frame.store("words", __v_2058.clone())?;
@@ -1310,7 +1310,7 @@ mod __py_27 { use super::*;
 // py: bot/memory/repair.py:751-762 _the_figure_in
 pub(super) fn _the_figure_in(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","line","match","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 751, 762, "_the_figure_in");
+rt.trace_call_code("bot/memory/repair.py", 751, 762, "_the_figure_in", 36);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2092 = Value::None;
@@ -1341,7 +1341,7 @@ mod __py_28 { use super::*;
 // py: bot/memory/repair.py:765-814 _the_figure_they_meant
 pub(super) fn _the_figure_they_meant(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["before","changed","figure","found","held","held_unit","line","match","memory","redone","said","scratch","text","unit"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 765, 814, "_the_figure_they_meant");
+rt.trace_call_code("bot/memory/repair.py", 765, 814, "_the_figure_they_meant", 37);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2123 = { let __callable_2124 = { let __v_2126 = frame.load(rt, "A_FIGURE_REPAIR")?; rt.getattr(&__v_2126, "match")? }; let mut __args_2125 = CallArgs::default(); let __v_2127 = { let __callable_2128 = { let __v_2130 = Value::from(" "); rt.getattr(&__v_2130, "join")? }; let mut __args_2129 = CallArgs::default(); let __v_2131 = { let __callable_2132 = { let __v_2134 = { let __callable_2135 = frame.load(rt, "str")?; let mut __args_2136 = CallArgs::default(); let __v_2137 = { let mut __v_2138 = frame.load(rt, "text")?; if !__v_2138.is_truthy() { __v_2138 = Value::from(""); } __v_2138 }; __args_2136.positional.push(__v_2137); rt.call(&__callable_2135, __args_2136)? }; rt.getattr(&__v_2134, "split")? }; let mut __args_2133 = CallArgs::default(); rt.call(&__callable_2132, __args_2133)? }; __args_2129.positional.push(__v_2131); rt.call(&__callable_2128, __args_2129)? }; __args_2125.positional.push(__v_2127); rt.call(&__callable_2124, __args_2125)? };
@@ -1426,7 +1426,7 @@ mod __py_29 { use super::*;
 // py: bot/memory/repair.py:822-831 _the_answer_says
 pub(super) fn _the_answer_says(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["figure","said","spelling"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 822, 831, "_the_answer_says");
+rt.trace_call_code("bot/memory/repair.py", 822, 831, "_the_answer_says", 38);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_2276 = false; let __v_2278 = { let mut __items_2281 = Vec::new(); let __v_2282 = { let __callable_2283 = frame.load(rt, "str")?; let mut __args_2284 = CallArgs::default(); let __v_2285 = frame.load(rt, "figure")?; __args_2284.positional.push(__v_2285); rt.call(&__callable_2283, __args_2284)? }; __items_2281.push(__v_2282); let __v_2286 = { let __callable_2287 = { let __v_2289 = frame.load(rt, "THE_WORD_FOR")?; rt.getattr(&__v_2289, "get")? }; let mut __args_2288 = CallArgs::default(); let __v_2290 = { let __callable_2291 = frame.load(rt, "str")?; let mut __args_2292 = CallArgs::default(); let __v_2293 = frame.load(rt, "figure")?; __args_2292.positional.push(__v_2293); rt.call(&__callable_2291, __args_2292)? }; __args_2288.positional.push(__v_2290); let __v_2294 = Value::from(""); __args_2288.positional.push(__v_2294); rt.call(&__callable_2287, __args_2288)? }; __items_2281.push(__v_2286); Value::tuple(__items_2281) }; let __iter_2279 = rt.iter(&__v_2278)?;
@@ -1461,7 +1461,7 @@ mod __py_30 { use super::*;
 // py: bot/memory/repair.py:834-854 _the_figures_that_moved
 pub(super) fn _the_figures_that_moved(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["after","before","changed","new","old","redone","said"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 834, 854, "_the_figures_that_moved");
+rt.trace_call_code("bot/memory/repair.py", 834, 854, "_the_figures_that_moved", 39);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2313 = { let __comp_parent_2314 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_2314.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_2314 = __comp_parent_2314.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_2315 = { let __v_2317 = frame.load(rt, "SENTENCE_END")?; rt.getattr(&__v_2317, "split")? }; let mut __args_2316 = CallArgs::default(); let __v_2318 = { let __callable_2319 = { let __v_2321 = Value::from(" "); rt.getattr(&__v_2321, "join")? }; let mut __args_2320 = CallArgs::default(); let __v_2322 = { let __callable_2323 = { let __v_2325 = { let __callable_2326 = frame.load(rt, "str")?; let mut __args_2327 = CallArgs::default(); let __v_2328 = { let mut __v_2329 = frame.load(rt, "said")?; if !__v_2329.is_truthy() { __v_2329 = Value::from(""); } __v_2329 }; __args_2327.positional.push(__v_2328); rt.call(&__callable_2326, __args_2327)? }; rt.getattr(&__v_2325, "split")? }; let mut __args_2324 = CallArgs::default(); rt.call(&__callable_2323, __args_2324)? }; __args_2320.positional.push(__v_2322); rt.call(&__callable_2319, __args_2320)? }; __args_2316.positional.push(__v_2318); rt.call(&__callable_2315, __args_2316)? }) }) }, assign: { let __comp_parent_2314 = __comp_parent_2314.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_2314 = __comp_parent_2314.clone(); Rc::new(move |rt, frame| {  Ok((frame.load(rt, "one")?).is_truthy()) }) }] }], { let __comp_parent_2314 = __comp_parent_2314.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "one")?)) })?) };
@@ -1514,7 +1514,7 @@ mod __py_31 { use super::*;
 // py: bot/memory/repair.py:857-870 _keep_the_corrected_answer
 pub(super) fn _keep_the_corrected_answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["key","line","memory","record","scratch"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 857, 870, "_keep_the_corrected_answer");
+rt.trace_call_code("bot/memory/repair.py", 857, 870, "_keep_the_corrected_answer", 40);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_2408 = false; let __v_2410 = { let mut __items_2413 = Vec::new(); let __v_2414 = Value::from("entry_answer"); __items_2413.push(__v_2414); let __v_2415 = Value::from("entry_answers"); __items_2413.push(__v_2415); Value::tuple(__items_2413) }; let __iter_2411 = rt.iter(&__v_2410)?;
@@ -1554,7 +1554,7 @@ mod __py_32 { use super::*;
 // py: bot/memory/repair.py:946-954 _a_fact_of_the_person
 pub(super) fn _a_fact_of_the_person(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["age","allergies","entry"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 946, 954, "_a_fact_of_the_person");
+rt.trace_call_code("bot/memory/repair.py", 946, 954, "_a_fact_of_the_person", 41);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2443 = { let __callable_2444 = { let __v_2446 = frame.load(rt, "entry")?; rt.getattr(&__v_2446, "get")? }; let mut __args_2445 = CallArgs::default(); let __v_2447 = Value::from("age"); __args_2445.positional.push(__v_2447); rt.call(&__callable_2444, __args_2445)? };
@@ -1583,7 +1583,7 @@ mod __py_33 { use super::*;
 // py: bot/memory/repair.py:957-964 _a_list_of
 pub(super) fn _a_list_of(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["said","things"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 957, 964, "_a_list_of");
+rt.trace_call_code("bot/memory/repair.py", 957, 964, "_a_list_of", 42);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2463 = { let __comp_parent_2464 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_2464.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_2464 = __comp_parent_2464.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "things")?) }) }, assign: { let __comp_parent_2464 = __comp_parent_2464.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_2464 = __comp_parent_2464.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_2465 = { let __v_2467 = { let __callable_2468 = frame.load(rt, "str")?; let mut __args_2469 = CallArgs::default(); let __v_2470 = frame.load(rt, "one")?; __args_2469.positional.push(__v_2470); rt.call(&__callable_2468, __args_2469)? }; rt.getattr(&__v_2467, "strip")? }; let mut __args_2466 = CallArgs::default(); rt.call(&__callable_2465, __args_2466)? }).is_truthy()) }) }] }], { let __comp_parent_2464 = __comp_parent_2464.clone(); Rc::new(move |rt, frame| Ok({ let __callable_2471 = { let __v_2473 = { let __callable_2474 = frame.load(rt, "str")?; let mut __args_2475 = CallArgs::default(); let __v_2476 = frame.load(rt, "one")?; __args_2475.positional.push(__v_2476); rt.call(&__callable_2474, __args_2475)? }; rt.getattr(&__v_2473, "strip")? }; let mut __args_2472 = CallArgs::default(); rt.call(&__callable_2471, __args_2472)? })) })?) };
@@ -1610,7 +1610,7 @@ mod __py_34 { use super::*;
 // py: bot/memory/repair.py:967-990 _the_fact_moved_to_the_person_they_meant
 pub(super) fn _the_fact_moved_to_the_person_they_meant(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["entry","fact","memory","moved","old","others","remember_other","text","thing","wanted"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 967, 990, "_the_fact_moved_to_the_person_they_meant");
+rt.trace_call_code("bot/memory/repair.py", 967, 990, "_the_fact_moved_to_the_person_they_meant", 43);
 let flow = (|| -> PyResult<__Flow> {
 
 let __module_2504 = rt.import("bot.memory")?;
@@ -1666,7 +1666,7 @@ mod __py_35 { use super::*;
 // py: bot/memory/repair.py:993-999 _the_fact_moved_line
 pub(super) fn _the_fact_moved_line(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["fact","memory","old","said","text","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 993, 999, "_the_fact_moved_line");
+rt.trace_call_code("bot/memory/repair.py", 993, 999, "_the_fact_moved_line", 44);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2587 = { let __v_2588 = frame.load(rt, "fact")?; Value::Bool(!__v_2588.is_truthy()) }; if __v_2587.is_truthy() {
@@ -1688,7 +1688,7 @@ mod __py_36 { use super::*;
 // py: bot/memory/repair.py:1002-1034 _the_swap_in_the_line
 pub(super) fn _the_swap_in_the_line(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["last","memory","old","olds","one","refined","text","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 1002, 1034, "_the_swap_in_the_line");
+rt.trace_call_code("bot/memory/repair.py", 1002, 1034, "_the_swap_in_the_line", 45);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2621 = { let __v_2622 = { let __callable_2623 = frame.load(rt, "isinstance")?; let mut __args_2624 = CallArgs::default(); let __v_2625 = frame.load(rt, "memory")?; __args_2624.positional.push(__v_2625); let __v_2626 = frame.load(rt, "dict")?; __args_2624.positional.push(__v_2626); rt.call(&__callable_2623, __args_2624)? }; Value::Bool(!__v_2622.is_truthy()) }; if __v_2621.is_truthy() {
@@ -1755,7 +1755,7 @@ mod __py_37 { use super::*;
 // py: bot/memory/repair.py:1037-1057 keep_the_correction
 pub(super) fn keep_the_correction(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["_refined","found","last","memory","olds","one","swapped","text","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 1037, 1057, "keep_the_correction");
+rt.trace_call_code("bot/memory/repair.py", 1037, 1057, "keep_the_correction", 46);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2710 = { let __callable_2711 = frame.load(rt, "_the_swap_in_the_line")?; let mut __args_2712 = CallArgs::default(); let __v_2713 = frame.load(rt, "text")?; __args_2712.positional.push(__v_2713); let __v_2714 = frame.load(rt, "memory")?; __args_2712.positional.push(__v_2714); rt.call(&__callable_2711, __args_2712)? };
@@ -1801,7 +1801,7 @@ mod __py_38 { use super::*;
 // py: bot/memory/repair.py:1060-1183 the_thing_they_meant
 pub(super) fn the_thing_they_meant(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","fact","figure","found","held","last","line","memory","old","olds","one","plain","refined","said","shape","shown","swapped","text","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/repair.py", 1060, 1183, "the_thing_they_meant");
+rt.trace_call_code("bot/memory/repair.py", 1060, 1183, "the_thing_they_meant", 47);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_2743 = { let __v_2744 = { let __callable_2745 = frame.load(rt, "isinstance")?; let mut __args_2746 = CallArgs::default(); let __v_2747 = frame.load(rt, "memory")?; __args_2746.positional.push(__v_2747); let __v_2748 = frame.load(rt, "dict")?; __args_2746.positional.push(__v_2748); rt.call(&__callable_2745, __args_2746)? }; Value::Bool(!__v_2744.is_truthy()) }; if __v_2743.is_truthy() {

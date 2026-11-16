@@ -24,7 +24,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_kept",117,136),
 ("_their_taste_in",479,509)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/taste.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/taste.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A taste they have told the bot about: \"i love dogs\", \"not keen on fish\", \"not sure if i like curry\".\n\nA taste is a fact about the person, so it is said back like any other (\"You love dogs - noted\"),\nbut it is not a pet. Before this, \"i love dogs\", \"i hate cats\" and \"not keen on rabbit\" each put a\nnameless animal in the store, and the recall answered \"what pets do i have?\" with \"You've got a\ncat\" to someone who had just said they hated them. An animal is only theirs when a possessive says\nso (\"we love our dog\", \"i adore my cat\"), which is what `LIKING_BEFORE` and `OWNED_BEFORE` are for:\nthe first reads the taste, the second keeps the pet in the line that really has one.\n\n`read()` is the taste itself, for the echo in `bot/memory/ack.py`: the thing, and whether they\nlike it, do not, or are not sure. \"not sure if i like curry\" is not the same fact as \"i don't like\ncurry\", and a bot that stores the first as the second will leave curry out of every suggestion\nafter one hedge.\n"))?;
@@ -95,20 +95,20 @@ let __v_236 = { let __callable_237 = { let __v_239 = frame.load(rt, "re")?; rt.g
 frame.store("ASKS_FOR_TASTES", __v_236.clone())?;
 let __v_249 = { let __callable_250 = { let __v_252 = frame.load(rt, "re")?; rt.getattr(&__v_252, "compile")? }; let mut __args_251 = CallArgs::default(); let __v_253 = Value::from("^(?:(?:my|our)\\s+(?P<who>[a-z][a-z'\\u2019-]{1,20})|(?P<pronoun>she|he|they))(?:'?s|'?re)?\\s+(?P<rest>.*)$"); __args_251.positional.push(__v_253); let __v_254 = { let __v_255 = frame.load(rt, "re")?; rt.getattr(&__v_255, "I")? }; __args_251.positional.push(__v_254); rt.call(&__callable_250, __args_251)? };
 frame.store("_OTHER_OWNER", __v_249.clone())?;
-let __v_256 = { let mut __items_257 = Vec::new(); let __v_258 = { let mut __items_259 = Vec::new(); let __v_260 = Value::from("(?:isn'?t|is\\s+not|wasn'?t|was\\s+not)\\s+(?:that\\s+|really\\s+|very\\s+|all\\s+that\\s+)?(?:into|keen\\s+on|a\\s+fan\\s+of|mad\\s+about|fussed\\s+on|big\\s+on)"); __items_259.push(__v_260); let __v_261 = Value::from("don't like"); __items_259.push(__v_261); Value::tuple(__items_259) }; __items_257.push(__v_258); let __v_262 = { let mut __items_263 = Vec::new(); let __v_264 = Value::from("(?:doesn'?t|does\\s+not|doesnt|won'?t|will\\s+not|never|can'?t|cannot|can\\s+not)\\s+(?:really\\s+|actually\\s+|ever\\s+)?(?:like|love|eat|drink|stand|touch|want|have|be\\s+keen\\s+on)"); __items_263.push(__v_264); let __v_265 = Value::from("don't like"); __items_263.push(__v_265); Value::tuple(__items_263) }; __items_257.push(__v_262); let __v_266 = { let mut __items_267 = Vec::new(); let __v_268 = Value::from("(?:hates?|loathes?|detests?|dislikes?|can'?t\\s+stand|cannot\\s+stand)"); __items_267.push(__v_268); let __v_269 = Value::from("hate"); __items_267.push(__v_269); Value::tuple(__items_267) }; __items_257.push(__v_266); let __v_270 = { let mut __items_271 = Vec::new(); let __v_272 = Value::from("is\\s+(?:really\\s+|absolutely\\s+|just\\s+|very\\s+)?(?:into|keen\\s+on|mad\\s+about|a\\s+fan\\s+of|big\\s+on|fussed\\s+on|fond\\s+of)"); __items_271.push(__v_272); let __v_273 = Value::from("like"); __items_271.push(__v_273); Value::tuple(__items_271) }; __items_257.push(__v_270); let __v_274 = { let mut __items_275 = Vec::new(); let __v_276 = Value::from("(?:loves?|likes?|adores?|prefers?|enjoys?)"); __items_275.push(__v_276); let __v_277 = Value::from("love"); __items_275.push(__v_277); Value::tuple(__items_275) }; __items_257.push(__v_274); Value::tuple(__items_257) };
+let __v_256 = pyrt::literals::decode("{\"$tuple\":[{\"$tuple\":[\"(?:isn'?t|is\\\\s+not|wasn'?t|was\\\\s+not)\\\\s+(?:that\\\\s+|really\\\\s+|very\\\\s+|all\\\\s+that\\\\s+)?(?:into|keen\\\\s+on|a\\\\s+fan\\\\s+of|mad\\\\s+about|fussed\\\\s+on|big\\\\s+on)\",\"don't like\"]},{\"$tuple\":[\"(?:doesn'?t|does\\\\s+not|doesnt|won'?t|will\\\\s+not|never|can'?t|cannot|can\\\\s+not)\\\\s+(?:really\\\\s+|actually\\\\s+|ever\\\\s+)?(?:like|love|eat|drink|stand|touch|want|have|be\\\\s+keen\\\\s+on)\",\"don't like\"]},{\"$tuple\":[\"(?:hates?|loathes?|detests?|dislikes?|can'?t\\\\s+stand|cannot\\\\s+stand)\",\"hate\"]},{\"$tuple\":[\"is\\\\s+(?:really\\\\s+|absolutely\\\\s+|just\\\\s+|very\\\\s+)?(?:into|keen\\\\s+on|mad\\\\s+about|a\\\\s+fan\\\\s+of|big\\\\s+on|fussed\\\\s+on|fond\\\\s+of)\",\"like\"]},{\"$tuple\":[\"(?:loves?|likes?|adores?|prefers?|enjoys?)\",\"love\"]}]}")?;
 frame.store("_OTHER_SAYS", __v_256.clone())?;
-let __v_278 = { let __callable_279 = { let __v_281 = Value::from("|"); rt.getattr(&__v_281, "join")? }; let mut __args_280 = CallArgs::default(); let __v_282 = { let __comp_parent_283 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_283.clone(), &["_","pattern"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_283 = __comp_parent_283.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "_OTHER_SAYS")?) }) }, assign: { let __comp_parent_283 = __comp_parent_283.clone(); Rc::new(move |rt, frame, value| { let __unpack_284 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("pattern", __unpack_284[0].clone())?; frame.store("_", __unpack_284[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_283 = __comp_parent_283.clone(); Rc::new(move |rt, frame| Ok({ let __v_285 = Value::from("(?:%s)"); let __v_286 = frame.load(rt, "pattern")?; pyrt::ops::modulo(&__v_285, &__v_286)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/taste.py", 416, 416, "<genexpr>"); Ok(()) }))? }; __args_280.positional.push(__v_282); rt.call(&__callable_279, __args_280)? };
-frame.store("_OTHER_VERB", __v_278.clone())?;
-let __v_287 = { let __callable_288 = { let __v_290 = frame.load(rt, "re")?; rt.getattr(&__v_290, "compile")? }; let mut __args_289 = CallArgs::default(); let __v_291 = { let __v_292 = { let __v_294 = Value::from("\\s*;\\s*|\\s*,\\s*|\\s+(?:but|and|so|though|whereas|while)\\s+(?=(?:[a-z][a-z'\\u2019-]{1,20}\\s+)?(?:"); let __v_295 = frame.load(rt, "_OTHER_VERB")?; pyrt::ops::add(&__v_294, &__v_295)? }; let __v_293 = Value::from(")\\b)"); pyrt::ops::add(&__v_292, &__v_293)? }; __args_289.positional.push(__v_291); let __v_296 = { let __v_297 = frame.load(rt, "re")?; rt.getattr(&__v_297, "I")? }; __args_289.positional.push(__v_296); rt.call(&__callable_288, __args_289)? };
-frame.store("_OTHER_CLAUSE", __v_287.clone())?;
-let __v_298 = { let __callable_299 = { let __v_301 = frame.load(rt, "re")?; rt.getattr(&__v_301, "compile")? }; let mut __args_300 = CallArgs::default(); let __v_302 = Value::from("^\\s*[,;:]?\\s*(?:so|but|and|because|cos|cause|though|although|whereas|yet|if|then|when|while|as)\\b"); __args_300.positional.push(__v_302); let __v_303 = { let __v_304 = frame.load(rt, "re")?; rt.getattr(&__v_304, "I")? }; __args_300.positional.push(__v_303); rt.call(&__callable_299, __args_300)? };
-frame.store("_A_CLAUSE_AFTER", __v_298.clone())?;
-let __v_305 = { let __callable_306 = { let __v_308 = frame.load(rt, "re")?; rt.getattr(&__v_308, "compile")? }; let mut __args_307 = CallArgs::default(); let __v_309 = Value::from("\\b(?:what|how|why|when|where|which|who|whose|whats|what's|should|shall|could|would|any ideas|any tips|recommend)\\b"); __args_307.positional.push(__v_309); let __v_310 = { let __v_311 = frame.load(rt, "re")?; rt.getattr(&__v_311, "I")? }; __args_307.positional.push(__v_310); rt.call(&__callable_306, __args_307)? };
-frame.store("_ASKS_SOMETHING", __v_305.clone())?;
-let __v_312 = { let __callable_313 = { let __v_315 = frame.load(rt, "re")?; rt.getattr(&__v_315, "compile")? }; let mut __args_314 = CallArgs::default(); let __v_316 = { let __v_317 = { let __v_319 = Value::from("^(?:really |absolutely |just |actually |properly |simply |still )?(?:"); let __v_320 = frame.load(rt, "_OTHER_VERB")?; pyrt::ops::add(&__v_319, &__v_320)? }; let __v_318 = Value::from(")\\b"); pyrt::ops::add(&__v_317, &__v_318)? }; __args_314.positional.push(__v_316); let __v_321 = { let __v_322 = frame.load(rt, "re")?; rt.getattr(&__v_322, "I")? }; __args_314.positional.push(__v_321); rt.call(&__callable_313, __args_314)? };
-frame.store("_OTHER_TASTE", __v_312.clone())?;
-frame.store("read_other", { let __signature_324 = Signature { name: "read_other".into(), positional: vec!["line".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_326 = Value::dict(); __attrs_326.dict_set(Value::from("__doc__"), Value::from("Tastes somebody else has, as `[{\"who\"/\"pronoun\", \"thing\", \"how\"}]`.\n\n    \"my sister loves cooking\", \"she doesnt like olives\", \"he is mad about football\": the person\n    is the relation in front of the taste, or the pronoun when the line names nobody (the store\n    fills that in from the person the chat is on). The taste itself is read by the reader above,\n    on the clause rewritten as the person's own (\"i love cooking\"), so a quantity, a tail or a\n    pronoun for a thing is refused here in exactly the same way, and a line that carries more\n    than the taste (\"she loves cooking so what do i cook\") is not one.\n    "))?; __attrs_326.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_327 = Value::dict(); __attrs_326.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_323 = Frame::module(frame.globals.clone()); let mut __function_325 = NativeFunction::qualified_with_origin("read_other".into(), "read_other".into(), "bot.memory.taste".into(), __attrs_326, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/taste.py", first: 442, last: 476, qualname: "read_other" }, closure: __closure_323.clone(), freevars: vec![] }, move |rt, args| __py_9::read_other(rt, __closure_323.clone(), &__signature_324, args)); __function_325 })?;
-frame.store("_their_taste_in", { let __signature_329 = Signature { name: "_their_taste_in".into(), positional: vec!["rest".into(),"said".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_331 = Value::dict(); __attrs_331.dict_set(Value::from("__doc__"), Value::from("The taste one clause gives, read as the person's own (\"i love cooking\"), or None."))?; __attrs_331.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_332 = Value::dict(); __attrs_331.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_328 = Frame::module(frame.globals.clone()); let mut __function_330 = NativeFunction::qualified_with_origin("_their_taste_in".into(), "_their_taste_in".into(), "bot.memory.taste".into(), __attrs_331, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/taste.py", first: 479, last: 509, qualname: "_their_taste_in" }, closure: __closure_328.clone(), freevars: vec![] }, move |rt, args| __py_10::_their_taste_in(rt, __closure_328.clone(), &__signature_329, args)); __function_330 })?;
+let __v_257 = { let __callable_258 = { let __v_260 = Value::from("|"); rt.getattr(&__v_260, "join")? }; let mut __args_259 = CallArgs::default(); let __v_261 = { let __comp_parent_262 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_262.clone(), &["_","pattern"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_262 = __comp_parent_262.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "_OTHER_SAYS")?) }) }, assign: { let __comp_parent_262 = __comp_parent_262.clone(); Rc::new(move |rt, frame, value| { let __unpack_263 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("pattern", __unpack_263[0].clone())?; frame.store("_", __unpack_263[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_262 = __comp_parent_262.clone(); Rc::new(move |rt, frame| Ok({ let __v_264 = Value::from("(?:%s)"); let __v_265 = frame.load(rt, "pattern")?; pyrt::ops::modulo(&__v_264, &__v_265)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/taste.py", 416, 416, "<genexpr>", 11); Ok(()) }))? }; __args_259.positional.push(__v_261); rt.call(&__callable_258, __args_259)? };
+frame.store("_OTHER_VERB", __v_257.clone())?;
+let __v_266 = { let __callable_267 = { let __v_269 = frame.load(rt, "re")?; rt.getattr(&__v_269, "compile")? }; let mut __args_268 = CallArgs::default(); let __v_270 = { let __v_271 = { let __v_273 = Value::from("\\s*;\\s*|\\s*,\\s*|\\s+(?:but|and|so|though|whereas|while)\\s+(?=(?:[a-z][a-z'\\u2019-]{1,20}\\s+)?(?:"); let __v_274 = frame.load(rt, "_OTHER_VERB")?; pyrt::ops::add(&__v_273, &__v_274)? }; let __v_272 = Value::from(")\\b)"); pyrt::ops::add(&__v_271, &__v_272)? }; __args_268.positional.push(__v_270); let __v_275 = { let __v_276 = frame.load(rt, "re")?; rt.getattr(&__v_276, "I")? }; __args_268.positional.push(__v_275); rt.call(&__callable_267, __args_268)? };
+frame.store("_OTHER_CLAUSE", __v_266.clone())?;
+let __v_277 = { let __callable_278 = { let __v_280 = frame.load(rt, "re")?; rt.getattr(&__v_280, "compile")? }; let mut __args_279 = CallArgs::default(); let __v_281 = Value::from("^\\s*[,;:]?\\s*(?:so|but|and|because|cos|cause|though|although|whereas|yet|if|then|when|while|as)\\b"); __args_279.positional.push(__v_281); let __v_282 = { let __v_283 = frame.load(rt, "re")?; rt.getattr(&__v_283, "I")? }; __args_279.positional.push(__v_282); rt.call(&__callable_278, __args_279)? };
+frame.store("_A_CLAUSE_AFTER", __v_277.clone())?;
+let __v_284 = { let __callable_285 = { let __v_287 = frame.load(rt, "re")?; rt.getattr(&__v_287, "compile")? }; let mut __args_286 = CallArgs::default(); let __v_288 = Value::from("\\b(?:what|how|why|when|where|which|who|whose|whats|what's|should|shall|could|would|any ideas|any tips|recommend)\\b"); __args_286.positional.push(__v_288); let __v_289 = { let __v_290 = frame.load(rt, "re")?; rt.getattr(&__v_290, "I")? }; __args_286.positional.push(__v_289); rt.call(&__callable_285, __args_286)? };
+frame.store("_ASKS_SOMETHING", __v_284.clone())?;
+let __v_291 = { let __callable_292 = { let __v_294 = frame.load(rt, "re")?; rt.getattr(&__v_294, "compile")? }; let mut __args_293 = CallArgs::default(); let __v_295 = { let __v_296 = { let __v_298 = Value::from("^(?:really |absolutely |just |actually |properly |simply |still )?(?:"); let __v_299 = frame.load(rt, "_OTHER_VERB")?; pyrt::ops::add(&__v_298, &__v_299)? }; let __v_297 = Value::from(")\\b"); pyrt::ops::add(&__v_296, &__v_297)? }; __args_293.positional.push(__v_295); let __v_300 = { let __v_301 = frame.load(rt, "re")?; rt.getattr(&__v_301, "I")? }; __args_293.positional.push(__v_300); rt.call(&__callable_292, __args_293)? };
+frame.store("_OTHER_TASTE", __v_291.clone())?;
+frame.store("read_other", { let __signature_303 = Signature { name: "read_other".into(), positional: vec!["line".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_305 = Value::dict(); __attrs_305.dict_set(Value::from("__doc__"), Value::from("Tastes somebody else has, as `[{\"who\"/\"pronoun\", \"thing\", \"how\"}]`.\n\n    \"my sister loves cooking\", \"she doesnt like olives\", \"he is mad about football\": the person\n    is the relation in front of the taste, or the pronoun when the line names nobody (the store\n    fills that in from the person the chat is on). The taste itself is read by the reader above,\n    on the clause rewritten as the person's own (\"i love cooking\"), so a quantity, a tail or a\n    pronoun for a thing is refused here in exactly the same way, and a line that carries more\n    than the taste (\"she loves cooking so what do i cook\") is not one.\n    "))?; __attrs_305.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_306 = Value::dict(); __attrs_305.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_302 = Frame::module(frame.globals.clone()); let mut __function_304 = NativeFunction::qualified_with_origin("read_other".into(), "read_other".into(), "bot.memory.taste".into(), __attrs_305, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/taste.py", first: 442, last: 476, qualname: "read_other" }, closure: __closure_302.clone(), freevars: vec![] }, move |rt, args| __py_9::read_other(rt, __closure_302.clone(), &__signature_303, args)); __function_304 })?;
+frame.store("_their_taste_in", { let __signature_308 = Signature { name: "_their_taste_in".into(), positional: vec!["rest".into(),"said".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_310 = Value::dict(); __attrs_310.dict_set(Value::from("__doc__"), Value::from("The taste one clause gives, read as the person's own (\"i love cooking\"), or None."))?; __attrs_310.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_311 = Value::dict(); __attrs_310.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_307 = Frame::module(frame.globals.clone()); let mut __function_309 = NativeFunction::qualified_with_origin("_their_taste_in".into(), "_their_taste_in".into(), "bot.memory.taste".into(), __attrs_310, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/taste.py", first: 479, last: 509, qualname: "_their_taste_in" }, closure: __closure_307.clone(), freevars: vec![] }, move |rt, args| __py_10::_their_taste_in(rt, __closure_307.clone(), &__signature_308, args)); __function_309 })?;
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Next => Ok(()), _ => Err(PyExc::runtime_error("invalid module control flow")) }
@@ -118,54 +118,54 @@ mod __py_0 { use super::*;
 // py: bot/memory/taste.py:117-136 _kept
 pub(super) fn _kept(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["index","kept","raw","thing","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taste.py", 117, 136, "_kept");
+rt.trace_call_code("bot/memory/taste.py", 117, 136, "_kept", 2);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_333 = { let __callable_334 = { let __v_336 = { let __callable_337 = frame.load(rt, "str")?; let mut __args_338 = CallArgs::default(); let __v_339 = { let mut __v_340 = frame.load(rt, "thing")?; if !__v_340.is_truthy() { __v_340 = Value::from(""); } __v_340 }; __args_338.positional.push(__v_339); rt.call(&__callable_337, __args_338)? }; rt.getattr(&__v_336, "split")? }; let mut __args_335 = CallArgs::default(); rt.call(&__callable_334, __args_335)? };
-frame.store("words", __v_333.clone())?;
-let __v_341 = { let mut __items_342 = Vec::new(); Value::list(__items_342) };
-frame.store("kept", __v_341.clone())?;
-let mut __broke_343 = false; let __v_345 = { let __callable_348 = frame.load(rt, "enumerate")?; let mut __args_349 = CallArgs::default(); let __v_350 = frame.load(rt, "words")?; __args_349.positional.push(__v_350); rt.call(&__callable_348, __args_349)? }; let __iter_346 = rt.iter(&__v_345)?;
-while let Some(__v_347) = rt.next(&__iter_346)? { let __unpack_351 = pyrt::containers::unpack(rt, &__v_347, 2, 0, false)?; frame.store("index", __unpack_351[0].clone())?; frame.store("raw", __unpack_351[1].clone())?;
-let __flow_344 = (|| -> PyResult<__Flow> {
-let __v_352 = { let __callable_353 = { let __v_355 = frame.load(rt, "raw")?; rt.getattr(&__v_355, "strip")? }; let mut __args_354 = CallArgs::default(); let __v_356 = Value::from(".,;:!?"); __args_354.positional.push(__v_356); rt.call(&__callable_353, __args_354)? };
-frame.store("word", __v_352.clone())?;
-let __v_357 = { let __v_358 = frame.load(rt, "word")?; Value::Bool(!__v_358.is_truthy()) }; if __v_357.is_truthy() {
+let __v_312 = { let __callable_313 = { let __v_315 = { let __callable_316 = frame.load(rt, "str")?; let mut __args_317 = CallArgs::default(); let __v_318 = { let mut __v_319 = frame.load(rt, "thing")?; if !__v_319.is_truthy() { __v_319 = Value::from(""); } __v_319 }; __args_317.positional.push(__v_318); rt.call(&__callable_316, __args_317)? }; rt.getattr(&__v_315, "split")? }; let mut __args_314 = CallArgs::default(); rt.call(&__callable_313, __args_314)? };
+frame.store("words", __v_312.clone())?;
+let __v_320 = { let mut __items_321 = Vec::new(); Value::list(__items_321) };
+frame.store("kept", __v_320.clone())?;
+let mut __broke_322 = false; let __v_324 = { let __callable_327 = frame.load(rt, "enumerate")?; let mut __args_328 = CallArgs::default(); let __v_329 = frame.load(rt, "words")?; __args_328.positional.push(__v_329); rt.call(&__callable_327, __args_328)? }; let __iter_325 = rt.iter(&__v_324)?;
+while let Some(__v_326) = rt.next(&__iter_325)? { let __unpack_330 = pyrt::containers::unpack(rt, &__v_326, 2, 0, false)?; frame.store("index", __unpack_330[0].clone())?; frame.store("raw", __unpack_330[1].clone())?;
+let __flow_323 = (|| -> PyResult<__Flow> {
+let __v_331 = { let __callable_332 = { let __v_334 = frame.load(rt, "raw")?; rt.getattr(&__v_334, "strip")? }; let mut __args_333 = CallArgs::default(); let __v_335 = Value::from(".,;:!?"); __args_333.positional.push(__v_335); rt.call(&__callable_332, __args_333)? };
+frame.store("word", __v_331.clone())?;
+let __v_336 = { let __v_337 = frame.load(rt, "word")?; Value::Bool(!__v_337.is_truthy()) }; if __v_336.is_truthy() {
 return Ok(__Flow::Continue);
 } else {
 
 }
-let __v_359 = { let mut __v_360 = frame.load(rt, "kept")?; if __v_360.is_truthy() { __v_360 = { let mut __v_361 = { let mut __v_362 = { let __callable_364 = { let __v_366 = frame.load(rt, "word")?; rt.getattr(&__v_366, "lower")? }; let mut __args_365 = CallArgs::default(); rt.call(&__callable_364, __args_365)? }; let mut __matched_363 = true; if __matched_363 { let __v_367 = frame.load(rt, "THING_STOP")?; __matched_363 = pyrt::ops::contains(&__v_367, &__v_362)?; } Value::Bool(__matched_363) }; if !__v_361.is_truthy() { __v_361 = { let mut __v_368 = { let __callable_370 = { let __v_372 = frame.load(rt, "word")?; rt.getattr(&__v_372, "lower")? }; let mut __args_371 = CallArgs::default(); rt.call(&__callable_370, __args_371)? }; let mut __matched_369 = true; if __matched_369 { let __v_373 = { let mut __items_374 = Vec::new(); let __v_375 = Value::from("my"); __items_374.push(__v_375); let __v_376 = Value::from("our"); __items_374.push(__v_376); let __v_377 = Value::from("his"); __items_374.push(__v_377); let __v_378 = Value::from("her"); __items_374.push(__v_378); let __v_379 = Value::from("their"); __items_374.push(__v_379); let __v_380 = Value::from("your"); __items_374.push(__v_380); Value::tuple(__items_374) }; __matched_369 = pyrt::ops::contains(&__v_373, &__v_368)?; } Value::Bool(__matched_369) }; } __v_361 }; } __v_360 }; if __v_359.is_truthy() {
+let __v_338 = { let mut __v_339 = frame.load(rt, "kept")?; if __v_339.is_truthy() { __v_339 = { let mut __v_340 = { let mut __v_341 = { let __callable_343 = { let __v_345 = frame.load(rt, "word")?; rt.getattr(&__v_345, "lower")? }; let mut __args_344 = CallArgs::default(); rt.call(&__callable_343, __args_344)? }; let mut __matched_342 = true; if __matched_342 { let __v_346 = frame.load(rt, "THING_STOP")?; __matched_342 = pyrt::ops::contains(&__v_346, &__v_341)?; } Value::Bool(__matched_342) }; if !__v_340.is_truthy() { __v_340 = { let mut __v_347 = { let __callable_349 = { let __v_351 = frame.load(rt, "word")?; rt.getattr(&__v_351, "lower")? }; let mut __args_350 = CallArgs::default(); rt.call(&__callable_349, __args_350)? }; let mut __matched_348 = true; if __matched_348 { let __v_352 = { let mut __items_353 = Vec::new(); let __v_354 = Value::from("my"); __items_353.push(__v_354); let __v_355 = Value::from("our"); __items_353.push(__v_355); let __v_356 = Value::from("his"); __items_353.push(__v_356); let __v_357 = Value::from("her"); __items_353.push(__v_357); let __v_358 = Value::from("their"); __items_353.push(__v_358); let __v_359 = Value::from("your"); __items_353.push(__v_359); Value::tuple(__items_353) }; __matched_348 = pyrt::ops::contains(&__v_352, &__v_347)?; } Value::Bool(__matched_348) }; } __v_340 }; } __v_339 }; if __v_338.is_truthy() {
 return Ok(__Flow::Break);
 } else {
 
 }
-let __v_381 = { let mut __v_382 = { let __v_383 = frame.load(rt, "kept")?; Value::Bool(!__v_383.is_truthy()) }; if __v_382.is_truthy() { __v_382 = { let mut __v_384 = { let __callable_386 = { let __v_388 = frame.load(rt, "word")?; rt.getattr(&__v_388, "lower")? }; let mut __args_387 = CallArgs::default(); rt.call(&__callable_386, __args_387)? }; let mut __matched_385 = true; if __matched_385 { let __v_389 = frame.load(rt, "TAIL")?; __matched_385 = pyrt::ops::contains(&__v_389, &__v_384)?; } Value::Bool(__matched_385) }; } __v_382 }; if __v_381.is_truthy() {
+let __v_360 = { let mut __v_361 = { let __v_362 = frame.load(rt, "kept")?; Value::Bool(!__v_362.is_truthy()) }; if __v_361.is_truthy() { __v_361 = { let mut __v_363 = { let __callable_365 = { let __v_367 = frame.load(rt, "word")?; rt.getattr(&__v_367, "lower")? }; let mut __args_366 = CallArgs::default(); rt.call(&__callable_365, __args_366)? }; let mut __matched_364 = true; if __matched_364 { let __v_368 = frame.load(rt, "TAIL")?; __matched_364 = pyrt::ops::contains(&__v_368, &__v_363)?; } Value::Bool(__matched_364) }; } __v_361 }; if __v_360.is_truthy() {
 return Ok(__Flow::Continue);
 } else {
 
 }
-let _ = { let __callable_390 = { let __v_392 = frame.load(rt, "kept")?; rt.getattr(&__v_392, "append")? }; let mut __args_391 = CallArgs::default(); let __v_393 = { let mut __items_394 = Vec::new(); let __v_395 = frame.load(rt, "index")?; __items_394.push(__v_395); let __v_396 = frame.load(rt, "word")?; __items_394.push(__v_396); Value::tuple(__items_394) }; __args_391.positional.push(__v_393); rt.call(&__callable_390, __args_391)? };
+let _ = { let __callable_369 = { let __v_371 = frame.load(rt, "kept")?; rt.getattr(&__v_371, "append")? }; let mut __args_370 = CallArgs::default(); let __v_372 = { let mut __items_373 = Vec::new(); let __v_374 = frame.load(rt, "index")?; __items_373.push(__v_374); let __v_375 = frame.load(rt, "word")?; __items_373.push(__v_375); Value::tuple(__items_373) }; __args_370.positional.push(__v_372); rt.call(&__callable_369, __args_370)? };
 Ok(__Flow::Next)
 })()?;
-match __flow_344 { __Flow::Break => { __broke_343 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
+match __flow_323 { __Flow::Break => { __broke_322 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
 }
-if !__broke_343 {
+if !__broke_322 {
 
 }
-let mut __broke_397 = false;
-while ({ let mut __v_399 = frame.load(rt, "kept")?; if __v_399.is_truthy() { __v_399 = { let mut __v_400 = { let __callable_402 = { let __v_404 = { let __v_405 = { let __v_407 = frame.load(rt, "kept")?; let __v_408 = { let __v_409 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::neg(&__v_409)? }; pyrt::ops::getitem(&__v_407, &__v_408)? }; let __v_406 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::getitem(&__v_405, &__v_406)? }; rt.getattr(&__v_404, "lower")? }; let mut __args_403 = CallArgs::default(); rt.call(&__callable_402, __args_403)? }; let mut __matched_401 = true; if __matched_401 { let __v_410 = frame.load(rt, "TAIL")?; __matched_401 = pyrt::ops::contains(&__v_410, &__v_400)?; } Value::Bool(__matched_401) }; } __v_399 }).is_truthy() {
-let __flow_398 = (|| -> PyResult<__Flow> {
-let _ = { let __callable_411 = { let __v_413 = frame.load(rt, "kept")?; rt.getattr(&__v_413, "pop")? }; let mut __args_412 = CallArgs::default(); rt.call(&__callable_411, __args_412)? };
+let mut __broke_376 = false;
+while ({ let mut __v_378 = frame.load(rt, "kept")?; if __v_378.is_truthy() { __v_378 = { let mut __v_379 = { let __callable_381 = { let __v_383 = { let __v_384 = { let __v_386 = frame.load(rt, "kept")?; let __v_387 = { let __v_388 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::neg(&__v_388)? }; pyrt::ops::getitem(&__v_386, &__v_387)? }; let __v_385 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::getitem(&__v_384, &__v_385)? }; rt.getattr(&__v_383, "lower")? }; let mut __args_382 = CallArgs::default(); rt.call(&__callable_381, __args_382)? }; let mut __matched_380 = true; if __matched_380 { let __v_389 = frame.load(rt, "TAIL")?; __matched_380 = pyrt::ops::contains(&__v_389, &__v_379)?; } Value::Bool(__matched_380) }; } __v_378 }).is_truthy() {
+let __flow_377 = (|| -> PyResult<__Flow> {
+let _ = { let __callable_390 = { let __v_392 = frame.load(rt, "kept")?; rt.getattr(&__v_392, "pop")? }; let mut __args_391 = CallArgs::default(); rt.call(&__callable_390, __args_391)? };
 Ok(__Flow::Next)
 })()?;
-match __flow_398 { __Flow::Break => { __broke_397 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
+match __flow_377 { __Flow::Break => { __broke_376 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
 }
-if !__broke_397 {
+if !__broke_376 {
 
 }
-let __v_414 = { let mut __v_415 = { let __v_416 = frame.load(rt, "kept")?; Value::Bool(!__v_416.is_truthy()) }; if !__v_415.is_truthy() { __v_415 = { let mut __v_417 = { let __callable_419 = { let __v_421 = { let __v_422 = { let __v_424 = frame.load(rt, "kept")?; let __v_425 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_424, &__v_425)? }; let __v_423 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::getitem(&__v_422, &__v_423)? }; rt.getattr(&__v_421, "lower")? }; let mut __args_420 = CallArgs::default(); rt.call(&__callable_419, __args_420)? }; let mut __matched_418 = true; if __matched_418 { let __v_426 = frame.load(rt, "NOT_A_THING")?; __matched_418 = pyrt::ops::contains(&__v_426, &__v_417)?; } Value::Bool(__matched_418) }; } __v_415 }; if __v_414.is_truthy() {
-return Ok(__Flow::Return({ let mut __items_427 = Vec::new(); Value::list(__items_427) }));
+let __v_393 = { let mut __v_394 = { let __v_395 = frame.load(rt, "kept")?; Value::Bool(!__v_395.is_truthy()) }; if !__v_394.is_truthy() { __v_394 = { let mut __v_396 = { let __callable_398 = { let __v_400 = { let __v_401 = { let __v_403 = frame.load(rt, "kept")?; let __v_404 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_403, &__v_404)? }; let __v_402 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::getitem(&__v_401, &__v_402)? }; rt.getattr(&__v_400, "lower")? }; let mut __args_399 = CallArgs::default(); rt.call(&__callable_398, __args_399)? }; let mut __matched_397 = true; if __matched_397 { let __v_405 = frame.load(rt, "NOT_A_THING")?; __matched_397 = pyrt::ops::contains(&__v_405, &__v_396)?; } Value::Bool(__matched_397) }; } __v_394 }; if __v_393.is_truthy() {
+return Ok(__Flow::Return({ let mut __items_406 = Vec::new(); Value::list(__items_406) }));
 } else {
 
 }
@@ -181,25 +181,25 @@ mod __py_1 { use super::*;
 // py: bot/memory/taste.py:139-149 _clean
 pub(super) fn _clean(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["kept","thing","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taste.py", 139, 149, "_clean");
+rt.trace_call_code("bot/memory/taste.py", 139, 149, "_clean", 3);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_428 = { let __callable_429 = frame.load(rt, "_kept")?; let mut __args_430 = CallArgs::default(); let __v_431 = frame.load(rt, "thing")?; __args_430.positional.push(__v_431); rt.call(&__callable_429, __args_430)? };
-frame.store("kept", __v_428.clone())?;
-let __v_432 = { let __v_433 = frame.load(rt, "kept")?; Value::Bool(!__v_433.is_truthy()) }; if __v_432.is_truthy() {
+let __v_407 = { let __callable_408 = frame.load(rt, "_kept")?; let mut __args_409 = CallArgs::default(); let __v_410 = frame.load(rt, "thing")?; __args_409.positional.push(__v_410); rt.call(&__callable_408, __args_409)? };
+frame.store("kept", __v_407.clone())?;
+let __v_411 = { let __v_412 = frame.load(rt, "kept")?; Value::Bool(!__v_412.is_truthy()) }; if __v_411.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_434 = { let __comp_parent_435 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_435.clone(), &["_","word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_435 = __comp_parent_435.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "kept")?) }) }, assign: { let __comp_parent_435 = __comp_parent_435.clone(); Rc::new(move |rt, frame, value| { let __unpack_436 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("_", __unpack_436[0].clone())?; frame.store("word", __unpack_436[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_435 = __comp_parent_435.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })?) };
-frame.store("words", __v_434.clone())?;
-let __v_437 = { let mut __v_438 = { let __callable_440 = { let __v_442 = { let __v_443 = frame.load(rt, "words")?; let __v_444 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_443, &__v_444)? }; rt.getattr(&__v_442, "lower")? }; let mut __args_441 = CallArgs::default(); rt.call(&__callable_440, __args_441)? }; let mut __matched_439 = true; if __matched_439 { let __v_445 = { let mut __items_446 = Vec::new(); let __v_447 = Value::from("my"); __items_446.push(__v_447); let __v_448 = Value::from("our"); __items_446.push(__v_448); Value::tuple(__items_446) }; __matched_439 = pyrt::ops::contains(&__v_445, &__v_438)?; } Value::Bool(__matched_439) }; if __v_437.is_truthy() {
-let __v_449 = Value::from("your");
-let __v_450 = frame.load(rt, "words")?; let __v_451 = Value::Int("0".parse().expect("integer literal")); pyrt::containers::setitem(&__v_450, &__v_451, __v_449.clone())?;
+let __v_413 = { let __comp_parent_414 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_414.clone(), &["_","word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_414 = __comp_parent_414.clone(); Rc::new(move |rt, frame| {  Ok(frame.load(rt, "kept")?) }) }, assign: { let __comp_parent_414 = __comp_parent_414.clone(); Rc::new(move |rt, frame, value| { let __unpack_415 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("_", __unpack_415[0].clone())?; frame.store("word", __unpack_415[1].clone())?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_414 = __comp_parent_414.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })?) };
+frame.store("words", __v_413.clone())?;
+let __v_416 = { let mut __v_417 = { let __callable_419 = { let __v_421 = { let __v_422 = frame.load(rt, "words")?; let __v_423 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_422, &__v_423)? }; rt.getattr(&__v_421, "lower")? }; let mut __args_420 = CallArgs::default(); rt.call(&__callable_419, __args_420)? }; let mut __matched_418 = true; if __matched_418 { let __v_424 = { let mut __items_425 = Vec::new(); let __v_426 = Value::from("my"); __items_425.push(__v_426); let __v_427 = Value::from("our"); __items_425.push(__v_427); Value::tuple(__items_425) }; __matched_418 = pyrt::ops::contains(&__v_424, &__v_417)?; } Value::Bool(__matched_418) }; if __v_416.is_truthy() {
+let __v_428 = Value::from("your");
+let __v_429 = frame.load(rt, "words")?; let __v_430 = Value::Int("0".parse().expect("integer literal")); pyrt::containers::setitem(&__v_429, &__v_430, __v_428.clone())?;
 } else {
 
 }
-return Ok(__Flow::Return({ let __callable_452 = { let __v_454 = Value::from(" "); rt.getattr(&__v_454, "join")? }; let mut __args_453 = CallArgs::default(); let __v_455 = frame.load(rt, "words")?; __args_453.positional.push(__v_455); rt.call(&__callable_452, __args_453)? }));
+return Ok(__Flow::Return({ let __callable_431 = { let __v_433 = Value::from(" "); rt.getattr(&__v_433, "join")? }; let mut __args_432 = CallArgs::default(); let __v_434 = frame.load(rt, "words")?; __args_432.positional.push(__v_434); rt.call(&__callable_431, __args_432)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -211,21 +211,21 @@ mod __py_2 { use super::*;
 // py: bot/memory/taste.py:152-159 _thing_end
 pub(super) fn _thing_end(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["kept","last","match","text","took"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taste.py", 152, 159, "_thing_end");
+rt.trace_call_code("bot/memory/taste.py", 152, 159, "_thing_end", 4);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_456 = { let __v_457 = frame.load(rt, "text")?; let __v_459 = { let __callable_461 = { let __v_463 = frame.load(rt, "match")?; rt.getattr(&__v_463, "start")? }; let mut __args_462 = CallArgs::default(); let __v_464 = Value::Int("1".parse().expect("integer literal")); __args_462.positional.push(__v_464); rt.call(&__callable_461, __args_462)? }; let __index_460 = if matches!(__v_459, Value::None) { None } else { let n = __v_459.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; let __v_465 = { let __callable_467 = { let __v_469 = frame.load(rt, "match")?; rt.getattr(&__v_469, "end")? }; let mut __args_468 = CallArgs::default(); let __v_470 = Value::Int("1".parse().expect("integer literal")); __args_468.positional.push(__v_470); rt.call(&__callable_467, __args_468)? }; let __index_466 = if matches!(__v_465, Value::None) { None } else { let n = __v_465.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_457, __index_460, __index_466, 1_i64)? };
-frame.store("took", __v_456.clone())?;
-let __v_471 = { let __callable_472 = frame.load(rt, "_kept")?; let mut __args_473 = CallArgs::default(); let __v_474 = frame.load(rt, "took")?; __args_473.positional.push(__v_474); rt.call(&__callable_472, __args_473)? };
-frame.store("kept", __v_471.clone())?;
-let __v_475 = { let __v_476 = frame.load(rt, "kept")?; Value::Bool(!__v_476.is_truthy()) }; if __v_475.is_truthy() {
-return Ok(__Flow::Return({ let __callable_477 = { let __v_479 = frame.load(rt, "match")?; rt.getattr(&__v_479, "start")? }; let mut __args_478 = CallArgs::default(); let __v_480 = Value::Int("1".parse().expect("integer literal")); __args_478.positional.push(__v_480); rt.call(&__callable_477, __args_478)? }));
+let __v_435 = { let __v_436 = frame.load(rt, "text")?; let __v_438 = { let __callable_440 = { let __v_442 = frame.load(rt, "match")?; rt.getattr(&__v_442, "start")? }; let mut __args_441 = CallArgs::default(); let __v_443 = Value::Int("1".parse().expect("integer literal")); __args_441.positional.push(__v_443); rt.call(&__callable_440, __args_441)? }; let __index_439 = if matches!(__v_438, Value::None) { None } else { let n = __v_438.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; let __v_444 = { let __callable_446 = { let __v_448 = frame.load(rt, "match")?; rt.getattr(&__v_448, "end")? }; let mut __args_447 = CallArgs::default(); let __v_449 = Value::Int("1".parse().expect("integer literal")); __args_447.positional.push(__v_449); rt.call(&__callable_446, __args_447)? }; let __index_445 = if matches!(__v_444, Value::None) { None } else { let n = __v_444.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_436, __index_439, __index_445, 1_i64)? };
+frame.store("took", __v_435.clone())?;
+let __v_450 = { let __callable_451 = frame.load(rt, "_kept")?; let mut __args_452 = CallArgs::default(); let __v_453 = frame.load(rt, "took")?; __args_452.positional.push(__v_453); rt.call(&__callable_451, __args_452)? };
+frame.store("kept", __v_450.clone())?;
+let __v_454 = { let __v_455 = frame.load(rt, "kept")?; Value::Bool(!__v_455.is_truthy()) }; if __v_454.is_truthy() {
+return Ok(__Flow::Return({ let __callable_456 = { let __v_458 = frame.load(rt, "match")?; rt.getattr(&__v_458, "start")? }; let mut __args_457 = CallArgs::default(); let __v_459 = Value::Int("1".parse().expect("integer literal")); __args_457.positional.push(__v_459); rt.call(&__callable_456, __args_457)? }));
 } else {
 
 }
-let __v_481 = { let __v_482 = { let __callable_484 = { let __v_486 = frame.load(rt, "took")?; rt.getattr(&__v_486, "split")? }; let mut __args_485 = CallArgs::default(); rt.call(&__callable_484, __args_485)? }; let __v_483 = { let __v_487 = { let __v_489 = frame.load(rt, "kept")?; let __v_490 = { let __v_491 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::neg(&__v_491)? }; pyrt::ops::getitem(&__v_489, &__v_490)? }; let __v_488 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_487, &__v_488)? }; pyrt::ops::getitem(&__v_482, &__v_483)? };
-frame.store("last", __v_481.clone())?;
-return Ok(__Flow::Return({ let __v_492 = { let __v_494 = { let __callable_496 = { let __v_498 = frame.load(rt, "match")?; rt.getattr(&__v_498, "start")? }; let mut __args_497 = CallArgs::default(); let __v_499 = Value::Int("1".parse().expect("integer literal")); __args_497.positional.push(__v_499); rt.call(&__callable_496, __args_497)? }; let __v_495 = { let __callable_500 = { let __v_502 = frame.load(rt, "took")?; rt.getattr(&__v_502, "rfind")? }; let mut __args_501 = CallArgs::default(); let __v_503 = frame.load(rt, "last")?; __args_501.positional.push(__v_503); rt.call(&__callable_500, __args_501)? }; pyrt::ops::add(&__v_494, &__v_495)? }; let __v_493 = { let __callable_504 = frame.load(rt, "len")?; let mut __args_505 = CallArgs::default(); let __v_506 = frame.load(rt, "last")?; __args_505.positional.push(__v_506); rt.call(&__callable_504, __args_505)? }; pyrt::ops::add(&__v_492, &__v_493)? }));
+let __v_460 = { let __v_461 = { let __callable_463 = { let __v_465 = frame.load(rt, "took")?; rt.getattr(&__v_465, "split")? }; let mut __args_464 = CallArgs::default(); rt.call(&__callable_463, __args_464)? }; let __v_462 = { let __v_466 = { let __v_468 = frame.load(rt, "kept")?; let __v_469 = { let __v_470 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::neg(&__v_470)? }; pyrt::ops::getitem(&__v_468, &__v_469)? }; let __v_467 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_466, &__v_467)? }; pyrt::ops::getitem(&__v_461, &__v_462)? };
+frame.store("last", __v_460.clone())?;
+return Ok(__Flow::Return({ let __v_471 = { let __v_473 = { let __callable_475 = { let __v_477 = frame.load(rt, "match")?; rt.getattr(&__v_477, "start")? }; let mut __args_476 = CallArgs::default(); let __v_478 = Value::Int("1".parse().expect("integer literal")); __args_476.positional.push(__v_478); rt.call(&__callable_475, __args_476)? }; let __v_474 = { let __callable_479 = { let __v_481 = frame.load(rt, "took")?; rt.getattr(&__v_481, "rfind")? }; let mut __args_480 = CallArgs::default(); let __v_482 = frame.load(rt, "last")?; __args_480.positional.push(__v_482); rt.call(&__callable_479, __args_480)? }; pyrt::ops::add(&__v_473, &__v_474)? }; let __v_472 = { let __callable_483 = frame.load(rt, "len")?; let mut __args_484 = CallArgs::default(); let __v_485 = frame.load(rt, "last")?; __args_484.positional.push(__v_485); rt.call(&__callable_483, __args_484)? }; pyrt::ops::add(&__v_471, &__v_472)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -237,35 +237,35 @@ mod __py_3 { use super::*;
 // py: bot/memory/taste.py:176-212 _read_clause
 pub(super) fn _read_clause(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["how","match","pattern","raw","shortfall","text","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taste.py", 176, 212, "_read_clause");
+rt.trace_call_code("bot/memory/taste.py", 176, 212, "_read_clause", 5);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_507 = { let __callable_508 = { let __v_510 = Value::from(" "); rt.getattr(&__v_510, "join")? }; let mut __args_509 = CallArgs::default(); let __v_511 = { let __callable_512 = { let __v_514 = { let __callable_515 = frame.load(rt, "str")?; let mut __args_516 = CallArgs::default(); let __v_517 = { let mut __v_518 = frame.load(rt, "text")?; if !__v_518.is_truthy() { __v_518 = Value::from(""); } __v_518 }; __args_516.positional.push(__v_517); rt.call(&__callable_515, __args_516)? }; rt.getattr(&__v_514, "split")? }; let mut __args_513 = CallArgs::default(); rt.call(&__callable_512, __args_513)? }; __args_509.positional.push(__v_511); rt.call(&__callable_508, __args_509)? };
-frame.store("text", __v_507.clone())?;
-let __v_519 = { let mut __v_520 = { let __v_521 = frame.load(rt, "text")?; Value::Bool(!__v_521.is_truthy()) }; if !__v_520.is_truthy() { __v_520 = { let __callable_522 = { let __v_524 = frame.load(rt, "text")?; rt.getattr(&__v_524, "endswith")? }; let mut __args_523 = CallArgs::default(); let __v_525 = Value::from("?"); __args_523.positional.push(__v_525); rt.call(&__callable_522, __args_523)? }; } __v_520 }; if __v_519.is_truthy() {
-return Ok(__Flow::Return({ let mut __items_526 = Vec::new(); let __v_527 = Value::None; __items_526.push(__v_527); let __v_528 = Value::None; __items_526.push(__v_528); Value::tuple(__items_526) }));
+let __v_486 = { let __callable_487 = { let __v_489 = Value::from(" "); rt.getattr(&__v_489, "join")? }; let mut __args_488 = CallArgs::default(); let __v_490 = { let __callable_491 = { let __v_493 = { let __callable_494 = frame.load(rt, "str")?; let mut __args_495 = CallArgs::default(); let __v_496 = { let mut __v_497 = frame.load(rt, "text")?; if !__v_497.is_truthy() { __v_497 = Value::from(""); } __v_497 }; __args_495.positional.push(__v_496); rt.call(&__callable_494, __args_495)? }; rt.getattr(&__v_493, "split")? }; let mut __args_492 = CallArgs::default(); rt.call(&__callable_491, __args_492)? }; __args_488.positional.push(__v_490); rt.call(&__callable_487, __args_488)? };
+frame.store("text", __v_486.clone())?;
+let __v_498 = { let mut __v_499 = { let __v_500 = frame.load(rt, "text")?; Value::Bool(!__v_500.is_truthy()) }; if !__v_499.is_truthy() { __v_499 = { let __callable_501 = { let __v_503 = frame.load(rt, "text")?; rt.getattr(&__v_503, "endswith")? }; let mut __args_502 = CallArgs::default(); let __v_504 = Value::from("?"); __args_502.positional.push(__v_504); rt.call(&__callable_501, __args_502)? }; } __v_499 }; if __v_498.is_truthy() {
+return Ok(__Flow::Return({ let mut __items_505 = Vec::new(); let __v_506 = Value::None; __items_505.push(__v_506); let __v_507 = Value::None; __items_505.push(__v_507); Value::tuple(__items_505) }));
 } else {
 
 }
-let mut __broke_529 = false; let __v_531 = { let mut __items_534 = Vec::new(); let __v_535 = { let mut __items_536 = Vec::new(); let __v_537 = frame.load(rt, "UNSURE")?; __items_536.push(__v_537); let __v_538 = Value::from("unsure"); __items_536.push(__v_538); Value::tuple(__items_536) }; __items_534.push(__v_535); let __v_539 = { let mut __items_540 = Vec::new(); let __v_541 = frame.load(rt, "NO")?; __items_540.push(__v_541); let __v_542 = Value::from("no"); __items_540.push(__v_542); Value::tuple(__items_540) }; __items_534.push(__v_539); let __v_543 = { let mut __items_544 = Vec::new(); let __v_545 = frame.load(rt, "NOT_KEEN")?; __items_544.push(__v_545); let __v_546 = Value::from("no"); __items_544.push(__v_546); Value::tuple(__items_544) }; __items_534.push(__v_543); let __v_547 = { let mut __items_548 = Vec::new(); let __v_549 = frame.load(rt, "MY_THING")?; __items_548.push(__v_549); let __v_550 = Value::from("no"); __items_548.push(__v_550); Value::tuple(__items_548) }; __items_534.push(__v_547); let __v_551 = { let mut __items_552 = Vec::new(); let __v_553 = frame.load(rt, "YES")?; __items_552.push(__v_553); let __v_554 = Value::from("yes"); __items_552.push(__v_554); Value::tuple(__items_552) }; __items_534.push(__v_551); Value::tuple(__items_534) }; let __iter_532 = rt.iter(&__v_531)?;
-while let Some(__v_533) = rt.next(&__iter_532)? { let __unpack_555 = pyrt::containers::unpack(rt, &__v_533, 2, 0, false)?; frame.store("pattern", __unpack_555[0].clone())?; frame.store("how", __unpack_555[1].clone())?;
-let __flow_530 = (|| -> PyResult<__Flow> {
-let __v_556 = { let __callable_557 = { let __v_559 = frame.load(rt, "pattern")?; rt.getattr(&__v_559, "search")? }; let mut __args_558 = CallArgs::default(); let __v_560 = frame.load(rt, "text")?; __args_558.positional.push(__v_560); rt.call(&__callable_557, __args_558)? };
-frame.store("match", __v_556.clone())?;
-let __v_561 = frame.load(rt, "match")?; if __v_561.is_truthy() {
-let __v_562 = { let __callable_563 = { let __v_565 = frame.load(rt, "match")?; rt.getattr(&__v_565, "group")? }; let mut __args_564 = CallArgs::default(); let __v_566 = Value::Int("1".parse().expect("integer literal")); __args_564.positional.push(__v_566); rt.call(&__callable_563, __args_564)? };
-frame.store("raw", __v_562.clone())?;
-let __v_567 = { let __callable_568 = { let __v_570 = frame.load(rt, "re")?; rt.getattr(&__v_570, "match")? }; let mut __args_569 = CallArgs::default(); let __v_571 = Value::from("\\s*to\\b"); __args_569.positional.push(__v_571); let __v_572 = frame.load(rt, "raw")?; __args_569.positional.push(__v_572); rt.call(&__callable_568, __args_569)? }; if __v_567.is_truthy() {
-return Ok(__Flow::Return({ let mut __items_573 = Vec::new(); let __v_574 = Value::None; __items_573.push(__v_574); let __v_575 = Value::None; __items_573.push(__v_575); Value::tuple(__items_573) }));
+let mut __broke_508 = false; let __v_510 = { let mut __items_513 = Vec::new(); let __v_514 = { let mut __items_515 = Vec::new(); let __v_516 = frame.load(rt, "UNSURE")?; __items_515.push(__v_516); let __v_517 = Value::from("unsure"); __items_515.push(__v_517); Value::tuple(__items_515) }; __items_513.push(__v_514); let __v_518 = { let mut __items_519 = Vec::new(); let __v_520 = frame.load(rt, "NO")?; __items_519.push(__v_520); let __v_521 = Value::from("no"); __items_519.push(__v_521); Value::tuple(__items_519) }; __items_513.push(__v_518); let __v_522 = { let mut __items_523 = Vec::new(); let __v_524 = frame.load(rt, "NOT_KEEN")?; __items_523.push(__v_524); let __v_525 = Value::from("no"); __items_523.push(__v_525); Value::tuple(__items_523) }; __items_513.push(__v_522); let __v_526 = { let mut __items_527 = Vec::new(); let __v_528 = frame.load(rt, "MY_THING")?; __items_527.push(__v_528); let __v_529 = Value::from("no"); __items_527.push(__v_529); Value::tuple(__items_527) }; __items_513.push(__v_526); let __v_530 = { let mut __items_531 = Vec::new(); let __v_532 = frame.load(rt, "YES")?; __items_531.push(__v_532); let __v_533 = Value::from("yes"); __items_531.push(__v_533); Value::tuple(__items_531) }; __items_513.push(__v_530); Value::tuple(__items_513) }; let __iter_511 = rt.iter(&__v_510)?;
+while let Some(__v_512) = rt.next(&__iter_511)? { let __unpack_534 = pyrt::containers::unpack(rt, &__v_512, 2, 0, false)?; frame.store("pattern", __unpack_534[0].clone())?; frame.store("how", __unpack_534[1].clone())?;
+let __flow_509 = (|| -> PyResult<__Flow> {
+let __v_535 = { let __callable_536 = { let __v_538 = frame.load(rt, "pattern")?; rt.getattr(&__v_538, "search")? }; let mut __args_537 = CallArgs::default(); let __v_539 = frame.load(rt, "text")?; __args_537.positional.push(__v_539); rt.call(&__callable_536, __args_537)? };
+frame.store("match", __v_535.clone())?;
+let __v_540 = frame.load(rt, "match")?; if __v_540.is_truthy() {
+let __v_541 = { let __callable_542 = { let __v_544 = frame.load(rt, "match")?; rt.getattr(&__v_544, "group")? }; let mut __args_543 = CallArgs::default(); let __v_545 = Value::Int("1".parse().expect("integer literal")); __args_543.positional.push(__v_545); rt.call(&__callable_542, __args_543)? };
+frame.store("raw", __v_541.clone())?;
+let __v_546 = { let __callable_547 = { let __v_549 = frame.load(rt, "re")?; rt.getattr(&__v_549, "match")? }; let mut __args_548 = CallArgs::default(); let __v_550 = Value::from("\\s*to\\b"); __args_548.positional.push(__v_550); let __v_551 = frame.load(rt, "raw")?; __args_548.positional.push(__v_551); rt.call(&__callable_547, __args_548)? }; if __v_546.is_truthy() {
+return Ok(__Flow::Return({ let mut __items_552 = Vec::new(); let __v_553 = Value::None; __items_552.push(__v_553); let __v_554 = Value::None; __items_552.push(__v_554); Value::tuple(__items_552) }));
 } else {
 
 }
-let __v_576 = { let __callable_577 = frame.load(rt, "_clean")?; let mut __args_578 = CallArgs::default(); let __v_579 = frame.load(rt, "raw")?; __args_578.positional.push(__v_579); rt.call(&__callable_577, __args_578)? };
-frame.store("thing", __v_576.clone())?;
-let __v_580 = { let __callable_581 = { let __v_583 = frame.load(rt, "_SHORTFALL_VERB")?; rt.getattr(&__v_583, "search")? }; let mut __args_582 = CallArgs::default(); let __v_584 = { let __v_585 = frame.load(rt, "text")?; let __v_587 = { let __callable_589 = { let __v_591 = frame.load(rt, "match")?; rt.getattr(&__v_591, "start")? }; let mut __args_590 = CallArgs::default(); let __v_592 = Value::Int("1".parse().expect("integer literal")); __args_590.positional.push(__v_592); rt.call(&__callable_589, __args_590)? }; let __index_588 = if matches!(__v_587, Value::None) { None } else { let n = __v_587.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_585, None, __index_588, 1_i64)? }; __args_582.positional.push(__v_584); rt.call(&__callable_581, __args_582)? };
-frame.store("shortfall", __v_580.clone())?;
-let __v_593 = { let mut __v_594 = frame.load(rt, "thing")?; if __v_594.is_truthy() { __v_594 = { let __v_595 = { let __callable_596 = { let __v_598 = frame.load(rt, "_QUANTITY")?; rt.getattr(&__v_598, "match")? }; let mut __args_597 = CallArgs::default(); let __v_599 = frame.load(rt, "thing")?; __args_597.positional.push(__v_599); rt.call(&__callable_596, __args_597)? }; Value::Bool(!__v_595.is_truthy()) }; } if __v_594.is_truthy() { __v_594 = { let __v_600 = { let __callable_601 = { let __v_603 = frame.load(rt, "_QUANTITY")?; rt.getattr(&__v_603, "match")? }; let mut __args_602 = CallArgs::default(); let __v_604 = { let __callable_605 = { let __v_607 = frame.load(rt, "raw")?; rt.getattr(&__v_607, "strip")? }; let mut __args_606 = CallArgs::default(); rt.call(&__callable_605, __args_606)? }; __args_602.positional.push(__v_604); rt.call(&__callable_601, __args_602)? }; Value::Bool(!__v_600.is_truthy()) }; } if __v_594.is_truthy() { __v_594 = { let __v_608 = { let mut __v_609 = frame.load(rt, "shortfall")?; if __v_609.is_truthy() { __v_609 = { let __callable_610 = { let __v_612 = frame.load(rt, "_SHORTFALL_TAIL")?; rt.getattr(&__v_612, "search")? }; let mut __args_611 = CallArgs::default(); let __v_613 = frame.load(rt, "raw")?; __args_611.positional.push(__v_613); rt.call(&__callable_610, __args_611)? }; } __v_609 }; Value::Bool(!__v_608.is_truthy()) }; } __v_594 }; if __v_593.is_truthy() {
-return Ok(__Flow::Return({ let mut __items_614 = Vec::new(); let __v_615 = { let __dict_616 = Value::dict(); let __v_617 = Value::from("thing"); let __v_618 = frame.load(rt, "thing")?; __dict_616.dict_set(__v_617, __v_618)?; let __v_619 = Value::from("how"); let __v_620 = frame.load(rt, "how")?; __dict_616.dict_set(__v_619, __v_620)?; __dict_616 }; __items_614.push(__v_615); let __v_621 = { let __callable_622 = frame.load(rt, "_thing_end")?; let mut __args_623 = CallArgs::default(); let __v_624 = frame.load(rt, "text")?; __args_623.positional.push(__v_624); let __v_625 = frame.load(rt, "match")?; __args_623.positional.push(__v_625); rt.call(&__callable_622, __args_623)? }; __items_614.push(__v_621); Value::tuple(__items_614) }));
+let __v_555 = { let __callable_556 = frame.load(rt, "_clean")?; let mut __args_557 = CallArgs::default(); let __v_558 = frame.load(rt, "raw")?; __args_557.positional.push(__v_558); rt.call(&__callable_556, __args_557)? };
+frame.store("thing", __v_555.clone())?;
+let __v_559 = { let __callable_560 = { let __v_562 = frame.load(rt, "_SHORTFALL_VERB")?; rt.getattr(&__v_562, "search")? }; let mut __args_561 = CallArgs::default(); let __v_563 = { let __v_564 = frame.load(rt, "text")?; let __v_566 = { let __callable_568 = { let __v_570 = frame.load(rt, "match")?; rt.getattr(&__v_570, "start")? }; let mut __args_569 = CallArgs::default(); let __v_571 = Value::Int("1".parse().expect("integer literal")); __args_569.positional.push(__v_571); rt.call(&__callable_568, __args_569)? }; let __index_567 = if matches!(__v_566, Value::None) { None } else { let n = __v_566.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_564, None, __index_567, 1_i64)? }; __args_561.positional.push(__v_563); rt.call(&__callable_560, __args_561)? };
+frame.store("shortfall", __v_559.clone())?;
+let __v_572 = { let mut __v_573 = frame.load(rt, "thing")?; if __v_573.is_truthy() { __v_573 = { let __v_574 = { let __callable_575 = { let __v_577 = frame.load(rt, "_QUANTITY")?; rt.getattr(&__v_577, "match")? }; let mut __args_576 = CallArgs::default(); let __v_578 = frame.load(rt, "thing")?; __args_576.positional.push(__v_578); rt.call(&__callable_575, __args_576)? }; Value::Bool(!__v_574.is_truthy()) }; } if __v_573.is_truthy() { __v_573 = { let __v_579 = { let __callable_580 = { let __v_582 = frame.load(rt, "_QUANTITY")?; rt.getattr(&__v_582, "match")? }; let mut __args_581 = CallArgs::default(); let __v_583 = { let __callable_584 = { let __v_586 = frame.load(rt, "raw")?; rt.getattr(&__v_586, "strip")? }; let mut __args_585 = CallArgs::default(); rt.call(&__callable_584, __args_585)? }; __args_581.positional.push(__v_583); rt.call(&__callable_580, __args_581)? }; Value::Bool(!__v_579.is_truthy()) }; } if __v_573.is_truthy() { __v_573 = { let __v_587 = { let mut __v_588 = frame.load(rt, "shortfall")?; if __v_588.is_truthy() { __v_588 = { let __callable_589 = { let __v_591 = frame.load(rt, "_SHORTFALL_TAIL")?; rt.getattr(&__v_591, "search")? }; let mut __args_590 = CallArgs::default(); let __v_592 = frame.load(rt, "raw")?; __args_590.positional.push(__v_592); rt.call(&__callable_589, __args_590)? }; } __v_588 }; Value::Bool(!__v_587.is_truthy()) }; } __v_573 }; if __v_572.is_truthy() {
+return Ok(__Flow::Return({ let mut __items_593 = Vec::new(); let __v_594 = { let __dict_595 = Value::dict(); let __v_596 = Value::from("thing"); let __v_597 = frame.load(rt, "thing")?; __dict_595.dict_set(__v_596, __v_597)?; let __v_598 = Value::from("how"); let __v_599 = frame.load(rt, "how")?; __dict_595.dict_set(__v_598, __v_599)?; __dict_595 }; __items_593.push(__v_594); let __v_600 = { let __callable_601 = frame.load(rt, "_thing_end")?; let mut __args_602 = CallArgs::default(); let __v_603 = frame.load(rt, "text")?; __args_602.positional.push(__v_603); let __v_604 = frame.load(rt, "match")?; __args_602.positional.push(__v_604); rt.call(&__callable_601, __args_602)? }; __items_593.push(__v_600); Value::tuple(__items_593) }));
 } else {
 
 }
@@ -274,27 +274,27 @@ return Ok(__Flow::Return({ let mut __items_614 = Vec::new(); let __v_615 = { let
 }
 Ok(__Flow::Next)
 })()?;
-match __flow_530 { __Flow::Break => { __broke_529 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
+match __flow_509 { __Flow::Break => { __broke_508 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
 }
-if !__broke_529 {
+if !__broke_508 {
 
 }
-let __v_626 = { let __callable_627 = { let __v_629 = frame.load(rt, "HATE")?; rt.getattr(&__v_629, "search")? }; let mut __args_628 = CallArgs::default(); let __v_630 = frame.load(rt, "text")?; __args_628.positional.push(__v_630); rt.call(&__callable_627, __args_628)? };
-frame.store("match", __v_626.clone())?;
-let __v_631 = frame.load(rt, "match")?; if __v_631.is_truthy() {
-let __v_632 = { let __callable_633 = { let __v_635 = frame.load(rt, "match")?; rt.getattr(&__v_635, "group")? }; let mut __args_634 = CallArgs::default(); let __v_636 = Value::Int("1".parse().expect("integer literal")); __args_634.positional.push(__v_636); rt.call(&__callable_633, __args_634)? };
-frame.store("raw", __v_632.clone())?;
-let __v_637 = { let __callable_638 = frame.load(rt, "_clean")?; let mut __args_639 = CallArgs::default(); let __v_640 = frame.load(rt, "raw")?; __args_639.positional.push(__v_640); rt.call(&__callable_638, __args_639)? };
-frame.store("thing", __v_637.clone())?;
-let __v_641 = { let mut __v_642 = frame.load(rt, "thing")?; if __v_642.is_truthy() { __v_642 = { let __v_643 = { let __callable_644 = { let __v_646 = frame.load(rt, "re")?; rt.getattr(&__v_646, "match")? }; let mut __args_645 = CallArgs::default(); let __v_647 = Value::from("\\s*(?:my|our)\\b"); __args_645.positional.push(__v_647); let __v_648 = frame.load(rt, "raw")?; __args_645.positional.push(__v_648); let __v_649 = { let __v_650 = frame.load(rt, "re")?; rt.getattr(&__v_650, "I")? }; __args_645.positional.push(__v_649); rt.call(&__callable_644, __args_645)? }; Value::Bool(!__v_643.is_truthy()) }; } __v_642 }; if __v_641.is_truthy() {
-return Ok(__Flow::Return({ let mut __items_651 = Vec::new(); let __v_652 = { let __dict_653 = Value::dict(); let __v_654 = Value::from("thing"); let __v_655 = frame.load(rt, "thing")?; __dict_653.dict_set(__v_654, __v_655)?; let __v_656 = Value::from("how"); let __v_657 = Value::from("no"); __dict_653.dict_set(__v_656, __v_657)?; __dict_653 }; __items_651.push(__v_652); let __v_658 = { let __callable_659 = frame.load(rt, "_thing_end")?; let mut __args_660 = CallArgs::default(); let __v_661 = frame.load(rt, "text")?; __args_660.positional.push(__v_661); let __v_662 = frame.load(rt, "match")?; __args_660.positional.push(__v_662); rt.call(&__callable_659, __args_660)? }; __items_651.push(__v_658); Value::tuple(__items_651) }));
+let __v_605 = { let __callable_606 = { let __v_608 = frame.load(rt, "HATE")?; rt.getattr(&__v_608, "search")? }; let mut __args_607 = CallArgs::default(); let __v_609 = frame.load(rt, "text")?; __args_607.positional.push(__v_609); rt.call(&__callable_606, __args_607)? };
+frame.store("match", __v_605.clone())?;
+let __v_610 = frame.load(rt, "match")?; if __v_610.is_truthy() {
+let __v_611 = { let __callable_612 = { let __v_614 = frame.load(rt, "match")?; rt.getattr(&__v_614, "group")? }; let mut __args_613 = CallArgs::default(); let __v_615 = Value::Int("1".parse().expect("integer literal")); __args_613.positional.push(__v_615); rt.call(&__callable_612, __args_613)? };
+frame.store("raw", __v_611.clone())?;
+let __v_616 = { let __callable_617 = frame.load(rt, "_clean")?; let mut __args_618 = CallArgs::default(); let __v_619 = frame.load(rt, "raw")?; __args_618.positional.push(__v_619); rt.call(&__callable_617, __args_618)? };
+frame.store("thing", __v_616.clone())?;
+let __v_620 = { let mut __v_621 = frame.load(rt, "thing")?; if __v_621.is_truthy() { __v_621 = { let __v_622 = { let __callable_623 = { let __v_625 = frame.load(rt, "re")?; rt.getattr(&__v_625, "match")? }; let mut __args_624 = CallArgs::default(); let __v_626 = Value::from("\\s*(?:my|our)\\b"); __args_624.positional.push(__v_626); let __v_627 = frame.load(rt, "raw")?; __args_624.positional.push(__v_627); let __v_628 = { let __v_629 = frame.load(rt, "re")?; rt.getattr(&__v_629, "I")? }; __args_624.positional.push(__v_628); rt.call(&__callable_623, __args_624)? }; Value::Bool(!__v_622.is_truthy()) }; } __v_621 }; if __v_620.is_truthy() {
+return Ok(__Flow::Return({ let mut __items_630 = Vec::new(); let __v_631 = { let __dict_632 = Value::dict(); let __v_633 = Value::from("thing"); let __v_634 = frame.load(rt, "thing")?; __dict_632.dict_set(__v_633, __v_634)?; let __v_635 = Value::from("how"); let __v_636 = Value::from("no"); __dict_632.dict_set(__v_635, __v_636)?; __dict_632 }; __items_630.push(__v_631); let __v_637 = { let __callable_638 = frame.load(rt, "_thing_end")?; let mut __args_639 = CallArgs::default(); let __v_640 = frame.load(rt, "text")?; __args_639.positional.push(__v_640); let __v_641 = frame.load(rt, "match")?; __args_639.positional.push(__v_641); rt.call(&__callable_638, __args_639)? }; __items_630.push(__v_637); Value::tuple(__items_630) }));
 } else {
 
 }
 } else {
 
 }
-return Ok(__Flow::Return({ let mut __items_663 = Vec::new(); let __v_664 = Value::None; __items_663.push(__v_664); let __v_665 = Value::None; __items_663.push(__v_665); Value::tuple(__items_663) }));
+return Ok(__Flow::Return({ let mut __items_642 = Vec::new(); let __v_643 = Value::None; __items_642.push(__v_643); let __v_644 = Value::None; __items_642.push(__v_644); Value::tuple(__items_642) }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -306,10 +306,10 @@ mod __py_4 { use super::*;
 // py: bot/memory/taste.py:215-221 read
 pub(super) fn read(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taste.py", 215, 221, "read");
+rt.trace_call_code("bot/memory/taste.py", 215, 221, "read", 6);
 let flow = (|| -> PyResult<__Flow> {
 
-return Ok(__Flow::Return({ let __v_666 = { let __callable_668 = frame.load(rt, "_read_clause")?; let mut __args_669 = CallArgs::default(); let __v_670 = frame.load(rt, "line")?; __args_669.positional.push(__v_670); rt.call(&__callable_668, __args_669)? }; let __v_667 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_666, &__v_667)? }));
+return Ok(__Flow::Return({ let __v_645 = { let __callable_647 = frame.load(rt, "_read_clause")?; let mut __args_648 = CallArgs::default(); let __v_649 = frame.load(rt, "line")?; __args_648.positional.push(__v_649); rt.call(&__callable_647, __args_648)? }; let __v_646 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_645, &__v_646)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -321,41 +321,41 @@ mod __py_5 { use super::*;
 // py: bot/memory/taste.py:276-295 read_all
 pub(super) fn read_all(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","found","line","taste","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taste.py", 276, 295, "read_all");
+rt.trace_call_code("bot/memory/taste.py", 276, 295, "read_all", 7);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_671 = { let __callable_672 = { let __v_674 = Value::from(" "); rt.getattr(&__v_674, "join")? }; let mut __args_673 = CallArgs::default(); let __v_675 = { let __callable_676 = { let __v_678 = { let __callable_679 = frame.load(rt, "str")?; let mut __args_680 = CallArgs::default(); let __v_681 = { let mut __v_682 = frame.load(rt, "line")?; if !__v_682.is_truthy() { __v_682 = Value::from(""); } __v_682 }; __args_680.positional.push(__v_681); rt.call(&__callable_679, __args_680)? }; rt.getattr(&__v_678, "split")? }; let mut __args_677 = CallArgs::default(); rt.call(&__callable_676, __args_677)? }; __args_673.positional.push(__v_675); rt.call(&__callable_672, __args_673)? };
-frame.store("text", __v_671.clone())?;
-let __v_683 = { let mut __items_684 = Vec::new(); Value::list(__items_684) };
-frame.store("found", __v_683.clone())?;
-let mut __broke_685 = false; let __v_687 = { let __callable_690 = { let __v_692 = frame.load(rt, "_CLAUSE_SPLIT")?; rt.getattr(&__v_692, "split")? }; let mut __args_691 = CallArgs::default(); let __v_693 = frame.load(rt, "text")?; __args_691.positional.push(__v_693); rt.call(&__callable_690, __args_691)? }; let __iter_688 = rt.iter(&__v_687)?;
-while let Some(__v_689) = rt.next(&__iter_688)? { frame.store("clause", __v_689)?;
-let __flow_686 = (|| -> PyResult<__Flow> {
-let __v_694 = { let __callable_695 = { let __v_697 = frame.load(rt, "clause")?; rt.getattr(&__v_697, "strip")? }; let mut __args_696 = CallArgs::default(); rt.call(&__callable_695, __args_696)? };
-frame.store("clause", __v_694.clone())?;
-let __v_698 = { let __v_699 = frame.load(rt, "clause")?; Value::Bool(!__v_699.is_truthy()) }; if __v_698.is_truthy() {
+let __v_650 = { let __callable_651 = { let __v_653 = Value::from(" "); rt.getattr(&__v_653, "join")? }; let mut __args_652 = CallArgs::default(); let __v_654 = { let __callable_655 = { let __v_657 = { let __callable_658 = frame.load(rt, "str")?; let mut __args_659 = CallArgs::default(); let __v_660 = { let mut __v_661 = frame.load(rt, "line")?; if !__v_661.is_truthy() { __v_661 = Value::from(""); } __v_661 }; __args_659.positional.push(__v_660); rt.call(&__callable_658, __args_659)? }; rt.getattr(&__v_657, "split")? }; let mut __args_656 = CallArgs::default(); rt.call(&__callable_655, __args_656)? }; __args_652.positional.push(__v_654); rt.call(&__callable_651, __args_652)? };
+frame.store("text", __v_650.clone())?;
+let __v_662 = { let mut __items_663 = Vec::new(); Value::list(__items_663) };
+frame.store("found", __v_662.clone())?;
+let mut __broke_664 = false; let __v_666 = { let __callable_669 = { let __v_671 = frame.load(rt, "_CLAUSE_SPLIT")?; rt.getattr(&__v_671, "split")? }; let mut __args_670 = CallArgs::default(); let __v_672 = frame.load(rt, "text")?; __args_670.positional.push(__v_672); rt.call(&__callable_669, __args_670)? }; let __iter_667 = rt.iter(&__v_666)?;
+while let Some(__v_668) = rt.next(&__iter_667)? { frame.store("clause", __v_668)?;
+let __flow_665 = (|| -> PyResult<__Flow> {
+let __v_673 = { let __callable_674 = { let __v_676 = frame.load(rt, "clause")?; rt.getattr(&__v_676, "strip")? }; let mut __args_675 = CallArgs::default(); rt.call(&__callable_674, __args_675)? };
+frame.store("clause", __v_673.clone())?;
+let __v_677 = { let __v_678 = frame.load(rt, "clause")?; Value::Bool(!__v_678.is_truthy()) }; if __v_677.is_truthy() {
 return Ok(__Flow::Continue);
 } else {
 
 }
-let __v_700 = { let mut __v_701 = { let __callable_702 = { let __v_704 = frame.load(rt, "re")?; rt.getattr(&__v_704, "match")? }; let mut __args_703 = CallArgs::default(); let __v_705 = frame.load(rt, "_TASTE_VERB")?; __args_703.positional.push(__v_705); let __v_706 = frame.load(rt, "clause")?; __args_703.positional.push(__v_706); let __v_707 = { let __v_708 = frame.load(rt, "re")?; rt.getattr(&__v_708, "I")? }; __args_703.positional.push(__v_707); rt.call(&__callable_702, __args_703)? }; if __v_701.is_truthy() { __v_701 = { let __v_709 = { let __callable_710 = { let __v_712 = frame.load(rt, "re")?; rt.getattr(&__v_712, "match")? }; let mut __args_711 = CallArgs::default(); let __v_713 = Value::from("(?:i|we|he|she|they)\\b"); __args_711.positional.push(__v_713); let __v_714 = frame.load(rt, "clause")?; __args_711.positional.push(__v_714); let __v_715 = { let __v_716 = frame.load(rt, "re")?; rt.getattr(&__v_716, "I")? }; __args_711.positional.push(__v_715); rt.call(&__callable_710, __args_711)? }; Value::Bool(!__v_709.is_truthy()) }; } __v_701 }; if __v_700.is_truthy() {
-let __v_717 = { let __v_718 = Value::from("i "); let __v_719 = frame.load(rt, "clause")?; pyrt::ops::add(&__v_718, &__v_719)? };
-frame.store("clause", __v_717.clone())?;
+let __v_679 = { let mut __v_680 = { let __callable_681 = { let __v_683 = frame.load(rt, "re")?; rt.getattr(&__v_683, "match")? }; let mut __args_682 = CallArgs::default(); let __v_684 = frame.load(rt, "_TASTE_VERB")?; __args_682.positional.push(__v_684); let __v_685 = frame.load(rt, "clause")?; __args_682.positional.push(__v_685); let __v_686 = { let __v_687 = frame.load(rt, "re")?; rt.getattr(&__v_687, "I")? }; __args_682.positional.push(__v_686); rt.call(&__callable_681, __args_682)? }; if __v_680.is_truthy() { __v_680 = { let __v_688 = { let __callable_689 = { let __v_691 = frame.load(rt, "re")?; rt.getattr(&__v_691, "match")? }; let mut __args_690 = CallArgs::default(); let __v_692 = Value::from("(?:i|we|he|she|they)\\b"); __args_690.positional.push(__v_692); let __v_693 = frame.load(rt, "clause")?; __args_690.positional.push(__v_693); let __v_694 = { let __v_695 = frame.load(rt, "re")?; rt.getattr(&__v_695, "I")? }; __args_690.positional.push(__v_694); rt.call(&__callable_689, __args_690)? }; Value::Bool(!__v_688.is_truthy()) }; } __v_680 }; if __v_679.is_truthy() {
+let __v_696 = { let __v_697 = Value::from("i "); let __v_698 = frame.load(rt, "clause")?; pyrt::ops::add(&__v_697, &__v_698)? };
+frame.store("clause", __v_696.clone())?;
 } else {
 
 }
-let __v_720 = { let __callable_721 = frame.load(rt, "read")?; let mut __args_722 = CallArgs::default(); let __v_723 = frame.load(rt, "clause")?; __args_722.positional.push(__v_723); rt.call(&__callable_721, __args_722)? };
-frame.store("taste", __v_720.clone())?;
-let __v_724 = { let mut __v_725 = frame.load(rt, "taste")?; if __v_725.is_truthy() { __v_725 = { let mut __v_726 = frame.load(rt, "taste")?; let mut __matched_727 = true; if __matched_727 { let __v_728 = frame.load(rt, "found")?; __matched_727 = !pyrt::ops::contains(&__v_728, &__v_726)?; } Value::Bool(__matched_727) }; } __v_725 }; if __v_724.is_truthy() {
-let _ = { let __callable_729 = { let __v_731 = frame.load(rt, "found")?; rt.getattr(&__v_731, "append")? }; let mut __args_730 = CallArgs::default(); let __v_732 = frame.load(rt, "taste")?; __args_730.positional.push(__v_732); rt.call(&__callable_729, __args_730)? };
+let __v_699 = { let __callable_700 = frame.load(rt, "read")?; let mut __args_701 = CallArgs::default(); let __v_702 = frame.load(rt, "clause")?; __args_701.positional.push(__v_702); rt.call(&__callable_700, __args_701)? };
+frame.store("taste", __v_699.clone())?;
+let __v_703 = { let mut __v_704 = frame.load(rt, "taste")?; if __v_704.is_truthy() { __v_704 = { let mut __v_705 = frame.load(rt, "taste")?; let mut __matched_706 = true; if __matched_706 { let __v_707 = frame.load(rt, "found")?; __matched_706 = !pyrt::ops::contains(&__v_707, &__v_705)?; } Value::Bool(__matched_706) }; } __v_704 }; if __v_703.is_truthy() {
+let _ = { let __callable_708 = { let __v_710 = frame.load(rt, "found")?; rt.getattr(&__v_710, "append")? }; let mut __args_709 = CallArgs::default(); let __v_711 = frame.load(rt, "taste")?; __args_709.positional.push(__v_711); rt.call(&__callable_708, __args_709)? };
 } else {
 
 }
 Ok(__Flow::Next)
 })()?;
-match __flow_686 { __Flow::Break => { __broke_685 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
+match __flow_665 { __Flow::Break => { __broke_664 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
 }
-if !__broke_685 {
+if !__broke_664 {
 
 }
 return Ok(__Flow::Return(frame.load(rt, "found")?));
@@ -370,69 +370,69 @@ mod __py_6 { use super::*;
 // py: bot/memory/taste.py:298-339 only_a_taste
 pub(super) fn only_a_taste(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["bare","clause","end","left","said","seen","taste","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taste.py", 298, 339, "only_a_taste");
+rt.trace_call_code("bot/memory/taste.py", 298, 339, "only_a_taste", 8);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_733 = { let __callable_734 = { let __v_736 = Value::from(" "); rt.getattr(&__v_736, "join")? }; let mut __args_735 = CallArgs::default(); let __v_737 = { let __callable_738 = { let __v_740 = { let __callable_741 = frame.load(rt, "str")?; let mut __args_742 = CallArgs::default(); let __v_743 = { let mut __v_744 = frame.load(rt, "text")?; if !__v_744.is_truthy() { __v_744 = Value::from(""); } __v_744 }; __args_742.positional.push(__v_743); rt.call(&__callable_741, __args_742)? }; rt.getattr(&__v_740, "split")? }; let mut __args_739 = CallArgs::default(); rt.call(&__callable_738, __args_739)? }; __args_735.positional.push(__v_737); rt.call(&__callable_734, __args_735)? };
-frame.store("text", __v_733.clone())?;
-let __v_745 = { let mut __v_746 = { let __v_747 = frame.load(rt, "text")?; Value::Bool(!__v_747.is_truthy()) }; if !__v_746.is_truthy() { __v_746 = { let mut __v_748 = Value::from("?"); let mut __matched_749 = true; if __matched_749 { let __v_750 = frame.load(rt, "text")?; __matched_749 = pyrt::ops::contains(&__v_750, &__v_748)?; } Value::Bool(__matched_749) }; } __v_746 }; if __v_745.is_truthy() {
+let __v_712 = { let __callable_713 = { let __v_715 = Value::from(" "); rt.getattr(&__v_715, "join")? }; let mut __args_714 = CallArgs::default(); let __v_716 = { let __callable_717 = { let __v_719 = { let __callable_720 = frame.load(rt, "str")?; let mut __args_721 = CallArgs::default(); let __v_722 = { let mut __v_723 = frame.load(rt, "text")?; if !__v_723.is_truthy() { __v_723 = Value::from(""); } __v_723 }; __args_721.positional.push(__v_722); rt.call(&__callable_720, __args_721)? }; rt.getattr(&__v_719, "split")? }; let mut __args_718 = CallArgs::default(); rt.call(&__callable_717, __args_718)? }; __args_714.positional.push(__v_716); rt.call(&__callable_713, __args_714)? };
+frame.store("text", __v_712.clone())?;
+let __v_724 = { let mut __v_725 = { let __v_726 = frame.load(rt, "text")?; Value::Bool(!__v_726.is_truthy()) }; if !__v_725.is_truthy() { __v_725 = { let mut __v_727 = Value::from("?"); let mut __matched_728 = true; if __matched_728 { let __v_729 = frame.load(rt, "text")?; __matched_728 = pyrt::ops::contains(&__v_729, &__v_727)?; } Value::Bool(__matched_728) }; } __v_725 }; if __v_724.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-let __v_751 = { let mut __v_752 = { let __callable_753 = { let __v_755 = frame.load(rt, "_ASK_FORM")?; rt.getattr(&__v_755, "search")? }; let mut __args_754 = CallArgs::default(); let __v_756 = frame.load(rt, "text")?; __args_754.positional.push(__v_756); rt.call(&__callable_753, __args_754)? }; if __v_752.is_truthy() { __v_752 = { let __callable_757 = { let __v_759 = frame.load(rt, "_HATED_CHORE")?; rt.getattr(&__v_759, "search")? }; let mut __args_758 = CallArgs::default(); let __v_760 = frame.load(rt, "text")?; __args_758.positional.push(__v_760); rt.call(&__callable_757, __args_758)? }; } __v_752 }; if __v_751.is_truthy() {
+let __v_730 = { let mut __v_731 = { let __callable_732 = { let __v_734 = frame.load(rt, "_ASK_FORM")?; rt.getattr(&__v_734, "search")? }; let mut __args_733 = CallArgs::default(); let __v_735 = frame.load(rt, "text")?; __args_733.positional.push(__v_735); rt.call(&__callable_732, __args_733)? }; if __v_731.is_truthy() { __v_731 = { let __callable_736 = { let __v_738 = frame.load(rt, "_HATED_CHORE")?; rt.getattr(&__v_738, "search")? }; let mut __args_737 = CallArgs::default(); let __v_739 = frame.load(rt, "text")?; __args_737.positional.push(__v_739); rt.call(&__callable_736, __args_737)? }; } __v_731 }; if __v_730.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-let __v_761 = { let __callable_762 = { let __v_764 = frame.load(rt, "_ASKS_FOR_A_THING")?; rt.getattr(&__v_764, "search")? }; let mut __args_763 = CallArgs::default(); let __v_765 = frame.load(rt, "text")?; __args_763.positional.push(__v_765); rt.call(&__callable_762, __args_763)? }; if __v_761.is_truthy() {
+let __v_740 = { let __callable_741 = { let __v_743 = frame.load(rt, "_ASKS_FOR_A_THING")?; rt.getattr(&__v_743, "search")? }; let mut __args_742 = CallArgs::default(); let __v_744 = frame.load(rt, "text")?; __args_742.positional.push(__v_744); rt.call(&__callable_741, __args_742)? }; if __v_740.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-let __v_766 = Value::Bool(false);
-frame.store("seen", __v_766.clone())?;
-let mut __broke_767 = false; let __v_769 = { let __callable_772 = { let __v_774 = frame.load(rt, "_CLAUSE_SPLIT")?; rt.getattr(&__v_774, "split")? }; let mut __args_773 = CallArgs::default(); let __v_775 = frame.load(rt, "text")?; __args_773.positional.push(__v_775); rt.call(&__callable_772, __args_773)? }; let __iter_770 = rt.iter(&__v_769)?;
-while let Some(__v_771) = rt.next(&__iter_770)? { frame.store("clause", __v_771)?;
-let __flow_768 = (|| -> PyResult<__Flow> {
-let __v_776 = { let __callable_777 = { let __v_779 = frame.load(rt, "clause")?; rt.getattr(&__v_779, "strip")? }; let mut __args_778 = CallArgs::default(); rt.call(&__callable_777, __args_778)? };
-frame.store("clause", __v_776.clone())?;
-let __v_780 = { let __v_781 = frame.load(rt, "clause")?; Value::Bool(!__v_781.is_truthy()) }; if __v_780.is_truthy() {
+let __v_745 = Value::Bool(false);
+frame.store("seen", __v_745.clone())?;
+let mut __broke_746 = false; let __v_748 = { let __callable_751 = { let __v_753 = frame.load(rt, "_CLAUSE_SPLIT")?; rt.getattr(&__v_753, "split")? }; let mut __args_752 = CallArgs::default(); let __v_754 = frame.load(rt, "text")?; __args_752.positional.push(__v_754); rt.call(&__callable_751, __args_752)? }; let __iter_749 = rt.iter(&__v_748)?;
+while let Some(__v_750) = rt.next(&__iter_749)? { frame.store("clause", __v_750)?;
+let __flow_747 = (|| -> PyResult<__Flow> {
+let __v_755 = { let __callable_756 = { let __v_758 = frame.load(rt, "clause")?; rt.getattr(&__v_758, "strip")? }; let mut __args_757 = CallArgs::default(); rt.call(&__callable_756, __args_757)? };
+frame.store("clause", __v_755.clone())?;
+let __v_759 = { let __v_760 = frame.load(rt, "clause")?; Value::Bool(!__v_760.is_truthy()) }; if __v_759.is_truthy() {
 return Ok(__Flow::Continue);
 } else {
 
 }
-let __v_782 = frame.load(rt, "clause")?;
-frame.store("said", __v_782.clone())?;
-let __v_783 = { let mut __v_784 = { let __callable_785 = { let __v_787 = frame.load(rt, "re")?; rt.getattr(&__v_787, "match")? }; let mut __args_786 = CallArgs::default(); let __v_788 = frame.load(rt, "_TASTE_VERB")?; __args_786.positional.push(__v_788); let __v_789 = frame.load(rt, "said")?; __args_786.positional.push(__v_789); let __v_790 = { let __v_791 = frame.load(rt, "re")?; rt.getattr(&__v_791, "I")? }; __args_786.positional.push(__v_790); rt.call(&__callable_785, __args_786)? }; if __v_784.is_truthy() { __v_784 = { let __v_792 = { let __callable_793 = { let __v_795 = frame.load(rt, "re")?; rt.getattr(&__v_795, "match")? }; let mut __args_794 = CallArgs::default(); let __v_796 = Value::from("(?:i|we|he|she|they)\\b"); __args_794.positional.push(__v_796); let __v_797 = frame.load(rt, "said")?; __args_794.positional.push(__v_797); let __v_798 = { let __v_799 = frame.load(rt, "re")?; rt.getattr(&__v_799, "I")? }; __args_794.positional.push(__v_798); rt.call(&__callable_793, __args_794)? }; Value::Bool(!__v_792.is_truthy()) }; } __v_784 };
-frame.store("bare", __v_783.clone())?;
-let __v_800 = frame.load(rt, "bare")?; if __v_800.is_truthy() {
-let __v_801 = { let __v_802 = Value::from("i "); let __v_803 = frame.load(rt, "said")?; pyrt::ops::add(&__v_802, &__v_803)? };
-frame.store("said", __v_801.clone())?;
+let __v_761 = frame.load(rt, "clause")?;
+frame.store("said", __v_761.clone())?;
+let __v_762 = { let mut __v_763 = { let __callable_764 = { let __v_766 = frame.load(rt, "re")?; rt.getattr(&__v_766, "match")? }; let mut __args_765 = CallArgs::default(); let __v_767 = frame.load(rt, "_TASTE_VERB")?; __args_765.positional.push(__v_767); let __v_768 = frame.load(rt, "said")?; __args_765.positional.push(__v_768); let __v_769 = { let __v_770 = frame.load(rt, "re")?; rt.getattr(&__v_770, "I")? }; __args_765.positional.push(__v_769); rt.call(&__callable_764, __args_765)? }; if __v_763.is_truthy() { __v_763 = { let __v_771 = { let __callable_772 = { let __v_774 = frame.load(rt, "re")?; rt.getattr(&__v_774, "match")? }; let mut __args_773 = CallArgs::default(); let __v_775 = Value::from("(?:i|we|he|she|they)\\b"); __args_773.positional.push(__v_775); let __v_776 = frame.load(rt, "said")?; __args_773.positional.push(__v_776); let __v_777 = { let __v_778 = frame.load(rt, "re")?; rt.getattr(&__v_778, "I")? }; __args_773.positional.push(__v_777); rt.call(&__callable_772, __args_773)? }; Value::Bool(!__v_771.is_truthy()) }; } __v_763 };
+frame.store("bare", __v_762.clone())?;
+let __v_779 = frame.load(rt, "bare")?; if __v_779.is_truthy() {
+let __v_780 = { let __v_781 = Value::from("i "); let __v_782 = frame.load(rt, "said")?; pyrt::ops::add(&__v_781, &__v_782)? };
+frame.store("said", __v_780.clone())?;
 } else {
 
 }
-let __v_804 = { let __callable_805 = frame.load(rt, "_read_clause")?; let mut __args_806 = CallArgs::default(); let __v_807 = frame.load(rt, "said")?; __args_806.positional.push(__v_807); rt.call(&__callable_805, __args_806)? };
-let __unpack_808 = pyrt::containers::unpack(rt, &__v_804.clone(), 2, 0, false)?; frame.store("taste", __unpack_808[0].clone())?; frame.store("end", __unpack_808[1].clone())?;
-let __v_809 = { let __v_810 = frame.load(rt, "taste")?; Value::Bool(!__v_810.is_truthy()) }; if __v_809.is_truthy() {
+let __v_783 = { let __callable_784 = frame.load(rt, "_read_clause")?; let mut __args_785 = CallArgs::default(); let __v_786 = frame.load(rt, "said")?; __args_785.positional.push(__v_786); rt.call(&__callable_784, __args_785)? };
+let __unpack_787 = pyrt::containers::unpack(rt, &__v_783.clone(), 2, 0, false)?; frame.store("taste", __unpack_787[0].clone())?; frame.store("end", __unpack_787[1].clone())?;
+let __v_788 = { let __v_789 = frame.load(rt, "taste")?; Value::Bool(!__v_789.is_truthy()) }; if __v_788.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-let __v_811 = { let __v_812 = { let __v_813 = frame.load(rt, "bare")?; Value::Bool(!__v_813.is_truthy()) }; if __v_812.is_truthy() { { let __v_814 = frame.load(rt, "said")?; let __v_816 = frame.load(rt, "end")?; let __index_817 = if matches!(__v_816, Value::None) { None } else { let n = __v_816.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_814, __index_817, None, 1_i64)? } } else { { let __v_818 = frame.load(rt, "said")?; let __v_820 = frame.load(rt, "end")?; let __index_821 = if matches!(__v_820, Value::None) { None } else { let n = __v_820.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_818, __index_821, None, 1_i64)? } } };
-frame.store("left", __v_811.clone())?;
-let __v_822 = { let __v_823 = { let __callable_825 = frame.load(rt, "set")?; let mut __args_826 = CallArgs::default(); let __v_827 = { let __callable_828 = { let __v_830 = frame.load(rt, "re")?; rt.getattr(&__v_830, "findall")? }; let mut __args_829 = CallArgs::default(); let __v_831 = Value::from("[a-z']+"); __args_829.positional.push(__v_831); let __v_832 = { let __callable_833 = { let __v_835 = frame.load(rt, "left")?; rt.getattr(&__v_835, "lower")? }; let mut __args_834 = CallArgs::default(); rt.call(&__callable_833, __args_834)? }; __args_829.positional.push(__v_832); rt.call(&__callable_828, __args_829)? }; __args_826.positional.push(__v_827); rt.call(&__callable_825, __args_826)? }; let __v_824 = frame.load(rt, "TAIL")?; pyrt::ops::sub_rt(rt, &__v_823, &__v_824)? }; if __v_822.is_truthy() {
+let __v_790 = { let __v_791 = { let __v_792 = frame.load(rt, "bare")?; Value::Bool(!__v_792.is_truthy()) }; if __v_791.is_truthy() { { let __v_793 = frame.load(rt, "said")?; let __v_795 = frame.load(rt, "end")?; let __index_796 = if matches!(__v_795, Value::None) { None } else { let n = __v_795.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_793, __index_796, None, 1_i64)? } } else { { let __v_797 = frame.load(rt, "said")?; let __v_799 = frame.load(rt, "end")?; let __index_800 = if matches!(__v_799, Value::None) { None } else { let n = __v_799.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_797, __index_800, None, 1_i64)? } } };
+frame.store("left", __v_790.clone())?;
+let __v_801 = { let __v_802 = { let __callable_804 = frame.load(rt, "set")?; let mut __args_805 = CallArgs::default(); let __v_806 = { let __callable_807 = { let __v_809 = frame.load(rt, "re")?; rt.getattr(&__v_809, "findall")? }; let mut __args_808 = CallArgs::default(); let __v_810 = Value::from("[a-z']+"); __args_808.positional.push(__v_810); let __v_811 = { let __callable_812 = { let __v_814 = frame.load(rt, "left")?; rt.getattr(&__v_814, "lower")? }; let mut __args_813 = CallArgs::default(); rt.call(&__callable_812, __args_813)? }; __args_808.positional.push(__v_811); rt.call(&__callable_807, __args_808)? }; __args_805.positional.push(__v_806); rt.call(&__callable_804, __args_805)? }; let __v_803 = frame.load(rt, "TAIL")?; pyrt::ops::sub_rt(rt, &__v_802, &__v_803)? }; if __v_801.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-let __v_836 = Value::Bool(true);
-frame.store("seen", __v_836.clone())?;
+let __v_815 = Value::Bool(true);
+frame.store("seen", __v_815.clone())?;
 Ok(__Flow::Next)
 })()?;
-match __flow_768 { __Flow::Break => { __broke_767 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
+match __flow_747 { __Flow::Break => { __broke_746 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
 }
-if !__broke_767 {
+if !__broke_746 {
 
 }
 return Ok(__Flow::Return(frame.load(rt, "seen")?));
@@ -447,17 +447,17 @@ mod __py_7 { use super::*;
 // py: bot/memory/taste.py:342-347 said_about
 pub(super) fn said_about(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["before","position","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taste.py", 342, 347, "said_about");
+rt.trace_call_code("bot/memory/taste.py", 342, 347, "said_about", 9);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_837 = { let __v_838 = frame.load(rt, "text")?; let __v_840 = { let __callable_842 = frame.load(rt, "max")?; let mut __args_843 = CallArgs::default(); let __v_844 = Value::Int("0".parse().expect("integer literal")); __args_843.positional.push(__v_844); let __v_845 = { let __v_846 = frame.load(rt, "position")?; let __v_847 = Value::Int("30".parse().expect("integer literal")); pyrt::ops::sub_rt(rt, &__v_846, &__v_847)? }; __args_843.positional.push(__v_845); rt.call(&__callable_842, __args_843)? }; let __index_841 = if matches!(__v_840, Value::None) { None } else { let n = __v_840.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; let __v_848 = frame.load(rt, "position")?; let __index_849 = if matches!(__v_848, Value::None) { None } else { let n = __v_848.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_838, __index_841, __index_849, 1_i64)? };
-frame.store("before", __v_837.clone())?;
-let __v_850 = { let __v_851 = { let __callable_852 = { let __v_854 = frame.load(rt, "LIKING_BEFORE")?; rt.getattr(&__v_854, "search")? }; let mut __args_853 = CallArgs::default(); let __v_855 = frame.load(rt, "before")?; __args_853.positional.push(__v_855); rt.call(&__callable_852, __args_853)? }; Value::Bool(!__v_851.is_truthy()) }; if __v_850.is_truthy() {
+let __v_816 = { let __v_817 = frame.load(rt, "text")?; let __v_819 = { let __callable_821 = frame.load(rt, "max")?; let mut __args_822 = CallArgs::default(); let __v_823 = Value::Int("0".parse().expect("integer literal")); __args_822.positional.push(__v_823); let __v_824 = { let __v_825 = frame.load(rt, "position")?; let __v_826 = Value::Int("30".parse().expect("integer literal")); pyrt::ops::sub_rt(rt, &__v_825, &__v_826)? }; __args_822.positional.push(__v_824); rt.call(&__callable_821, __args_822)? }; let __index_820 = if matches!(__v_819, Value::None) { None } else { let n = __v_819.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; let __v_827 = frame.load(rt, "position")?; let __index_828 = if matches!(__v_827, Value::None) { None } else { let n = __v_827.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_817, __index_820, __index_828, 1_i64)? };
+frame.store("before", __v_816.clone())?;
+let __v_829 = { let __v_830 = { let __callable_831 = { let __v_833 = frame.load(rt, "LIKING_BEFORE")?; rt.getattr(&__v_833, "search")? }; let mut __args_832 = CallArgs::default(); let __v_834 = frame.load(rt, "before")?; __args_832.positional.push(__v_834); rt.call(&__callable_831, __args_832)? }; Value::Bool(!__v_830.is_truthy()) }; if __v_829.is_truthy() {
 return Ok(__Flow::Return(Value::Bool(false)));
 } else {
 
 }
-return Ok(__Flow::Return({ let __v_856 = { let __callable_857 = { let __v_859 = frame.load(rt, "OWNED_BEFORE")?; rt.getattr(&__v_859, "search")? }; let mut __args_858 = CallArgs::default(); let __v_860 = { let __v_861 = frame.load(rt, "text")?; let __v_863 = { let __callable_865 = frame.load(rt, "max")?; let mut __args_866 = CallArgs::default(); let __v_867 = Value::Int("0".parse().expect("integer literal")); __args_866.positional.push(__v_867); let __v_868 = { let __v_869 = frame.load(rt, "position")?; let __v_870 = Value::Int("12".parse().expect("integer literal")); pyrt::ops::sub_rt(rt, &__v_869, &__v_870)? }; __args_866.positional.push(__v_868); rt.call(&__callable_865, __args_866)? }; let __index_864 = if matches!(__v_863, Value::None) { None } else { let n = __v_863.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; let __v_871 = frame.load(rt, "position")?; let __index_872 = if matches!(__v_871, Value::None) { None } else { let n = __v_871.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_861, __index_864, __index_872, 1_i64)? }; __args_858.positional.push(__v_860); rt.call(&__callable_857, __args_858)? }; Value::Bool(!__v_856.is_truthy()) }));
+return Ok(__Flow::Return({ let __v_835 = { let __callable_836 = { let __v_838 = frame.load(rt, "OWNED_BEFORE")?; rt.getattr(&__v_838, "search")? }; let mut __args_837 = CallArgs::default(); let __v_839 = { let __v_840 = frame.load(rt, "text")?; let __v_842 = { let __callable_844 = frame.load(rt, "max")?; let mut __args_845 = CallArgs::default(); let __v_846 = Value::Int("0".parse().expect("integer literal")); __args_845.positional.push(__v_846); let __v_847 = { let __v_848 = frame.load(rt, "position")?; let __v_849 = Value::Int("12".parse().expect("integer literal")); pyrt::ops::sub_rt(rt, &__v_848, &__v_849)? }; __args_845.positional.push(__v_847); rt.call(&__callable_844, __args_845)? }; let __index_843 = if matches!(__v_842, Value::None) { None } else { let n = __v_842.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; let __v_850 = frame.load(rt, "position")?; let __index_851 = if matches!(__v_850, Value::None) { None } else { let n = __v_850.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_840, __index_843, __index_851, 1_i64)? }; __args_837.positional.push(__v_839); rt.call(&__callable_836, __args_837)? }; Value::Bool(!__v_835.is_truthy()) }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -469,10 +469,10 @@ mod __py_8 { use super::*;
 // py: bot/memory/taste.py:371-373 asks_about_a_taste
 pub(super) fn asks_about_a_taste(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taste.py", 371, 373, "asks_about_a_taste");
+rt.trace_call_code("bot/memory/taste.py", 371, 373, "asks_about_a_taste", 10);
 let flow = (|| -> PyResult<__Flow> {
 
-return Ok(__Flow::Return({ let __callable_873 = frame.load(rt, "bool")?; let mut __args_874 = CallArgs::default(); let __v_875 = { let __callable_876 = { let __v_878 = frame.load(rt, "ASKS_ABOUT_A_TASTE")?; rt.getattr(&__v_878, "search")? }; let mut __args_877 = CallArgs::default(); let __v_879 = { let __callable_880 = frame.load(rt, "str")?; let mut __args_881 = CallArgs::default(); let __v_882 = { let mut __v_883 = frame.load(rt, "line")?; if !__v_883.is_truthy() { __v_883 = Value::from(""); } __v_883 }; __args_881.positional.push(__v_882); rt.call(&__callable_880, __args_881)? }; __args_877.positional.push(__v_879); rt.call(&__callable_876, __args_877)? }; __args_874.positional.push(__v_875); rt.call(&__callable_873, __args_874)? }));
+return Ok(__Flow::Return({ let __callable_852 = frame.load(rt, "bool")?; let mut __args_853 = CallArgs::default(); let __v_854 = { let __callable_855 = { let __v_857 = frame.load(rt, "ASKS_ABOUT_A_TASTE")?; rt.getattr(&__v_857, "search")? }; let mut __args_856 = CallArgs::default(); let __v_858 = { let __callable_859 = frame.load(rt, "str")?; let mut __args_860 = CallArgs::default(); let __v_861 = { let mut __v_862 = frame.load(rt, "line")?; if !__v_862.is_truthy() { __v_862 = Value::from(""); } __v_862 }; __args_860.positional.push(__v_861); rt.call(&__callable_859, __args_860)? }; __args_856.positional.push(__v_858); rt.call(&__callable_855, __args_856)? }; __args_853.positional.push(__v_854); rt.call(&__callable_852, __args_853)? }));
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None), _ => Err(PyExc::runtime_error("invalid loop control outside a loop")) }
@@ -484,64 +484,64 @@ mod __py_9 { use super::*;
 // py: bot/memory/taste.py:442-476 read_other
 pub(super) fn read_other(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","found","line","match","person","said","tasted","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taste.py", 442, 476, "read_other");
+rt.trace_call_code("bot/memory/taste.py", 442, 476, "read_other", 12);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_884 = { let __callable_885 = { let __v_887 = Value::from(" "); rt.getattr(&__v_887, "join")? }; let mut __args_886 = CallArgs::default(); let __v_888 = { let __callable_889 = { let __v_891 = { let __callable_892 = frame.load(rt, "str")?; let mut __args_893 = CallArgs::default(); let __v_894 = { let mut __v_895 = frame.load(rt, "line")?; if !__v_895.is_truthy() { __v_895 = Value::from(""); } __v_895 }; __args_893.positional.push(__v_894); rt.call(&__callable_892, __args_893)? }; rt.getattr(&__v_891, "split")? }; let mut __args_890 = CallArgs::default(); rt.call(&__callable_889, __args_890)? }; __args_886.positional.push(__v_888); rt.call(&__callable_885, __args_886)? };
-frame.store("text", __v_884.clone())?;
-let __v_896 = { let mut __v_897 = { let __v_898 = frame.load(rt, "text")?; Value::Bool(!__v_898.is_truthy()) }; if !__v_897.is_truthy() { __v_897 = { let __callable_899 = { let __v_901 = frame.load(rt, "text")?; rt.getattr(&__v_901, "endswith")? }; let mut __args_900 = CallArgs::default(); let __v_902 = Value::from("?"); __args_900.positional.push(__v_902); rt.call(&__callable_899, __args_900)? }; } __v_897 }; if __v_896.is_truthy() {
-return Ok(__Flow::Return({ let mut __items_903 = Vec::new(); Value::list(__items_903) }));
+let __v_863 = { let __callable_864 = { let __v_866 = Value::from(" "); rt.getattr(&__v_866, "join")? }; let mut __args_865 = CallArgs::default(); let __v_867 = { let __callable_868 = { let __v_870 = { let __callable_871 = frame.load(rt, "str")?; let mut __args_872 = CallArgs::default(); let __v_873 = { let mut __v_874 = frame.load(rt, "line")?; if !__v_874.is_truthy() { __v_874 = Value::from(""); } __v_874 }; __args_872.positional.push(__v_873); rt.call(&__callable_871, __args_872)? }; rt.getattr(&__v_870, "split")? }; let mut __args_869 = CallArgs::default(); rt.call(&__callable_868, __args_869)? }; __args_865.positional.push(__v_867); rt.call(&__callable_864, __args_865)? };
+frame.store("text", __v_863.clone())?;
+let __v_875 = { let mut __v_876 = { let __v_877 = frame.load(rt, "text")?; Value::Bool(!__v_877.is_truthy()) }; if !__v_876.is_truthy() { __v_876 = { let __callable_878 = { let __v_880 = frame.load(rt, "text")?; rt.getattr(&__v_880, "endswith")? }; let mut __args_879 = CallArgs::default(); let __v_881 = Value::from("?"); __args_879.positional.push(__v_881); rt.call(&__callable_878, __args_879)? }; } __v_876 }; if __v_875.is_truthy() {
+return Ok(__Flow::Return({ let mut __items_882 = Vec::new(); Value::list(__items_882) }));
 } else {
 
 }
-let __v_904 = { let mut __items_905 = Vec::new(); Value::list(__items_905) };
-frame.store("found", __v_904.clone())?;
-let __v_906 = Value::None;
-frame.store("person", __v_906.clone())?;
-let mut __broke_907 = false; let __v_909 = { let __callable_912 = { let __v_914 = frame.load(rt, "_OTHER_CLAUSE")?; rt.getattr(&__v_914, "split")? }; let mut __args_913 = CallArgs::default(); let __v_915 = frame.load(rt, "text")?; __args_913.positional.push(__v_915); rt.call(&__callable_912, __args_913)? }; let __iter_910 = rt.iter(&__v_909)?;
-while let Some(__v_911) = rt.next(&__iter_910)? { frame.store("clause", __v_911)?;
-let __flow_908 = (|| -> PyResult<__Flow> {
-let __v_916 = { let __callable_917 = { let __v_919 = frame.load(rt, "clause")?; rt.getattr(&__v_919, "strip")? }; let mut __args_918 = CallArgs::default(); rt.call(&__callable_917, __args_918)? };
-frame.store("clause", __v_916.clone())?;
-let __v_920 = { let __v_921 = frame.load(rt, "clause")?; Value::Bool(!__v_921.is_truthy()) }; if __v_920.is_truthy() {
+let __v_883 = { let mut __items_884 = Vec::new(); Value::list(__items_884) };
+frame.store("found", __v_883.clone())?;
+let __v_885 = Value::None;
+frame.store("person", __v_885.clone())?;
+let mut __broke_886 = false; let __v_888 = { let __callable_891 = { let __v_893 = frame.load(rt, "_OTHER_CLAUSE")?; rt.getattr(&__v_893, "split")? }; let mut __args_892 = CallArgs::default(); let __v_894 = frame.load(rt, "text")?; __args_892.positional.push(__v_894); rt.call(&__callable_891, __args_892)? }; let __iter_889 = rt.iter(&__v_888)?;
+while let Some(__v_890) = rt.next(&__iter_889)? { frame.store("clause", __v_890)?;
+let __flow_887 = (|| -> PyResult<__Flow> {
+let __v_895 = { let __callable_896 = { let __v_898 = frame.load(rt, "clause")?; rt.getattr(&__v_898, "strip")? }; let mut __args_897 = CallArgs::default(); rt.call(&__callable_896, __args_897)? };
+frame.store("clause", __v_895.clone())?;
+let __v_899 = { let __v_900 = frame.load(rt, "clause")?; Value::Bool(!__v_900.is_truthy()) }; if __v_899.is_truthy() {
 return Ok(__Flow::Continue);
 } else {
 
 }
-let __v_922 = { let __callable_923 = { let __v_925 = frame.load(rt, "_OTHER_OWNER")?; rt.getattr(&__v_925, "match")? }; let mut __args_924 = CallArgs::default(); let __v_926 = frame.load(rt, "clause")?; __args_924.positional.push(__v_926); rt.call(&__callable_923, __args_924)? };
-frame.store("match", __v_922.clone())?;
-let __v_927 = frame.load(rt, "match")?; if __v_927.is_truthy() {
-let __v_928 = { let __v_929 = { let __callable_930 = { let __v_932 = frame.load(rt, "match")?; rt.getattr(&__v_932, "group")? }; let mut __args_931 = CallArgs::default(); let __v_933 = Value::from("who"); __args_931.positional.push(__v_933); rt.call(&__callable_930, __args_931)? }; if __v_929.is_truthy() { { let __dict_934 = Value::dict(); let __v_935 = Value::from("who"); let __v_936 = { let __callable_937 = { let __v_939 = { let __callable_940 = { let __v_942 = frame.load(rt, "match")?; rt.getattr(&__v_942, "group")? }; let mut __args_941 = CallArgs::default(); let __v_943 = Value::from("who"); __args_941.positional.push(__v_943); rt.call(&__callable_940, __args_941)? }; rt.getattr(&__v_939, "lower")? }; let mut __args_938 = CallArgs::default(); rt.call(&__callable_937, __args_938)? }; __dict_934.dict_set(__v_935, __v_936)?; __dict_934 } } else { { let __dict_944 = Value::dict(); let __v_945 = Value::from("pronoun"); let __v_946 = { let __callable_947 = { let __v_949 = { let __callable_950 = { let __v_952 = frame.load(rt, "match")?; rt.getattr(&__v_952, "group")? }; let mut __args_951 = CallArgs::default(); let __v_953 = Value::from("pronoun"); __args_951.positional.push(__v_953); rt.call(&__callable_950, __args_951)? }; rt.getattr(&__v_949, "lower")? }; let mut __args_948 = CallArgs::default(); rt.call(&__callable_947, __args_948)? }; __dict_944.dict_set(__v_945, __v_946)?; __dict_944 } } };
-frame.store("person", __v_928.clone())?;
-let __v_954 = { let __callable_955 = { let __v_957 = frame.load(rt, "match")?; rt.getattr(&__v_957, "group")? }; let mut __args_956 = CallArgs::default(); let __v_958 = Value::from("rest"); __args_956.positional.push(__v_958); rt.call(&__callable_955, __args_956)? };
-frame.store("clause", __v_954.clone())?;
+let __v_901 = { let __callable_902 = { let __v_904 = frame.load(rt, "_OTHER_OWNER")?; rt.getattr(&__v_904, "match")? }; let mut __args_903 = CallArgs::default(); let __v_905 = frame.load(rt, "clause")?; __args_903.positional.push(__v_905); rt.call(&__callable_902, __args_903)? };
+frame.store("match", __v_901.clone())?;
+let __v_906 = frame.load(rt, "match")?; if __v_906.is_truthy() {
+let __v_907 = { let __v_908 = { let __callable_909 = { let __v_911 = frame.load(rt, "match")?; rt.getattr(&__v_911, "group")? }; let mut __args_910 = CallArgs::default(); let __v_912 = Value::from("who"); __args_910.positional.push(__v_912); rt.call(&__callable_909, __args_910)? }; if __v_908.is_truthy() { { let __dict_913 = Value::dict(); let __v_914 = Value::from("who"); let __v_915 = { let __callable_916 = { let __v_918 = { let __callable_919 = { let __v_921 = frame.load(rt, "match")?; rt.getattr(&__v_921, "group")? }; let mut __args_920 = CallArgs::default(); let __v_922 = Value::from("who"); __args_920.positional.push(__v_922); rt.call(&__callable_919, __args_920)? }; rt.getattr(&__v_918, "lower")? }; let mut __args_917 = CallArgs::default(); rt.call(&__callable_916, __args_917)? }; __dict_913.dict_set(__v_914, __v_915)?; __dict_913 } } else { { let __dict_923 = Value::dict(); let __v_924 = Value::from("pronoun"); let __v_925 = { let __callable_926 = { let __v_928 = { let __callable_929 = { let __v_931 = frame.load(rt, "match")?; rt.getattr(&__v_931, "group")? }; let mut __args_930 = CallArgs::default(); let __v_932 = Value::from("pronoun"); __args_930.positional.push(__v_932); rt.call(&__callable_929, __args_930)? }; rt.getattr(&__v_928, "lower")? }; let mut __args_927 = CallArgs::default(); rt.call(&__callable_926, __args_927)? }; __dict_923.dict_set(__v_924, __v_925)?; __dict_923 } } };
+frame.store("person", __v_907.clone())?;
+let __v_933 = { let __callable_934 = { let __v_936 = frame.load(rt, "match")?; rt.getattr(&__v_936, "group")? }; let mut __args_935 = CallArgs::default(); let __v_937 = Value::from("rest"); __args_935.positional.push(__v_937); rt.call(&__callable_934, __args_935)? };
+frame.store("clause", __v_933.clone())?;
 } else {
 
 }
-let __v_959 = { let mut __v_960 = frame.load(rt, "person")?; let mut __matched_961 = true; if __matched_961 { let __v_962 = Value::None; __matched_961 = __v_960.is_identical(&__v_962); } Value::Bool(__matched_961) }; if __v_959.is_truthy() {
+let __v_938 = { let mut __v_939 = frame.load(rt, "person")?; let mut __matched_940 = true; if __matched_940 { let __v_941 = Value::None; __matched_940 = __v_939.is_identical(&__v_941); } Value::Bool(__matched_940) }; if __v_938.is_truthy() {
 return Ok(__Flow::Continue);
 } else {
 
 }
-let __v_963 = { let __callable_964 = { let __v_966 = frame.load(rt, "_OTHER_TASTE")?; rt.getattr(&__v_966, "match")? }; let mut __args_965 = CallArgs::default(); let __v_967 = frame.load(rt, "clause")?; __args_965.positional.push(__v_967); rt.call(&__callable_964, __args_965)? };
-frame.store("said", __v_963.clone())?;
-let __v_968 = { let __v_969 = frame.load(rt, "said")?; Value::Bool(!__v_969.is_truthy()) }; if __v_968.is_truthy() {
+let __v_942 = { let __callable_943 = { let __v_945 = frame.load(rt, "_OTHER_TASTE")?; rt.getattr(&__v_945, "match")? }; let mut __args_944 = CallArgs::default(); let __v_946 = frame.load(rt, "clause")?; __args_944.positional.push(__v_946); rt.call(&__callable_943, __args_944)? };
+frame.store("said", __v_942.clone())?;
+let __v_947 = { let __v_948 = frame.load(rt, "said")?; Value::Bool(!__v_948.is_truthy()) }; if __v_947.is_truthy() {
 return Ok(__Flow::Continue);
 } else {
 
 }
-let __v_970 = { let __callable_971 = frame.load(rt, "_their_taste_in")?; let mut __args_972 = CallArgs::default(); let __v_973 = frame.load(rt, "clause")?; __args_972.positional.push(__v_973); let __v_974 = frame.load(rt, "said")?; __args_972.positional.push(__v_974); rt.call(&__callable_971, __args_972)? };
-frame.store("tasted", __v_970.clone())?;
-let __v_975 = frame.load(rt, "tasted")?; if __v_975.is_truthy() {
-let _ = { let __callable_976 = { let __v_978 = frame.load(rt, "found")?; rt.getattr(&__v_978, "append")? }; let mut __args_977 = CallArgs::default(); let __v_979 = { let __dict_980 = Value::dict(); let __v_982 = frame.load(rt, "tasted")?; if !matches!(__v_982, Value::Dict(_)) { return Err(PyExc::type_error("object is not a mapping")); } pyrt::containers::call_method(&__dict_980, "update", &[__v_982])?; let __v_984 = frame.load(rt, "person")?; if !matches!(__v_984, Value::Dict(_)) { return Err(PyExc::type_error("object is not a mapping")); } pyrt::containers::call_method(&__dict_980, "update", &[__v_984])?; __dict_980 }; __args_977.positional.push(__v_979); rt.call(&__callable_976, __args_977)? };
+let __v_949 = { let __callable_950 = frame.load(rt, "_their_taste_in")?; let mut __args_951 = CallArgs::default(); let __v_952 = frame.load(rt, "clause")?; __args_951.positional.push(__v_952); let __v_953 = frame.load(rt, "said")?; __args_951.positional.push(__v_953); rt.call(&__callable_950, __args_951)? };
+frame.store("tasted", __v_949.clone())?;
+let __v_954 = frame.load(rt, "tasted")?; if __v_954.is_truthy() {
+let _ = { let __callable_955 = { let __v_957 = frame.load(rt, "found")?; rt.getattr(&__v_957, "append")? }; let mut __args_956 = CallArgs::default(); let __v_958 = { let __dict_959 = Value::dict(); let __v_961 = frame.load(rt, "tasted")?; if !matches!(__v_961, Value::Dict(_)) { return Err(PyExc::type_error("object is not a mapping")); } pyrt::containers::call_method(&__dict_959, "update", &[__v_961])?; let __v_963 = frame.load(rt, "person")?; if !matches!(__v_963, Value::Dict(_)) { return Err(PyExc::type_error("object is not a mapping")); } pyrt::containers::call_method(&__dict_959, "update", &[__v_963])?; __dict_959 }; __args_956.positional.push(__v_958); rt.call(&__callable_955, __args_956)? };
 } else {
 
 }
 Ok(__Flow::Next)
 })()?;
-match __flow_908 { __Flow::Break => { __broke_907 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
+match __flow_887 { __Flow::Break => { __broke_886 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
 }
-if !__broke_907 {
+if !__broke_886 {
 
 }
 return Ok(__Flow::Return(frame.load(rt, "found")?));
@@ -556,52 +556,52 @@ mod __py_10 { use super::*;
 // py: bot/memory/taste.py:479-509 _their_taste_in
 pub(super) fn _their_taste_in(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["as_own","clause","end","left","pattern","rest","rewritten","said","taste","tasted","thing","verb","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/taste.py", 479, 509, "_their_taste_in");
+rt.trace_call_code("bot/memory/taste.py", 479, 509, "_their_taste_in", 13);
 let flow = (|| -> PyResult<__Flow> {
 
-let __v_985 = { let __callable_986 = { let __v_988 = { let __callable_989 = { let __v_991 = frame.load(rt, "said")?; rt.getattr(&__v_991, "group")? }; let mut __args_990 = CallArgs::default(); let __v_992 = Value::Int("0".parse().expect("integer literal")); __args_990.positional.push(__v_992); rt.call(&__callable_989, __args_990)? }; rt.getattr(&__v_988, "strip")? }; let mut __args_987 = CallArgs::default(); rt.call(&__callable_986, __args_987)? };
-frame.store("verb", __v_985.clone())?;
-let __v_993 = { let __callable_994 = { let __v_996 = { let __v_997 = frame.load(rt, "rest")?; let __v_999 = { let __callable_1001 = { let __v_1003 = frame.load(rt, "said")?; rt.getattr(&__v_1003, "end")? }; let mut __args_1002 = CallArgs::default(); rt.call(&__callable_1001, __args_1002)? }; let __index_1000 = if matches!(__v_999, Value::None) { None } else { let n = __v_999.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_997, __index_1000, None, 1_i64)? }; rt.getattr(&__v_996, "strip")? }; let mut __args_995 = CallArgs::default(); rt.call(&__callable_994, __args_995)? };
-frame.store("thing", __v_993.clone())?;
-let __v_1004 = Value::from("love");
-frame.store("as_own", __v_1004.clone())?;
-let mut __broke_1005 = false; let __v_1007 = frame.load(rt, "_OTHER_SAYS")?; let __iter_1008 = rt.iter(&__v_1007)?;
-while let Some(__v_1009) = rt.next(&__iter_1008)? { let __unpack_1010 = pyrt::containers::unpack(rt, &__v_1009, 2, 0, false)?; frame.store("pattern", __unpack_1010[0].clone())?; frame.store("rewritten", __unpack_1010[1].clone())?;
-let __flow_1006 = (|| -> PyResult<__Flow> {
-let __v_1011 = { let __callable_1012 = { let __v_1014 = frame.load(rt, "re")?; rt.getattr(&__v_1014, "fullmatch")? }; let mut __args_1013 = CallArgs::default(); let __v_1015 = frame.load(rt, "pattern")?; __args_1013.positional.push(__v_1015); let __v_1016 = frame.load(rt, "verb")?; __args_1013.positional.push(__v_1016); let __v_1017 = { let __v_1018 = frame.load(rt, "re")?; rt.getattr(&__v_1018, "I")? }; __args_1013.positional.push(__v_1017); rt.call(&__callable_1012, __args_1013)? }; if __v_1011.is_truthy() {
-let __v_1019 = frame.load(rt, "rewritten")?;
-frame.store("as_own", __v_1019.clone())?;
+let __v_964 = { let __callable_965 = { let __v_967 = { let __callable_968 = { let __v_970 = frame.load(rt, "said")?; rt.getattr(&__v_970, "group")? }; let mut __args_969 = CallArgs::default(); let __v_971 = Value::Int("0".parse().expect("integer literal")); __args_969.positional.push(__v_971); rt.call(&__callable_968, __args_969)? }; rt.getattr(&__v_967, "strip")? }; let mut __args_966 = CallArgs::default(); rt.call(&__callable_965, __args_966)? };
+frame.store("verb", __v_964.clone())?;
+let __v_972 = { let __callable_973 = { let __v_975 = { let __v_976 = frame.load(rt, "rest")?; let __v_978 = { let __callable_980 = { let __v_982 = frame.load(rt, "said")?; rt.getattr(&__v_982, "end")? }; let mut __args_981 = CallArgs::default(); rt.call(&__callable_980, __args_981)? }; let __index_979 = if matches!(__v_978, Value::None) { None } else { let n = __v_978.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_976, __index_979, None, 1_i64)? }; rt.getattr(&__v_975, "strip")? }; let mut __args_974 = CallArgs::default(); rt.call(&__callable_973, __args_974)? };
+frame.store("thing", __v_972.clone())?;
+let __v_983 = Value::from("love");
+frame.store("as_own", __v_983.clone())?;
+let mut __broke_984 = false; let __v_986 = frame.load(rt, "_OTHER_SAYS")?; let __iter_987 = rt.iter(&__v_986)?;
+while let Some(__v_988) = rt.next(&__iter_987)? { let __unpack_989 = pyrt::containers::unpack(rt, &__v_988, 2, 0, false)?; frame.store("pattern", __unpack_989[0].clone())?; frame.store("rewritten", __unpack_989[1].clone())?;
+let __flow_985 = (|| -> PyResult<__Flow> {
+let __v_990 = { let __callable_991 = { let __v_993 = frame.load(rt, "re")?; rt.getattr(&__v_993, "fullmatch")? }; let mut __args_992 = CallArgs::default(); let __v_994 = frame.load(rt, "pattern")?; __args_992.positional.push(__v_994); let __v_995 = frame.load(rt, "verb")?; __args_992.positional.push(__v_995); let __v_996 = { let __v_997 = frame.load(rt, "re")?; rt.getattr(&__v_997, "I")? }; __args_992.positional.push(__v_996); rt.call(&__callable_991, __args_992)? }; if __v_990.is_truthy() {
+let __v_998 = frame.load(rt, "rewritten")?;
+frame.store("as_own", __v_998.clone())?;
 return Ok(__Flow::Break);
 } else {
 
 }
 Ok(__Flow::Next)
 })()?;
-match __flow_1006 { __Flow::Break => { __broke_1005 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
+match __flow_985 { __Flow::Break => { __broke_984 = true; break; }, __Flow::Next | __Flow::Continue => {}, other => return Ok(other) }
 }
-if !__broke_1005 {
+if !__broke_984 {
 
 }
-let __v_1020 = { let __v_1021 = frame.load(rt, "thing")?; Value::Bool(!__v_1021.is_truthy()) }; if __v_1020.is_truthy() {
+let __v_999 = { let __v_1000 = frame.load(rt, "thing")?; Value::Bool(!__v_1000.is_truthy()) }; if __v_999.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_1022 = { let __v_1023 = { let __v_1025 = { let __v_1027 = Value::from("i "); let __v_1028 = frame.load(rt, "as_own")?; pyrt::ops::add(&__v_1027, &__v_1028)? }; let __v_1026 = Value::from(" "); pyrt::ops::add(&__v_1025, &__v_1026)? }; let __v_1024 = frame.load(rt, "thing")?; pyrt::ops::add(&__v_1023, &__v_1024)? };
-frame.store("clause", __v_1022.clone())?;
-let __v_1029 = { let __callable_1030 = frame.load(rt, "_read_clause")?; let mut __args_1031 = CallArgs::default(); let __v_1032 = frame.load(rt, "clause")?; __args_1031.positional.push(__v_1032); rt.call(&__callable_1030, __args_1031)? };
-let __unpack_1033 = pyrt::containers::unpack(rt, &__v_1029.clone(), 2, 0, false)?; frame.store("taste", __unpack_1033[0].clone())?; frame.store("end", __unpack_1033[1].clone())?;
-let __v_1034 = { let __v_1035 = frame.load(rt, "taste")?; Value::Bool(!__v_1035.is_truthy()) }; if __v_1034.is_truthy() {
+let __v_1001 = { let __v_1002 = { let __v_1004 = { let __v_1006 = Value::from("i "); let __v_1007 = frame.load(rt, "as_own")?; pyrt::ops::add(&__v_1006, &__v_1007)? }; let __v_1005 = Value::from(" "); pyrt::ops::add(&__v_1004, &__v_1005)? }; let __v_1003 = frame.load(rt, "thing")?; pyrt::ops::add(&__v_1002, &__v_1003)? };
+frame.store("clause", __v_1001.clone())?;
+let __v_1008 = { let __callable_1009 = frame.load(rt, "_read_clause")?; let mut __args_1010 = CallArgs::default(); let __v_1011 = frame.load(rt, "clause")?; __args_1010.positional.push(__v_1011); rt.call(&__callable_1009, __args_1010)? };
+let __unpack_1012 = pyrt::containers::unpack(rt, &__v_1008.clone(), 2, 0, false)?; frame.store("taste", __unpack_1012[0].clone())?; frame.store("end", __unpack_1012[1].clone())?;
+let __v_1013 = { let __v_1014 = frame.load(rt, "taste")?; Value::Bool(!__v_1014.is_truthy()) }; if __v_1013.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_1036 = { let __v_1037 = frame.load(rt, "clause")?; let __v_1039 = frame.load(rt, "end")?; let __index_1040 = if matches!(__v_1039, Value::None) { None } else { let n = __v_1039.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_1037, __index_1040, None, 1_i64)? };
-frame.store("left", __v_1036.clone())?;
-let __v_1041 = { let __callable_1042 = frame.load(rt, "set")?; let mut __args_1043 = CallArgs::default(); let __v_1044 = { let __callable_1045 = { let __v_1047 = frame.load(rt, "re")?; rt.getattr(&__v_1047, "findall")? }; let mut __args_1046 = CallArgs::default(); let __v_1048 = Value::from("[a-z']+"); __args_1046.positional.push(__v_1048); let __v_1049 = { let __callable_1050 = { let __v_1052 = frame.load(rt, "left")?; rt.getattr(&__v_1052, "lower")? }; let mut __args_1051 = CallArgs::default(); rt.call(&__callable_1050, __args_1051)? }; __args_1046.positional.push(__v_1049); rt.call(&__callable_1045, __args_1046)? }; __args_1043.positional.push(__v_1044); rt.call(&__callable_1042, __args_1043)? };
-frame.store("words", __v_1041.clone())?;
-let __v_1053 = { let __v_1054 = frame.load(rt, "words")?; let __v_1055 = frame.load(rt, "TAIL")?; pyrt::ops::sub_rt(rt, &__v_1054, &__v_1055)? }; if __v_1053.is_truthy() {
-let __v_1056 = { let mut __v_1057 = { let __v_1058 = { let __callable_1059 = { let __v_1061 = frame.load(rt, "_A_CLAUSE_AFTER")?; rt.getattr(&__v_1061, "match")? }; let mut __args_1060 = CallArgs::default(); let __v_1062 = frame.load(rt, "left")?; __args_1060.positional.push(__v_1062); rt.call(&__callable_1059, __args_1060)? }; Value::Bool(!__v_1058.is_truthy()) }; if !__v_1057.is_truthy() { __v_1057 = { let __callable_1063 = { let __v_1065 = frame.load(rt, "_ASKS_SOMETHING")?; rt.getattr(&__v_1065, "search")? }; let mut __args_1064 = CallArgs::default(); let __v_1066 = frame.load(rt, "left")?; __args_1064.positional.push(__v_1066); rt.call(&__callable_1063, __args_1064)? }; } __v_1057 }; if __v_1056.is_truthy() {
+let __v_1015 = { let __v_1016 = frame.load(rt, "clause")?; let __v_1018 = frame.load(rt, "end")?; let __index_1019 = if matches!(__v_1018, Value::None) { None } else { let n = __v_1018.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_1016, __index_1019, None, 1_i64)? };
+frame.store("left", __v_1015.clone())?;
+let __v_1020 = { let __callable_1021 = frame.load(rt, "set")?; let mut __args_1022 = CallArgs::default(); let __v_1023 = { let __callable_1024 = { let __v_1026 = frame.load(rt, "re")?; rt.getattr(&__v_1026, "findall")? }; let mut __args_1025 = CallArgs::default(); let __v_1027 = Value::from("[a-z']+"); __args_1025.positional.push(__v_1027); let __v_1028 = { let __callable_1029 = { let __v_1031 = frame.load(rt, "left")?; rt.getattr(&__v_1031, "lower")? }; let mut __args_1030 = CallArgs::default(); rt.call(&__callable_1029, __args_1030)? }; __args_1025.positional.push(__v_1028); rt.call(&__callable_1024, __args_1025)? }; __args_1022.positional.push(__v_1023); rt.call(&__callable_1021, __args_1022)? };
+frame.store("words", __v_1020.clone())?;
+let __v_1032 = { let __v_1033 = frame.load(rt, "words")?; let __v_1034 = frame.load(rt, "TAIL")?; pyrt::ops::sub_rt(rt, &__v_1033, &__v_1034)? }; if __v_1032.is_truthy() {
+let __v_1035 = { let mut __v_1036 = { let __v_1037 = { let __callable_1038 = { let __v_1040 = frame.load(rt, "_A_CLAUSE_AFTER")?; rt.getattr(&__v_1040, "match")? }; let mut __args_1039 = CallArgs::default(); let __v_1041 = frame.load(rt, "left")?; __args_1039.positional.push(__v_1041); rt.call(&__callable_1038, __args_1039)? }; Value::Bool(!__v_1037.is_truthy()) }; if !__v_1036.is_truthy() { __v_1036 = { let __callable_1042 = { let __v_1044 = frame.load(rt, "_ASKS_SOMETHING")?; rt.getattr(&__v_1044, "search")? }; let mut __args_1043 = CallArgs::default(); let __v_1045 = frame.load(rt, "left")?; __args_1043.positional.push(__v_1045); rt.call(&__callable_1042, __args_1043)? }; } __v_1036 }; if __v_1035.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 
@@ -609,11 +609,11 @@ return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_1067 = { let __dict_1068 = Value::dict(); let __v_1069 = Value::from("thing"); let __v_1070 = { let __v_1071 = frame.load(rt, "taste")?; let __v_1072 = Value::from("thing"); pyrt::ops::getitem(&__v_1071, &__v_1072)? }; __dict_1068.dict_set(__v_1069, __v_1070)?; let __v_1073 = Value::from("how"); let __v_1074 = { let __v_1075 = frame.load(rt, "taste")?; let __v_1076 = Value::from("how"); pyrt::ops::getitem(&__v_1075, &__v_1076)? }; __dict_1068.dict_set(__v_1073, __v_1074)?; __dict_1068 };
-frame.store("tasted", __v_1067.clone())?;
-let __v_1077 = { let __callable_1078 = { let __v_1080 = frame.load(rt, "re")?; rt.getattr(&__v_1080, "search")? }; let mut __args_1079 = CallArgs::default(); let __v_1081 = Value::from("\\b(?:eat|eats|ate|drink|drinks|drank)\\b"); __args_1079.positional.push(__v_1081); let __v_1082 = frame.load(rt, "verb")?; __args_1079.positional.push(__v_1082); let __v_1083 = { let __v_1084 = frame.load(rt, "re")?; rt.getattr(&__v_1084, "I")? }; __args_1079.positional.push(__v_1083); rt.call(&__callable_1078, __args_1079)? }; if __v_1077.is_truthy() {
-let __v_1085 = Value::Bool(true);
-let __v_1086 = frame.load(rt, "tasted")?; let __v_1087 = Value::from("eaten"); pyrt::containers::setitem(&__v_1086, &__v_1087, __v_1085.clone())?;
+let __v_1046 = { let __dict_1047 = Value::dict(); let __v_1048 = Value::from("thing"); let __v_1049 = { let __v_1050 = frame.load(rt, "taste")?; let __v_1051 = Value::from("thing"); pyrt::ops::getitem(&__v_1050, &__v_1051)? }; __dict_1047.dict_set(__v_1048, __v_1049)?; let __v_1052 = Value::from("how"); let __v_1053 = { let __v_1054 = frame.load(rt, "taste")?; let __v_1055 = Value::from("how"); pyrt::ops::getitem(&__v_1054, &__v_1055)? }; __dict_1047.dict_set(__v_1052, __v_1053)?; __dict_1047 };
+frame.store("tasted", __v_1046.clone())?;
+let __v_1056 = { let __callable_1057 = { let __v_1059 = frame.load(rt, "re")?; rt.getattr(&__v_1059, "search")? }; let mut __args_1058 = CallArgs::default(); let __v_1060 = Value::from("\\b(?:eat|eats|ate|drink|drinks|drank)\\b"); __args_1058.positional.push(__v_1060); let __v_1061 = frame.load(rt, "verb")?; __args_1058.positional.push(__v_1061); let __v_1062 = { let __v_1063 = frame.load(rt, "re")?; rt.getattr(&__v_1063, "I")? }; __args_1058.positional.push(__v_1062); rt.call(&__callable_1057, __args_1058)? }; if __v_1056.is_truthy() {
+let __v_1064 = Value::Bool(true);
+let __v_1065 = frame.load(rt, "tasted")?; let __v_1066 = Value::from("eaten"); pyrt::containers::setitem(&__v_1065, &__v_1066, __v_1064.clone())?;
 } else {
 
 }

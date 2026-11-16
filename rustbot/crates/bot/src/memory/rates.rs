@@ -21,7 +21,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_the_rates",103,105),
 ("answer",305,364)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/rates.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/rates.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("How often a thing they do happens, said of themselves.\n\n    i go to the gym twice a week\n    how often was that again\n      \"You go to the gym twice a week.\"\n\nThe store kept the hours a person's day runs on (`bot/modules/memory_store.py`, `_the_times`)\nbut nothing about how often they do a thing, so a late \"how often was that again\" reached the\ndetail ask-back and asked them the question they were asking the bot (\"You haven't said - how\noften was that?\"), and \"how often do i go to the gym\" was answered from the exercise entry's\nguideline rather than from the twice they had told it. This is the same shape of fact as a time\nof day with a different unit, so it is filed the same way: against the doing they named, newest\nwinning, and read back in their own words.\n\nOnly a first-person line is filed, so \"my husband goes to the gym twice a week\" is not put on\nthem; a pronoun in the ask never names a doing (\"how often should i feed them\" after \"i water\nthem every day\" is about feeding, which nothing here holds); and a rate asked for as advice\n(\"how often should i water them\") is the knowledge base's, not this reader's.\n"))?;
@@ -87,7 +87,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/rates.py:103-105 _the_rates
 pub(super) fn _the_rates(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","memory"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/rates.py", 103, 105, "_the_rates");
+rt.trace_call_code("bot/memory/rates.py", 103, 105, "_the_rates", 2);
 let flow = (|| -> PyResult<__Flow> {
 let __v_191 = { let __callable_192 = { let __v_194 = frame.load(rt, "memory")?; rt.getattr(&__v_194, "get")? }; let mut __args_193 = CallArgs::default(); let __v_195 = Value::from("rates"); __args_193.positional.push(__v_195); rt.call(&__callable_192, __args_193)? };
 frame.store("held", __v_191.clone())?;
@@ -103,7 +103,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/rates.py:113-134 _keep_a_rate_of_a_doing
 pub(super) fn _keep_a_rate_of_a_doing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["lead","memory","rate","said","what","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/rates.py", 113, 134, "_keep_a_rate_of_a_doing");
+rt.trace_call_code("bot/memory/rates.py", 113, 134, "_keep_a_rate_of_a_doing", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_202 = { let __callable_203 = { let __v_205 = frame.load(rt, "said")?; rt.getattr(&__v_205, "split")? }; let mut __args_204 = CallArgs::default(); rt.call(&__callable_203, __args_204)? };
@@ -147,7 +147,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/rates.py:137-159 _keep_a_rate
 pub(super) fn _keep_a_rate(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","how","item","memory","own","said","turn","what"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/rates.py", 137, 159, "_keep_a_rate");
+rt.trace_call_code("bot/memory/rates.py", 137, 159, "_keep_a_rate", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_306 = { let __callable_307 = { let __v_309 = { let __callable_310 = { let __v_312 = Value::from(" "); rt.getattr(&__v_312, "join")? }; let mut __args_311 = CallArgs::default(); let __v_313 = { let __callable_314 = { let __v_316 = { let __callable_317 = frame.load(rt, "str")?; let mut __args_318 = CallArgs::default(); let __v_319 = { let mut __v_320 = frame.load(rt, "what")?; if !__v_320.is_truthy() { __v_320 = Value::from(""); } __v_320 }; __args_318.positional.push(__v_319); rt.call(&__callable_317, __args_318)? }; rt.getattr(&__v_316, "split")? }; let mut __args_315 = CallArgs::default(); rt.call(&__callable_314, __args_315)? }; __args_311.positional.push(__v_313); rt.call(&__callable_310, __args_311)? }; rt.getattr(&__v_309, "strip")? }; let mut __args_308 = CallArgs::default(); let __v_321 = Value::from(" .,!;:-"); __args_308.positional.push(__v_321); rt.call(&__callable_307, __args_308)? };
@@ -199,7 +199,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/rates.py:162-170 _the_newest_recent_rate
 pub(super) fn _the_newest_recent_rate(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["item","memory","turn","within"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/rates.py", 162, 170, "_the_newest_recent_rate");
+rt.trace_call_code("bot/memory/rates.py", 162, 170, "_the_newest_recent_rate", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_415 = { let __callable_416 = frame.load(rt, "len")?; let mut __args_417 = CallArgs::default(); let __v_418 = { let mut __v_419 = { let __callable_420 = { let __v_422 = frame.load(rt, "memory")?; rt.getattr(&__v_422, "get")? }; let mut __args_421 = CallArgs::default(); let __v_423 = Value::from("turns"); __args_421.positional.push(__v_423); rt.call(&__callable_420, __args_421)? }; if !__v_419.is_truthy() { __v_419 = { let mut __items_424 = Vec::new(); Value::list(__items_424) }; } __v_419 }; __args_417.positional.push(__v_418); rt.call(&__callable_416, __args_417)? };
@@ -236,7 +236,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/rates.py:173-208 _the_rate_put_right
 pub(super) fn _the_rate_put_right(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["count","held","item","memory","period","said","text","whole"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/rates.py", 173, 208, "_the_rate_put_right");
+rt.trace_call_code("bot/memory/rates.py", 173, 208, "_the_rate_put_right", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_462 = { let __callable_463 = { let __v_465 = Value::from(" "); rt.getattr(&__v_465, "join")? }; let mut __args_464 = CallArgs::default(); let __v_466 = { let __callable_467 = { let __v_469 = { let __callable_470 = frame.load(rt, "str")?; let mut __args_471 = CallArgs::default(); let __v_472 = { let mut __v_473 = frame.load(rt, "text")?; if !__v_473.is_truthy() { __v_473 = Value::from(""); } __v_473 }; __args_471.positional.push(__v_472); rt.call(&__callable_470, __args_471)? }; rt.getattr(&__v_469, "split")? }; let mut __args_468 = CallArgs::default(); rt.call(&__callable_467, __args_468)? }; __args_464.positional.push(__v_466); rt.call(&__callable_463, __args_464)? };
@@ -302,7 +302,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/rates.py:211-268 keep
 pub(super) fn keep(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","held","inner","item","lead","memory","mine","rate","rest","said","subject","text","theirs","turn","what","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/rates.py", 211, 268, "keep");
+rt.trace_call_code("bot/memory/rates.py", 211, 268, "keep", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_590 = { let mut __v_591 = { let __v_592 = { let __callable_593 = frame.load(rt, "isinstance")?; let mut __args_594 = CallArgs::default(); let __v_595 = frame.load(rt, "text")?; __args_594.positional.push(__v_595); let __v_596 = frame.load(rt, "str")?; __args_594.positional.push(__v_596); rt.call(&__callable_593, __args_594)? }; Value::Bool(!__v_592.is_truthy()) }; if !__v_591.is_truthy() { __v_591 = { let __v_597 = { let __callable_598 = frame.load(rt, "isinstance")?; let mut __args_599 = CallArgs::default(); let __v_600 = frame.load(rt, "memory")?; __args_599.positional.push(__v_600); let __v_601 = frame.load(rt, "dict")?; __args_599.positional.push(__v_601); rt.call(&__callable_598, __args_599)? }; Value::Bool(!__v_597.is_truthy()) }; } __v_591 }; if __v_590.is_truthy() {
@@ -352,7 +352,7 @@ let __v_686 = { let __callable_687 = { let __v_689 = frame.load(rt, "RATES_SAID"
 frame.store("inner", __v_686.clone())?;
 let __v_691 = { let __callable_692 = { let __v_694 = { let __v_695 = frame.load(rt, "inner")?; if __v_695.is_truthy() { { let __v_696 = frame.load(rt, "rest")?; let __v_698 = { let __callable_700 = { let __v_702 = frame.load(rt, "inner")?; rt.getattr(&__v_702, "start")? }; let mut __args_701 = CallArgs::default(); rt.call(&__callable_700, __args_701)? }; let __index_699 = if matches!(__v_698, Value::None) { None } else { let n = __v_698.as_int()?; Some(n.to_i64().unwrap_or(if n.is_negative() { i64::MIN } else { i64::MAX })) }; pyrt::containers::slice(&__v_696, None, __index_699, 1_i64)? } } else { Value::from("") } }; rt.getattr(&__v_694, "strip")? }; let mut __args_693 = CallArgs::default(); let __v_703 = Value::from(" .,!;:-!"); __args_693.positional.push(__v_703); rt.call(&__callable_692, __args_693)? };
 frame.store("what", __v_691.clone())?;
-let __v_704 = { let __callable_705 = { let __v_707 = Value::from(" "); rt.getattr(&__v_707, "join")? }; let mut __args_706 = CallArgs::default(); let __v_708 = { let __comp_parent_709 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_709.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_709 = __comp_parent_709.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_710 = { let __v_712 = frame.load(rt, "what")?; rt.getattr(&__v_712, "split")? }; let mut __args_711 = CallArgs::default(); rt.call(&__callable_710, __args_711)? }) }) }, assign: { let __comp_parent_709 = __comp_parent_709.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_709 = __comp_parent_709.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) }, Rc::new(|rt| { rt.trace_call("bot/memory/rates.py", 243, 243, "keep.<locals>.<genexpr>"); Ok(()) }))? }; __args_706.positional.push(__v_708); rt.call(&__callable_705, __args_706)? };
+let __v_704 = { let __callable_705 = { let __v_707 = Value::from(" "); rt.getattr(&__v_707, "join")? }; let mut __args_706 = CallArgs::default(); let __v_708 = { let __comp_parent_709 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_709.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_709 = __comp_parent_709.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_710 = { let __v_712 = frame.load(rt, "what")?; rt.getattr(&__v_712, "split")? }; let mut __args_711 = CallArgs::default(); rt.call(&__callable_710, __args_711)? }) }) }, assign: { let __comp_parent_709 = __comp_parent_709.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_709 = __comp_parent_709.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/rates.py", 243, 243, "keep.<locals>.<genexpr>", 8); Ok(()) }))? }; __args_706.positional.push(__v_708); rt.call(&__callable_705, __args_706)? };
 frame.store("what", __v_704.clone())?;
 let __v_713 = { let __comp_parent_714 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_714.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_714 = __comp_parent_714.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_715 = { let __v_717 = frame.load(rt, "re")?; rt.getattr(&__v_717, "findall")? }; let mut __args_716 = CallArgs::default(); let __v_718 = Value::from("[a-z']+"); __args_716.positional.push(__v_718); let __v_719 = frame.load(rt, "what")?; __args_716.positional.push(__v_719); rt.call(&__callable_715, __args_716)? }) }) }, assign: { let __comp_parent_714 = __comp_parent_714.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_714 = __comp_parent_714.clone(); Rc::new(move |rt, frame| {  Ok(({ let mut __v_720 = frame.load(rt, "word")?; let mut __matched_721 = true; if __matched_721 { let __v_722 = frame.load(rt, "RATES_IGNORE")?; __matched_721 = !pyrt::ops::contains(&__v_722, &__v_720)?; } Value::Bool(__matched_721) }).is_truthy()) }) }] }], { let __comp_parent_714 = __comp_parent_714.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "word")?)) })?) };
 frame.store("words", __v_713.clone())?;
@@ -425,7 +425,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/rates.py:300-302 is_a_rate_ask
 pub(super) fn is_a_rate_ask(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/rates.py", 300, 302, "is_a_rate_ask");
+rt.trace_call_code("bot/memory/rates.py", 300, 302, "is_a_rate_ask", 9);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_871 = frame.load(rt, "bool")?; let mut __args_872 = CallArgs::default(); let __v_873 = { let __callable_874 = frame.load(rt, "answer")?; let mut __args_875 = CallArgs::default(); let __v_876 = frame.load(rt, "text")?; __args_875.positional.push(__v_876); let __v_877 = frame.load(rt, "memory")?; __args_875.positional.push(__v_877); rt.call(&__callable_874, __args_875)? }; __args_872.positional.push(__v_873); rt.call(&__callable_871, __args_872)? }));
@@ -440,7 +440,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/rates.py:305-364 answer
 pub(super) fn answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["asked","held","held_item","how","item","lean_back","memory","named","rest","said","text","what","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/rates.py", 305, 364, "answer");
+rt.trace_call_code("bot/memory/rates.py", 305, 364, "answer", 10);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_878 = { let mut __v_879 = { let __v_880 = { let __callable_881 = frame.load(rt, "isinstance")?; let mut __args_882 = CallArgs::default(); let __v_883 = frame.load(rt, "text")?; __args_882.positional.push(__v_883); let __v_884 = frame.load(rt, "str")?; __args_882.positional.push(__v_884); rt.call(&__callable_881, __args_882)? }; Value::Bool(!__v_880.is_truthy()) }; if !__v_879.is_truthy() { __v_879 = { let __v_885 = { let __callable_886 = frame.load(rt, "isinstance")?; let mut __args_887 = CallArgs::default(); let __v_888 = frame.load(rt, "memory")?; __args_887.positional.push(__v_888); let __v_889 = frame.load(rt, "dict")?; __args_887.positional.push(__v_889); rt.call(&__callable_886, __args_887)? }; Value::Bool(!__v_885.is_truthy()) }; } __v_879 }; if __v_878.is_truthy() {

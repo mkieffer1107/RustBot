@@ -21,7 +21,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_the_place_the_chat_is_on",100,1
 ("reply_for",238,251)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/not_this.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/not_this.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A line that only rules a place out is not a line about that place.\n\n```\nwe want to go to italy / not rome   -> \"In Rome: the Colosseum with a timed ticket, the Pantheon...\"\nim going to spain / not portugal    -> \"Portugal: Lisbon for trams, tarts and the river...\"\n```\n\nThe person took the place back and the bot answered with the card for the place they had just\nruled out. It reads as if it had not heard them, and it is the one reply that cannot help: what\nthey want is somewhere else.\n\n`bot/compose/ruledout.py` reads the shape of a rule-out a thing arrives in - \"not a series\",\n\"not the chemical stuff\", \"its not the trap\" - and every arm of it needs a determiner or a plural,\nso a bare name slips through: \"not portugal\" and \"not rome\" name a place with no article and no\nplural, and were read as a fresh mention of it. A name is the one kind of thing that needs no\ndeterminer, so it is read here, where the store already knows which words are places\n(`bot.memory.facts.place_value`, and the towns and countries the knowledge base has a card for).\n\nThe reply says what is left standing: the other place the chat is on (\"Spain, then - no Portugal\"),\nand when nothing else is on the table it says the place is out and asks where instead. A line that\nnames a thing that is not a place is left to the readers that know about it.\n"))?;
@@ -73,7 +73,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/not_this.py:100-121 _the_place_the_chat_is_on
 pub(super) fn _the_place_the_chat_is_on(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["gone","held","memory","named","place","plan"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_this.py", 100, 121, "_the_place_the_chat_is_on");
+rt.trace_call_code("bot/memory/not_this.py", 100, 121, "_the_place_the_chat_is_on", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_170 = { let mut __items_171 = Vec::new(); Value::list(__items_171) };
@@ -134,7 +134,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/not_this.py:124-136 _the_name_in
 pub(super) fn _the_name_in(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","gone","named","said","whole","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_this.py", 124, 136, "_the_name_in");
+rt.trace_call_code("bot/memory/not_this.py", 124, 136, "_the_name_in", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_250 = { let __callable_251 = frame.load(rt, "_a_place_the_chat_knows")?; let mut __args_252 = CallArgs::default(); let __v_253 = frame.load(rt, "said")?; __args_252.positional.push(__v_253); rt.call(&__callable_251, __args_252)? };
@@ -181,7 +181,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/not_this.py:139-164 _a_place_in_play
 pub(super) fn _a_place_in_play(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["held","memory","place","said","turn","turns","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_this.py", 139, 164, "_a_place_in_play");
+rt.trace_call_code("bot/memory/not_this.py", 139, 164, "_a_place_in_play", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_292 = { let __v_293 = { let __callable_294 = frame.load(rt, "isinstance")?; let mut __args_295 = CallArgs::default(); let __v_296 = frame.load(rt, "memory")?; __args_295.positional.push(__v_296); let __v_297 = frame.load(rt, "dict")?; __args_295.positional.push(__v_297); rt.call(&__callable_294, __args_295)? }; Value::Bool(!__v_293.is_truthy()) }; if __v_292.is_truthy() {
@@ -260,7 +260,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/not_this.py:167-174 _asked_last
 pub(super) fn _asked_last(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["last","memory","said","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_this.py", 167, 174, "_asked_last");
+rt.trace_call_code("bot/memory/not_this.py", 167, 174, "_asked_last", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_389 = { let __v_390 = { let __callable_391 = frame.load(rt, "isinstance")?; let mut __args_392 = CallArgs::default(); let __v_393 = frame.load(rt, "memory")?; __args_392.positional.push(__v_393); let __v_394 = frame.load(rt, "dict")?; __args_392.positional.push(__v_394); rt.call(&__callable_391, __args_392)? }; if __v_390.is_truthy() { { let __callable_395 = { let __v_397 = frame.load(rt, "memory")?; rt.getattr(&__v_397, "get")? }; let mut __args_396 = CallArgs::default(); let __v_398 = Value::from("turns"); __args_396.positional.push(__v_398); rt.call(&__callable_395, __args_396)? } } else { Value::None } };
@@ -286,7 +286,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/not_this.py:177-186 _a_place_the_chat_knows
 pub(super) fn _a_place_the_chat_knows(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["place","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_this.py", 177, 186, "_a_place_the_chat_knows");
+rt.trace_call_code("bot/memory/not_this.py", 177, 186, "_a_place_the_chat_knows", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_433 = { let __callable_434 = { let __v_436 = { let __callable_437 = { let __v_439 = { let __callable_440 = frame.load(rt, "str")?; let mut __args_441 = CallArgs::default(); let __v_442 = { let mut __v_443 = frame.load(rt, "place")?; if !__v_443.is_truthy() { __v_443 = Value::from(""); } __v_443 }; __args_441.positional.push(__v_442); rt.call(&__callable_440, __args_441)? }; rt.getattr(&__v_439, "strip")? }; let mut __args_438 = CallArgs::default(); rt.call(&__callable_437, __args_438)? }; rt.getattr(&__v_436, "lower")? }; let mut __args_435 = CallArgs::default(); rt.call(&__callable_434, __args_435)? };
@@ -318,7 +318,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/not_this.py:189-194 _in_plain_words
 pub(super) fn _in_plain_words(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","long_form","shape","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_this.py", 189, 194, "_in_plain_words");
+rt.trace_call_code("bot/memory/not_this.py", 189, 194, "_in_plain_words", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_483 = { let __callable_484 = { let __v_486 = { let __callable_487 = { let __v_489 = { let __callable_490 = { let __v_492 = { let __callable_493 = frame.load(rt, "str")?; let mut __args_494 = CallArgs::default(); let __v_495 = { let mut __v_496 = frame.load(rt, "text")?; if !__v_496.is_truthy() { __v_496 = Value::from(""); } __v_496 }; __args_494.positional.push(__v_495); rt.call(&__callable_493, __args_494)? }; rt.getattr(&__v_492, "strip")? }; let mut __args_491 = CallArgs::default(); rt.call(&__callable_490, __args_491)? }; rt.getattr(&__v_489, "lower")? }; let mut __args_488 = CallArgs::default(); rt.call(&__callable_487, __args_488)? }; rt.getattr(&__v_486, "replace")? }; let mut __args_485 = CallArgs::default(); let __v_497 = Value::from("’"); __args_485.positional.push(__v_497); let __v_498 = Value::from("'"); __args_485.positional.push(__v_498); rt.call(&__callable_484, __args_485)? };
@@ -347,7 +347,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/not_this.py:197-210 the_place_ruled_out
 pub(super) fn the_place_ruled_out(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","line","memory","place","shape","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_this.py", 197, 210, "the_place_ruled_out");
+rt.trace_call_code("bot/memory/not_this.py", 197, 210, "the_place_ruled_out", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_522 = { let __v_523 = { let __callable_524 = frame.load(rt, "isinstance")?; let mut __args_525 = CallArgs::default(); let __v_526 = frame.load(rt, "text")?; __args_525.positional.push(__v_526); let __v_527 = frame.load(rt, "str")?; __args_525.positional.push(__v_527); rt.call(&__callable_524, __args_525)? }; Value::Bool(!__v_523.is_truthy()) }; if __v_522.is_truthy() {
@@ -395,7 +395,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/not_this.py:213-235 _the_place_ruled_out
 pub(super) fn _the_place_ruled_out(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["fresh","gone","lines","memory","pool","said_lately","stands","text","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_this.py", 213, 235, "_the_place_ruled_out");
+rt.trace_call_code("bot/memory/not_this.py", 213, 235, "_the_place_ruled_out", 9);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_558 = { let __callable_559 = frame.load(rt, "the_place_ruled_out")?; let mut __args_560 = CallArgs::default(); let __v_561 = frame.load(rt, "text")?; __args_560.positional.push(__v_561); let __v_562 = frame.load(rt, "memory")?; __args_560.positional.push(__v_562); rt.call(&__callable_559, __args_560)? };
@@ -444,7 +444,7 @@ mod __py_8 { use super::*;
 // py: bot/memory/not_this.py:238-251 reply_for
 pub(super) fn reply_for(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["memory","ruled_out","text","tried"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/not_this.py", 238, 251, "reply_for");
+rt.trace_call_code("bot/memory/not_this.py", 238, 251, "reply_for", 10);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_653 = { let __callable_654 = frame.load(rt, "_the_place_ruled_out")?; let mut __args_655 = CallArgs::default(); let __v_656 = frame.load(rt, "text")?; __args_655.positional.push(__v_656); let __v_657 = frame.load(rt, "memory")?; __args_655.positional.push(__v_657); rt.call(&__callable_654, __args_655)? };

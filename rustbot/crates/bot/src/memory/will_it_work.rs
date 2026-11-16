@@ -18,7 +18,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("asks_if_it_will_work",80,83),
 ("reply_for.<locals>.<genexpr>",141,141)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/will_it_work.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/will_it_work.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A line that asks whether the advice will work is answered with what the advice achieves.\n\n\"will that work\" names nothing of its own. After a how-to it is not a new question and not small\ntalk: it is the one thing a person asks before they spend an hour on someone else's method. On\nmain it was answered with a stock nod to the method (\"Done that way, it needs no one else: that is\nthe method I would use.\"), which says nothing about whether the method works:\n\n    how do i clean a burnt pan\n      Put an inch of water and two tablespoons of bicarbonate of soda in it and simmer for ten ...\n    will that work\n      Done that way, it needs no one else: that is the method I would use.\n\nThe card has already answered it, in its own words - \"almost nothing needs scrubbing after that\",\n\"the glass catches the rest in a day or two\", \"a post with height lets her do it properly\" - so the\nreply is that clause, with the yes the person asked for in front of it. Nothing is judged and\nnothing is added: a card with no such clause passes, and the line is answered as it was.\n\nNarrow on purpose:\n\n* the line has to be *only* the check - \"will that work\", \"does that help\", \"would that fix it\" -\n  with nothing of its own after it, because \"will that work for a dark stain too\" asks about a\n  stain;\n* the bot's last turn has to be a card it really said (`measure._the_card_said_last`, the same\n  check the measure follow-up uses), so a chat line is never quoted back as an answer;\n* the clause has to say the method *achieves* something, and a clause that says it achieves\n  nothing (\"rice does nothing except leave grit in the ports\") is not that.\n"))?;
@@ -61,7 +61,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/will_it_work.py:80-83 asks_if_it_will_work
 pub(super) fn asks_if_it_will_work(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/will_it_work.py", 80, 83, "asks_if_it_will_work");
+rt.trace_call_code("bot/memory/will_it_work.py", 80, 83, "asks_if_it_will_work", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_95 = { let __callable_96 = { let __v_98 = { let __callable_99 = { let __v_101 = Value::from(" "); rt.getattr(&__v_101, "join")? }; let mut __args_100 = CallArgs::default(); let __v_102 = { let __callable_103 = { let __v_105 = { let __callable_106 = frame.load(rt, "str")?; let mut __args_107 = CallArgs::default(); let __v_108 = { let mut __v_109 = frame.load(rt, "line")?; if !__v_109.is_truthy() { __v_109 = Value::from(""); } __v_109 }; __args_107.positional.push(__v_108); rt.call(&__callable_106, __args_107)? }; rt.getattr(&__v_105, "split")? }; let mut __args_104 = CallArgs::default(); rt.call(&__callable_103, __args_104)? }; __args_100.positional.push(__v_102); rt.call(&__callable_99, __args_100)? }; rt.getattr(&__v_98, "strip")? }; let mut __args_97 = CallArgs::default(); let __v_110 = Value::from(" ?.!,"); __args_97.positional.push(__v_110); rt.call(&__callable_96, __args_97)? };
@@ -78,7 +78,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/will_it_work.py:86-90 _the_clauses
 pub(super) fn _the_clauses(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["parts","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/will_it_work.py", 86, 90, "_the_clauses");
+rt.trace_call_code("bot/memory/will_it_work.py", 86, 90, "_the_clauses", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_122 = { let __callable_123 = { let __v_125 = frame.load(rt, "re")?; rt.getattr(&__v_125, "split")? }; let mut __args_124 = CallArgs::default(); let __v_126 = Value::from("[,;:]\\s+|\\s+-\\s+"); __args_124.positional.push(__v_126); let __v_127 = { let __callable_128 = frame.load(rt, "str")?; let mut __args_129 = CallArgs::default(); let __v_130 = frame.load(rt, "sentence")?; __args_129.positional.push(__v_130); rt.call(&__callable_128, __args_129)? }; __args_124.positional.push(__v_127); rt.call(&__callable_123, __args_124)? };
@@ -95,7 +95,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/will_it_work.py:93-99 _without_filler
 pub(super) fn _without_filler(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["clause","filler","said"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/will_it_work.py", 93, 99, "_without_filler");
+rt.trace_call_code("bot/memory/will_it_work.py", 93, 99, "_without_filler", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_140 = { let __callable_141 = { let __v_143 = frame.load(rt, "clause")?; rt.getattr(&__v_143, "strip")? }; let mut __args_142 = CallArgs::default(); let __v_144 = Value::from(" ."); __args_142.positional.push(__v_144); rt.call(&__callable_141, __args_142)? };
@@ -128,7 +128,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/will_it_work.py:102-121 _what_it_achieves
 pub(super) fn _what_it_achieves(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["card","clause","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/will_it_work.py", 102, 121, "_what_it_achieves");
+rt.trace_call_code("bot/memory/will_it_work.py", 102, 121, "_what_it_achieves", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_175 = false; let __v_177 = { let __callable_180 = frame.load(rt, "reversed")?; let mut __args_181 = CallArgs::default(); let __v_182 = { let __comp_parent_183 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_183.clone(), &["part"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_183 = __comp_parent_183.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_184 = { let __v_186 = frame.load(rt, "SENTENCE")?; rt.getattr(&__v_186, "split")? }; let mut __args_185 = CallArgs::default(); let __v_187 = { let __callable_188 = frame.load(rt, "str")?; let mut __args_189 = CallArgs::default(); let __v_190 = frame.load(rt, "card")?; __args_189.positional.push(__v_190); rt.call(&__callable_188, __args_189)? }; __args_185.positional.push(__v_187); rt.call(&__callable_184, __args_185)? }) }) }, assign: { let __comp_parent_183 = __comp_parent_183.clone(); Rc::new(move |rt, frame, value| { frame.store("part", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_183 = __comp_parent_183.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_191 = { let __v_193 = frame.load(rt, "part")?; rt.getattr(&__v_193, "strip")? }; let mut __args_192 = CallArgs::default(); rt.call(&__callable_191, __args_192)? }).is_truthy()) }) }] }], { let __comp_parent_183 = __comp_parent_183.clone(); Rc::new(move |rt, frame| Ok({ let __callable_194 = { let __v_196 = frame.load(rt, "part")?; rt.getattr(&__v_196, "strip")? }; let mut __args_195 = CallArgs::default(); rt.call(&__callable_194, __args_195)? })) })?) }; __args_181.positional.push(__v_182); rt.call(&__callable_180, __args_181)? }; let __iter_178 = rt.iter(&__v_177)?;
@@ -185,7 +185,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/will_it_work.py:124-142 reply_for
 pub(super) fn reply_for(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["at","card","memory","said","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/will_it_work.py", 124, 142, "reply_for");
+rt.trace_call_code("bot/memory/will_it_work.py", 124, 142, "reply_for", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_263 = { let __v_264 = { let __callable_265 = frame.load(rt, "asks_if_it_will_work")?; let mut __args_266 = CallArgs::default(); let __v_267 = frame.load(rt, "text")?; __args_266.positional.push(__v_267); rt.call(&__callable_265, __args_266)? }; Value::Bool(!__v_264.is_truthy()) }; if __v_263.is_truthy() {
@@ -220,7 +220,7 @@ frame.store("said", __v_336.clone())?;
 }
 let __v_348 = { let __callable_349 = { let __v_351 = frame.load(rt, "said")?; rt.getattr(&__v_351, "rstrip")? }; let mut __args_350 = CallArgs::default(); let __v_352 = Value::from(" ."); __args_350.positional.push(__v_352); rt.call(&__callable_349, __args_350)? };
 frame.store("said", __v_348.clone())?;
-let __v_353 = { let __v_354 = { let __callable_356 = frame.load(rt, "sum")?; let mut __args_357 = CallArgs::default(); let __v_358 = { let __comp_parent_359 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_359.clone(), &["letter"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_359 = __comp_parent_359.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_360 = frame.load(rt, "str")?; let mut __args_361 = CallArgs::default(); let __v_362 = { let mut __v_363 = frame.load(rt, "text")?; if !__v_363.is_truthy() { __v_363 = Value::from(""); } __v_363 }; __args_361.positional.push(__v_362); rt.call(&__callable_360, __args_361)? }) }) }, assign: { let __comp_parent_359 = __comp_parent_359.clone(); Rc::new(move |rt, frame, value| { frame.store("letter", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_359 = __comp_parent_359.clone(); Rc::new(move |rt, frame| Ok({ let __callable_364 = frame.load(rt, "ord")?; let mut __args_365 = CallArgs::default(); let __v_366 = frame.load(rt, "letter")?; __args_365.positional.push(__v_366); rt.call(&__callable_364, __args_365)? })) }, Rc::new(|rt| { rt.trace_call("bot/memory/will_it_work.py", 141, 141, "reply_for.<locals>.<genexpr>"); Ok(()) }))? }; __args_357.positional.push(__v_358); rt.call(&__callable_356, __args_357)? }; let __v_355 = { let __callable_367 = frame.load(rt, "len")?; let mut __args_368 = CallArgs::default(); let __v_369 = frame.load(rt, "YES_IN_FRONT")?; __args_368.positional.push(__v_369); rt.call(&__callable_367, __args_368)? }; pyrt::ops::modulo(&__v_354, &__v_355)? };
+let __v_353 = { let __v_354 = { let __callable_356 = frame.load(rt, "sum")?; let mut __args_357 = CallArgs::default(); let __v_358 = { let __comp_parent_359 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_359.clone(), &["letter"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_359 = __comp_parent_359.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_360 = frame.load(rt, "str")?; let mut __args_361 = CallArgs::default(); let __v_362 = { let mut __v_363 = frame.load(rt, "text")?; if !__v_363.is_truthy() { __v_363 = Value::from(""); } __v_363 }; __args_361.positional.push(__v_362); rt.call(&__callable_360, __args_361)? }) }) }, assign: { let __comp_parent_359 = __comp_parent_359.clone(); Rc::new(move |rt, frame, value| { frame.store("letter", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_359 = __comp_parent_359.clone(); Rc::new(move |rt, frame| Ok({ let __callable_364 = frame.load(rt, "ord")?; let mut __args_365 = CallArgs::default(); let __v_366 = frame.load(rt, "letter")?; __args_365.positional.push(__v_366); rt.call(&__callable_364, __args_365)? })) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/will_it_work.py", 141, 141, "reply_for.<locals>.<genexpr>", 7); Ok(()) }))? }; __args_357.positional.push(__v_358); rt.call(&__callable_356, __args_357)? }; let __v_355 = { let __callable_367 = frame.load(rt, "len")?; let mut __args_368 = CallArgs::default(); let __v_369 = frame.load(rt, "YES_IN_FRONT")?; __args_368.positional.push(__v_369); rt.call(&__callable_367, __args_368)? }; pyrt::ops::modulo(&__v_354, &__v_355)? };
 frame.store("at", __v_353.clone())?;
 return Ok(__Flow::Return({ let __v_370 = Value::from("%s — %s."); let __v_371 = { let mut __items_372 = Vec::new(); let __v_373 = { let __v_374 = frame.load(rt, "YES_IN_FRONT")?; let __v_375 = frame.load(rt, "at")?; pyrt::ops::getitem(&__v_374, &__v_375)? }; __items_372.push(__v_373); let __v_376 = frame.load(rt, "said")?; __items_372.push(__v_376); Value::tuple(__items_372) }; pyrt::ops::modulo(&__v_370, &__v_371)? }));
 Ok(__Flow::Next)

@@ -18,7 +18,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("_sentences",64,65),
 ("the_answer_this_chat_gave",134,155)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/asked_about.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/asked_about.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("The answer this chat already gave, when a later line names the thing it was about.\n\n    i havent slept much          -> Nights like that wear you down ...\n    i keep waking at 3           -> Waking in the night is normal - sleep runs in cycles ...\n    my head is full              -> The fix is what you do in those minutes ...\n    and how do i get some sleep  -> I'm not sure about that one, sorry - I'd rather not guess.\n\nThe chat had the sleep answer three turns up and then said it did not know enough. Nothing read\nthe line: every reader that hands an earlier answer back is reached only when a module *serves*\nthat answer again, and on this line nothing does - the composer has no card for \"some sleep\", so\nthe search hedge is the only candidate left, and it is the one answer that cannot help when the\nchat itself holds the answer.\n\n`topics.answer_about` already finds that card: it scores the line's own words against every\n`answers` turn in the last six and returns the one they belong to. Nothing asked it on this path.\nSo this is the asking, and the reply is the sentence of that card which carries the words the\nline asked with, said as the return it is - \"Back to sleep: ...\".\n\nNarrow on purpose:\n\n* it is only ever read in place of a hedge (`bot/modules/greeting.py`), so a line with an answer\n  of its own keeps it. That is the same gate the answer-on-screen reader uses;\n* the line has to name a thing, a content word the card also names, so a bare \"and what should i\n  do\" - which belongs to every answer that gives a step - is left to the readers that own it;\n* the sentence said back may not be one the bot has just said, so this cannot be a repeat dressed\n  as a return, and the whole card is never handed over: it is the part that answers the line.\n"))?;
@@ -56,7 +56,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/asked_about.py:64-65 _sentences
 pub(super) fn _sentences(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/asked_about.py", 64, 65, "_sentences");
+rt.trace_call_code("bot/memory/asked_about.py", 64, 65, "_sentences", 2);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let __comp_parent_57 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_57.clone(), &["one"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_57 = __comp_parent_57.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_58 = { let __v_60 = frame.load(rt, "SENTENCE")?; rt.getattr(&__v_60, "split")? }; let mut __args_59 = CallArgs::default(); let __v_61 = { let __callable_62 = { let __v_64 = { let __callable_65 = frame.load(rt, "str")?; let mut __args_66 = CallArgs::default(); let __v_67 = { let mut __v_68 = frame.load(rt, "answer")?; if !__v_68.is_truthy() { __v_68 = Value::from(""); } __v_68 }; __args_66.positional.push(__v_67); rt.call(&__callable_65, __args_66)? }; rt.getattr(&__v_64, "strip")? }; let mut __args_63 = CallArgs::default(); rt.call(&__callable_62, __args_63)? }; __args_59.positional.push(__v_61); rt.call(&__callable_58, __args_59)? }) }) }, assign: { let __comp_parent_57 = __comp_parent_57.clone(); Rc::new(move |rt, frame, value| { frame.store("one", value)?; Ok(()) }) }, filters: vec![{ let __comp_parent_57 = __comp_parent_57.clone(); Rc::new(move |rt, frame| {  Ok(({ let __callable_69 = { let __v_71 = frame.load(rt, "one")?; rt.getattr(&__v_71, "strip")? }; let mut __args_70 = CallArgs::default(); rt.call(&__callable_69, __args_70)? }).is_truthy()) }) }] }], { let __comp_parent_57 = __comp_parent_57.clone(); Rc::new(move |rt, frame| Ok({ let __callable_72 = { let __v_74 = frame.load(rt, "one")?; rt.getattr(&__v_74, "strip")? }; let mut __args_73 = CallArgs::default(); rt.call(&__callable_72, __args_73)? })) })?) }));
 Ok(__Flow::Next)
@@ -70,7 +70,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/asked_about.py:79-86 _the_words_asked
 pub(super) fn _the_words_asked(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["out","text","word"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/asked_about.py", 79, 86, "_the_words_asked");
+rt.trace_call_code("bot/memory/asked_about.py", 79, 86, "_the_words_asked", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_75 = { let mut __items_76 = Vec::new(); Value::list(__items_76) };
@@ -103,7 +103,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/asked_about.py:97-131 _the_part_that_answers
 pub(super) fn _the_part_that_answers(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","best","flat_before","here","index","out","part","parts","said_before","score","scored","stands","wanted"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/asked_about.py", 97, 131, "_the_part_that_answers");
+rt.trace_call_code("bot/memory/asked_about.py", 97, 131, "_the_part_that_answers", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_102 = { let __callable_103 = frame.load(rt, "_sentences")?; let mut __args_104 = CallArgs::default(); let __v_105 = frame.load(rt, "answer")?; __args_104.positional.push(__v_105); rt.call(&__callable_103, __args_104)? };
@@ -140,7 +140,7 @@ let __v_170 = { let __v_171 = frame.load(rt, "best")?; let __v_172 = Value::Int(
 frame.store("index", __v_170.clone())?;
 } else {
 let __v_173 = { let __v_174 = frame.load(rt, "best")?; let __v_175 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_174, &__v_175)? }; if __v_173.is_truthy() {
-let __v_176 = { let __callable_177 = frame.load(rt, "next")?; let mut __args_178 = CallArgs::default(); let __v_179 = { let __comp_parent_180 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_180.clone(), &["i","part"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_180 = __comp_parent_180.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_181 = frame.load(rt, "enumerate")?; let mut __args_182 = CallArgs::default(); let __v_183 = frame.load(rt, "parts")?; __args_182.positional.push(__v_183); rt.call(&__callable_181, __args_182)? }) }) }, assign: { let __comp_parent_180 = __comp_parent_180.clone(); Rc::new(move |rt, frame, value| { let __unpack_184 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("i", __unpack_184[0].clone())?; frame.store("part", __unpack_184[1].clone())?; Ok(()) }) }, filters: vec![{ let __comp_parent_180 = __comp_parent_180.clone(); Rc::new(move |rt, frame| {  Ok(({ let __v_185 = { let __callable_186 = { let __v_188 = frame.load(rt, "_A_CONTINUATION")?; rt.getattr(&__v_188, "match")? }; let mut __args_187 = CallArgs::default(); let __v_189 = frame.load(rt, "part")?; __args_187.positional.push(__v_189); rt.call(&__callable_186, __args_187)? }; Value::Bool(!__v_185.is_truthy()) }).is_truthy()) }) }] }], { let __comp_parent_180 = __comp_parent_180.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "i")?)) }, Rc::new(|rt| { rt.trace_call("bot/memory/asked_about.py", 118, 118, "_the_part_that_answers.<locals>.<genexpr>"); Ok(()) }))? }; __args_178.positional.push(__v_179); let __v_190 = { let __v_191 = frame.load(rt, "best")?; let __v_192 = Value::Int("2".parse().expect("integer literal")); pyrt::ops::getitem(&__v_191, &__v_192)? }; __args_178.positional.push(__v_190); rt.call(&__callable_177, __args_178)? };
+let __v_176 = { let __callable_177 = frame.load(rt, "next")?; let mut __args_178 = CallArgs::default(); let __v_179 = { let __comp_parent_180 = frame.clone(); pyrt::comprehension::generator_traced(rt, __comp_parent_180.clone(), &["i","part"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_180 = __comp_parent_180.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_181 = frame.load(rt, "enumerate")?; let mut __args_182 = CallArgs::default(); let __v_183 = frame.load(rt, "parts")?; __args_182.positional.push(__v_183); rt.call(&__callable_181, __args_182)? }) }) }, assign: { let __comp_parent_180 = __comp_parent_180.clone(); Rc::new(move |rt, frame, value| { let __unpack_184 = pyrt::containers::unpack(rt, &value, 2, 0, false)?; frame.store("i", __unpack_184[0].clone())?; frame.store("part", __unpack_184[1].clone())?; Ok(()) }) }, filters: vec![{ let __comp_parent_180 = __comp_parent_180.clone(); Rc::new(move |rt, frame| {  Ok(({ let __v_185 = { let __callable_186 = { let __v_188 = frame.load(rt, "_A_CONTINUATION")?; rt.getattr(&__v_188, "match")? }; let mut __args_187 = CallArgs::default(); let __v_189 = frame.load(rt, "part")?; __args_187.positional.push(__v_189); rt.call(&__callable_186, __args_187)? }; Value::Bool(!__v_185.is_truthy()) }).is_truthy()) }) }] }], { let __comp_parent_180 = __comp_parent_180.clone(); Rc::new(move |rt, frame| Ok(frame.load(rt, "i")?)) }, Rc::new(|rt| { rt.trace_call_code("bot/memory/asked_about.py", 118, 118, "_the_part_that_answers.<locals>.<genexpr>", 6); Ok(()) }))? }; __args_178.positional.push(__v_179); let __v_190 = { let __v_191 = frame.load(rt, "best")?; let __v_192 = Value::Int("2".parse().expect("integer literal")); pyrt::ops::getitem(&__v_191, &__v_192)? }; __args_178.positional.push(__v_190); rt.call(&__callable_177, __args_178)? };
 frame.store("index", __v_176.clone())?;
 } else {
 return Ok(__Flow::Return(Value::from("")));
@@ -179,7 +179,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/asked_about.py:110-110 _the_part_that_answers.<locals>.<lambda>
 pub(super) fn __lambda(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["triple"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/asked_about.py", 110, 110, "_the_part_that_answers.<locals>.<lambda>");
+rt.trace_call_code("bot/memory/asked_about.py", 110, 110, "_the_part_that_answers.<locals>.<lambda>", 5);
 let flow = (|| -> PyResult<__Flow> {
 return Ok(__Flow::Return({ let mut __items_286 = Vec::new(); let __v_287 = { let __v_288 = { let __v_289 = frame.load(rt, "triple")?; let __v_290 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_289, &__v_290)? }; pyrt::ops::neg(&__v_288)? }; __items_286.push(__v_287); let __v_291 = { let __v_292 = { let __v_293 = frame.load(rt, "triple")?; let __v_294 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::getitem(&__v_293, &__v_294)? }; pyrt::ops::neg(&__v_292)? }; __items_286.push(__v_291); let __v_295 = { let __v_296 = frame.load(rt, "triple")?; let __v_297 = Value::Int("2".parse().expect("integer literal")); pyrt::ops::getitem(&__v_296, &__v_297)? }; __items_286.push(__v_295); Value::tuple(__items_286) }));
 Ok(__Flow::Next)
@@ -193,7 +193,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/asked_about.py:134-155 the_answer_this_chat_gave
 pub(super) fn the_answer_this_chat_gave(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["answer","frame","just_said","memory","part","said","said_before","text","turns","wanted"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/asked_about.py", 134, 155, "the_answer_this_chat_gave");
+rt.trace_call_code("bot/memory/asked_about.py", 134, 155, "the_answer_this_chat_gave", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_298 = { let __v_299 = { let __callable_300 = frame.load(rt, "isinstance")?; let mut __args_301 = CallArgs::default(); let __v_302 = frame.load(rt, "memory")?; __args_301.positional.push(__v_302); let __v_303 = frame.load(rt, "dict")?; __args_301.positional.push(__v_303); rt.call(&__callable_300, __args_301)? }; Value::Bool(!__v_299.is_truthy()) }; if __v_298.is_truthy() {

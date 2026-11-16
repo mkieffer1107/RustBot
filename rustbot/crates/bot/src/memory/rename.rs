@@ -15,7 +15,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("moves",64,66),
 ("the_name_a_line_moved_on",91,108)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/rename.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/rename.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A pet whose name has moved in the sentence: \"we renamed him max\", \"hes max now\".\n\nThe store reads a name put right (\"no hes called max\") and a name given (\"my dog is called rex\"),\nbut not the line that says in as many words that the name has changed, and it kept the name it\nhad:\n\n```\nmy dog is called rex / we renamed him max / whats my dog called\n  before: You've got a dog called Rex.\n  after:  You've got a dog called Max.\n```\n\nThe frames are closed because each of them says a name has changed: `renamed`, `i changed it to`,\n`we call him ... now`, `he answers to`, `now called`, `hes max now`. A line with only a pronoun\nand a name in it (\"hes max\") is as often a fact about somebody as a rename, so it is not read\nhere.\n\nTwo things keep this off the lines that only look like a rename. The name has to stand bare (a\ndeterminer in front of it makes it a thing: \"we renamed the pub\", \"he goes by the gate now\"), and\nthe line has to be about the animal - a person in it is somebody else's name (\"my son changed his\nname to sam\", \"i changed my name to max\").\n\nThis lives here, and not in `bot/modules/memory_store.py`, because that file is at the size the\nruntime allows; the store calls it the way it calls the other memory readers.\n"))?;
@@ -50,7 +50,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/rename.py:64-66 moves
 pub(super) fn moves(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["low"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/rename.py", 64, 66, "moves");
+rt.trace_call_code("bot/memory/rename.py", 64, 66, "moves", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 return Ok(__Flow::Return({ let __callable_61 = frame.load(rt, "bool")?; let mut __args_62 = CallArgs::default(); let __v_63 = { let __callable_64 = { let __v_66 = frame.load(rt, "RENAMING")?; rt.getattr(&__v_66, "search")? }; let mut __args_65 = CallArgs::default(); let __v_67 = { let __callable_68 = { let __v_70 = Value::from(" "); rt.getattr(&__v_70, "join")? }; let mut __args_69 = CallArgs::default(); let __v_71 = { let __callable_72 = { let __v_74 = { let __callable_75 = frame.load(rt, "str")?; let mut __args_76 = CallArgs::default(); let __v_77 = { let mut __v_78 = frame.load(rt, "low")?; if !__v_78.is_truthy() { __v_78 = Value::from(""); } __v_78 }; __args_76.positional.push(__v_77); rt.call(&__callable_75, __args_76)? }; rt.getattr(&__v_74, "split")? }; let mut __args_73 = CallArgs::default(); rt.call(&__callable_72, __args_73)? }; __args_69.positional.push(__v_71); rt.call(&__callable_68, __args_69)? }; __args_65.positional.push(__v_67); rt.call(&__callable_64, __args_65)? }; __args_62.positional.push(__v_63); rt.call(&__callable_61, __args_62)? }));
@@ -65,7 +65,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/rename.py:69-88 the_name_it_gave
 pub(super) fn the_name_it_gave(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["low","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/rename.py", 69, 88, "the_name_it_gave");
+rt.trace_call_code("bot/memory/rename.py", 69, 88, "the_name_it_gave", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_79 = { let __comp_parent_80 = frame.clone(); Value::list(pyrt::comprehension::collect(rt, __comp_parent_80.clone(), &["word"], vec![pyrt::comprehension::Level { iterable: { let __comp_parent_80 = __comp_parent_80.clone(); Rc::new(move |rt, frame| {  Ok({ let __callable_81 = { let __v_83 = { let __callable_84 = frame.load(rt, "str")?; let mut __args_85 = CallArgs::default(); let __v_86 = { let mut __v_87 = frame.load(rt, "low")?; if !__v_87.is_truthy() { __v_87 = Value::from(""); } __v_87 }; __args_85.positional.push(__v_86); rt.call(&__callable_84, __args_85)? }; rt.getattr(&__v_83, "split")? }; let mut __args_82 = CallArgs::default(); rt.call(&__callable_81, __args_82)? }) }) }, assign: { let __comp_parent_80 = __comp_parent_80.clone(); Rc::new(move |rt, frame, value| { frame.store("word", value)?; Ok(()) }) }, filters: vec![] }], { let __comp_parent_80 = __comp_parent_80.clone(); Rc::new(move |rt, frame| Ok({ let __callable_88 = { let __v_90 = frame.load(rt, "word")?; rt.getattr(&__v_90, "strip")? }; let mut __args_89 = CallArgs::default(); let __v_91 = Value::from(".,!?;:'\""); __args_89.positional.push(__v_91); rt.call(&__callable_88, __args_89)? })) })?) };
@@ -110,7 +110,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/rename.py:91-108 the_name_a_line_moved_on
 pub(super) fn the_name_a_line_moved_on(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["animal_named","low","pets"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/rename.py", 91, 108, "the_name_a_line_moved_on");
+rt.trace_call_code("bot/memory/rename.py", 91, 108, "the_name_a_line_moved_on", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_149 = { let __callable_150 = { let __v_152 = Value::from(" "); rt.getattr(&__v_152, "join")? }; let mut __args_151 = CallArgs::default(); let __v_153 = { let __callable_154 = { let __v_156 = { let __callable_157 = frame.load(rt, "str")?; let mut __args_158 = CallArgs::default(); let __v_159 = { let mut __v_160 = frame.load(rt, "low")?; if !__v_160.is_truthy() { __v_160 = Value::from(""); } __v_160 }; __args_158.positional.push(__v_159); rt.call(&__callable_157, __args_158)? }; rt.getattr(&__v_156, "split")? }; let mut __args_155 = CallArgs::default(); rt.call(&__callable_154, __args_155)? }; __args_151.positional.push(__v_153); rt.call(&__callable_150, __args_151)? };

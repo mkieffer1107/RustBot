@@ -21,7 +21,7 @@ pub const PY_FUNCTIONS: &[(&str,u32,u32)] = &[("the_measure_asked",69,85),
 ("reply_for",240,260)];
 #[allow(clippy::all)]
 pub const INIT: pyrt::runtime::ModuleInit = |rt, module| {
-rt.trace_call("bot/memory/measure.py", 0, 0, "<module>");
+rt.trace_call_code("bot/memory/measure.py", 0, 0, "<module>", 1);
 let globals = rt.getattr(module, "__dict__")?;
 let frame = Frame::module(globals);
 frame.store("__doc__", Value::from("A follow-up that asks the measure again: \"and how much\", \"and how often\", \"and how long\".\n\nNobody says the subject twice. The person asked how much water to drink, the answer gave six to\neight glasses, and then they asked \"and how much\" - and nothing in those three words says water,\nso the knowledge base read them as words in their own right and answered from a different entry:\n\n    how much water should i drink a day\n      Six to eight glasses a day, about 1.5 to 2 litres, is plenty, and more in heat or after ...\n    and how much\n      The UK limit is 14 units a week for men and women ... (the alcohol card, reached by \"drink\")\n\nThe same shape took \"and how often\" after a dog-walking answer to the puppy paragraph, and after\na roast-chicken answer to \"Same answer, and it covers this: About 20 minutes per 500g ...\". The\nfigure is already in the answer above, so the follow-up is answered from that answer: the\nsentence of it that carries the measure the person asked for, in the answer's own words.\n\nNarrow on purpose:\n\n* the line has to be *only* the measure - \"and how much\", \"how often again\", \"and how long is\n  that\" - with no subject of its own, because \"how much water for a puppy\" asks about a puppy;\n* the answer above has to be a card the bot really said on the turn before (the same check\n  `bot/memory/topics.entry_answer` makes), so a chat line is never quoted back as an answer;\n* the sentence handed back has to carry the measure that was asked for, or the module passes and\n  the line is answered exactly as it was.\n"))?;
@@ -69,7 +69,7 @@ mod __py_0 { use super::*;
 // py: bot/memory/measure.py:69-85 the_measure_asked
 pub(super) fn the_measure_asked(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["line","match","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/measure.py", 69, 85, "the_measure_asked");
+rt.trace_call_code("bot/memory/measure.py", 69, 85, "the_measure_asked", 2);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_189 = { let __callable_190 = { let __v_192 = { let __callable_193 = frame.load(rt, "str")?; let mut __args_194 = CallArgs::default(); let __v_195 = { let mut __v_196 = frame.load(rt, "line")?; if !__v_196.is_truthy() { __v_196 = Value::from(""); } __v_196 }; __args_194.positional.push(__v_195); rt.call(&__callable_193, __args_194)? }; rt.getattr(&__v_192, "strip")? }; let mut __args_191 = CallArgs::default(); rt.call(&__callable_190, __args_191)? };
@@ -106,7 +106,7 @@ mod __py_1 { use super::*;
 // py: bot/memory/measure.py:93-121 _the_card_said_last
 pub(super) fn _the_card_said_last(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["last","memory","opening","record","records","said","text","turns"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/measure.py", 93, 121, "_the_card_said_last");
+rt.trace_call_code("bot/memory/measure.py", 93, 121, "_the_card_said_last", 3);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_240 = { let __callable_241 = { let __v_243 = frame.load(rt, "memory")?; rt.getattr(&__v_243, "get")? }; let mut __args_242 = CallArgs::default(); let __v_244 = Value::from("turns"); __args_242.positional.push(__v_244); rt.call(&__callable_241, __args_242)? };
@@ -184,7 +184,7 @@ mod __py_2 { use super::*;
 // py: bot/memory/measure.py:136-145 _the_clause_that_carries
 pub(super) fn _the_clause_that_carries(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["boundary","first","pattern","rest","said","sentence"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/measure.py", 136, 145, "_the_clause_that_carries");
+rt.trace_call_code("bot/memory/measure.py", 136, 145, "_the_clause_that_carries", 4);
 let flow = (|| -> PyResult<__Flow> {
 
 let mut __broke_382 = false; let __v_384 = { let __callable_387 = { let __v_389 = frame.load(rt, "re")?; rt.getattr(&__v_389, "finditer")? }; let mut __args_388 = CallArgs::default(); let __v_390 = Value::from("[,;:]\\s+"); __args_388.positional.push(__v_390); let __v_391 = frame.load(rt, "sentence")?; __args_388.positional.push(__v_391); rt.call(&__callable_387, __args_388)? }; let __iter_385 = rt.iter(&__v_384)?;
@@ -224,7 +224,7 @@ mod __py_3 { use super::*;
 // py: bot/memory/measure.py:148-157 _the_sentence_with
 pub(super) fn _the_sentence_with(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["measure","pattern","sentence","sentences","text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/measure.py", 148, 157, "_the_sentence_with");
+rt.trace_call_code("bot/memory/measure.py", 148, 157, "_the_sentence_with", 5);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_446 = { let __callable_447 = { let __v_449 = frame.load(rt, "MEASURES")?; rt.getattr(&__v_449, "get")? }; let mut __args_448 = CallArgs::default(); let __v_450 = frame.load(rt, "measure")?; __args_448.positional.push(__v_450); rt.call(&__callable_447, __args_448)? };
@@ -263,7 +263,7 @@ mod __py_4 { use super::*;
 // py: bot/memory/measure.py:171-194 _the_thing_the_line_named
 pub(super) fn _the_thing_the_line_named(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["kept","match","memory","said","thing","turn","word","words"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/measure.py", 171, 194, "_the_thing_the_line_named");
+rt.trace_call_code("bot/memory/measure.py", 171, 194, "_the_thing_the_line_named", 6);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_479 = Value::from("");
@@ -331,7 +331,7 @@ mod __py_5 { use super::*;
 // py: bot/memory/measure.py:212-219 _with_the_thing
 pub(super) fn _with_the_thing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["found","head","sentence","tail","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/measure.py", 212, 219, "_with_the_thing");
+rt.trace_call_code("bot/memory/measure.py", 212, 219, "_with_the_thing", 7);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_591 = { let __callable_592 = { let __v_594 = frame.load(rt, "A_CONTAINER")?; rt.getattr(&__v_594, "search")? }; let mut __args_593 = CallArgs::default(); let __v_595 = frame.load(rt, "sentence")?; __args_593.positional.push(__v_595); rt.call(&__callable_592, __args_593)? };
@@ -357,7 +357,7 @@ mod __py_6 { use super::*;
 // py: bot/memory/measure.py:222-228 _as_a_headline
 pub(super) fn _as_a_headline(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["first","rest","sentence","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/measure.py", 222, 228, "_as_a_headline");
+rt.trace_call_code("bot/memory/measure.py", 222, 228, "_as_a_headline", 8);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_620 = { let __v_621 = frame.load(rt, "sentence")?; let __v_622 = Value::Int("0".parse().expect("integer literal")); pyrt::ops::getitem(&__v_621, &__v_622)? };
@@ -382,7 +382,7 @@ mod __py_7 { use super::*;
 // py: bot/memory/measure.py:231-237 _as_a_sentence
 pub(super) fn _as_a_sentence(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["text"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/measure.py", 231, 237, "_as_a_sentence");
+rt.trace_call_code("bot/memory/measure.py", 231, 237, "_as_a_sentence", 9);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_662 = { let mut __v_663 = frame.load(rt, "text")?; if __v_663.is_truthy() { __v_663 = { let mut __v_664 = { let __v_666 = frame.load(rt, "text")?; let __v_667 = { let __v_668 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::neg(&__v_668)? }; pyrt::ops::getitem(&__v_666, &__v_667)? }; let mut __matched_665 = true; if __matched_665 { let __v_669 = Value::from(".!?"); __matched_665 = !pyrt::ops::contains(&__v_669, &__v_664)?; } Value::Bool(__matched_665) }; } __v_663 }; if __v_662.is_truthy() {
@@ -402,7 +402,7 @@ mod __py_8 { use super::*;
 // py: bot/memory/measure.py:240-260 reply_for
 pub(super) fn reply_for(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
 let frame = Frame::function(closure, &["card","measure","memory","said","sentence","text","thing"], &[], &[], signature.bind(args)?);
-rt.trace_call("bot/memory/measure.py", 240, 260, "reply_for");
+rt.trace_call_code("bot/memory/measure.py", 240, 260, "reply_for", 10);
 let flow = (|| -> PyResult<__Flow> {
 
 let __v_672 = { let __callable_673 = frame.load(rt, "the_measure_asked")?; let mut __args_674 = CallArgs::default(); let __v_675 = frame.load(rt, "text")?; __args_674.positional.push(__v_675); rt.call(&__callable_673, __args_674)? };
