@@ -30,6 +30,10 @@ constructors! {
     recursion_error => "RecursionError",
     memory_error => "MemoryError",
     not_implemented_error => "NotImplementedError",
+    name_error => "NameError",
+    unbound_local_error => "UnboundLocalError",
+    import_error => "ImportError",
+    stop_iteration => "StopIteration",
 }
 
 impl fmt::Display for PyExc {

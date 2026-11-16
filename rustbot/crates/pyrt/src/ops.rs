@@ -1,7 +1,7 @@
 //! Python operators: integer promotion, floor division, sequence operations and errors.
 use crate::{PyExc, PyResult, Value};
 use num_bigint::BigInt;
-use num_traits::{One, Signed, ToPrimitive, Zero};
+use num_traits::{FromPrimitive, One, Signed, ToPrimitive, Zero};
 use std::cmp::Ordering;
 
 fn integers(a: &Value, b: &Value) -> bool {
@@ -168,6 +168,268 @@ fn float_divmod(a: f64, b: f64) -> PyResult<(f64, f64)> {
     Ok((floor, remainder))
 }
 
+/// Round a nonnegative rational to an integer, resolving ties toward even.
+pub(crate) fn round_ratio(numerator: &BigInt, denominator: &BigInt) -> BigInt {
+    debug_assert!(!numerator.is_negative() && denominator.is_positive());
+    let mut quotient = numerator / denominator;
+    let twice_remainder = (numerator % denominator) << 1;
+    if twice_remainder > *denominator
+        || (twice_remainder == *denominator && (&quotient & BigInt::one()).is_one())
+    {
+        quotient += 1;
+    }
+    quotient
+}
+
+/// Correctly round an integer ratio directly to binary64. Converting the two
+/// integers independently would overflow for ratios such as 10**400 / 10**400.
+pub fn int_ratio_to_float(numerator: &BigInt, denominator: &BigInt) -> PyResult<f64> {
+    if denominator.is_zero() {
+        return Err(PyExc::zero_division_error("division by zero"));
+    }
+    let negative = numerator.is_negative() != denominator.is_negative();
+    let zero = if negative { -0.0 } else { 0.0 };
+    if numerator.is_zero() {
+        return Ok(zero);
+    }
+    let (a, b) = (numerator.abs(), denominator.abs());
+    let difference = i128::from(a.bits()) - i128::from(b.bits());
+    if difference > 1024 {
+        return Err(PyExc::overflow_error(
+            "integer division result too large for a float",
+        ));
+    }
+    if difference < -1075 {
+        return Ok(zero);
+    }
+    let mut exponent = difference as i32;
+    let below = if exponent >= 0 {
+        a < (&b << exponent as usize)
+    } else {
+        (&a << (-exponent) as usize) < b
+    };
+    if below {
+        exponent -= 1;
+    }
+    if exponent > 1023 {
+        return Err(PyExc::overflow_error(
+            "integer division result too large for a float",
+        ));
+    }
+    if exponent < -1075 {
+        return Ok(zero);
+    }
+    let shift = if exponent >= -1022 {
+        52 - exponent
+    } else {
+        1074
+    };
+    let mantissa = if shift >= 0 {
+        round_ratio(&(&a << shift as usize), &b)
+    } else {
+        round_ratio(&a, &(&b << (-shift) as usize))
+    };
+    let mut mantissa = mantissa.to_u64().expect("rounded binary64 significand");
+    let bits = if exponent < -1022 {
+        // A rounded subnormal may become the smallest normal number; its bit
+        // representation is still the integer count of subnormal units.
+        mantissa
+    } else {
+        if mantissa == 1_u64 << 53 {
+            mantissa >>= 1;
+            exponent += 1;
+        }
+        if exponent > 1023 {
+            return Err(PyExc::overflow_error(
+                "integer division result too large for a float",
+            ));
+        }
+        (((exponent + 1023) as u64) << 52) | (mantissa - (1_u64 << 52))
+    };
+    Ok(f64::from_bits(bits | (u64::from(negative) << 63)))
+}
+
+pub fn true_div(a: &Value, b: &Value) -> PyResult<Value> {
+    if integers(a, b) {
+        return Ok(Value::Float(int_ratio_to_float(
+            &a.as_int()?,
+            &b.as_int()?,
+        )?));
+    }
+    if numeric(a, b) {
+        let (left, right) = (a.as_float()?, b.as_float()?);
+        if right == 0.0 {
+            return Err(PyExc::zero_division_error("float division by zero"));
+        }
+        return Ok(Value::Float(left / right));
+    }
+    Err(unsupported("/", a, b))
+}
+
+pub fn divmod(a: &Value, b: &Value) -> PyResult<Value> {
+    if integers(a, b) {
+        let (q, r) = int_divmod(a.as_int()?, b.as_int()?)?;
+        return Ok(Value::tuple(vec![Value::Int(q), Value::Int(r)]));
+    }
+    if numeric(a, b) {
+        let (q, r) = float_divmod(a.as_float()?, b.as_float()?)?;
+        return Ok(Value::tuple(vec![Value::Float(q), Value::Float(r)]));
+    }
+    Err(unsupported("divmod()", a, b))
+}
+
+pub fn power(a: &Value, b: &Value) -> PyResult<Value> {
+    if integers(a, b) {
+        let (base, exponent) = (a.as_int()?, b.as_int()?);
+        if !exponent.is_negative() {
+            if exponent.is_zero() {
+                return Ok(Value::Int(BigInt::one()));
+            }
+            if base.is_zero() || base.is_one() {
+                return Ok(Value::Int(base));
+            }
+            if base == -BigInt::one() {
+                return Ok(Value::Int(if (&exponent & BigInt::one()).is_zero() {
+                    BigInt::one()
+                } else {
+                    base
+                }));
+            }
+            let mut exponent = exponent
+                .to_u64()
+                .ok_or_else(|| PyExc::overflow_error("too many digits in integer"))?;
+            if u128::from(base.bits()).saturating_mul(u128::from(exponent)) > isize::MAX as u128 {
+                return Err(PyExc::overflow_error("too many digits in integer"));
+            }
+            let mut factor = base;
+            let mut result = BigInt::one();
+            while exponent != 0 {
+                if exponent & 1 != 0 {
+                    result *= &factor;
+                }
+                exponent >>= 1;
+                if exponent != 0 {
+                    factor = &factor * &factor;
+                }
+            }
+            return Ok(Value::Int(result));
+        }
+    }
+    if !numeric(a, b) {
+        return Err(unsupported("** or pow()", a, b));
+    }
+    float_power(a.as_float()?, b.as_float()?).map(Value::Float)
+}
+
+fn float_power(base: f64, exponent: f64) -> PyResult<f64> {
+    if exponent == 0.0 {
+        return Ok(1.0);
+    }
+    if base.is_nan() {
+        return Ok(base);
+    }
+    if exponent.is_nan() {
+        return Ok(if base == 1.0 { 1.0 } else { exponent });
+    }
+    let magnitude = base.abs();
+    if exponent.is_infinite() {
+        if magnitude == 1.0 {
+            return Ok(1.0);
+        }
+        return Ok(if (magnitude > 1.0) == exponent.is_sign_positive() {
+            f64::INFINITY
+        } else {
+            0.0
+        });
+    }
+    let negative =
+        base.is_sign_negative() && exponent.fract() == 0.0 && exponent.abs() % 2.0 == 1.0;
+    if base.is_infinite() {
+        let result = if exponent > 0.0 { f64::INFINITY } else { 0.0 };
+        return Ok(if negative { -result } else { result });
+    }
+    if base == 0.0 {
+        if exponent < 0.0 {
+            return Err(PyExc::zero_division_error("zero to a negative power"));
+        }
+        return Ok(if negative { -0.0 } else { 0.0 });
+    }
+    if base < 0.0 && exponent.fract() != 0.0 {
+        return Err(PyExc::not_implemented_error(
+            "complex-valued powers require a complex runtime value",
+        ));
+    }
+    let result = magnitude.powf(exponent);
+    if result.is_infinite() {
+        return Err(PyExc::overflow_error(
+            "(34, 'Numerical result out of range')",
+        ));
+    }
+    Ok(if negative { -result } else { result })
+}
+
+/// Python's three-argument pow, including modular inverses and negative moduli.
+pub fn pow_mod(a: &Value, b: &Value, modulus: &Value) -> PyResult<Value> {
+    if !integers(a, b) || !matches!(modulus, Value::Int(_) | Value::Bool(_)) {
+        return Err(PyExc::type_error(
+            "pow() 3rd argument not allowed unless all arguments are integers",
+        ));
+    }
+    let (mut base, exponent, modulus) = (a.as_int()?, b.as_int()?, modulus.as_int()?);
+    if modulus.is_zero() {
+        return Err(PyExc::value_error("pow() 3rd argument cannot be 0"));
+    }
+    let positive_modulus = modulus.abs();
+    if positive_modulus.is_one() {
+        return Ok(Value::Int(BigInt::zero()));
+    }
+    if exponent.is_negative() {
+        let mut r = positive_modulus.clone();
+        let mut next_r = int_divmod(base, positive_modulus.clone())?.1;
+        let (mut coefficient, mut next_coefficient) = (BigInt::zero(), BigInt::one());
+        while !next_r.is_zero() {
+            let quotient = &r / &next_r;
+            (r, next_r) = (next_r.clone(), r - &quotient * next_r);
+            (coefficient, next_coefficient) = (
+                next_coefficient.clone(),
+                coefficient - quotient * next_coefficient,
+            );
+        }
+        if !r.is_one() {
+            return Err(PyExc::value_error(
+                "base is not invertible for the given modulus",
+            ));
+        }
+        base = coefficient;
+    }
+    let mut result = base.modpow(&exponent.abs(), &positive_modulus);
+    if modulus.is_negative() && !result.is_zero() {
+        result -= positive_modulus;
+    }
+    Ok(Value::Int(result))
+}
+
+pub fn pos(value: &Value) -> PyResult<Value> {
+    match value {
+        Value::Int(_) | Value::Bool(_) => Ok(Value::Int(value.as_int()?)),
+        Value::Float(_) => Ok(value.clone()),
+        _ => Err(PyExc::type_error(format!(
+            "bad operand type for unary +: '{}'",
+            value.type_name()
+        ))),
+    }
+}
+
+pub fn invert(value: &Value) -> PyResult<Value> {
+    match value {
+        Value::Int(_) | Value::Bool(_) => Ok(Value::Int(!value.as_int()?)),
+        _ => Err(PyExc::type_error(format!(
+            "bad operand type for unary ~: '{}'",
+            value.type_name()
+        ))),
+    }
+}
+
 pub fn floor_div(a: &Value, b: &Value) -> PyResult<Value> {
     if integers(a, b) {
         return Ok(Value::Int(int_divmod(a.as_int()?, b.as_int()?)?.0));
@@ -261,7 +523,6 @@ pub fn compare(a: &Value, b: &Value) -> PyResult<Option<Ordering>> {
 }
 
 fn compare_int_float(integer: &BigInt, float: f64) -> PyResult<Option<Ordering>> {
-    use num_traits::FromPrimitive;
     if float.is_nan() {
         return Ok(None);
     }

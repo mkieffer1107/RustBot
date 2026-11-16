@@ -104,6 +104,7 @@ pub enum Value {
     FrozenSet(PySet),
     Date(String),
     DateTime(String),
+    Object(Rc<dyn crate::object::PyObject>),
     Opaque { text: String, type_name: String },
 }
 
@@ -132,6 +133,7 @@ impl Value {
             Self::Set(_) => "set",
             Self::FrozenSet(_) => "frozenset",
             Self::DateTime(_) => "datetime",
+            Self::Object(o) => o.type_name(),
             Self::Opaque { type_name, .. } => type_name,
         }
     }
@@ -176,6 +178,7 @@ impl Value {
                 .collect()),
             Self::Dict(v) => Ok(v.borrow().iter().map(|(k, _)| k.clone()).collect()),
             Self::Set(s) | Self::FrozenSet(s) => Ok(s.values()),
+            Self::Object(o) => o.sequence(),
             _ => Err(PyExc::type_error("object is not iterable")),
         }
     }
@@ -191,6 +194,7 @@ impl Value {
             Self::Tuple(v) => !v.is_empty(),
             Self::Dict(v) => !v.borrow().is_empty(),
             Self::Set(s) | Self::FrozenSet(s) => !s.is_empty(),
+            Self::Object(o) => o.is_truthy(),
             _ => true,
         }
     }
@@ -202,6 +206,7 @@ impl Value {
             (Self::List(a), Self::List(b)) => Rc::ptr_eq(a, b),
             (Self::Tuple(a), Self::Tuple(b)) => Rc::ptr_eq(a, b),
             (Self::Dict(a), Self::Dict(b)) => Rc::ptr_eq(a, b),
+            (Self::Object(a), Self::Object(b)) => Rc::ptr_eq(a, b),
             (Self::Set(a), Self::Set(b)) | (Self::FrozenSet(a), Self::FrozenSet(b)) => {
                 a.is_identical(b)
             }
@@ -260,7 +265,13 @@ impl Value {
                 }
                 Ok(true)
             }
-            (Self::Date(a), Self::Date(b)) | (Self::DateTime(a), Self::DateTime(b)) => Ok(a == b),
+            (Self::Date(a), Self::Date(b)) => Ok(a == b),
+            (Self::DateTime(a), Self::DateTime(b)) => {
+                use crate::datetime::PyDateTime;
+                Ok(PyDateTime::fromisoformat(a)? == PyDateTime::fromisoformat(b)?)
+            }
+            (Self::Object(o), other) => o.equals(other),
+            (other, Self::Object(o)) => o.equals(other),
             (Self::Set(a) | Self::FrozenSet(a), Self::Set(b) | Self::FrozenSet(b)) => {
                 if a.len() != b.len() {
                     return Ok(false);
@@ -298,6 +309,7 @@ impl Value {
                 }
                 Ok(())
             }
+            Self::Object(o) => o.hash().map(|_| ()),
             _ => Ok(()),
         }
     }
@@ -518,6 +530,10 @@ fn encode_at(value: &Value, depth: usize) -> PyResult<Json> {
             json!({"$frozenset": s.values().iter().map(|v| encode_at(v, depth + 1)).collect::<PyResult<Vec<_>>>()?})
         }
         Value::Opaque { text, type_name } => json!({"$repr": text, "$type": type_name}),
+        Value::Object(o) => match o.canonical()? {
+            Some(value) => value,
+            None => json!({"$repr":o.repr()?,"$type":o.type_name()}),
+        },
     })
 }
 

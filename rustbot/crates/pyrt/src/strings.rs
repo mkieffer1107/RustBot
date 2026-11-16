@@ -202,9 +202,160 @@ fn arg_str(args: &[Value], i: usize) -> PyResult<&str> {
     args[i].as_str()
 }
 
+/// Construct the ordinal translation dictionary used by str.translate.
+pub fn maketrans(args: &[Value]) -> PyResult<Value> {
+    arity(args, 1, 3)?;
+    let out = Value::dict();
+    if args.len() == 1 {
+        let Value::Dict(table) = &args[0] else {
+            return Err(PyExc::type_error(
+                "if you give only one argument to maketrans it must be a dict",
+            ));
+        };
+        for (key, value) in table.borrow().iter() {
+            let ordinal = match key {
+                Value::Int(_) | Value::Bool(_) => key.clone(),
+                Value::Str(text) => {
+                    let mut chars = text.as_str().chars();
+                    let first =
+                        chars
+                            .next()
+                            .filter(|_| chars.next().is_none())
+                            .ok_or_else(|| {
+                                PyExc::value_error(
+                                    "string keys in translate table must be of length 1",
+                                )
+                            })?;
+                    Value::from(first as i64)
+                }
+                _ => {
+                    return Err(PyExc::type_error(
+                        "keys in translate table must be strings or integers",
+                    ));
+                }
+            };
+            // CPython deliberately defers validating replacement values until
+            // that character is encountered by translate.
+            out.dict_set(ordinal, value.clone())?;
+        }
+    } else {
+        let from = args[0].as_str()?;
+        let to = args[1].as_str()?;
+        if from.chars().count() != to.chars().count() {
+            return Err(PyExc::value_error(
+                "the first two maketrans arguments must have equal length",
+            ));
+        }
+        for (from, to) in from.chars().zip(to.chars()) {
+            out.dict_set(Value::from(from as i64), Value::from(to as i64))?;
+        }
+        if let Some(delete) = args.get(2) {
+            for c in delete.as_str()?.chars() {
+                out.dict_set(Value::from(c as i64), Value::None)?;
+            }
+        }
+    }
+    Ok(out)
+}
+
+pub fn translate(text: &str, table: &Value) -> PyResult<String> {
+    let mut result = String::new();
+    for c in text.chars() {
+        let ordinal = Value::from(c as i64);
+        let replacement = match table {
+            Value::Object(object) => object.get_item(&ordinal),
+            _ => crate::ops::getitem(table, &ordinal),
+        };
+        match replacement {
+            Err(error) if matches!(error.kind, "LookupError" | "KeyError" | "IndexError") => {
+                result.push(c)
+            }
+            Err(error) => return Err(error),
+            Ok(Value::None) => (),
+            Ok(Value::Str(text)) => result.push_str(text.as_str()),
+            Ok(value @ (Value::Int(_) | Value::Bool(_))) => {
+                let cp = value
+                    .as_int()?
+                    .to_u32()
+                    .filter(|cp| *cp <= 0x10ffff)
+                    .ok_or_else(|| {
+                        PyExc::value_error("character mapping must be in range(0x110000)")
+                    })?;
+                let c = char::from_u32(cp).ok_or_else(|| {
+                    PyExc::not_implemented_error(
+                        "surrogate code points are not representable by PyStr",
+                    )
+                })?;
+                result.push(c);
+            }
+            Ok(_) => {
+                return Err(PyExc::type_error(
+                    "character mapping must return integer, None or str",
+                ));
+            }
+        }
+    }
+    Ok(result)
+}
+
+pub fn format_map(text: &str, mapping: &Value) -> PyResult<String> {
+    // format_map rejects positional fields, including fields nested in specs.
+    let chars: Vec<char> = text.chars().collect();
+    let mut i = 0;
+    while i < chars.len() {
+        if chars[i] != '{' {
+            i += 1;
+            continue;
+        }
+        if chars.get(i + 1) == Some(&'{') {
+            i += 2;
+            continue;
+        }
+        let first = i + 1;
+        let mut end = first;
+        while end < chars.len() && !matches!(chars[end], '.' | '[' | ':' | '!' | '}') {
+            end += 1;
+        }
+        if end == first || chars[first..end].iter().all(|c| property(*c, 2)) {
+            return Err(PyExc::value_error(
+                "Format string contains positional fields",
+            ));
+        }
+        i += 1;
+    }
+    if !matches!(mapping, Value::Dict(_)) {
+        return Err(PyExc::type_error("format_map() argument must be a mapping"));
+    }
+    crate::formatting::template(text, &[], mapping)
+}
+
 /// Dispatch a Python `str` method. Unknown methods return `AttributeError`.
 pub fn call_method(s: &str, method: &str, args: &[Value]) -> PyResult<Value> {
     match method {
+        "encode" => {
+            arity(args, 0, 2)?;
+            crate::bytes::encode(
+                s,
+                args.first()
+                    .map(Value::as_str)
+                    .transpose()?
+                    .unwrap_or("utf-8"),
+                args.get(1)
+                    .map(Value::as_str)
+                    .transpose()?
+                    .unwrap_or("strict"),
+            )
+        }
+        "translate" => {
+            arity(args, 1, 1)?;
+            Ok(Value::from(translate(s, &args[0])?))
+        }
+        "maketrans" => maketrans(args),
+        "format_map" => {
+            arity(args, 1, 1)?;
+            Ok(Value::from(format_map(s, &args[0])?))
+        }
+
         "lower" | "upper" | "title" | "capitalize" | "casefold" | "swapcase" => {
             arity(args, 0, 0)?;
             Ok(Value::from(case(s, method)))

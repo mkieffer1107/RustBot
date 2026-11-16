@@ -24,6 +24,7 @@ fn repr_at(value: &Value, active: &mut HashSet<(u8, usize)>, depth: usize) -> Py
         Value::Float(f) => float_repr(*f),
         Value::Str(s) => quote(s.as_str()),
         Value::Opaque { text, .. } => text.clone(),
+        Value::Object(o) => o.repr()?,
         Value::Set(items) | Value::FrozenSet(items) => {
             let frozen = matches!(value, Value::FrozenSet(_));
             if items.is_empty() {
@@ -104,6 +105,7 @@ fn repr_at(value: &Value, active: &mut HashSet<(u8, usize)>, depth: usize) -> Py
 
 pub fn str(value: &Value) -> PyResult<String> {
     match value {
+        Value::Object(o) => o.str(),
         Value::Str(s) => Ok(s.as_str().into()),
         Value::Date(s) => Ok(s.clone()),
         Value::DateTime(s) => Ok(s.replacen('T', " ", 1)),
@@ -302,11 +304,23 @@ fn parse_digits(chars: &[char], i: &mut usize) -> PyResult<Option<usize>> {
 }
 
 pub fn format(value: &Value, spec: &str) -> PyResult<String> {
+    if let Value::Object(o) = value {
+        return o.format(spec);
+    }
     if spec.is_empty() {
         return str(value);
     }
     if let Value::Date(s) | Value::DateTime(s) = value {
         return date_format(s, spec);
+    }
+    if !matches!(
+        value,
+        Value::Str(_) | Value::Int(_) | Value::Bool(_) | Value::Float(_)
+    ) {
+        return Err(PyExc::type_error(format!(
+            "unsupported format string passed to {}.__format__",
+            value.type_name()
+        )));
     }
     let parsed = Spec::parse(spec)?;
     match value {

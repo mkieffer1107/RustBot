@@ -60,7 +60,47 @@ fn hash_at(value: &Value, depth: usize) -> PyResult<i64> {
                 acc as i64
             }
         }
+        Value::Date(text) => {
+            let d = crate::datetime::PyDate::fromisoformat(text)?;
+            buffer_hash(&[(d.year() >> 8) as u8, d.year() as u8, d.month(), d.day()])
+        }
+        Value::DateTime(text) => {
+            let d = crate::datetime::PyDateTime::fromisoformat(text)?;
+            if let Some(offset) = d.offset_seconds() {
+                let seconds =
+                    i64::from(d.hour()) * 3600 + i64::from(d.minute()) * 60 + i64::from(d.second())
+                        - i64::from(offset);
+                let delta = crate::datetime::PyTimedelta::new(
+                    d.date().toordinal(),
+                    seconds,
+                    i64::from(d.microsecond()),
+                )?;
+                hash_at(
+                    &Value::tuple(vec![
+                        Value::from(i64::from(delta.days())),
+                        Value::from(i64::from(delta.seconds())),
+                        Value::from(i64::from(delta.microseconds())),
+                    ]),
+                    depth + 1,
+                )?
+            } else {
+                let us = d.microsecond();
+                buffer_hash(&[
+                    (d.year() >> 8) as u8,
+                    d.year() as u8,
+                    d.month(),
+                    d.day(),
+                    d.hour(),
+                    d.minute(),
+                    d.second(),
+                    (us >> 16) as u8,
+                    (us >> 8) as u8,
+                    us as u8,
+                ])
+            }
+        }
         Value::FrozenSet(s) => frozen_set_hash(s)?,
+        Value::Object(o) => o.hash()?,
         Value::List(_) | Value::Dict(_) | Value::Set(_) => {
             return Err(PyExc::type_error(format!(
                 "unhashable type: '{}'",
@@ -68,8 +108,8 @@ fn hash_at(value: &Value, depth: usize) -> PyResult<i64> {
             )));
         }
         _ => {
-            return Err(PyExc::not_implemented_error(format!(
-                "hash for {} is not implemented",
+            return Err(PyExc::type_error(format!(
+                "unhashable type: '{}'",
                 value.type_name()
             )));
         }
@@ -123,7 +163,7 @@ fn sip_round(v: &mut [u64; 4]) {
     v[2] = v[2].rotate_left(32);
 }
 
-fn buffer_hash(bytes: &[u8]) -> i64 {
+pub(crate) fn buffer_hash(bytes: &[u8]) -> i64 {
     if bytes.is_empty() {
         return 0;
     }
@@ -166,6 +206,7 @@ struct Table {
     slots: Vec<Slot>,
     used: usize,
     fill: usize,
+    finger: usize,
 }
 
 /// Cloning aliases the mutable set. `copy` creates an independent table.
@@ -184,6 +225,7 @@ impl PySet {
             slots: vec![Slot::Empty; 8],
             used: 0,
             fill: 0,
+            finger: 0,
         })))
     }
     pub fn from_values(iter: impl IntoIterator<Item = Value>) -> PyResult<Self> {
@@ -209,6 +251,92 @@ impl PySet {
     pub fn copy(&self) -> Self {
         Self(Rc::new(RefCell::new(self.0.borrow().clone())))
     }
+    /// CPython's language-level shallow copy compacts through bulk merge.
+    pub fn python_copy(&self) -> PyResult<Self> {
+        let out = Self::new();
+        out.update_set(self)?;
+        Ok(out)
+    }
+    pub fn clear(&self) {
+        let mut t = self.0.borrow_mut();
+        t.slots = vec![Slot::Empty; 8];
+        t.used = 0;
+        t.fill = 0;
+        // CPython intentionally leaves the pop finger unchanged on clear.
+    }
+    pub fn pop(&self) -> PyResult<Value> {
+        let mut t = self.0.borrow_mut();
+        if t.used == 0 {
+            return Err(PyExc::key_error("pop from an empty set"));
+        }
+        let mask = t.slots.len() - 1;
+        let mut i = t.finger & mask;
+        loop {
+            if matches!(t.slots[i], Slot::Active { .. }) {
+                let Slot::Active { value, .. } = std::mem::replace(&mut t.slots[i], Slot::Dummy)
+                else {
+                    unreachable!()
+                };
+                t.used -= 1;
+                t.finger = i + 1;
+                return Ok(value);
+            }
+            i = (i + 1) & mask;
+        }
+    }
+    pub fn replace_contents(&self, other: &Self) {
+        if self.is_identical(other) {
+            return;
+        }
+        let mut copied = other.0.borrow().clone();
+        let mut t = self.0.borrow_mut();
+        copied.finger = t.finger; // set_swap_bodies doesn't swap pop fingers.
+        *t = copied;
+    }
+    pub fn reserve_for_update(&self, count: usize) {
+        let mut t = self.0.borrow_mut();
+        if (t.fill + count) * 5 >= (t.slots.len() - 1) * 3 {
+            let minused = (t.used + count) * 2;
+            t.resize(minused);
+        }
+    }
+    pub fn update_set(&self, other: &Self) -> PyResult<()> {
+        if self.is_identical(other) || other.is_empty() {
+            return Ok(());
+        }
+        let other = other.0.borrow().clone();
+        self.reserve_for_update(other.used);
+        {
+            let mut t = self.0.borrow_mut();
+            if t.fill == 0 {
+                if t.slots.len() == other.slots.len() && other.fill == other.used {
+                    t.slots = other.slots;
+                } else {
+                    for slot in other.slots {
+                        if let Slot::Active { hash, .. } = &slot {
+                            t.insert_clean(*hash, slot);
+                        }
+                    }
+                }
+                t.used = other.used;
+                t.fill = other.used;
+                return Ok(());
+            }
+        }
+        for slot in other.slots {
+            if let Slot::Active { value, .. } = slot {
+                self.insert(value)?;
+            }
+        }
+        Ok(())
+    }
+    pub fn compact_after_difference(&self) {
+        let mut t = self.0.borrow_mut();
+        if t.fill - t.used > (t.slots.len() - 1) / 4 {
+            let minused = t.used * if t.used > 50000 { 2 } else { 4 };
+            t.resize(minused);
+        }
+    }
     pub fn values(&self) -> Vec<Value> {
         self.0
             .borrow()
@@ -224,7 +352,7 @@ impl PySet {
             .collect()
     }
     pub fn insert(&self, value: Value) -> PyResult<bool> {
-        let h = hash(&value)?;
+        let h = element_hash(&value)?;
         let mut t = self.0.borrow_mut();
         let (pos, found) = t.lookup(&value, h, true)?;
         if found {
@@ -265,12 +393,27 @@ impl PySet {
     }
 }
 
+/// Python 3.14 adds contextual detail to set element hash failures.
+pub(crate) fn element_hash(value: &Value) -> PyResult<i64> {
+    hash(value).map_err(|error| {
+        if error.kind == "TypeError" {
+            PyExc::type_error(format!(
+                "cannot use '{}' as a set element ({})",
+                value.type_name(),
+                error.message
+            ))
+        } else {
+            error
+        }
+    })
+}
+
 fn lookup_hash(value: &Value) -> PyResult<i64> {
     // Python accepts mutable sets for membership/removal in sets of frozensets.
     if let Value::Set(s) = value {
         frozen_set_hash(s)
     } else {
-        hash(value)
+        element_hash(value)
     }
 }
 
