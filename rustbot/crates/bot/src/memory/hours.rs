@@ -52,14 +52,14 @@ let __v_84 = Value::Int("12".parse().expect("integer literal"));
 frame.store("MOST", __v_84.clone())?;
 let __v_85 = Value::Int("1".parse().expect("integer literal"));
 frame.store("LOOK_BACK", __v_85.clone())?;
-frame.store("note", { let __signature_87 = Signature { name: "note".into(), positional: vec!["memory".into(),"family".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_89 = Value::dict(); __attrs_89.dict_set(Value::from("__doc__"), Value::from("Keep the family of week the hours line named, for the turn after it."))?; __attrs_89.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_90 = Value::dict(); __attrs_89.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_86 = Frame::module(frame.globals.clone()); let mut __function_88 = NativeFunction::qualified_with_attrs("note".into(), "note".into(), "bot.memory.hours".into(), __attrs_89, move |rt, args| __py_0::note(rt, __closure_86.clone(), &__signature_87, args)); __function_88 })?;
-frame.store("remembered", { let __signature_92 = Signature { name: "remembered".into(), positional: vec!["memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_94 = Value::dict(); __attrs_94.dict_set(Value::from("__doc__"), Value::from("The family named on the last turn, or None when the hours are older than that."))?; __attrs_94.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_95 = Value::dict(); __attrs_94.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_91 = Frame::module(frame.globals.clone()); let mut __function_93 = NativeFunction::qualified_with_attrs("remembered".into(), "remembered".into(), "bot.memory.hours".into(), __attrs_94, move |rt, args| __py_1::remembered(rt, __closure_91.clone(), &__signature_92, args)); __function_93 })?;
-frame.store("answer_for", { let __signature_97 = Signature { name: "answer_for".into(), positional: vec!["text".into(),"memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_99 = Value::dict(); __attrs_99.dict_set(Value::from("__doc__"), Value::from("A reply to the follow-up about the hours just said, or None when this is not one."))?; __attrs_99.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_100 = Value::dict(); __attrs_99.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_96 = Frame::module(frame.globals.clone()); let mut __function_98 = NativeFunction::qualified_with_attrs("answer_for".into(), "answer_for".into(), "bot.memory.hours".into(), __attrs_99, move |rt, args| __py_2::answer_for(rt, __closure_96.clone(), &__signature_97, args)); __function_98 })?;
+frame.store("note", { let __signature_87 = Signature { name: "note".into(), positional: vec!["memory".into(),"family".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_89 = Value::dict(); __attrs_89.dict_set(Value::from("__doc__"), Value::from("Keep the family of week the hours line named, for the turn after it."))?; __attrs_89.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_90 = Value::dict(); __attrs_89.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_86 = Frame::module(frame.globals.clone()); let mut __function_88 = NativeFunction::qualified_with_origin("note".into(), "note".into(), "bot.memory.hours".into(), __attrs_89, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/hours.py", first: 109, last: 115, qualname: "note" }, closure: __closure_86.clone(), freevars: vec![] }, move |rt, args| __py_0::note(rt, __closure_86.clone(), &__signature_87, args)); __function_88 })?;
+frame.store("remembered", { let __signature_92 = Signature { name: "remembered".into(), positional: vec!["memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_94 = Value::dict(); __attrs_94.dict_set(Value::from("__doc__"), Value::from("The family named on the last turn, or None when the hours are older than that."))?; __attrs_94.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_95 = Value::dict(); __attrs_94.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_91 = Frame::module(frame.globals.clone()); let mut __function_93 = NativeFunction::qualified_with_origin("remembered".into(), "remembered".into(), "bot.memory.hours".into(), __attrs_94, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/hours.py", first: 118, last: 129, qualname: "remembered" }, closure: __closure_91.clone(), freevars: vec![] }, move |rt, args| __py_1::remembered(rt, __closure_91.clone(), &__signature_92, args)); __function_93 })?;
+frame.store("answer_for", { let __signature_97 = Signature { name: "answer_for".into(), positional: vec!["text".into(),"memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_99 = Value::dict(); __attrs_99.dict_set(Value::from("__doc__"), Value::from("A reply to the follow-up about the hours just said, or None when this is not one."))?; __attrs_99.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_100 = Value::dict(); __attrs_99.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_96 = Frame::module(frame.globals.clone()); let mut __function_98 = NativeFunction::qualified_with_origin("answer_for".into(), "answer_for".into(), "bot.memory.hours".into(), __attrs_99, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/hours.py", first: 132, last: 150, qualname: "answer_for" }, closure: __closure_96.clone(), freevars: vec![] }, move |rt, args| __py_2::answer_for(rt, __closure_96.clone(), &__signature_97, args)); __function_98 })?;
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Next => Ok(()), _ => Err(PyExc::runtime_error("invalid module control flow")) }
 };
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_0 { use super::*;
 // py: bot/memory/hours.py:109-115 note
 pub(super) fn note(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -84,7 +84,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_1 { use super::*;
 // py: bot/memory/hours.py:118-129 remembered
 pub(super) fn remembered(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -106,7 +106,7 @@ return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_161 = { let mut __v_162 = { let __callable_164 = { let __v_166 = frame.load(rt, "held")?; rt.getattr(&__v_166, "get")? }; let mut __args_165 = CallArgs::default(); let __v_167 = Value::from("turn"); __args_165.positional.push(__v_167); rt.call(&__callable_164, __args_165)? }; let mut __matched_163 = true; if __matched_163 { let __v_168 = { let __v_169 = { let __callable_171 = frame.load(rt, "len")?; let mut __args_172 = CallArgs::default(); let __v_173 = frame.load(rt, "turns")?; __args_172.positional.push(__v_173); rt.call(&__callable_171, __args_172)? }; let __v_170 = frame.load(rt, "LOOK_BACK")?; pyrt::ops::sub(&__v_169, &__v_170)? }; __matched_163 = !__v_162.equals(&__v_168)?; } Value::Bool(__matched_163) }; if __v_161.is_truthy() {
+let __v_161 = { let mut __v_162 = { let __callable_164 = { let __v_166 = frame.load(rt, "held")?; rt.getattr(&__v_166, "get")? }; let mut __args_165 = CallArgs::default(); let __v_167 = Value::from("turn"); __args_165.positional.push(__v_167); rt.call(&__callable_164, __args_165)? }; let mut __matched_163 = true; if __matched_163 { let __v_168 = { let __v_169 = { let __callable_171 = frame.load(rt, "len")?; let mut __args_172 = CallArgs::default(); let __v_173 = frame.load(rt, "turns")?; __args_172.positional.push(__v_173); rt.call(&__callable_171, __args_172)? }; let __v_170 = frame.load(rt, "LOOK_BACK")?; pyrt::ops::sub_rt(rt, &__v_169, &__v_170)? }; __matched_163 = !__v_162.equals(&__v_168)?; } Value::Bool(__matched_163) }; if __v_161.is_truthy() {
 return Ok(__Flow::Return(Value::None));
 } else {
 
@@ -120,7 +120,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_2 { use super::*;
 // py: bot/memory/hours.py:132-150 answer_for
 pub(super) fn answer_for(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {

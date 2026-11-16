@@ -36,16 +36,16 @@ let __v_15 = { let __callable_16 = { let __v_18 = frame.load(rt, "re")?; rt.geta
 frame.store("_SOMEONE_ELSE_BORN", __v_15.clone())?;
 let __v_22 = { let __callable_23 = { let __v_25 = frame.load(rt, "re")?; rt.getattr(&__v_25, "compile")? }; let mut __args_24 = CallArgs::default(); let __v_26 = Value::from("\\b(?:i\\s?m|i\\s+am|im|i\\s+turned|i\\s+will\\s+be)\\s+(\\d{1,3})\\b(?!\\s*(?:years?\\s+(?:ago|from)|kg|pounds?|miles?|minutes?|hours?|days?|weeks?|months?))"); __args_24.positional.push(__v_26); let __v_27 = { let __v_28 = frame.load(rt, "re")?; rt.getattr(&__v_28, "I")? }; __args_24.positional.push(__v_27); rt.call(&__callable_23, __args_24)? };
 frame.store("_ALSO_AN_AGE", __v_22.clone())?;
-frame.store("_today", { let __signature_30 = Signature { name: "_today".into(), positional: vec![], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_32 = Value::dict(); __attrs_32.dict_set(Value::from("__doc__"), Value::None)?; __attrs_32.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_33 = Value::dict(); __attrs_32.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_29 = Frame::module(frame.globals.clone()); let mut __function_31 = NativeFunction::qualified_with_attrs("_today".into(), "_today".into(), "bot.memory.a_year_of_birth".into(), __attrs_32, move |rt, args| __py_0::_today(rt, __closure_29.clone(), &__signature_30, args)); __function_31 })?;
-frame.store("_the_store", { let __signature_35 = Signature { name: "_the_store".into(), positional: vec!["memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_37 = Value::dict(); __attrs_37.dict_set(Value::from("__doc__"), Value::None)?; __attrs_37.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_38 = Value::dict(); __attrs_37.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_34 = Frame::module(frame.globals.clone()); let mut __function_36 = NativeFunction::qualified_with_attrs("_the_store".into(), "_the_store".into(), "bot.memory.a_year_of_birth".into(), __attrs_37, move |rt, args| __py_1::_the_store(rt, __closure_34.clone(), &__signature_35, args)); __function_36 })?;
-frame.store("_a_slip", { let __signature_40 = Signature { name: "_a_slip".into(), positional: vec!["clean".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_42 = Value::dict(); __attrs_42.dict_set(Value::from("__doc__"), Value::from("True when the line is only the year of birth, with no ask after it."))?; __attrs_42.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_43 = Value::dict(); __attrs_42.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_39 = Frame::module(frame.globals.clone()); let mut __function_41 = NativeFunction::qualified_with_attrs("_a_slip".into(), "_a_slip".into(), "bot.memory.a_year_of_birth".into(), __attrs_42, move |rt, args| __py_2::_a_slip(rt, __closure_39.clone(), &__signature_40, args)); __function_41 })?;
-frame.store("reply", { let __signature_45 = Signature { name: "reply".into(), positional: vec!["text".into(),"memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_47 = Value::dict(); __attrs_47.dict_set(Value::from("__doc__"), Value::from("The answer to a line that only says the year they were born, or None."))?; __attrs_47.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_48 = Value::dict(); __attrs_47.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_44 = Frame::module(frame.globals.clone()); let mut __function_46 = NativeFunction::qualified_with_attrs("reply".into(), "reply".into(), "bot.memory.a_year_of_birth".into(), __attrs_47, move |rt, args| __py_3::reply(rt, __closure_44.clone(), &__signature_45, args)); __function_46 })?;
-frame.store("observe", { let __signature_50 = Signature { name: "observe".into(), positional: vec!["text".into(),"memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_52 = Value::dict(); __attrs_52.dict_set(Value::from("__doc__"), Value::from("File a year of birth the line gives about the person as the age it works out to."))?; __attrs_52.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_53 = Value::dict(); __attrs_52.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_49 = Frame::module(frame.globals.clone()); let mut __function_51 = NativeFunction::qualified_with_attrs("observe".into(), "observe".into(), "bot.memory.a_year_of_birth".into(), __attrs_52, move |rt, args| __py_4::observe(rt, __closure_49.clone(), &__signature_50, args)); __function_51 })?;
+frame.store("_today", { let __signature_30 = Signature { name: "_today".into(), positional: vec![], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_32 = Value::dict(); __attrs_32.dict_set(Value::from("__doc__"), Value::None)?; __attrs_32.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_33 = Value::dict(); __attrs_32.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_29 = Frame::module(frame.globals.clone()); let mut __function_31 = NativeFunction::qualified_with_origin("_today".into(), "_today".into(), "bot.memory.a_year_of_birth".into(), __attrs_32, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/a_year_of_birth.py", first: 47, last: 48, qualname: "_today" }, closure: __closure_29.clone(), freevars: vec![] }, move |rt, args| __py_0::_today(rt, __closure_29.clone(), &__signature_30, args)); __function_31 })?;
+frame.store("_the_store", { let __signature_35 = Signature { name: "_the_store".into(), positional: vec!["memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_37 = Value::dict(); __attrs_37.dict_set(Value::from("__doc__"), Value::None)?; __attrs_37.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_38 = Value::dict(); __attrs_37.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_34 = Frame::module(frame.globals.clone()); let mut __function_36 = NativeFunction::qualified_with_origin("_the_store".into(), "_the_store".into(), "bot.memory.a_year_of_birth".into(), __attrs_37, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/a_year_of_birth.py", first: 51, last: 53, qualname: "_the_store" }, closure: __closure_34.clone(), freevars: vec![] }, move |rt, args| __py_1::_the_store(rt, __closure_34.clone(), &__signature_35, args)); __function_36 })?;
+frame.store("_a_slip", { let __signature_40 = Signature { name: "_a_slip".into(), positional: vec!["clean".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_42 = Value::dict(); __attrs_42.dict_set(Value::from("__doc__"), Value::from("True when the line is only the year of birth, with no ask after it."))?; __attrs_42.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_43 = Value::dict(); __attrs_42.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_39 = Frame::module(frame.globals.clone()); let mut __function_41 = NativeFunction::qualified_with_origin("_a_slip".into(), "_a_slip".into(), "bot.memory.a_year_of_birth".into(), __attrs_42, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/a_year_of_birth.py", first: 56, last: 64, qualname: "_a_slip" }, closure: __closure_39.clone(), freevars: vec![] }, move |rt, args| __py_2::_a_slip(rt, __closure_39.clone(), &__signature_40, args)); __function_41 })?;
+frame.store("reply", { let __signature_45 = Signature { name: "reply".into(), positional: vec!["text".into(),"memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_47 = Value::dict(); __attrs_47.dict_set(Value::from("__doc__"), Value::from("The answer to a line that only says the year they were born, or None."))?; __attrs_47.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_48 = Value::dict(); __attrs_47.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_44 = Frame::module(frame.globals.clone()); let mut __function_46 = NativeFunction::qualified_with_origin("reply".into(), "reply".into(), "bot.memory.a_year_of_birth".into(), __attrs_47, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/a_year_of_birth.py", first: 67, last: 91, qualname: "reply" }, closure: __closure_44.clone(), freevars: vec![] }, move |rt, args| __py_3::reply(rt, __closure_44.clone(), &__signature_45, args)); __function_46 })?;
+frame.store("observe", { let __signature_50 = Signature { name: "observe".into(), positional: vec!["text".into(),"memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_52 = Value::dict(); __attrs_52.dict_set(Value::from("__doc__"), Value::from("File a year of birth the line gives about the person as the age it works out to."))?; __attrs_52.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_53 = Value::dict(); __attrs_52.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_49 = Frame::module(frame.globals.clone()); let mut __function_51 = NativeFunction::qualified_with_origin("observe".into(), "observe".into(), "bot.memory.a_year_of_birth".into(), __attrs_52, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/a_year_of_birth.py", first: 94, last: 122, qualname: "observe" }, closure: __closure_49.clone(), freevars: vec![] }, move |rt, args| __py_4::observe(rt, __closure_49.clone(), &__signature_50, args)); __function_51 })?;
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Next => Ok(()), _ => Err(PyExc::runtime_error("invalid module control flow")) }
 };
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_0 { use super::*;
 // py: bot/memory/a_year_of_birth.py:47-48 _today
 pub(super) fn _today(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -59,7 +59,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_1 { use super::*;
 // py: bot/memory/a_year_of_birth.py:51-53 _the_store
 pub(super) fn _the_store(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -76,7 +76,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_2 { use super::*;
 // py: bot/memory/a_year_of_birth.py:56-64 _a_slip
 pub(super) fn _a_slip(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -101,7 +101,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_3 { use super::*;
 // py: bot/memory/a_year_of_birth.py:67-91 reply
 pub(super) fn reply(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -139,7 +139,7 @@ Ok(__Flow::Next)
 })() } else { Err(__exception_145.clone()) } }),
 };
 let __flow_153 = __outcome_144?; if !matches!(__flow_153, __Flow::Next) { return Ok(__flow_153); }
-let __v_154 = { let __v_155 = { let __v_157 = { let __callable_158 = frame.load(rt, "_today")?; let mut __args_159 = CallArgs::default(); rt.call(&__callable_158, __args_159)? }; rt.getattr(&__v_157, "year")? }; let __v_156 = frame.load(rt, "year")?; pyrt::ops::sub(&__v_155, &__v_156)? };
+let __v_154 = { let __v_155 = { let __v_157 = { let __callable_158 = frame.load(rt, "_today")?; let mut __args_159 = CallArgs::default(); rt.call(&__callable_158, __args_159)? }; rt.getattr(&__v_157, "year")? }; let __v_156 = frame.load(rt, "year")?; pyrt::ops::sub_rt(rt, &__v_155, &__v_156)? };
 frame.store("turned", __v_154.clone())?;
 let __outcome_160: PyResult<__Flow> = match (|| -> PyResult<__Flow> {
 let __v_162 = { let __callable_163 = { let __v_165 = { let __callable_166 = frame.load(rt, "_the_store")?; let mut __args_167 = CallArgs::default(); let __v_168 = frame.load(rt, "memory")?; __args_167.positional.push(__v_168); rt.call(&__callable_166, __args_167)? }; rt.getattr(&__v_165, "get")? }; let mut __args_164 = CallArgs::default(); let __v_169 = Value::from("age"); __args_164.positional.push(__v_169); rt.call(&__callable_163, __args_164)? };
@@ -178,7 +178,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_4 { use super::*;
 // py: bot/memory/a_year_of_birth.py:94-122 observe
 pub(super) fn observe(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -230,7 +230,7 @@ return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_260 = { let __v_261 = frame.load(rt, "this_year")?; let __v_262 = frame.load(rt, "year")?; pyrt::ops::sub(&__v_261, &__v_262)? };
+let __v_260 = { let __v_261 = frame.load(rt, "this_year")?; let __v_262 = frame.load(rt, "year")?; pyrt::ops::sub_rt(rt, &__v_261, &__v_262)? };
 frame.store("turned", __v_260.clone())?;
 let __v_263 = { let __v_264 = { let mut __v_265 = Value::Int("0".parse().expect("integer literal")); let mut __matched_266 = true; if __matched_266 { let __v_267 = frame.load(rt, "turned")?; __matched_266 = pyrt::ops::compare(&__v_265, &__v_267)?.is_some_and(|o| o.is_lt()); __v_265 = __v_267; } if __matched_266 { let __v_268 = Value::Int("130".parse().expect("integer literal")); __matched_266 = pyrt::ops::compare(&__v_265, &__v_268)?.is_some_and(|o| o.is_lt()); } Value::Bool(__matched_266) }; Value::Bool(!__v_264.is_truthy()) }; if __v_263.is_truthy() {
 return Ok(__Flow::Return(Value::None));

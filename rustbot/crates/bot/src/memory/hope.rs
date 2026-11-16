@@ -37,16 +37,16 @@ let __v_57 = { let __callable_58 = { let __v_60 = frame.load(rt, "re")?; rt.geta
 frame.store("_LUCK", __v_57.clone())?;
 let __v_64 = { let __callable_65 = { let __v_67 = frame.load(rt, "re")?; rt.getattr(&__v_67, "compile")? }; let mut __args_66 = CallArgs::default(); let __v_68 = Value::from("\\b(?:good|best\\s+of|all\\s+the)\\s+luck\\b|\\ball\\s+the\\s+best\\b"); __args_66.positional.push(__v_68); let __v_69 = { let __v_70 = frame.load(rt, "re")?; rt.getattr(&__v_70, "I")? }; __args_66.positional.push(__v_69); rt.call(&__callable_65, __args_66)? };
 frame.store("_GOOD_LUCK", __v_64.clone())?;
-frame.store("_group", { let __signature_72 = Signature { name: "_group".into(), positional: vec!["line".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_74 = Value::dict(); __attrs_74.dict_set(Value::from("__doc__"), Value::None)?; __attrs_74.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_75 = Value::dict(); __attrs_74.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_71 = Frame::module(frame.globals.clone()); let mut __function_73 = NativeFunction::qualified_with_attrs("_group".into(), "_group".into(), "bot.memory.hope".into(), __attrs_74, move |rt, args| __py_0::_group(rt, __closure_71.clone(), &__signature_72, args)); __function_73 })?;
+frame.store("_group", { let __signature_72 = Signature { name: "_group".into(), positional: vec!["line".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_74 = Value::dict(); __attrs_74.dict_set(Value::from("__doc__"), Value::None)?; __attrs_74.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_75 = Value::dict(); __attrs_74.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_71 = Frame::module(frame.globals.clone()); let mut __function_73 = NativeFunction::qualified_with_origin("_group".into(), "_group".into(), "bot.memory.hope".into(), __attrs_74, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/hope.py", first: 104, last: 113, qualname: "_group" }, closure: __closure_71.clone(), freevars: vec![] }, move |rt, args| __py_0::_group(rt, __closure_71.clone(), &__signature_72, args)); __function_73 })?;
 let __v_76 = { let __callable_77 = { let __v_79 = frame.load(rt, "re")?; rt.getattr(&__v_79, "compile")? }; let mut __args_78 = CallArgs::default(); let __v_80 = Value::from("\\bhope\\s+(?:you|your|he|she|they|it\\s+goes|the|everything)\\b"); __args_78.positional.push(__v_80); let __v_81 = { let __v_82 = frame.load(rt, "re")?; rt.getattr(&__v_82, "I")? }; __args_78.positional.push(__v_81); rt.call(&__callable_77, __args_78)? };
 frame.store("FOR_SOMEONE", __v_76.clone())?;
-frame.store("reading", { let __signature_84 = Signature { name: "reading".into(), positional: vec!["text".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_86 = Value::dict(); __attrs_86.dict_set(Value::from("__doc__"), Value::from("Whether the whole line is a hopeful aside about the thing in hand."))?; __attrs_86.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_87 = Value::dict(); __attrs_86.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_83 = Frame::module(frame.globals.clone()); let mut __function_85 = NativeFunction::qualified_with_attrs("reading".into(), "reading".into(), "bot.memory.hope".into(), __attrs_86, move |rt, args| __py_1::reading(rt, __closure_83.clone(), &__signature_84, args)); __function_85 })?;
-frame.store("answer_for", { let __signature_89 = Signature { name: "answer_for".into(), positional: vec!["text".into(),"memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_91 = Value::dict(); __attrs_91.dict_set(Value::from("__doc__"), Value::from("The brief reply to a hopeful aside, or None when the line is not one."))?; __attrs_91.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_92 = Value::dict(); __attrs_91.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_88 = Frame::module(frame.globals.clone()); let mut __function_90 = NativeFunction::qualified_with_attrs("answer_for".into(), "answer_for".into(), "bot.memory.hope".into(), __attrs_91, move |rt, args| __py_2::answer_for(rt, __closure_88.clone(), &__signature_89, args)); __function_90 })?;
+frame.store("reading", { let __signature_84 = Signature { name: "reading".into(), positional: vec!["text".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_86 = Value::dict(); __attrs_86.dict_set(Value::from("__doc__"), Value::from("Whether the whole line is a hopeful aside about the thing in hand."))?; __attrs_86.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_87 = Value::dict(); __attrs_86.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_83 = Frame::module(frame.globals.clone()); let mut __function_85 = NativeFunction::qualified_with_origin("reading".into(), "reading".into(), "bot.memory.hope".into(), __attrs_86, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/hope.py", first: 121, last: 128, qualname: "reading" }, closure: __closure_83.clone(), freevars: vec![] }, move |rt, args| __py_1::reading(rt, __closure_83.clone(), &__signature_84, args)); __function_85 })?;
+frame.store("answer_for", { let __signature_89 = Signature { name: "answer_for".into(), positional: vec!["text".into(),"memory".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_91 = Value::dict(); __attrs_91.dict_set(Value::from("__doc__"), Value::from("The brief reply to a hopeful aside, or None when the line is not one."))?; __attrs_91.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_92 = Value::dict(); __attrs_91.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_88 = Frame::module(frame.globals.clone()); let mut __function_90 = NativeFunction::qualified_with_origin("answer_for".into(), "answer_for".into(), "bot.memory.hope".into(), __attrs_91, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/hope.py", first: 131, last: 144, qualname: "answer_for" }, closure: __closure_88.clone(), freevars: vec![] }, move |rt, args| __py_2::answer_for(rt, __closure_88.clone(), &__signature_89, args)); __function_90 })?;
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Next => Ok(()), _ => Err(PyExc::runtime_error("invalid module control flow")) }
 };
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_0 { use super::*;
 // py: bot/memory/hope.py:104-113 _group
 pub(super) fn _group(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -80,7 +80,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_1 { use super::*;
 // py: bot/memory/hope.py:121-128 reading
 pub(super) fn reading(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -107,7 +107,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_2 { use super::*;
 // py: bot/memory/hope.py:131-144 answer_for
 pub(super) fn answer_for(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -129,7 +129,7 @@ let __v_164 = { let __v_165 = { let __callable_166 = frame.load(rt, "isinstance"
 frame.store("count", __v_164.clone())?;
 let __v_172 = frame.load(rt, "count")?;
 let __v_173 = frame.load(rt, "memory")?; let __v_174 = Value::from("hope_said"); pyrt::containers::setitem(&__v_173, &__v_174, __v_172.clone())?;
-return Ok(__Flow::Return({ let __v_175 = frame.load(rt, "pool")?; let __v_176 = { let __v_177 = { let __v_179 = frame.load(rt, "count")?; let __v_180 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::sub(&__v_179, &__v_180)? }; let __v_178 = { let __callable_181 = frame.load(rt, "len")?; let mut __args_182 = CallArgs::default(); let __v_183 = frame.load(rt, "pool")?; __args_182.positional.push(__v_183); rt.call(&__callable_181, __args_182)? }; pyrt::ops::modulo(&__v_177, &__v_178)? }; pyrt::ops::getitem(&__v_175, &__v_176)? }));
+return Ok(__Flow::Return({ let __v_175 = frame.load(rt, "pool")?; let __v_176 = { let __v_177 = { let __v_179 = frame.load(rt, "count")?; let __v_180 = Value::Int("1".parse().expect("integer literal")); pyrt::ops::sub_rt(rt, &__v_179, &__v_180)? }; let __v_178 = { let __callable_181 = frame.load(rt, "len")?; let mut __args_182 = CallArgs::default(); let __v_183 = frame.load(rt, "pool")?; __args_182.positional.push(__v_183); rt.call(&__callable_181, __args_182)? }; pyrt::ops::modulo(&__v_177, &__v_178)? }; pyrt::ops::getitem(&__v_175, &__v_176)? }));
 } else {
 
 }

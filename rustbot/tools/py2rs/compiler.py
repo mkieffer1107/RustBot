@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import ast
 from dataclasses import dataclass
+import json
 import types
 
 
@@ -45,6 +46,43 @@ BINOPS = {ast.Add: "add", ast.Sub: "sub", ast.Mult: "mul", ast.Div: "true_div",
           ast.FloorDiv: "floor_div", ast.Mod: "modulo", ast.Pow: "power"}
 BITOPS = {ast.BitAnd: "&", ast.BitOr: "|", ast.BitXor: "^", ast.LShift: "<<", ast.RShift: ">>"}
 RUST_KEYWORDS = set("as async await break const continue crate dyn else enum extern false fn for gen if impl in let loop match mod move mut pub ref return self Self static struct super trait true type unsafe use where while abstract become box do final macro override priv typeof unsized virtual yield try".split())
+
+
+class NotLiteral(Exception):
+    pass
+
+
+def literal_data(node: ast.expr, depth: int = 0):
+    """Encode data only; never evaluate names, calls, operators or set folding."""
+    if depth > 32:
+        raise NotLiteral
+    if isinstance(node, ast.Constant):
+        value = node.value
+        if value is None or type(value) in (bool, int): return value
+        if type(value) is str:
+            if any(0xD800 <= ord(c) <= 0xDFFF for c in value): raise NotLiteral
+            return value
+        if type(value) is float: return {"$float": repr(value)}
+        raise NotLiteral
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.UAdd, ast.USub)):
+        operand = node.operand
+        signs = [node.op]
+        while isinstance(operand, ast.UnaryOp) and isinstance(operand.op, (ast.UAdd, ast.USub)):
+            signs.append(operand.op); operand = operand.operand
+        if not isinstance(operand, ast.Constant) or type(operand.value) not in (bool, int, float): raise NotLiteral
+        value = operand.value
+        for sign in reversed(signs): value = -value if isinstance(sign, ast.USub) else +value
+        return {"$float": repr(value)} if type(value) is float else value
+    if isinstance(node, (ast.List, ast.Tuple)):
+        values = [literal_data(item, depth + 1) for item in node.elts]
+        return {"$tuple": values} if isinstance(node, ast.Tuple) else values
+    if isinstance(node, ast.Dict):
+        if any(key is None for key in node.keys): raise NotLiteral
+        # Always use tagged pairs: ordinary '$tuple'/'$float' Python keys must
+        # remain literal dictionary data, and duplicate key order is significant.
+        return {"$dict": [[literal_data(key, depth + 1), literal_data(value, depth + 1)]
+                          for key, value in zip(node.keys, node.values)]}
+    raise NotLiteral
 
 
 class Compiler:
@@ -152,6 +190,15 @@ class Compiler:
         self.fail(op)
 
     def expr(self, node: ast.expr) -> str:
+        if isinstance(node, (ast.List, ast.Tuple, ast.Dict)):
+            try:
+                payload = json.dumps(literal_data(node), ensure_ascii=False, separators=(',', ':'))
+            except NotLiteral:
+                pass
+            else:
+                elements = len(node.keys) if isinstance(node, ast.Dict) else len(node.elts)
+                if elements >= 24 or len(payload.encode('utf-8')) >= 256:
+                    return f"pyrt::literals::decode({rust_string(payload)})?"
         if isinstance(node, ast.Constant): return self.value(node.value, node)
         if isinstance(node, ast.Name): return f"{self.frame}.load(rt, {rust_string(node.id)})?"
         if isinstance(node, ast.Attribute):

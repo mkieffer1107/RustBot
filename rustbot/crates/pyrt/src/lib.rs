@@ -14,6 +14,7 @@ pub mod flow;
 pub mod formatting;
 pub mod frame;
 pub mod math;
+pub mod literals;
 pub mod numeric_objects;
 pub mod object;
 pub mod ops;

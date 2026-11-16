@@ -47,19 +47,19 @@ let __v_66 = { let __callable_67 = frame.load(rt, "frozenset")?; let mut __args_
 frame.store("GIVEN", __v_66.clone())?;
 let __v_73 = { let __callable_74 = frame.load(rt, "frozenset")?; let mut __args_75 = CallArgs::default(); let __v_76 = { let __callable_77 = { let __v_79 = Value::from("\nanything everything much sorted sorted organised organized booked arranged planned done\nstarted chosen picked\n"); rt.getattr(&__v_79, "split")? }; let mut __args_78 = CallArgs::default(); rt.call(&__callable_77, __args_78)? }; __args_75.positional.push(__v_76); rt.call(&__callable_74, __args_75)? };
 frame.store("GENERIC", __v_73.clone())?;
-frame.store("_clauses", { let __signature_81 = Signature { name: "_clauses".into(), positional: vec!["text".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_83 = Value::dict(); __attrs_83.dict_set(Value::from("__doc__"), Value::None)?; __attrs_83.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_84 = Value::dict(); __attrs_83.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_80 = Frame::module(frame.globals.clone()); let mut __function_82 = NativeFunction::qualified_with_attrs("_clauses".into(), "_clauses".into(), "bot.memory.pending".into(), __attrs_83, move |rt, args| __py_0::_clauses(rt, __closure_80.clone(), &__signature_81, args)); __function_82 })?;
+frame.store("_clauses", { let __signature_81 = Signature { name: "_clauses".into(), positional: vec!["text".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_83 = Value::dict(); __attrs_83.dict_set(Value::from("__doc__"), Value::None)?; __attrs_83.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_84 = Value::dict(); __attrs_83.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_80 = Frame::module(frame.globals.clone()); let mut __function_82 = NativeFunction::qualified_with_origin("_clauses".into(), "_clauses".into(), "bot.memory.pending".into(), __attrs_83, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/pending.py", first: 76, last: 78, qualname: "_clauses" }, closure: __closure_80.clone(), freevars: vec![] }, move |rt, args| __py_0::_clauses(rt, __closure_80.clone(), &__signature_81, args)); __function_82 })?;
 let __v_85 = { let __callable_86 = frame.load(rt, "frozenset")?; let mut __args_87 = CallArgs::default(); let __v_88 = { let __callable_89 = { let __v_91 = Value::from("a an the my our your his her their for to of in on at with and yet"); rt.getattr(&__v_91, "split")? }; let mut __args_90 = CallArgs::default(); rt.call(&__callable_89, __args_90)? }; __args_87.positional.push(__v_88); rt.call(&__callable_86, __args_87)? };
 frame.store("STOP", __v_85.clone())?;
-frame.store("_content", { let __signature_93 = Signature { name: "_content".into(), positional: vec!["text".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_95 = Value::dict(); __attrs_95.dict_set(Value::from("__doc__"), Value::None)?; __attrs_95.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_96 = Value::dict(); __attrs_95.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_92 = Frame::module(frame.globals.clone()); let mut __function_94 = NativeFunction::qualified_with_attrs("_content".into(), "_content".into(), "bot.memory.pending".into(), __attrs_95, move |rt, args| __py_1::_content(rt, __closure_92.clone(), &__signature_93, args)); __function_94 })?;
-frame.store("_what_is_missing", { let __signature_98 = Signature { name: "_what_is_missing".into(), positional: vec!["text".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_100 = Value::dict(); __attrs_100.dict_set(Value::from("__doc__"), Value::from("The thing not got yet and the phrase it was said in, or None."))?; __attrs_100.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_101 = Value::dict(); __attrs_100.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_97 = Frame::module(frame.globals.clone()); let mut __function_99 = NativeFunction::qualified_with_attrs("_what_is_missing".into(), "_what_is_missing".into(), "bot.memory.pending".into(), __attrs_100, move |rt, args| __py_2::_what_is_missing(rt, __closure_97.clone(), &__signature_98, args)); __function_99 })?;
-frame.store("_the_occasion", { let __signature_103 = Signature { name: "_the_occasion".into(), positional: vec!["text".into(),"missing".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_105 = Value::dict(); __attrs_105.dict_set(Value::from("__doc__"), Value::from("The occasion the missing thing is for, as the person said it, or None."))?; __attrs_105.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_106 = Value::dict(); __attrs_105.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_102 = Frame::module(frame.globals.clone()); let mut __function_104 = NativeFunction::qualified_with_attrs("_the_occasion".into(), "_the_occasion".into(), "bot.memory.pending".into(), __attrs_105, move |rt, args| __py_3::_the_occasion(rt, __closure_102.clone(), &__signature_103, args)); __function_104 })?;
-frame.store("as_question", { let __signature_108 = Signature { name: "as_question".into(), positional: vec!["text".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_110 = Value::dict(); __attrs_110.dict_set(Value::from("__doc__"), Value::from("The question the line left out, or None when it left out nothing the base can answer."))?; __attrs_110.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_111 = Value::dict(); __attrs_110.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_107 = Frame::module(frame.globals.clone()); let mut __function_109 = NativeFunction::qualified_with_attrs("as_question".into(), "as_question".into(), "bot.memory.pending".into(), __attrs_110, move |rt, args| __py_4::as_question(rt, __closure_107.clone(), &__signature_108, args)); __function_109 })?;
-frame.store("answer", { let __default_115 = Value::None; let __signature_113 = Signature { name: "answer".into(), positional: vec!["text".into(),"memory".into()], positional_only: 0, defaults: vec![__default_115], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_116 = Value::dict(); __attrs_116.dict_set(Value::from("__doc__"), Value::from("The entry's answer to the question the line left out, or None to leave the line as it is."))?; __attrs_116.dict_set(Value::from("__defaults__"), Value::tuple(__signature_113.defaults.clone()))?; let __kwdefaults_117 = Value::dict(); __attrs_116.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_112 = Frame::module(frame.globals.clone()); let mut __function_114 = NativeFunction::qualified_with_attrs("answer".into(), "answer".into(), "bot.memory.pending".into(), __attrs_116, move |rt, args| __py_5::answer(rt, __closure_112.clone(), &__signature_113, args)); __function_114 })?;
+frame.store("_content", { let __signature_93 = Signature { name: "_content".into(), positional: vec!["text".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_95 = Value::dict(); __attrs_95.dict_set(Value::from("__doc__"), Value::None)?; __attrs_95.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_96 = Value::dict(); __attrs_95.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_92 = Frame::module(frame.globals.clone()); let mut __function_94 = NativeFunction::qualified_with_origin("_content".into(), "_content".into(), "bot.memory.pending".into(), __attrs_95, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/pending.py", first: 85, last: 86, qualname: "_content" }, closure: __closure_92.clone(), freevars: vec![] }, move |rt, args| __py_1::_content(rt, __closure_92.clone(), &__signature_93, args)); __function_94 })?;
+frame.store("_what_is_missing", { let __signature_98 = Signature { name: "_what_is_missing".into(), positional: vec!["text".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_100 = Value::dict(); __attrs_100.dict_set(Value::from("__doc__"), Value::from("The thing not got yet and the phrase it was said in, or None."))?; __attrs_100.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_101 = Value::dict(); __attrs_100.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_97 = Frame::module(frame.globals.clone()); let mut __function_99 = NativeFunction::qualified_with_origin("_what_is_missing".into(), "_what_is_missing".into(), "bot.memory.pending".into(), __attrs_100, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/pending.py", first: 89, last: 102, qualname: "_what_is_missing" }, closure: __closure_97.clone(), freevars: vec![] }, move |rt, args| __py_2::_what_is_missing(rt, __closure_97.clone(), &__signature_98, args)); __function_99 })?;
+frame.store("_the_occasion", { let __signature_103 = Signature { name: "_the_occasion".into(), positional: vec!["text".into(),"missing".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_105 = Value::dict(); __attrs_105.dict_set(Value::from("__doc__"), Value::from("The occasion the missing thing is for, as the person said it, or None."))?; __attrs_105.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_106 = Value::dict(); __attrs_105.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_102 = Frame::module(frame.globals.clone()); let mut __function_104 = NativeFunction::qualified_with_origin("_the_occasion".into(), "_the_occasion".into(), "bot.memory.pending".into(), __attrs_105, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/pending.py", first: 105, last: 130, qualname: "_the_occasion" }, closure: __closure_102.clone(), freevars: vec![] }, move |rt, args| __py_3::_the_occasion(rt, __closure_102.clone(), &__signature_103, args)); __function_104 })?;
+frame.store("as_question", { let __signature_108 = Signature { name: "as_question".into(), positional: vec!["text".into()], positional_only: 0, defaults: vec![], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_110 = Value::dict(); __attrs_110.dict_set(Value::from("__doc__"), Value::from("The question the line left out, or None when it left out nothing the base can answer."))?; __attrs_110.dict_set(Value::from("__defaults__"), Value::None)?; let __kwdefaults_111 = Value::dict(); __attrs_110.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_107 = Frame::module(frame.globals.clone()); let mut __function_109 = NativeFunction::qualified_with_origin("as_question".into(), "as_question".into(), "bot.memory.pending".into(), __attrs_110, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/pending.py", first: 133, last: 154, qualname: "as_question" }, closure: __closure_107.clone(), freevars: vec![] }, move |rt, args| __py_4::as_question(rt, __closure_107.clone(), &__signature_108, args)); __function_109 })?;
+frame.store("answer", { let __default_115 = Value::None; let __signature_113 = Signature { name: "answer".into(), positional: vec!["text".into(),"memory".into()], positional_only: 0, defaults: vec![__default_115], keyword_only: vec![], varargs: None, varkw: None }; let __attrs_116 = Value::dict(); __attrs_116.dict_set(Value::from("__doc__"), Value::from("The entry's answer to the question the line left out, or None to leave the line as it is."))?; __attrs_116.dict_set(Value::from("__defaults__"), Value::tuple(__signature_113.defaults.clone()))?; let __kwdefaults_117 = Value::dict(); __attrs_116.dict_set(Value::from("__kwdefaults__"), Value::None)?; let __closure_112 = Frame::module(frame.globals.clone()); let mut __function_114 = NativeFunction::qualified_with_origin("answer".into(), "answer".into(), "bot.memory.pending".into(), __attrs_116, pyrt::object::FunctionOrigin { span: pyrt::runtime::SourceSpan { file: "bot/memory/pending.py", first: 157, last: 172, qualname: "answer" }, closure: __closure_112.clone(), freevars: vec![] }, move |rt, args| __py_5::answer(rt, __closure_112.clone(), &__signature_113, args)); __function_114 })?;
 Ok(__Flow::Next)
 })()?;
 match flow { __Flow::Next => Ok(()), _ => Err(PyExc::runtime_error("invalid module control flow")) }
 };
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_0 { use super::*;
 // py: bot/memory/pending.py:76-78 _clauses
 pub(super) fn _clauses(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -73,7 +73,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_1 { use super::*;
 // py: bot/memory/pending.py:85-86 _content
 pub(super) fn _content(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -87,7 +87,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_2 { use super::*;
 // py: bot/memory/pending.py:89-102 _what_is_missing
 pub(super) fn _what_is_missing(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -139,7 +139,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_3 { use super::*;
 // py: bot/memory/pending.py:105-130 _the_occasion
 pub(super) fn _the_occasion(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -182,7 +182,7 @@ frame.store("occ", __v_258.clone())?;
 }
 let __v_262 = { let __callable_263 = { let __v_265 = { let __callable_266 = { let __v_268 = frame.load(rt, "re")?; rt.getattr(&__v_268, "sub")? }; let mut __args_267 = CallArgs::default(); let __v_269 = Value::from("\\s+(?:in|on|at|for|to|next|this|the|with|of|yet)$"); __args_267.positional.push(__v_269); let __v_270 = Value::from(""); __args_267.positional.push(__v_270); let __v_271 = frame.load(rt, "occ")?; __args_267.positional.push(__v_271); rt.call(&__callable_266, __args_267)? }; rt.getattr(&__v_265, "strip")? }; let mut __args_264 = CallArgs::default(); let __v_272 = Value::from(" -"); __args_264.positional.push(__v_272); rt.call(&__callable_263, __args_264)? };
 frame.store("occ", __v_262.clone())?;
-let __v_273 = { let mut __v_274 = { let __v_275 = frame.load(rt, "occ")?; Value::Bool(!__v_275.is_truthy()) }; if !__v_274.is_truthy() { __v_274 = { let __v_276 = { let __callable_278 = frame.load(rt, "_content")?; let mut __args_279 = CallArgs::default(); let __v_280 = frame.load(rt, "occ")?; __args_279.positional.push(__v_280); rt.call(&__callable_278, __args_279)? }; let __v_277 = { let __callable_281 = frame.load(rt, "_content")?; let mut __args_282 = CallArgs::default(); let __v_283 = frame.load(rt, "missing")?; __args_282.positional.push(__v_283); rt.call(&__callable_281, __args_282)? }; pyrt::ops::bitwise("&", &__v_276, &__v_277)? }; } __v_274 }; if __v_273.is_truthy() {
+let __v_273 = { let mut __v_274 = { let __v_275 = frame.load(rt, "occ")?; Value::Bool(!__v_275.is_truthy()) }; if !__v_274.is_truthy() { __v_274 = { let __v_276 = { let __callable_278 = frame.load(rt, "_content")?; let mut __args_279 = CallArgs::default(); let __v_280 = frame.load(rt, "occ")?; __args_279.positional.push(__v_280); rt.call(&__callable_278, __args_279)? }; let __v_277 = { let __callable_281 = frame.load(rt, "_content")?; let mut __args_282 = CallArgs::default(); let __v_283 = frame.load(rt, "missing")?; __args_282.positional.push(__v_283); rt.call(&__callable_281, __args_282)? }; pyrt::ops::bitwise_rt(rt, "&", &__v_276, &__v_277)? }; } __v_274 }; if __v_273.is_truthy() {
 return Ok(__Flow::Continue);
 } else {
 
@@ -207,7 +207,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_4 { use super::*;
 // py: bot/memory/pending.py:133-154 as_question
 pub(super) fn as_question(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {
@@ -236,7 +236,7 @@ return Ok(__Flow::Return(Value::None));
 }
 let __v_338 = frame.load(rt, "missing")?;
 let __unpack_339 = pyrt::containers::unpack(rt, &__v_338.clone(), 2, 0, false)?; frame.store("thing", __unpack_339[0].clone())?; frame.store("phrase", __unpack_339[1].clone())?;
-let __v_340 = { let __v_341 = { let __callable_343 = frame.load(rt, "_content")?; let mut __args_344 = CallArgs::default(); let __v_345 = frame.load(rt, "phrase")?; __args_344.positional.push(__v_345); rt.call(&__callable_343, __args_344)? }; let __v_342 = { let __callable_346 = frame.load(rt, "_content")?; let mut __args_347 = CallArgs::default(); let __v_348 = frame.load(rt, "thing")?; __args_347.positional.push(__v_348); rt.call(&__callable_346, __args_347)? }; pyrt::ops::bitwise("|", &__v_341, &__v_342)? };
+let __v_340 = { let __v_341 = { let __callable_343 = frame.load(rt, "_content")?; let mut __args_344 = CallArgs::default(); let __v_345 = frame.load(rt, "phrase")?; __args_344.positional.push(__v_345); rt.call(&__callable_343, __args_344)? }; let __v_342 = { let __callable_346 = frame.load(rt, "_content")?; let mut __args_347 = CallArgs::default(); let __v_348 = frame.load(rt, "thing")?; __args_347.positional.push(__v_348); rt.call(&__callable_346, __args_347)? }; pyrt::ops::bitwise_rt(rt, "|", &__v_341, &__v_342)? };
 frame.store("words", __v_340.clone())?;
 let __v_349 = { let __callable_350 = frame.load(rt, "_the_occasion")?; let mut __args_351 = CallArgs::default(); let __v_352 = frame.load(rt, "said")?; __args_351.positional.push(__v_352); let __v_353 = frame.load(rt, "thing")?; __args_351.positional.push(__v_353); rt.call(&__callable_350, __args_351)? };
 frame.store("occasion", __v_349.clone())?;
@@ -245,17 +245,17 @@ return Ok(__Flow::Return(Value::None));
 } else {
 
 }
-let __v_356 = { let __v_357 = frame.load(rt, "words")?; let __v_358 = frame.load(rt, "GIVEN")?; pyrt::ops::bitwise("&", &__v_357, &__v_358)? }; if __v_356.is_truthy() {
+let __v_356 = { let __v_357 = frame.load(rt, "words")?; let __v_358 = frame.load(rt, "GIVEN")?; pyrt::ops::bitwise_rt(rt, "&", &__v_357, &__v_358)? }; if __v_356.is_truthy() {
 return Ok(__Flow::Return({ let __v_359 = Value::from("what should i get for "); let __v_360 = frame.load(rt, "occasion")?; pyrt::ops::add(&__v_359, &__v_360)? }));
 } else {
 
 }
-let __v_361 = { let mut __v_362 = { let __v_363 = frame.load(rt, "words")?; let __v_364 = frame.load(rt, "WORN")?; pyrt::ops::bitwise("&", &__v_363, &__v_364)? }; if !__v_362.is_truthy() { __v_362 = { let mut __v_365 = Value::from("wear"); let mut __matched_366 = true; if __matched_366 { let __v_367 = frame.load(rt, "words")?; __matched_366 = pyrt::ops::contains(&__v_367, &__v_365)?; } Value::Bool(__matched_366) }; } __v_362 }; if __v_361.is_truthy() {
+let __v_361 = { let mut __v_362 = { let __v_363 = frame.load(rt, "words")?; let __v_364 = frame.load(rt, "WORN")?; pyrt::ops::bitwise_rt(rt, "&", &__v_363, &__v_364)? }; if !__v_362.is_truthy() { __v_362 = { let mut __v_365 = Value::from("wear"); let mut __matched_366 = true; if __matched_366 { let __v_367 = frame.load(rt, "words")?; __matched_366 = pyrt::ops::contains(&__v_367, &__v_365)?; } Value::Bool(__matched_366) }; } __v_362 }; if __v_361.is_truthy() {
 return Ok(__Flow::Return({ let __v_368 = Value::from("what should i wear to "); let __v_369 = frame.load(rt, "occasion")?; pyrt::ops::add(&__v_368, &__v_369)? }));
 } else {
 
 }
-let __v_370 = { let __v_371 = frame.load(rt, "words")?; let __v_372 = frame.load(rt, "GENERIC")?; pyrt::ops::bitwise("&", &__v_371, &__v_372)? }; if __v_370.is_truthy() {
+let __v_370 = { let __v_371 = frame.load(rt, "words")?; let __v_372 = frame.load(rt, "GENERIC")?; pyrt::ops::bitwise_rt(rt, "&", &__v_371, &__v_372)? }; if __v_370.is_truthy() {
 return Ok(__Flow::Return({ let __v_373 = Value::from("how do i plan "); let __v_374 = frame.load(rt, "occasion")?; pyrt::ops::add(&__v_373, &__v_374)? }));
 } else {
 
@@ -267,7 +267,7 @@ match flow { __Flow::Return(value) => Ok(value), __Flow::Next => Ok(Value::None)
 }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::all, non_snake_case)]
 mod __py_5 { use super::*;
 // py: bot/memory/pending.py:157-172 answer
 pub(super) fn answer(rt: &mut Runtime, closure: Rc<Frame>, signature: &Signature, args: CallArgs) -> PyResult<Value> {

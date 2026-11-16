@@ -211,6 +211,10 @@ def empty_genexpr():
 LEAF_SOURCES = {name: (ROOT / f"reference/pybot/bot/understanding/{name}.py").read_text()
                 for name in ("car_glass", "cars", "breeds")}
 
+_TABLE_LITERAL = '[' + ','.join("{1:'first',True:'last','$tuple':[1,2],(1,2):3,'日本':'é😀','zero':-0.0,'inf':1e999}" for _ in range(24)) + ']'
+SOURCE += "\ndef literal_table():\n    return " + _TABLE_LITERAL + "\n"
+SOURCE += "\ndef literal_freshness():\n    a = literal_table()\n    b = literal_table()\n    a[0]['$tuple'].append(99)\n    return b[0]['$tuple'], a is b\n"
+
 
 class TranslatorTests(unittest.TestCase):
     @classmethod
@@ -285,6 +289,9 @@ fn main(){for line in io::stdin().lock().lines(){let case:serde_json::Value=serd
             ("exceptions_case", (0,)), ("exceptions_case", (1,)), ("exceptions_case", (2,)), ("exceptions_case", (3,)),
             ("final_return", ()), ("deleted_exception_name", ()), ("keywords", ()),
             ("generators", (0,)), ("generators", (3,)), ("generators", (6,)), ("generator_errors", ())]])
+
+    def test_compact_literal_data_preserves_types_keys_and_mutable_freshness(self):
+        self.check_cases([("literal_table", ()), ("literal_freshness", ())])
 
     def test_source_spans_come_from_compiled_code_objects(self):
         functions = self.translation.metadata["functions"]
