@@ -55,5 +55,21 @@ Evidence is in `native-loader-shared*` under `rustbot/target/`.
 
 A separate 576-case Unicode differential panel exposed a pre-existing
 `IGNORECASE` category mismatch involving U+0345. Passing recorded G1 cases does
-not establish parity for every Unicode input. Its isolated correction is being
-validated separately from the delegate-sharing patch.
+not establish parity for every Unicode input.
+
+## Unicode category correction and representation
+
+The category correction disables case folding for category atoms and word
+boundaries. Mixed classes combine folded literals/ranges with exact category
+sets before applying negation. Compact property expressions replace expanded
+word, digit and whitespace ranges. The direct regex-syntax dependency is pinned
+to 0.8.11, and a complete normalized-range test compares its Unicode 16 classes
+with the generated CPython 3.14 tables.
+
+Validation passes 576 raw-CPython differential cases, 207 production runtime
+tests, Clippy, and all 94,125 original recorded G1 cases. The complete native
+verification build took 774.112 seconds and peaked at 19,602,584 KiB compiler RSS.
+Ordered loader metadata and RNG state still match Python exactly. Loading takes
+28.361 seconds; the command takes 29.099 seconds and peaks at 1,760,164 KiB RSS.
+Artifacts are `unicode-native-build.log` and `native-loader-unicode*` under
+`rustbot/target/`. These diagnostic improvements still do not meet G4.

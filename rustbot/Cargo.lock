@@ -206,6 +206,7 @@ dependencies = [
  "fancy-regex",
  "num-bigint",
  "num-traits",
+ "regex-syntax",
  "serde_json",
  "sha1",
  "sha2",

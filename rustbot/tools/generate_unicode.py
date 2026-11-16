@@ -93,6 +93,6 @@ with out.open("w", encoding="utf-8", newline="\n") as f:
                 end = codepoint - 1
                 pieces.append("\\x{%x}" % start + ("-\\x{%x}" % end if end != start else ""))
                 start = None
-        f.write(f'pub(crate) const REGEX_{name}: &str = r"{"".join(pieces)}";\n')
+        f.write(f'#[cfg(test)]\npub(crate) const REGEX_{name}: &str = r"{"".join(pieces)}";\n')
 
 subprocess.run([rustfmt, "--edition", "2024", str(out)], check=True)

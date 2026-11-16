@@ -61,12 +61,82 @@ fn class_body(kind: char, ascii: bool) -> &'static str {
         ('w', true) => "A-Za-z0-9_",
         ('d', true) => "0-9",
         ('s', true) => r"\x{9}-\x{d}\x{20}",
-        ('w', false) => unicode::REGEX_WORD,
-        ('d', false) => unicode::REGEX_DIGIT,
-        ('s', false) => unicode::REGEX_SPACE,
+        ('w', false) => r"\p{L}\p{N}_",
+        ('d', false) => r"\p{Nd}",
+        ('s', false) => r"\p{White_Space}\x{1c}-\x{1f}",
         _ => unreachable!(),
     }
 }
+// Preserve Unicode category membership before applying case folding
+// to the literal part of a mixed class.
+fn fold_class_with_categories(
+    raw: &str,
+    mut ranges: Vec<(usize, usize, char)>,
+    ascii: bool,
+) -> PyResult<String> {
+    use regex_syntax::hir::{Class, ClassUnicode, HirKind};
+    fn parse_class(pattern: &str) -> PyResult<ClassUnicode> {
+        let parsed = regex_syntax::Parser::new()
+            .parse(pattern)
+            .map_err(re_error)?;
+        match parsed.kind() {
+            HirKind::Class(Class::Unicode(c)) => Ok(c.clone()),
+            HirKind::Literal(bytes) => {
+                let text = std::str::from_utf8(&bytes.0).map_err(re_error)?;
+                let mut chars = text.chars();
+                let c = chars
+                    .next()
+                    .ok_or_else(|| pattern_error("invalid character class"))?;
+                if chars.next().is_some() {
+                    return Err(pattern_error("invalid character class"));
+                }
+                Ok(ClassUnicode::new([
+                    regex_syntax::hir::ClassUnicodeRange::new(c, c),
+                ]))
+            }
+            _ => Err(pattern_error("invalid character class")),
+        }
+    }
+    let negated = raw.starts_with("[^");
+    let mut literals = raw.to_owned();
+    ranges.sort_by_key(|r| std::cmp::Reverse(r.0));
+    for (start, end, _) in &ranges {
+        literals.replace_range(*start..*end, "");
+    }
+    if negated {
+        literals.remove(1);
+    }
+    let mut folded = if literals == "[]" {
+        ClassUnicode::empty()
+    } else {
+        parse_class(&format!("(?i:{literals})"))?
+    };
+    for (_, _, c) in ranges {
+        let body = class_body(c.to_ascii_lowercase(), ascii);
+        let mut item = parse_class(&format!("[{body}]"))?;
+        if c.is_ascii_uppercase() {
+            item.negate();
+        }
+        folded.union(&item);
+    }
+    if negated {
+        folded.negate();
+    }
+    if folded.ranges().is_empty() {
+        return Ok(r"(?-i:[^\x{0}-\x{10ffff}])".to_owned());
+    }
+    let mut result = String::from("(?-i:[");
+    for range in folded.ranges() {
+        result.push_str(&format!(
+            r"\x{{{:x}}}-\x{{{:x}}}",
+            range.start() as u32,
+            range.end() as u32
+        ));
+    }
+    result.push_str("])");
+    Ok(result)
+}
+
 fn boundary(ascii: bool) -> &'static str {
     static UNICODE: OnceLock<String> = OnceLock::new();
     static ASCII: OnceLock<String> = OnceLock::new();
@@ -334,6 +404,8 @@ fn translate(pattern: &str, flags: i64) -> PyResult<(String, i64)> {
     let mut verbose = inline.contains('x');
     let mut ignorecase = inline.contains('i');
     let mut class_source = String::new();
+    let mut class_start = 0usize;
+    let mut category_ranges = Vec::new();
     let mut modes = Vec::new();
     let mut group_names: Vec<(String, usize)> = Vec::new();
     let mut lookbehinds: Vec<(usize, usize)> = Vec::new();
@@ -614,6 +686,7 @@ fn translate(pattern: &str, flags: i64) -> PyResult<(String, i64)> {
                     let neg = n.is_ascii_uppercase();
                     let body = class_body(n.to_ascii_lowercase(), ascii);
                     if in_class {
+                        let category_start = out.len();
                         if neg {
                             out.push_str("[^");
                         }
@@ -621,8 +694,13 @@ fn translate(pattern: &str, flags: i64) -> PyResult<(String, i64)> {
                         if neg {
                             out.push(']');
                         }
+                        category_ranges.push((
+                            category_start - class_start,
+                            out.len() - class_start,
+                            n,
+                        ));
                     } else {
-                        if ascii && ignorecase {
+                        if ignorecase {
                             out.push_str("(?-i:");
                         }
                         out.push('[');
@@ -631,13 +709,13 @@ fn translate(pattern: &str, flags: i64) -> PyResult<(String, i64)> {
                         }
                         out.push_str(body);
                         out.push(']');
-                        if ascii && ignorecase {
+                        if ignorecase {
                             out.push(')');
                         }
                     }
                 }
                 'b' | 'B' if !in_class => {
-                    if ascii && ignorecase {
+                    if ignorecase {
                         out.push_str("(?-i:");
                     }
                     if n == 'B' {
@@ -647,7 +725,7 @@ fn translate(pattern: &str, flags: i64) -> PyResult<(String, i64)> {
                     } else {
                         out.push_str(boundary(ascii));
                     }
-                    if ascii && ignorecase {
+                    if ignorecase {
                         out.push(')');
                     }
                 }
@@ -768,6 +846,8 @@ fn translate(pattern: &str, flags: i64) -> PyResult<(String, i64)> {
         } else {
             let closes_class = c == ']' && in_class && !class_first;
             if c == '[' && !in_class {
+                class_start = out.len();
+                category_ranges.clear();
                 if ascii && ignorecase {
                     out.push_str("(?-i:");
                 }
@@ -826,6 +906,15 @@ fn translate(pattern: &str, flags: i64) -> PyResult<(String, i64)> {
             }
             if closes_class && ascii && ignorecase {
                 out.push(')');
+            }
+            if closes_class && ignorecase && !ascii && !category_ranges.is_empty() {
+                let fixed = fold_class_with_categories(
+                    &out[class_start..],
+                    category_ranges.clone(),
+                    ascii,
+                )?;
+                out.truncate(class_start);
+                out.push_str(&fixed);
             }
         }
     }
@@ -1366,6 +1455,57 @@ pub fn run_compiled(compiled: &CompiledPattern, method: &str, args: &[Value]) ->
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn ignorecase_keeps_categories_separate_from_folded_literals() {
+        let cases = [
+            (r"\w+", "A\u{345}", json!(["A"])),
+            (r"\W+", "A\u{345}", json!(["\u{345}"])),
+            (r"[\wι]", "\u{345}", json!(["\u{345}"])),
+            (r"[^\wι]", "\u{345}\n", json!(["\n"])),
+            (r"[\W_]", "\u{345}_", json!(["\u{345}", "_"])),
+            (r"[^\w\W]", "\u{345}a", json!([])),
+            (r"\b\w+\b", "A\u{345}", json!(["A"])),
+        ];
+        for (pattern, text, expected) in cases {
+            let actual = run_case(
+                &json!({"pattern": pattern, "flags": 2, "method":"findall", "args":[text]}),
+            )
+            .unwrap();
+            assert_eq!(actual, expected, "pattern {pattern}");
+        }
+    }
+
+    // CPython 3.14 and regex-syntax 0.8.11 both use Unicode 16.0.0.
+    // Compare complete normalized scalar ranges, not only sample characters:
+    // this test catches drift if either Unicode database is upgraded.
+    #[test]
+    fn regex_property_classes_match_python_unicode_16_tables() {
+        use regex_syntax::hir::{Class, HirKind};
+        fn ranges(body: &str) -> Vec<(char, char)> {
+            let pattern = format!("[{body}]");
+            let parsed = regex_syntax::Parser::new().parse(&pattern).unwrap();
+            let HirKind::Class(Class::Unicode(class)) = parsed.kind() else {
+                panic!("expected Unicode class");
+            };
+            class
+                .ranges()
+                .iter()
+                .map(|range| (range.start(), range.end()))
+                .collect()
+        }
+        for (kind, generated) in [
+            ('w', unicode::REGEX_WORD),
+            ('d', unicode::REGEX_DIGIT),
+            ('s', unicode::REGEX_SPACE),
+        ] {
+            assert_eq!(
+                ranges(class_body(kind, false)),
+                ranges(generated),
+                "Unicode category {kind}"
+            );
+        }
+    }
+
     #[test]
     fn unicode_word_boundary_and_spans() {
         let case =
