@@ -5,6 +5,8 @@ use num_traits::{FromPrimitive, ToPrimitive, Zero};
 use serde_json::{Map, Value as Json, json};
 use std::cell::{OnceCell, RefCell};
 use std::collections::HashMap;
+use std::hash::{Hash, Hasher};
+use std::ops::{Deref, DerefMut};
 use std::rc::Rc;
 
 /// Strings share storage and build their code-point index only when needed.
@@ -92,6 +94,145 @@ impl PyStr {
     }
 }
 
+impl PartialEq for PyStr {
+    fn eq(&self, other: &Self) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+impl Eq for PyStr {}
+impl Hash for PyStr {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.as_str().hash(state);
+    }
+}
+impl std::borrow::Borrow<str> for PyStr {
+    fn borrow(&self) -> &str {
+        self.as_str()
+    }
+}
+
+#[derive(Debug)]
+enum StringIndex {
+    Unbuilt,
+    Mixed,
+    Strings(HashMap<PyStr, usize>),
+}
+
+/// Ordered Python dictionary entries, with a lazy index for all-string keys.
+#[derive(Debug)]
+pub struct DictData {
+    entries: Vec<(Value, Value)>,
+    strings: RefCell<StringIndex>,
+}
+impl Default for DictData {
+    fn default() -> Self {
+        Self {
+            entries: Vec::new(),
+            strings: RefCell::new(StringIndex::Unbuilt),
+        }
+    }
+}
+impl Clone for DictData {
+    fn clone(&self) -> Self {
+        Self {
+            entries: self.entries.clone(),
+            strings: RefCell::new(StringIndex::Unbuilt),
+        }
+    }
+}
+impl Deref for DictData {
+    type Target = Vec<(Value, Value)>;
+    fn deref(&self) -> &Self::Target {
+        &self.entries
+    }
+}
+impl DerefMut for DictData {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        *self.strings.get_mut() = StringIndex::Unbuilt;
+        &mut self.entries
+    }
+}
+impl FromIterator<(Value, Value)> for DictData {
+    fn from_iter<I: IntoIterator<Item = (Value, Value)>>(iter: I) -> Self {
+        Self {
+            entries: iter.into_iter().collect(),
+            strings: RefCell::new(StringIndex::Unbuilt),
+        }
+    }
+}
+impl IntoIterator for DictData {
+    type Item = (Value, Value);
+    type IntoIter = std::vec::IntoIter<(Value, Value)>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.entries.into_iter()
+    }
+}
+impl<'a> IntoIterator for &'a DictData {
+    type Item = &'a (Value, Value);
+    type IntoIter = std::slice::Iter<'a, (Value, Value)>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.entries.iter()
+    }
+}
+impl<'a> IntoIterator for &'a mut DictData {
+    type Item = &'a mut (Value, Value);
+    type IntoIter = std::slice::IterMut<'a, (Value, Value)>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.deref_mut().iter_mut()
+    }
+}
+impl DictData {
+    fn position(&self, key: &Value) -> PyResult<Option<usize>> {
+        if let Value::Str(text) = key
+            && self.entries.len() >= 32
+        {
+            let mut index = self.strings.borrow_mut();
+            if matches!(*index, StringIndex::Unbuilt) {
+                // PyStr's lazily cached character offsets never change its text or hash.
+                #[allow(clippy::mutable_key_type)]
+                let mut positions = HashMap::with_capacity(self.entries.len());
+                let mut mixed = false;
+                for (i, (stored, _)) in self.entries.iter().enumerate() {
+                    if let Value::Str(stored) = stored {
+                        positions.entry(stored.clone()).or_insert(i);
+                    } else {
+                        mixed = true;
+                        break;
+                    }
+                }
+                *index = if mixed {
+                    StringIndex::Mixed
+                } else {
+                    StringIndex::Strings(positions)
+                };
+            }
+            if let StringIndex::Strings(positions) = &*index {
+                return Ok(positions.get(text.as_str()).copied());
+            }
+        }
+        for (i, (stored, _)) in self.entries.iter().enumerate() {
+            if key.is_identical(stored) || key.equals(stored)? {
+                return Ok(Some(i));
+            }
+        }
+        Ok(None)
+    }
+    pub(crate) fn append_entry(&mut self, key: Value, value: Value) {
+        let index = self.strings.get_mut();
+        if let StringIndex::Strings(positions) = index {
+            if let Value::Str(text) = &key {
+                positions.insert(text.clone(), self.entries.len());
+            } else {
+                *index = StringIndex::Mixed;
+            }
+        }
+        self.entries.push((key, value));
+    }
+    fn set_value(&mut self, index: usize, value: Value) {
+        self.entries[index].1 = value;
+    }
+}
+
 /// Mutable containers retain Python aliasing; integers never overflow.
 #[derive(Clone, Debug)]
 pub enum Value {
@@ -102,7 +243,7 @@ pub enum Value {
     Str(PyStr),
     List(Rc<RefCell<Vec<Value>>>),
     Tuple(Rc<[Value]>),
-    Dict(Rc<RefCell<Vec<(Value, Value)>>>),
+    Dict(Rc<RefCell<DictData>>),
     Set(PySet),
     FrozenSet(PySet),
     Date(String),
@@ -119,7 +260,7 @@ impl Value {
         Self::Tuple(values.into())
     }
     pub fn dict() -> Self {
-        Self::Dict(Rc::new(RefCell::new(Vec::new())))
+        Self::Dict(Rc::new(RefCell::new(DictData::default())))
     }
 
     pub fn type_name(&self) -> &str {
@@ -324,13 +465,11 @@ impl Value {
             return Err(PyExc::type_error("expected dict"));
         };
         let mut d = d.borrow_mut();
-        for (k, v) in d.iter_mut() {
-            if key.is_identical(k) || key.equals(k)? {
-                *v = value;
-                return Ok(());
-            }
+        if let Some(index) = d.position(&key)? {
+            d.set_value(index, value);
+        } else {
+            d.append_entry(key, value);
         }
-        d.push((key, value));
         Ok(())
     }
 
@@ -339,12 +478,7 @@ impl Value {
         let Self::Dict(d) = self else {
             return Err(PyExc::type_error("expected dict"));
         };
-        for (index, (stored, _)) in d.borrow().iter().enumerate() {
-            if key.is_identical(stored) || key.equals(stored)? {
-                return Ok(Some(index));
-            }
-        }
-        Ok(None)
+        d.borrow().position(key)
     }
 
     pub(crate) fn dict_get_opt(&self, key: &Self) -> PyResult<Option<Self>> {

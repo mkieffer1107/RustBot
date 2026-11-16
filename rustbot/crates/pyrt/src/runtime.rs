@@ -11,7 +11,7 @@ use std::collections::HashMap;
 use std::rc::{Rc, Weak};
 
 pub type ModuleInit = fn(&mut Runtime, &Value) -> PyResult<()>;
-type Namespace = RefCell<Vec<(Value, Value)>>;
+type Namespace = RefCell<crate::value::DictData>;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct SourceSpan {

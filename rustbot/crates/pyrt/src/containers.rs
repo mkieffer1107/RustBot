@@ -256,7 +256,7 @@ fn dict_method(receiver: &Value, method: &str, args: &[Value]) -> PyResult<Value
             }
             let default = args.get(1).cloned().unwrap_or(Value::None);
             if method == "setdefault" {
-                dict.borrow_mut().push((args[0].clone(), default.clone()));
+                dict.borrow_mut().append_entry(args[0].clone(), default.clone());
             }
             Ok(default)
         }

@@ -94,3 +94,25 @@ RNG state match Python exactly. Loading takes 19.631 seconds; the command takes
 20.337 seconds and peaks at 1,764,876 KiB RSS. Evidence is in
 `cache-dict-native-build.log` and `native-loader-cache-dict*` under
 `rustbot/target/`. Whole-turn parity and G4 remain unverified.
+
+## Indexing dictionaries with string keys
+
+Ordered dictionary entries now have a lazy string-key index once they contain
+at least 32 entries. Mixed/custom-key dictionaries keep the existing lookup
+path. Mutable access invalidates the index, while checked inserts maintain it.
+The threshold avoids most of the measured overhead for small frame dictionaries.
+
+The change passes 225 production runtime tests, Clippy, all 94,123 corrected G1
+cases, and an independent full bot/CLI typecheck including tracing. The complete
+native build took 521.253 seconds and peaked at 23,285,344 KiB compiler RSS.
+Ordered loader metadata and RNG state still match Python. Loading takes 14.828
+seconds; the command takes 15.524 seconds and peaks at 1,770,688 KiB RSS.
+
+The same raw three-turn conversation matches every reply, winner, candidate and
+memory value in 235.104 seconds, compared with 441.390 seconds before indexing.
+Peak direct-child rusage is 2,081,588 KiB. A separate traced run took 216.769
+seconds; every per-file call list, respond span and source location matches,
+while the `trace.calls` file-key ordering still needs correction. These are
+diagnostic runs of one conversation, not full G3/G4 acceptance or repeated
+benchmarks. Artifacts use `dict-index-native-build.log`, `native-loader-dict-index*`
+and `native-raw-smoke-dict-index*` under `rustbot/target/`.

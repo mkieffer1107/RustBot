@@ -6,7 +6,7 @@ use std::rc::{Rc, Weak};
 
 // Weak registration records scopes without extending their lifetime. Dead weak
 // headers are pruned periodically rather than accumulating across call records.
-type Namespace = RefCell<Vec<(Value, Value)>>;
+type Namespace = RefCell<crate::value::DictData>;
 struct Registration {
     frame: Weak<Frame>,
     globals: Weak<Namespace>,
