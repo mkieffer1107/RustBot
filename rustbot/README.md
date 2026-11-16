@@ -6,7 +6,7 @@ parity comes first; WASM will wrap this same `bot` crate in milestone M7.
 
 All 527 source mirrors are generated and pass the compiler and structure checks,
 including all 11,359 function/lambda spans. The full runtime check passes
-94,125/94,125 dev cases. Whole-bot parity, performance, and the browser build are
+94,123/94,123 corrected dev cases. Whole-bot parity, performance, and the browser build are
 still pending. See [the progress log](../agent/PROGRESS.md) for exact build and
 acceptance results; generated-file counts do not establish behavioral parity.
 

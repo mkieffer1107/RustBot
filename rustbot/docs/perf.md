@@ -73,3 +73,24 @@ Ordered loader metadata and RNG state still match Python exactly. Loading takes
 28.361 seconds; the command takes 29.099 seconds and peaks at 1,760,164 KiB RSS.
 Artifacts are `unicode-native-build.log` and `native-loader-unicode*` under
 `rustbot/target/`. These diagnostic improvements still do not meet G4.
+
+## Python wrapper caches and one-pass dictionary lookup
+
+The Python-level regex cache now belongs to each runtime's `re` module, with
+the configurable LRU and FIFO behavior used by CPython. This honors the bot's
+16,384-pattern setting and preserves pattern ownership across purge, matching
+and separate runtimes. It shares engine programs independently of Python object
+identity.
+
+Post-fork debugger samples at 5, 20 and 60 seconds identified dictionary scans
+and key copying in `knowledge.lookup._domain_rarity`. Dictionary methods now
+share a single checked key lookup; they no longer copy every key and scan again.
+The result distinguishes a missing key from a `KeyError` raised by equality.
+
+The corrected official recording passes G0 and all 94,123 G1 cases; the runtime
+passes 219 tests and Clippy. The full native verification build took 541.824
+seconds and peaked at 23,138,388 KiB compiler RSS. Ordered loader metadata and
+RNG state match Python exactly. Loading takes 19.631 seconds; the command takes
+20.337 seconds and peaks at 1,764,876 KiB RSS. Evidence is in
+`cache-dict-native-build.log` and `native-loader-cache-dict*` under
+`rustbot/target/`. Whole-turn parity and G4 remain unverified.

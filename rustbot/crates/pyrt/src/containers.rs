@@ -227,37 +227,23 @@ fn sequence_method(receiver: &Value, method: &str, args: &[Value]) -> PyResult<V
     Ok(Value::None)
 }
 
-fn dict_position(dict: &Value, key: &Value) -> PyResult<Option<usize>> {
-    // Validate hashability through the core dictionary API, which also accepts
-    // typed date keys even when a set hash implementation is unavailable.
-    match dict.dict_get(key) {
-        Ok(_) => (),
-        Err(e) if e.kind == "KeyError" => return Ok(None),
-        Err(e) => return Err(e),
-    }
-    let Value::Dict(values) = dict else {
-        unreachable!()
-    };
-    let keys: Vec<Value> = values.borrow().iter().map(|(k, _)| k.clone()).collect();
-    for (i, k) in keys.iter().enumerate() {
-        if same(k, key)? {
-            return Ok(Some(i));
-        }
-    }
-    Ok(None)
-}
-
 fn dict_method(receiver: &Value, method: &str, args: &[Value]) -> PyResult<Value> {
     let Value::Dict(dict) = receiver else {
         unreachable!()
     };
     match method {
-        "get" | "setdefault" | "pop" => {
+        "get" => {
+            arity(method, args, 1, 2)?;
+            Ok(receiver
+                .dict_get_opt(&args[0])?
+                .unwrap_or_else(|| args.get(1).cloned().unwrap_or(Value::None)))
+        }
+        "setdefault" | "pop" => {
             arity(method, args, 1, 2)?;
             if method == "pop" && dict.borrow().is_empty() {
                 return args.get(1).cloned().ok_or_else(|| key_error(&args[0]));
             }
-            let position = dict_position(receiver, &args[0])?;
+            let position = receiver.dict_position(&args[0])?;
             if let Some(i) = position {
                 return Ok(if method == "pop" {
                     dict.borrow_mut().remove(i).1
@@ -270,7 +256,7 @@ fn dict_method(receiver: &Value, method: &str, args: &[Value]) -> PyResult<Value
             }
             let default = args.get(1).cloned().unwrap_or(Value::None);
             if method == "setdefault" {
-                receiver.dict_set(args[0].clone(), default.clone())?;
+                dict.borrow_mut().push((args[0].clone(), default.clone()));
             }
             Ok(default)
         }
@@ -702,7 +688,9 @@ pub fn setitem(receiver: &Value, index: &Value, value: Value) -> PyResult<()> {
 pub fn delitem(receiver: &Value, index: &Value) -> PyResult<()> {
     match receiver {
         Value::Dict(dict) => {
-            let i = dict_position(receiver, index)?.ok_or_else(|| key_error(index))?;
+            let i = receiver
+                .dict_position(index)?
+                .ok_or_else(|| key_error(index))?;
             dict.borrow_mut().remove(i);
             Ok(())
         }

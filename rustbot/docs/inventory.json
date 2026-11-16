@@ -6622,11 +6622,11 @@
     "status": "available",
     "calls": {
       "Match.end": {
-        "count": 7138030143614,
+        "count": 7131719189042,
         "first": "bot/understanding/kinds.py:2009"
       },
       "Match.group": {
-        "count": 14267499618465,
+        "count": 14282806778199,
         "first": "bot/understanding/body.py:601"
       },
       "Match.groupdict": {
@@ -6642,7 +6642,7 @@
         "first": "bot/memory/resize.py:139"
       },
       "Match.start": {
-        "count": 5101616624686,
+        "count": 5109136261776,
         "first": "bot/memory/facts.py:10720"
       },
       "_operator.add": {
@@ -6670,7 +6670,7 @@
         "first": "bot/knowledge/maths.py:120"
       },
       "builtins.abs": {
-        "count": 3904976236780,
+        "count": 3904976368876,
         "first": "bot/understanding/normalize.py:1079"
       },
       "builtins.all": {
@@ -6694,7 +6694,7 @@
         "first": "bot/memory/outgoings.py:299"
       },
       "builtins.getattr": {
-        "count": 11413703873363,
+        "count": 11416926574973,
         "first": "bot/knowledge/__init__.py:147"
       },
       "builtins.globals": {
@@ -6710,7 +6710,7 @@
         "first": "bot/knowledge/lookup.py:4719"
       },
       "builtins.isinstance": {
-        "count": 528633184256580,
+        "count": 528874216574898,
         "first": "bot/understanding/__init__.py:1891"
       },
       "builtins.iter": {
@@ -6718,19 +6718,19 @@
         "first": "bot/knowledge/lookup.py:6474"
       },
       "builtins.len": {
-        "count": 502327257204997,
+        "count": 502677460057697,
         "first": "bot/understanding/normalize.py:4684"
       },
       "builtins.max": {
-        "count": 13617152106134,
+        "count": 13625745977094,
         "first": "bot/understanding/normalize.py:6687"
       },
       "builtins.min": {
-        "count": 5678351889449,
+        "count": 5682648824929,
         "first": "bot/knowledge/lookup.py:2894"
       },
       "builtins.next": {
-        "count": 13340802223398,
+        "count": 13349530673074,
         "first": "bot/understanding/kinds.py:1183"
       },
       "builtins.ord": {
@@ -6742,11 +6742,11 @@
         "first": "bot/knowledge/maths.py:35"
       },
       "builtins.sorted": {
-        "count": 23798021756943,
+        "count": 23806615693951,
         "first": "bot/knowledge/__init__.py:147"
       },
       "builtins.sum": {
-        "count": 3798282673043,
+        "count": 3798282705811,
         "first": "bot/understanding/normalize.py:6687"
       },
       "builtins.vars": {
@@ -6754,7 +6754,7 @@
         "first": "bot/understanding/lexicon.py:1969"
       },
       "class:CountingRandom": {
-        "count": 801325942578,
+        "count": 804548611420,
         "first": "bot/compose/fallback_chain.py:2133"
       },
       "class:FrozenDate": {
@@ -6766,7 +6766,7 @@
         "first": "bot/modules/answers.py:482"
       },
       "class:bool": {
-        "count": 221209120332585,
+        "count": 221360586489047,
         "first": "bot/understanding/normalize.py:6394"
       },
       "class:dict": {
@@ -6774,23 +6774,23 @@
         "first": "bot/understanding/normalize.py:6292"
       },
       "class:enumerate": {
-        "count": 125607195656944,
+        "count": 125699579835812,
         "first": "bot/understanding/normalize.py:4684"
       },
       "class:float": {
-        "count": 572916567134,
+        "count": 577213436566,
         "first": "bot/modules/arbiter.py:830"
       },
       "class:frozenset": {
-        "count": 11686540503208,
+        "count": 11686540503240,
         "first": "bot/understanding/normalize.py:4491"
       },
       "class:int": {
-        "count": 713740226091,
+        "count": 718037095523,
         "first": "bot/understanding/topics.py:3934"
       },
       "class:list": {
-        "count": 60011814313092,
+        "count": 60040952944134,
         "first": "bot/understanding/normalize.py:3566"
       },
       "class:map": {
@@ -6802,19 +6802,19 @@
         "first": "bot/understanding/normalize.py:2289"
       },
       "class:range": {
-        "count": 49371870886113,
+        "count": 49382747869577,
         "first": "bot/understanding/normalize.py:4746"
       },
       "class:reversed": {
-        "count": 26652392515716,
+        "count": 26668506023766,
         "first": "bot/understanding/normalize.py:6155"
       },
       "class:set": {
-        "count": 154590324962947,
+        "count": 154704193786435,
         "first": "bot/understanding/normalize.py:652"
       },
       "class:str": {
-        "count": 532608235667371,
+        "count": 532874712014049,
         "first": "bot/understanding/normalize.py:6962"
       },
       "class:timedelta": {
@@ -6822,7 +6822,7 @@
         "first": "bot/knowledge/maths.py:4198"
       },
       "class:tuple": {
-        "count": 14597479317613,
+        "count": 14606073188573,
         "first": "bot/understanding/kinds.py:2342"
       },
       "class:type": {
@@ -6830,7 +6830,7 @@
         "first": "bot/knowledge/maths.py:73"
       },
       "class:zip": {
-        "count": 4513380797730,
+        "count": 4515529331006,
         "first": "bot/understanding/topics.py:2815"
       },
       "copy.deepcopy": {
@@ -6846,15 +6846,15 @@
         "first": "bot/knowledge/lookup.py:2847"
       },
       "dict.get": {
-        "count": 657160437983337,
+        "count": 657623836582961,
         "first": "bot/understanding/normalize.py:4746"
       },
       "dict.items": {
-        "count": 50238401607559,
+        "count": 50258812051089,
         "first": "bot/understanding/normalize.py:4512"
       },
       "dict.pop": {
-        "count": 4043235915818,
+        "count": 4043235883050,
         "first": "bot/memory/favourite.py:467"
       },
       "dict.setdefault": {
@@ -6866,7 +6866,7 @@
         "first": "bot/runtime.py:82"
       },
       "dict.values": {
-        "count": 5506053821573,
+        "count": 5510350757053,
         "first": "bot/understanding/topics.py:2443"
       },
       "difflib.SequenceMatcher.ratio": {
@@ -6874,7 +6874,7 @@
         "first": "bot/modules/answers.py:482"
       },
       "float.is_integer": {
-        "count": 443959458174,
+        "count": 448256327606,
         "first": "bot/understanding/topics.py:3934"
       },
       "frozenset.intersection": {
@@ -6906,7 +6906,7 @@
         "first": "bot/memory/cause.py:368"
       },
       "lib.oracle.install_random.<locals>.traced.<locals>.f": {
-        "count": 802668119858,
+        "count": 805890788700,
         "first": "bot/compose/fallback_chain.py:2133"
       },
       "lib.oracle.install_recorders.<locals>.wrap.<locals>.run": {
@@ -6914,19 +6914,19 @@
         "first": "bot/runtime.py:82"
       },
       "lib.probes._make_method.<locals>.method": {
-        "count": 1576948877001873,
+        "count": 1578021086798015,
         "first": "bot/understanding/normalize.py:6962"
       },
       "lib.probes.install_re.<locals>.compile_": {
-        "count": 18414230516505,
+        "count": 18414230516665,
         "first": "bot/memory/not_this.py:1"
       },
       "lib.probes.install_re.<locals>.module_fn.<locals>.f": {
-        "count": 260337559511095,
+        "count": 260422558237841,
         "first": "bot/understanding/normalize.py:3148"
       },
       "list.append": {
-        "count": 70751325569765,
+        "count": 70777107248693,
         "first": "bot/understanding/normalize.py:4802"
       },
       "list.count": {
@@ -6934,7 +6934,7 @@
         "first": "bot/memory/narrow.py:2829"
       },
       "list.extend": {
-        "count": 7742800676286,
+        "count": 7748171845636,
         "first": "bot/understanding/normalize.py:4684"
       },
       "list.index": {
@@ -6946,7 +6946,7 @@
         "first": "bot/memory/topics.py:3754"
       },
       "list.pop": {
-        "count": 1032692217749,
+        "count": 1034840685489,
         "first": "bot/understanding/kinds.py:1797"
       },
       "list.remove": {
@@ -6954,15 +6954,15 @@
         "first": "bot/memory/facts.py:8619"
       },
       "list.sort": {
-        "count": 9285221285418,
+        "count": 9289518220898,
         "first": "bot/understanding/topics.py:3587"
       },
       "re.escape": {
-        "count": 30396658084942,
+        "count": 30419216996212,
         "first": "bot/understanding/normalize.py:3148"
       },
       "set.add": {
-        "count": 17131653938711,
+        "count": 17140247809671,
         "first": "bot/knowledge/lookup.py:4697"
       },
       "set.clear": {
@@ -6990,7 +6990,7 @@
         "first": "bot/understanding/topics.py:3860"
       },
       "str.count": {
-        "count": 477449754684,
+        "count": 479598222424,
         "first": "bot/understanding/topics.py:4022"
       },
       "str.encode": {
@@ -6998,11 +6998,11 @@
         "first": "bot/modules/live_source.py:222"
       },
       "str.endswith": {
-        "count": 91251476527493,
+        "count": 91324727749407,
         "first": "bot/understanding/normalize.py:5636"
       },
       "str.find": {
-        "count": 6729523814966,
+        "count": 6735969218186,
         "first": "bot/understanding/topics.py:2218"
       },
       "str.format": {
@@ -7018,7 +7018,7 @@
         "first": "bot/understanding/normalize.py:4786"
       },
       "str.isdigit": {
-        "count": 8409904179609,
+        "count": 8412052647349,
         "first": "bot/understanding/normalize.py:5347"
       },
       "str.islower": {
@@ -7026,23 +7026,23 @@
         "first": "bot/understanding/normalize.py:4548"
       },
       "str.isspace": {
-        "count": 90128203580,
+        "count": 92276671320,
         "first": "bot/compose/fit.py:4750"
       },
       "str.isupper": {
-        "count": 4663207542474,
+        "count": 4656896455806,
         "first": "bot/understanding/normalize.py:6876"
       },
       "str.join": {
-        "count": 436291098242518,
+        "count": 436508226031298,
         "first": "bot/understanding/normalize.py:6180"
       },
       "str.lower": {
-        "count": 438471694061086,
+        "count": 438590126497318,
         "first": "bot/understanding/normalize.py:4746"
       },
       "str.lstrip": {
-        "count": 1995811879471,
+        "count": 1995811945519,
         "first": "bot/understanding/kinds.py:2001"
       },
       "str.partition": {
@@ -7050,7 +7050,7 @@
         "first": "bot/understanding/normalize.py:5874"
       },
       "str.replace": {
-        "count": 102478699950811,
+        "count": 102527040408913,
         "first": "bot/understanding/normalize.py:4512"
       },
       "str.rfind": {
@@ -7066,19 +7066,19 @@
         "first": "bot/compose/fallback.py:1713"
       },
       "str.rstrip": {
-        "count": 21413349508012,
+        "count": 21412409820082,
         "first": "bot/understanding/topics.py:3879"
       },
       "str.split": {
-        "count": 434420161426487,
+        "count": 434671598402717,
         "first": "bot/understanding/normalize.py:6687"
       },
       "str.startswith": {
-        "count": 43361588447909,
+        "count": 43382937924547,
         "first": "bot/understanding/normalize.py:4512"
       },
       "str.strip": {
-        "count": 302905668162803,
+        "count": 303089095844089,
         "first": "bot/understanding/normalize.py:5874"
       },
       "str.title": {
@@ -7086,7 +7086,7 @@
         "first": "bot/knowledge/travel.py:2907"
       },
       "str.translate": {
-        "count": 3972830420559,
+        "count": 3974978855519,
         "first": "bot/understanding/normalize.py:6180"
       },
       "str.upper": {

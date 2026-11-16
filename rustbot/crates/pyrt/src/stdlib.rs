@@ -9,7 +9,7 @@ use num_traits::{Signed, ToPrimitive, Zero};
 use serde_json::{Value as Json, json};
 use std::any::Any;
 use std::cell::RefCell;
-use std::collections::{HashMap, HashSet};
+use std::collections::{BTreeMap, HashMap, HashSet, VecDeque};
 use std::rc::{Rc, Weak};
 
 pub fn register(runtime: &mut Runtime) {
@@ -2779,46 +2779,102 @@ struct PatternObject(
     Weak<PatternObject>,
 );
 
-// Wrapper ownership is separate from engine caching. Weak entries do not keep
-// Python patterns alive; matches and bound methods retain their original owner.
-thread_local! {
-    static PATTERN_OWNERS: RefCell<HashMap<usize, Weak<PatternObject>>> = RefCell::new(HashMap::new());
-}
-fn pattern_value(compiled: Rc<crate::regex::CompiledPattern>, source: &Value) -> Value {
-    if matches!(source, Value::Object(object) if object.as_any().is::<PatternObject>()) {
-        return source.clone();
-    }
-    let identity = Rc::as_ptr(&compiled) as usize;
-    PATTERN_OWNERS.with_borrow_mut(|owners| {
-        if let Some(existing) = owners.get(&identity).and_then(Weak::upgrade) {
-            return Value::Object(existing);
-        }
-        if owners.len() >= 512 {
-            owners.retain(|_, value| value.strong_count() != 0);
-        }
-        let text = if matches!(source, Value::Str(_)) {
-            source.clone()
-        } else {
-            Value::from(compiled.pattern())
-        };
-        let owner = Rc::new_cyclic(|this| PatternObject(compiled, text, this.clone()));
-        owners.insert(identity, Rc::downgrade(&owner));
-        Value::Object(owner)
-    })
+// Python-level pattern ownership belongs to each imported re module; the
+// engine's independent cache must never resurrect an evicted wrapper.
+type RegexKey = (String, i64);
+#[derive(Default)]
+struct ReCache {
+    lru: HashMap<RegexKey, (Value, u64)>,
+    order: BTreeMap<u64, RegexKey>,
+    fifo: HashMap<RegexKey, Value>,
+    fifo_order: VecDeque<RegexKey>,
+    next: u64,
 }
 
-fn compile(value: &Value, flags: i64) -> PyResult<Rc<crate::regex::CompiledPattern>> {
-    if let Value::Object(object) = value
-        && let Some(pattern) = object.as_any().downcast_ref::<PatternObject>()
-    {
-        if flags != 0 {
-            return Err(PyExc::value_error(
-                "cannot process flags argument with a compiled pattern",
-            ));
-        }
-        return Ok(pattern.0.clone());
+fn pattern_value(compiled: Rc<crate::regex::CompiledPattern>, source: &Value) -> Value {
+    let text = if matches!(source, Value::Str(_)) {
+        source.clone()
+    } else {
+        Value::from(compiled.pattern())
+    };
+    Value::Object(Rc::new_cyclic(|this| {
+        PatternObject(compiled, text, this.clone())
+    }))
+}
+
+fn cache_full(runtime: &mut Runtime, name: &str, len: usize) -> PyResult<bool> {
+    let module = runtime.import("re")?;
+    let maximum = runtime.getattr(&module, name)?;
+    match crate::ops::compare(&Value::from(len), &maximum)? {
+        Some(order) => Ok(order != std::cmp::Ordering::Less),
+        None => Ok(false),
     }
-    crate::regex::compile_pattern(value.as_str()?, flags)
+}
+
+fn cached_pattern(
+    runtime: &mut Runtime,
+    cache: &RefCell<ReCache>,
+    value: &Value,
+    flags: i64,
+) -> PyResult<Value> {
+    if let Value::Object(object) = value
+        && object.as_any().is::<PatternObject>()
+    {
+        return if flags == 0 {
+            Ok(value.clone())
+        } else {
+            Err(PyExc::value_error(
+                "cannot process flags argument with a compiled pattern",
+            ))
+        };
+    }
+    let key = (value.as_str()?.to_owned(), flags);
+    if let Some(pattern) = cache.borrow().fifo.get(&key).cloned() {
+        return Ok(pattern);
+    }
+    let previous = {
+        let mut cache = cache.borrow_mut();
+        cache.lru.remove(&key).map(|(pattern, position)| {
+            cache.order.remove(&position);
+            pattern
+        })
+    };
+    let fresh = previous.is_none();
+    let result = match previous {
+        Some(pattern) => pattern,
+        None => pattern_value(crate::regex::compile_pattern(&key.0, flags)?, value),
+    };
+    if flags & 128 != 0 {
+        return Ok(result);
+    }
+    if fresh && cache_full(runtime, "_MAXCACHE", cache.borrow().lru.len())? {
+        let mut cache = cache.borrow_mut();
+        if let Some((_, old)) = cache.order.pop_first() {
+            cache.lru.remove(&old);
+        }
+    }
+    {
+        let mut cache = cache.borrow_mut();
+        let position = cache.next;
+        cache.next = cache
+            .next
+            .checked_add(1)
+            .ok_or_else(|| PyExc::overflow_error("regex cache age overflow"))?;
+        cache.order.insert(position, key.clone());
+        cache.lru.insert(key.clone(), (result.clone(), position));
+    }
+    if cache_full(runtime, "_MAXCACHE2", cache.borrow().fifo.len())? {
+        let mut cache = cache.borrow_mut();
+        if let Some(old) = cache.fifo_order.pop_front() {
+            cache.fifo.remove(&old);
+        }
+    }
+    {
+        let mut cache = cache.borrow_mut();
+        cache.fifo_order.push_back(key.clone());
+        cache.fifo.insert(key, result.clone());
+    }
+    Ok(result)
 }
 
 #[derive(Clone, Debug)]
@@ -3309,6 +3365,20 @@ impl PyObject for PatternObject {
 }
 
 fn init_re(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
+    let cache = Rc::new(RefCell::new(ReCache::default()));
+    set(runtime, module, "_MAXCACHE", Value::from(512_i64))?;
+    set(runtime, module, "_MAXCACHE2", Value::from(256_i64))?;
+    let purge_cache = Rc::clone(&cache);
+    set(
+        runtime,
+        module,
+        "purge",
+        function("re.purge", move |_, args| {
+            bind(args, &[], 0, vec![])?;
+            *purge_cache.borrow_mut() = ReCache::default();
+            Ok(Value::None)
+        }),
+    )?;
     for (name, flag) in [
         ("NOFLAG", 0),
         ("T", 1),
@@ -3372,21 +3442,14 @@ fn init_re(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
             Ok(Value::from(escaped))
         }),
     )?;
+    let compile_cache = Rc::clone(&cache);
     set(
         runtime,
         module,
         "compile",
-        function("re.compile", |_, args| {
+        function("re.compile", move |runtime, args| {
             let args = bind(args, &["pattern", "flags"], 1, vec![Value::from(0_i64)])?;
-            if matches!(&args[0], Value::Object(o) if o.as_any().is::<PatternObject>())
-                && integer(&args[1])? == 0
-            {
-                return Ok(args[0].clone());
-            }
-            Ok(pattern_value(
-                compile(&args[0], integer(&args[1])?)?,
-                &args[0],
-            ))
+            cached_pattern(runtime, &compile_cache, &args[0], integer(&args[1])?)
         }),
     )?;
     for name in [
@@ -3399,6 +3462,7 @@ fn init_re(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
         "sub",
         "subn",
     ] {
+        let method_cache = Rc::clone(&cache);
         set(
             runtime,
             module,
@@ -3422,9 +3486,22 @@ fn init_re(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
                     ),
                 };
                 let args = bind(args, names, required, defaults)?;
-                let compiled = compile(&args[0], integer(args.last().unwrap())?)?;
+                let owner = cached_pattern(
+                    runtime,
+                    &method_cache,
+                    &args[0],
+                    integer(args.last().unwrap())?,
+                )?;
+                let compiled = match &owner {
+                    Value::Object(object) => object
+                        .as_any()
+                        .downcast_ref::<PatternObject>()
+                        .unwrap()
+                        .0
+                        .clone(),
+                    _ => unreachable!(),
+                };
                 let forwarded = args[1..args.len() - 1].to_vec();
-                let owner = pattern_value(compiled.clone(), &args[0]);
                 runtime.call(
                     &pattern_method(compiled, owner, name),
                     CallArgs::new(forwarded),

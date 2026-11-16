@@ -334,17 +334,28 @@ impl Value {
         Ok(())
     }
 
-    pub fn dict_get(&self, key: &Self) -> PyResult<Self> {
+    pub(crate) fn dict_position(&self, key: &Self) -> PyResult<Option<usize>> {
         key.check_hashable()?;
         let Self::Dict(d) = self else {
             return Err(PyExc::type_error("expected dict"));
         };
-        for (k, v) in d.borrow().iter() {
-            if key.is_identical(k) || key.equals(k)? {
-                return Ok(v.clone());
+        for (index, (stored, _)) in d.borrow().iter().enumerate() {
+            if key.is_identical(stored) || key.equals(stored)? {
+                return Ok(Some(index));
             }
         }
-        Err(PyExc::key_error("key not found"))
+        Ok(None)
+    }
+
+    pub(crate) fn dict_get_opt(&self, key: &Self) -> PyResult<Option<Self>> {
+        let position = self.dict_position(key)?;
+        let Self::Dict(d) = self else { unreachable!() };
+        Ok(position.map(|index| d.borrow()[index].1.clone()))
+    }
+
+    pub fn dict_get(&self, key: &Self) -> PyResult<Self> {
+        self.dict_get_opt(key)?
+            .ok_or_else(|| PyExc::key_error("key not found"))
     }
 
     /// A memo keeps repeated references shared and handles mutable cycles.
