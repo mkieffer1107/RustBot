@@ -21,3 +21,11 @@ Setup: `reference/fetch.sh` fetches the pinned PyBot source and SmolTalkBench pr
 - This supersedes older compute-host-only wording in supporting documents. Follow the build steps in
   [`agent/checks/README.md`](agent/checks/README.md), "Building the corpus and goldens", locally. Keep the hidden
   hold-out set separate from development as described there.
+
+## Reference integrity and critical checker corrections
+- Keep the official PyBot checkout at the pinned GitHub commit unchanged; never alter its source to match Rust.
+- The user explicitly authorized minimal, critical checker corrections that restore faithful recording of that
+  reference. Document raw-reference evidence and regression validation before making such a correction. This
+  supersedes the blanket checker-edit restriction only for those corrections; keep comparisons and thresholds intact.
+- Preserve previous golden artifacts and rebuild corrected data separately. The reference and `agent/SPEC.md`
+  remain protected; ordinary checker cleanups or changes that merely accommodate Rust differences are not authorized.

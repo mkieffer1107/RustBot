@@ -72,35 +72,74 @@ class RecPattern:
         return getattr(self._p, name)
 
 
-def _call_recorded(p, name, args):
-    if not ReLog.enabled:
-        return getattr(p, name)(*args)
+class RecMatch:
+    """Forward a match while preserving its compiled pattern identity."""
+    __slots__ = ("_match", "_owner")
+
+    def __init__(self, match, owner):
+        self._match = match
+        self._owner = owner
+
+    @property
+    def __class__(self):
+        return self._match.__class__
+
+    @property
+    def re(self):
+        return self._owner
+
+    def __getattr__(self, name):
+        return getattr(self._match, name)
+
+    def __getitem__(self, key):
+        return self._match[key]
+
+    def __repr__(self):
+        return repr(self._match)
+
+    def __copy__(self):
+        return self
+
+    def __deepcopy__(self, memo):
+        return self
+
+
+def _call_recorded(p, name, args, kwargs=None, owner=None, record=True):
+    kwargs = kwargs or {}
+    should_record = record and ReLog.enabled and not kwargs
     rets, call_args = None, args
-    if name in ("sub", "subn") and args and callable(args[0]):
-        rets, fn = [], args[0]
+    replacement = args[0] if args else kwargs.get("repl")
+    if name in ("sub", "subn") and callable(replacement):
+        rets, fn = ([] if should_record else None), replacement
 
         def wrapped(m):
-            r = fn(m)
-            rets.append(r)
+            r = fn(RecMatch(m, owner) if owner is not None else m)
+            if rets is not None:
+                rets.append(r)
             return r
-        call_args = (wrapped,) + tuple(args[1:])
-    result = getattr(p, name)(*call_args)
-    out = result
-    if name == "finditer":
-        result = list(result)
-        out = iter(result)
-    if rets is not None:
-        _record_re(p.pattern, p.flags, name, [{"$callable": canon.encode(rets)}] + list(args[1:]))
-    else:
-        _record_re(p.pattern, p.flags, name, list(args))
-    return out
+        if args:
+            call_args = (wrapped,) + tuple(args[1:])
+        else:
+            kwargs = {**kwargs, "repl": wrapped}
+    result = getattr(p, name)(*call_args, **kwargs)
+    if should_record:
+        if name == "finditer":
+            result = iter(list(result))
+        if rets is not None:
+            _record_re(p.pattern, p.flags, name, [{"$callable": canon.encode(rets)}] + list(args[1:]))
+        else:
+            _record_re(p.pattern, p.flags, name, list(args))
+    if owner is not None:
+        if name in ("match", "search", "fullmatch") and result is not None:
+            return RecMatch(result, owner)
+        if name == "finditer":
+            return (RecMatch(match, owner) for match in result)
+    return result
 
 
 def _make_method(name):
     def method(self, *args, **kwargs):
-        if kwargs or not ReLog.enabled:
-            return getattr(self._p, name)(*args, **kwargs)
-        return _call_recorded(self._p, name, args)
+        return _call_recorded(self._p, name, args, kwargs, self)
     method.__name__ = name
     return method
 
@@ -114,6 +153,13 @@ def install_re():
     Call before importing PyBot."""
     real_compile, proxies, keep = re.compile, {}, []
 
+    def owner_for(p):
+        prox = proxies.get(id(p))
+        if prox is None:
+            prox = proxies[id(p)] = RecPattern(p)
+            keep.append(p)
+        return prox
+
     def compile_(pattern, flags=0):
         if isinstance(pattern, RecPattern):
             return pattern
@@ -121,11 +167,7 @@ def install_re():
         if sys._getframe(1).f_code.co_filename.startswith(BOT_DIR):
             if isinstance(pattern, str):
                 ReLog.patterns[(pattern, int(flags))] = True
-            prox = proxies.get(id(p))
-            if prox is None:
-                prox = proxies[id(p)] = RecPattern(p)
-                keep.append(p)
-            return prox
+            return owner_for(p)
         return p
 
     flag_pos = {"sub": 3, "subn": 3, "split": 2}   # index in args after the pattern
@@ -137,10 +179,12 @@ def install_re():
             flags = kwargs.pop("flags", 0)
             if len(args) > fpos:
                 flags, args = args[fpos], args[:fpos]
-            p = pattern._p if isinstance(pattern, RecPattern) else real_compile(pattern, flags)
-            if kwargs or not ReLog.enabled or not sys._getframe(1).f_code.co_filename.startswith(BOT_DIR):
-                return getattr(p, name)(*args, **kwargs)
-            return _call_recorded(p, name, args)
+            owner = pattern if isinstance(pattern, RecPattern) else None
+            p = owner._p if owner is not None else real_compile(pattern, flags)
+            record = sys._getframe(1).f_code.co_filename.startswith(BOT_DIR)
+            if owner is None and record and isinstance(pattern, (str, bytes)):
+                owner = owner_for(p)
+            return _call_recorded(p, name, args, kwargs, owner, record)
         f.__name__ = name
         return f
 
