@@ -436,7 +436,9 @@ impl Runtime {
                 }
             }
             match &receiver {
-                Value::Str(s) => crate::strings::call_method(s.as_str(), &method, &args.positional),
+                Value::Str(_) => {
+                    crate::strings::call_method_value(&receiver, &method, &args.positional)
+                }
                 Value::List(_)
                 | Value::Tuple(_)
                 | Value::Dict(_)

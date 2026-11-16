@@ -330,6 +330,38 @@ pub fn format_map(text: &str, mapping: &Value) -> PyResult<String> {
 }
 
 /// Dispatch a Python `str` method. Unknown methods return `AttributeError`.
+fn stripped<'a>(s: &'a str, method: &str, args: &[Value]) -> PyResult<&'a str> {
+    arity(args, 0, 1)?;
+    let chars = match args.first() {
+        None | Some(Value::None) => None,
+        Some(v) => Some(v.as_str()?),
+    };
+    let pred = |c: char| chars.map_or_else(|| whitespace(c), |x| x.contains(c));
+    let mut result = s;
+    if method != "rstrip" {
+        result = result.trim_start_matches(pred);
+    }
+    if method != "lstrip" {
+        result = result.trim_end_matches(pred);
+    }
+    Ok(result)
+}
+
+/// Runtime method dispatch retains receiver identity when stripping removes no characters.
+/// The string-only API remains useful for canonical value checks.
+pub fn call_method_value(receiver: &Value, method: &str, args: &[Value]) -> PyResult<Value> {
+    let s = receiver.as_str()?;
+    if matches!(method, "strip" | "lstrip" | "rstrip") {
+        let result = stripped(s, method, args)?;
+        return Ok(if result.len() == s.len() {
+            receiver.clone()
+        } else {
+            Value::from(result)
+        });
+    }
+    call_method(s, method, args)
+}
+
 pub fn call_method(s: &str, method: &str, args: &[Value]) -> PyResult<Value> {
     match method {
         "encode" => {
@@ -410,22 +442,7 @@ pub fn call_method(s: &str, method: &str, args: &[Value]) -> PyResult<Value> {
             };
             Ok(Value::from(result))
         }
-        "strip" | "lstrip" | "rstrip" => {
-            arity(args, 0, 1)?;
-            let chars = match args.first() {
-                None | Some(Value::None) => None,
-                Some(v) => Some(v.as_str()?),
-            };
-            let pred = |c: char| chars.map_or_else(|| whitespace(c), |x| x.contains(c));
-            let mut x = s;
-            if method != "rstrip" {
-                x = x.trim_start_matches(pred);
-            }
-            if method != "lstrip" {
-                x = x.trim_end_matches(pred);
-            }
-            Ok(Value::from(x))
-        }
+        "strip" | "lstrip" | "rstrip" => Ok(Value::from(stripped(s, method, args)?)),
         "split" | "rsplit" => {
             arity(args, 0, 2)?;
             let sep = match args.first() {

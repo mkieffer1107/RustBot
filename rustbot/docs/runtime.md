@@ -1,24 +1,42 @@
 # Runtime implementation status
 
-This is an initial M2 implementation, not a completed Python runtime. The
-translator and bot are not implemented. Runtime probes call the same Rust
-functions that translated code will use; no Python interpreter or recorded bot
-replies are included.
+`pyrt` supplies native Rust values and operations to statically translated bot
+functions. It does not evaluate Python source, bytecode, or an AST at runtime.
+No Python interpreter or recorded bot replies are included.
 
-| Component | Implemented foundation | Remaining work |
-| --- | --- | --- |
-| Values | Arbitrary precision integers, booleans, floats, code point indexed strings, shared mutable lists/dicts, tuples, sets/frozensets, canonical JSON tags | Full builtin/object/module/callable model, container methods, surrogate code points, identity for inline immutable values (including NaN) |
-| Operators | Integer promotion, add/subtract/multiply, signed floor division/modulo, bitwise operators, numeric/lexicographic comparisons, membership/indexing | True division, power, other operators and complete allocation error handling |
-| Copies | Memoized deepcopy of mutable containers, repeated set/frozenset references, tuple/list cycles and unchanged immutable tuples | Full custom object and date/time copy semantics; reference cycles are not automatically collected |
-| Strings | CPython 3.14 Unicode 16.0 predicates/mappings, contextual final sigma, casefold, split/strip/search/partition/replace, padding, code point indexing and other common methods | `encode`, `translate`, `format_map`; methods currently limit some result allocations to ten million units |
-| Random | CPython MT19937, integer/string/bytes/float seeding, word counters, paired state identity/count restore with an eight-state history, choice/shuffle/sample/range, weighted choices; conversation context with global/creation-ordered unseeded streams and count snapshots | Hook/translated-module integration, identity-derived NaN seeds, exact large integer weighted accumulation; raw or expired state provenance is opaque |
-| Hashes/sets | CPython 64-bit SipHash13 with zero seed, integer/float/tuple/frozenset hashes, CPython set probing, resize and deletion iteration | Date/time/opaque/NaN hashes, complete public set API (including Python copy/merge semantics); current `PySet::copy` preserves table layout for snapshots |
-| Formatting | Python repr/str, format specs, conversions, percent formatting, nested template fields, basic date formatting | Full timezone/date directives, Python Unicode surrogates, complete parity across runtime-generated format inputs; numeric locale assumes C |
-| Regex | Native shared `fancy-regex` engine; Python Unicode classes/boundaries, code point offsets, common flags, matching/iteration/split/sub, group and match JSON, empty/nonempty alternation and eager replacement validation | Scoped flags, case-insensitive Unicode edge cases, repeated-group `lastindex`, negated categories inside classes, complete Python syntax validation |
-| Date/time/calendar | Typed Gregorian dates, normalized integer/float timedeltas, ISO dates/week dates/datetimes, fixed-offset arithmetic, monthrange and the oracle's injected-clock semantics | Dynamic `Value`/module/CLI dispatch, named/DST timezones, subsecond offsets, strftime/strptime/timestamps, timedelta multiply/divide |
-| Other standard library | Unicode tables, inventory math functions with domain errors and integer-preserving ceil/floor, ASCII string constants | Full math parity (including logarithms of integers too large for float conversion), Unicode normalization/combining, remaining inventory APIs |
+The full dev runtime gate passes **94,125/94,125 cases**: 59,138 regular
+expressions, 28,574 string operations, 3,474 formatting cases, and 2,939 random
+cases. This was verified through the standalone example calling the production
+`pyrt::cases` implementation. The complete CLI, hooks, turns, trace, performance
+and browser gates still need their own acceptance results. See
+[PROGRESS.md](../../agent/PROGRESS.md) for the current evidence.
 
-The checked-in smoke tools exercise a small set of boundary cases and the native
-JSONL interface. They never execute a PyBot conversation or build goldens.
-Acceptance parity requires generated goldens and all relevant gates. Local
-generation and full checks are authorized by root `AGENTS.md`.
+The runtime includes:
+
+- Arbitrary precision integers, floats, code-point strings, mutable aliased
+  containers, CPython64 zero-seed hashes/set iteration, canonical JSON, and
+  memoized container/user-instance copies.
+- Native function argument binding, lexical frames, modules/imports, classes,
+  exceptions, lazy iterators/comprehensions/generators, object protocols, and
+  private source/code identities for UI traces.
+- Unicode 16 string mappings/normalization, Python formatting, backtracking
+  regular expressions through a compatibility layer over `fancy-regex`, and
+  CPython MT19937 with creation-ordered unseeded streams and count snapshots.
+- Frozen date/time/calendar operations and the inventory's native wrappers for
+  math, copy, JSON, hashing, difflib, AST arithmetic, importlib/pkgutil,
+  functools/itertools, Fraction and Decimal.
+
+The implementation targets the bot's required Python subset, not a general Python runtime.
+Known limits beyond the recorded tests include lone Unicode surrogates, custom
+`__deepcopy__` callbacks, some rare regex capture/backreference combinations,
+general Decimal contexts/nonfinite arithmetic, and broader timezone/stdlib APIs.
+Reference cycles are cleaned at runtime namespace teardown; there is no tracing
+garbage collector, and temporary cycles can persist until their runtime drops.
+User-defined truth conversion currently has an infallible value-level interface,
+so propagating errors from arbitrary `__bool__` implementations remains a gap.
+
+Native conversations use a loaded parent and per-record Unix forks to preserve
+module/RNG isolation. The shared session resets memory and restores post-import
+global random state for the Space semantics. WASM integration is deferred until
+native parity is established. Local corpus generation and full checks are
+authorized by root `AGENTS.md`; protected check/reference sources stay unchanged.

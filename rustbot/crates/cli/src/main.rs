@@ -2,6 +2,7 @@ use serde_json::{Value as Json, json};
 use std::collections::BTreeMap;
 use std::io::{self, BufRead, Write};
 mod isolation;
+mod loader_info;
 mod terminal;
 
 fn main() {
@@ -34,6 +35,7 @@ fn run() -> Result<(), String> {
         Some("call") if args.len() == 2 => call_records(&args[1], None)?,
         Some("hook") if args.len() == 3 => call_records(&args[1], Some(&args[2]))?,
         Some("replay") => replay_records(&args[1..])?,
+        Some("load-info") if args.len() == 1 => loader_info::run()?,
         _ => terminal::run(&args)?,
     }
     Ok(())

@@ -189,6 +189,25 @@ impl fmt::Debug for NativeFunction {
 }
 
 impl NativeFunction {
+    #[inline(never)]
+    fn create(
+        name: String,
+        qualname: String,
+        module: String,
+        attrs: Value,
+        origin: Option<FunctionOrigin>,
+        body: Rc<NativeBody>,
+    ) -> Value {
+        Value::Object(Rc::new(Self {
+            name,
+            qualname,
+            module,
+            attrs,
+            origin,
+            body,
+        }))
+    }
+
     pub fn value(
         name: impl Into<String>,
         body: impl Fn(&mut Runtime, CallArgs) -> PyResult<Value> + 'static,
@@ -202,14 +221,7 @@ impl NativeFunction {
         module: String,
         body: impl Fn(&mut Runtime, CallArgs) -> PyResult<Value> + 'static,
     ) -> Value {
-        Value::Object(Rc::new(Self {
-            name,
-            qualname,
-            module,
-            attrs: Value::dict(),
-            origin: None,
-            body: Rc::new(body),
-        }))
+        Self::create(name, qualname, module, Value::dict(), None, Rc::new(body))
     }
     pub fn qualified_with_attrs(
         name: String,
@@ -218,14 +230,7 @@ impl NativeFunction {
         attrs: Value,
         body: impl Fn(&mut Runtime, CallArgs) -> PyResult<Value> + 'static,
     ) -> Value {
-        Value::Object(Rc::new(Self {
-            name,
-            qualname,
-            module,
-            attrs,
-            origin: None,
-            body: Rc::new(body),
-        }))
+        Self::create(name, qualname, module, attrs, None, Rc::new(body))
     }
 
     pub fn qualified_with_origin(
@@ -236,14 +241,7 @@ impl NativeFunction {
         origin: FunctionOrigin,
         body: impl Fn(&mut Runtime, CallArgs) -> PyResult<Value> + 'static,
     ) -> Value {
-        Value::Object(Rc::new(Self {
-            name,
-            qualname,
-            module,
-            attrs,
-            origin: Some(origin),
-            body: Rc::new(body),
-        }))
+        Self::create(name, qualname, module, attrs, Some(origin), Rc::new(body))
     }
 
     pub fn source_span(&self) -> Option<crate::runtime::SourceSpan> {

@@ -252,266 +252,806 @@ mod m124;
 mod m125;
 #[path = "../compose/worn.rs"]
 mod m126;
-#[path = "../memory/mod.rs"]
+#[path = "../knowledge/mod.rs"]
 mod m127;
-#[path = "../memory/a_year_of_birth.rs"]
+#[path = "../knowledge/a_plain_noise_word_on_a_machine.rs"]
 mod m128;
-#[path = "../memory/aboutthem.rs"]
+#[path = "../knowledge/affording.rs"]
 mod m129;
-#[path = "../memory/ack.rs"]
+#[path = "../knowledge/animals.rs"]
 mod m130;
-#[path = "../memory/again.rs"]
+#[path = "../knowledge/appointments.rs"]
 mod m131;
-#[path = "../memory/already.rs"]
+#[path = "../knowledge/babyfood.rs"]
 mod m132;
-#[path = "../memory/amounts.rs"]
+#[path = "../knowledge/bake_faults.rs"]
 mod m133;
-#[path = "../memory/another.rs"]
+#[path = "../knowledge/bikes.rs"]
 mod m134;
-#[path = "../memory/asked_about.rs"]
+#[path = "../knowledge/body.rs"]
 mod m135;
-#[path = "../memory/asleep.rs"]
+#[path = "../knowledge/body_energy.rs"]
 mod m136;
-#[path = "../memory/back_again.rs"]
+#[path = "../knowledge/build_jobs.rs"]
 mod m137;
-#[path = "../memory/baking.rs"]
+#[path = "../knowledge/business.rs"]
 mod m138;
-#[path = "../memory/callback.rs"]
+#[path = "../knowledge/cakes.rs"]
 mod m139;
-#[path = "../memory/carried_on.rs"]
+#[path = "../knowledge/caring.rs"]
 mod m140;
-#[path = "../memory/carry.rs"]
+#[path = "../knowledge/cars.rs"]
 mod m141;
-#[path = "../memory/cause.rs"]
+#[path = "../knowledge/child_work.rs"]
 mod m142;
-#[path = "../memory/change.rs"]
+#[path = "../knowledge/chilli.rs"]
 mod m143;
-#[path = "../memory/choice.rs"]
+#[path = "../knowledge/cleaning.rs"]
 mod m144;
-#[path = "../memory/company.rs"]
+#[path = "../knowledge/clothing.rs"]
 mod m145;
-#[path = "../memory/condition.rs"]
+#[path = "../knowledge/coats.rs"]
 mod m146;
-#[path = "../memory/corrected.rs"]
+#[path = "../knowledge/comeback.rs"]
 mod m147;
-#[path = "../memory/counts.rs"]
+#[path = "../knowledge/complaints.rs"]
 mod m148;
-#[path = "../memory/deadline.rs"]
+#[path = "../knowledge/conditions.rs"]
 mod m149;
-#[path = "../memory/decided.rs"]
+#[path = "../knowledge/consumer.rs"]
 mod m150;
-#[path = "../memory/detail.rs"]
+#[path = "../knowledge/containers_frost.rs"]
 mod m151;
-#[path = "../memory/doing_it.rs"]
+#[path = "../knowledge/cook_kit.rs"]
 mod m152;
-#[path = "../memory/doubt.rs"]
+#[path = "../knowledge/cooking.rs"]
 mod m153;
-#[path = "../memory/dream.rs"]
+#[path = "../knowledge/cooking_entries.rs"]
 mod m154;
-#[path = "../memory/earlier.rs"]
+#[path = "../knowledge/cooking_fats.rs"]
 mod m155;
-#[path = "../memory/enough.rs"]
+#[path = "../knowledge/cooking_gaps.rs"]
 mod m156;
-#[path = "../memory/facts.rs"]
+#[path = "../knowledge/cooking_more.rs"]
 mod m157;
-#[path = "../memory/favourite.rs"]
+#[path = "../knowledge/cooking_tables.rs"]
 mod m158;
-#[path = "../memory/filler.rs"]
+#[path = "../knowledge/cooling.rs"]
 mod m159;
-#[path = "../memory/goals.rs"]
+#[path = "../knowledge/costs.rs"]
 mod m160;
-#[path = "../memory/groupages.rs"]
+#[path = "../knowledge/creative.rs"]
 mod m161;
-#[path = "../memory/guest.rs"]
+#[path = "../knowledge/crisis_replies.rs"]
 mod m162;
-#[path = "../memory/healing.rs"]
+#[path = "../knowledge/dates.rs"]
 mod m163;
-#[path = "../memory/history.rs"]
+#[path = "../knowledge/decorating.rs"]
 mod m164;
-#[path = "../memory/holds.rs"]
+#[path = "../knowledge/desk_setup.rs"]
 mod m165;
-#[path = "../memory/hope.rs"]
+#[path = "../knowledge/devices.rs"]
 mod m166;
-#[path = "../memory/hours.rs"]
+#[path = "../knowledge/differences.rs"]
 mod m167;
-#[path = "../memory/household.rs"]
+#[path = "../knowledge/dish_verdicts.rs"]
 mod m168;
-#[path = "../memory/kidcount.rs"]
+#[path = "../knowledge/dishes.rs"]
 mod m169;
-#[path = "../memory/kinds.rs"]
+#[path = "../knowledge/drinks.rs"]
 mod m170;
-#[path = "../memory/limit.rs"]
+#[path = "../knowledge/eithers.rs"]
 mod m171;
-#[path = "../memory/limits.rs"]
+#[path = "../knowledge/entertainment.rs"]
 mod m172;
-#[path = "../memory/lineback.rs"]
+#[path = "../knowledge/everyday_lines.rs"]
 mod m173;
-#[path = "../memory/matters.rs"]
+#[path = "../knowledge/explains.rs"]
 mod m174;
-#[path = "../memory/meant.rs"]
+#[path = "../knowledge/fabrics.rs"]
 mod m175;
-#[path = "../memory/measure.rs"]
+#[path = "../knowledge/family.rs"]
 mod m176;
-#[path = "../memory/more.rs"]
+#[path = "../knowledge/family_more.rs"]
 mod m177;
-#[path = "../memory/named.rs"]
+#[path = "../knowledge/fears.rs"]
 mod m178;
-#[path = "../memory/narrow.rs"]
+#[path = "../knowledge/fitness.rs"]
 mod m179;
-#[path = "../memory/newborn.rs"]
+#[path = "../knowledge/fitweek.rs"]
 mod m180;
-#[path = "../memory/not_a_trip.rs"]
+#[path = "../knowledge/food_left_out.rs"]
 mod m181;
-#[path = "../memory/not_this.rs"]
+#[path = "../knowledge/freshness.rs"]
 mod m182;
-#[path = "../memory/obstacle.rs"]
+#[path = "../knowledge/friends.rs"]
 mod m183;
-#[path = "../memory/onset.rs"]
+#[path = "../knowledge/fruit.rs"]
 mod m184;
-#[path = "../memory/opening.rs"]
+#[path = "../knowledge/fun.rs"]
 mod m185;
-#[path = "../memory/outfit.rs"]
+#[path = "../knowledge/garden.rs"]
 mod m186;
-#[path = "../memory/outgoings.rs"]
+#[path = "../knowledge/garden_tools.rs"]
 mod m187;
-#[path = "../memory/paragraph.rs"]
+#[path = "../knowledge/geography.rs"]
 mod m188;
-#[path = "../memory/passing_the_time.rs"]
+#[path = "../knowledge/habits.rs"]
 mod m189;
-#[path = "../memory/pending.rs"]
+#[path = "../knowledge/health.rs"]
 mod m190;
-#[path = "../memory/people.rs"]
+#[path = "../knowledge/history.rs"]
 mod m191;
-#[path = "../memory/pile.rs"]
+#[path = "../knowledge/home.rs"]
 mod m192;
-#[path = "../memory/places.rs"]
+#[path = "../knowledge/home_craft.rs"]
 mod m193;
-#[path = "../memory/plan.rs"]
+#[path = "../knowledge/house_odds.rs"]
 mod m194;
-#[path = "../memory/plans.rs"]
+#[path = "../knowledge/how_it_works.rs"]
 mod m195;
-#[path = "../memory/portions.rs"]
+#[path = "../knowledge/icing.rs"]
 mod m196;
-#[path = "../memory/prefer.rs"]
+#[path = "../knowledge/idioms.rs"]
 mod m197;
-#[path = "../memory/price.rs"]
+#[path = "../knowledge/income_periods.rs"]
 mod m198;
-#[path = "../memory/purse.rs"]
+#[path = "../knowledge/ingredient_swaps.rs"]
 mod m199;
-#[path = "../memory/quotes.rs"]
+#[path = "../knowledge/job_times.rs"]
 mod m200;
-#[path = "../memory/rates.rs"]
+#[path = "../knowledge/joint_time.rs"]
 mod m201;
-#[path = "../memory/recall.rs"]
+#[path = "../knowledge/joints.rs"]
 mod m202;
-#[path = "../memory/reject.rs"]
+#[path = "../knowledge/keeping.rs"]
 mod m203;
-#[path = "../memory/relations.rs"]
+#[path = "../knowledge/keeping_cooked.rs"]
 mod m204;
-#[path = "../memory/remedy.rs"]
+#[path = "../knowledge/kept_animals.rs"]
 mod m205;
-#[path = "../memory/reminded.rs"]
+#[path = "../knowledge/kit_lists.rs"]
 mod m206;
-#[path = "../memory/rename.rs"]
+#[path = "../knowledge/kitchen.rs"]
 mod m207;
-#[path = "../memory/repair.rs"]
+#[path = "../knowledge/kitchen_odds.rs"]
 mod m208;
-#[path = "../memory/repeat.rs"]
+#[path = "../knowledge/kitchen_prep.rs"]
 mod m209;
-#[path = "../memory/resize.rs"]
+#[path = "../knowledge/kits_and_claims.rs"]
 mod m210;
-#[path = "../memory/returned.rs"]
+#[path = "../knowledge/land.rs"]
 mod m211;
-#[path = "../memory/returns.rs"]
+#[path = "../knowledge/language.rs"]
 mod m212;
-#[path = "../memory/saving.rs"]
+#[path = "../knowledge/left_on.rs"]
 mod m213;
-#[path = "../memory/setback.rs"]
+#[path = "../knowledge/lifeadmin.rs"]
 mod m214;
-#[path = "../memory/size.rs"]
+#[path = "../knowledge/lookup.rs"]
 mod m215;
-#[path = "../memory/spent.rs"]
+#[path = "../knowledge/machine_door.rs"]
 mod m216;
-#[path = "../memory/spoken.rs"]
+#[path = "../knowledge/materials.rs"]
 mod m217;
-#[path = "../memory/stands.rs"]
+#[path = "../knowledge/maths.rs"]
 mod m218;
-#[path = "../memory/store_lines.rs"]
+#[path = "../knowledge/meals.rs"]
 mod m219;
-#[path = "../memory/store_replies.rs"]
+#[path = "../knowledge/measures.rs"]
 mod m220;
-#[path = "../memory/stuck.rs"]
+#[path = "../knowledge/meat_in_a_card.rs"]
 mod m221;
-#[path = "../memory/surname.rs"]
+#[path = "../knowledge/microwave_methods.rs"]
 mod m222;
-#[path = "../memory/swap.rs"]
+#[path = "../knowledge/money.rs"]
 mod m223;
-#[path = "../memory/taking.rs"]
+#[path = "../knowledge/money_words.rs"]
 mod m224;
-#[path = "../memory/taste.rs"]
+#[path = "../knowledge/music.rs"]
 mod m225;
-#[path = "../memory/the_verdict.rs"]
+#[path = "../knowledge/nature.rs"]
 mod m226;
-#[path = "../memory/the_years.rs"]
+#[path = "../knowledge/newborn.rs"]
 mod m227;
-#[path = "../memory/their_feeling.rs"]
+#[path = "../knowledge/no_kit.rs"]
 mod m228;
-#[path = "../memory/thread.rs"]
+#[path = "../knowledge/notable.rs"]
 mod m229;
-#[path = "../memory/times.rs"]
+#[path = "../knowledge/nursing.rs"]
 mod m230;
-#[path = "../memory/told.rs"]
+#[path = "../knowledge/nutrition.rs"]
 mod m231;
-#[path = "../memory/too_late.rs"]
+#[path = "../knowledge/occasions.rs"]
 mod m232;
-#[path = "../memory/topics.rs"]
+#[path = "../knowledge/odours.rs"]
 mod m233;
-#[path = "../memory/tried.rs"]
+#[path = "../knowledge/opinions.rs"]
 mod m234;
-#[path = "../memory/trips.rs"]
+#[path = "../knowledge/painting_faults.rs"]
 mod m235;
-#[path = "../memory/warmth.rs"]
+#[path = "../knowledge/panic_talk.rs"]
 mod m236;
-#[path = "../memory/whathurts.rs"]
+#[path = "../knowledge/parking.rs"]
 mod m237;
-#[path = "../memory/when.rs"]
+#[path = "../knowledge/pasta.rs"]
 mod m238;
-#[path = "../memory/whereabout.rs"]
+#[path = "../knowledge/pay.rs"]
 mod m239;
-#[path = "../memory/whose_body.rs"]
+#[path = "../knowledge/pensions.rs"]
 mod m240;
-#[path = "../memory/will_it_work.rs"]
+#[path = "../knowledge/pets.rs"]
 mod m241;
-#[path = "../memory/workplace.rs"]
+#[path = "../knowledge/pets_health.rs"]
 mod m242;
-#[path = "../memory/years_in.rs"]
+#[path = "../knowledge/pharmacy.rs"]
 mod m243;
-#[path = "../understanding/mod.rs"]
+#[path = "../knowledge/phone_use.rs"]
 mod m244;
-#[path = "../understanding/attempts.rs"]
+#[path = "../knowledge/photography.rs"]
 mod m245;
-#[path = "../understanding/body.rs"]
+#[path = "../knowledge/picking.rs"]
 mod m246;
-#[path = "../understanding/breeds.rs"]
+#[path = "../knowledge/picks.rs"]
 mod m247;
-#[path = "../understanding/car_glass.rs"]
+#[path = "../knowledge/plans.rs"]
 mod m248;
-#[path = "../understanding/cars.rs"]
+#[path = "../knowledge/power_heat.rs"]
 mod m249;
-#[path = "../understanding/confusion.rs"]
+#[path = "../knowledge/pregnancy.rs"]
 mod m250;
-#[path = "../understanding/kinds.rs"]
+#[path = "../knowledge/prices.rs"]
 mod m251;
-#[path = "../understanding/lexicon.rs"]
+#[path = "../knowledge/procedures.rs"]
 mod m252;
-#[path = "../understanding/normalize.rs"]
+#[path = "../knowledge/quantity.rs"]
 mod m253;
-#[path = "../understanding/references.rs"]
+#[path = "../knowledge/rice.rs"]
 mod m254;
-#[path = "../understanding/senses.rs"]
+#[path = "../knowledge/routines.rs"]
 mod m255;
-#[path = "../understanding/topics.rs"]
+#[path = "../knowledge/rubbish.rs"]
 mod m256;
+#[path = "../knowledge/sauces.rs"]
+mod m257;
+#[path = "../knowledge/school_day.rs"]
+mod m258;
+#[path = "../knowledge/school_days.rs"]
+mod m259;
+#[path = "../knowledge/schoolmaths.rs"]
+mod m260;
+#[path = "../knowledge/science.rs"]
+mod m261;
+#[path = "../knowledge/seasoning.rs"]
+mod m262;
+#[path = "../knowledge/shopping.rs"]
+mod m263;
+#[path = "../knowledge/sleep.rs"]
+mod m264;
+#[path = "../knowledge/sleep_aids.rs"]
+mod m265;
+#[path = "../knowledge/spice_heat.rs"]
+mod m266;
+#[path = "../knowledge/sport.rs"]
+mod m267;
+#[path = "../knowledge/still_ok.rs"]
+mod m268;
+#[path = "../knowledge/study.rs"]
+mod m269;
+#[path = "../knowledge/swaps.rs"]
+mod m270;
+#[path = "../knowledge/takes.rs"]
+mod m271;
+#[path = "../knowledge/technology.rs"]
+mod m272;
+#[path = "../knowledge/tenancy.rs"]
+mod m273;
+#[path = "../knowledge/trades.rs"]
+mod m274;
+#[path = "../knowledge/travel.rs"]
+mod m275;
+#[path = "../knowledge/travel_health.rs"]
+mod m276;
+#[path = "../knowledge/units.rs"]
+mod m277;
+#[path = "../knowledge/vaccines.rs"]
+mod m278;
+#[path = "../knowledge/vegetables.rs"]
+mod m279;
+#[path = "../knowledge/warm_food.rs"]
+mod m280;
+#[path = "../knowledge/water_out.rs"]
+mod m281;
+#[path = "../knowledge/what_damages_what.rs"]
+mod m282;
+#[path = "../knowledge/whenbuy.rs"]
+mod m283;
+#[path = "../knowledge/wording.rs"]
+mod m284;
+#[path = "../knowledge/work.rs"]
+mod m285;
+#[path = "../memory/mod.rs"]
+mod m286;
+#[path = "../memory/a_year_of_birth.rs"]
+mod m287;
+#[path = "../memory/aboutthem.rs"]
+mod m288;
+#[path = "../memory/ack.rs"]
+mod m289;
+#[path = "../memory/again.rs"]
+mod m290;
+#[path = "../memory/already.rs"]
+mod m291;
+#[path = "../memory/amounts.rs"]
+mod m292;
+#[path = "../memory/another.rs"]
+mod m293;
+#[path = "../memory/asked_about.rs"]
+mod m294;
+#[path = "../memory/asleep.rs"]
+mod m295;
+#[path = "../memory/back_again.rs"]
+mod m296;
+#[path = "../memory/baking.rs"]
+mod m297;
+#[path = "../memory/callback.rs"]
+mod m298;
+#[path = "../memory/carried_on.rs"]
+mod m299;
+#[path = "../memory/carry.rs"]
+mod m300;
+#[path = "../memory/cause.rs"]
+mod m301;
+#[path = "../memory/change.rs"]
+mod m302;
+#[path = "../memory/choice.rs"]
+mod m303;
+#[path = "../memory/company.rs"]
+mod m304;
+#[path = "../memory/condition.rs"]
+mod m305;
+#[path = "../memory/corrected.rs"]
+mod m306;
+#[path = "../memory/counts.rs"]
+mod m307;
+#[path = "../memory/deadline.rs"]
+mod m308;
+#[path = "../memory/decided.rs"]
+mod m309;
+#[path = "../memory/detail.rs"]
+mod m310;
+#[path = "../memory/doing_it.rs"]
+mod m311;
+#[path = "../memory/doubt.rs"]
+mod m312;
+#[path = "../memory/dream.rs"]
+mod m313;
+#[path = "../memory/earlier.rs"]
+mod m314;
+#[path = "../memory/enough.rs"]
+mod m315;
+#[path = "../memory/facts.rs"]
+mod m316;
+#[path = "../memory/favourite.rs"]
+mod m317;
+#[path = "../memory/filler.rs"]
+mod m318;
+#[path = "../memory/goals.rs"]
+mod m319;
+#[path = "../memory/groupages.rs"]
+mod m320;
+#[path = "../memory/guest.rs"]
+mod m321;
+#[path = "../memory/healing.rs"]
+mod m322;
+#[path = "../memory/history.rs"]
+mod m323;
+#[path = "../memory/holds.rs"]
+mod m324;
+#[path = "../memory/hope.rs"]
+mod m325;
+#[path = "../memory/hours.rs"]
+mod m326;
+#[path = "../memory/household.rs"]
+mod m327;
+#[path = "../memory/kidcount.rs"]
+mod m328;
+#[path = "../memory/kinds.rs"]
+mod m329;
+#[path = "../memory/limit.rs"]
+mod m330;
+#[path = "../memory/limits.rs"]
+mod m331;
+#[path = "../memory/lineback.rs"]
+mod m332;
+#[path = "../memory/matters.rs"]
+mod m333;
+#[path = "../memory/meant.rs"]
+mod m334;
+#[path = "../memory/measure.rs"]
+mod m335;
+#[path = "../memory/more.rs"]
+mod m336;
+#[path = "../memory/named.rs"]
+mod m337;
+#[path = "../memory/narrow.rs"]
+mod m338;
+#[path = "../memory/newborn.rs"]
+mod m339;
+#[path = "../memory/not_a_trip.rs"]
+mod m340;
+#[path = "../memory/not_this.rs"]
+mod m341;
+#[path = "../memory/obstacle.rs"]
+mod m342;
+#[path = "../memory/onset.rs"]
+mod m343;
+#[path = "../memory/opening.rs"]
+mod m344;
+#[path = "../memory/outfit.rs"]
+mod m345;
+#[path = "../memory/outgoings.rs"]
+mod m346;
+#[path = "../memory/paragraph.rs"]
+mod m347;
+#[path = "../memory/passing_the_time.rs"]
+mod m348;
+#[path = "../memory/pending.rs"]
+mod m349;
+#[path = "../memory/people.rs"]
+mod m350;
+#[path = "../memory/pile.rs"]
+mod m351;
+#[path = "../memory/places.rs"]
+mod m352;
+#[path = "../memory/plan.rs"]
+mod m353;
+#[path = "../memory/plans.rs"]
+mod m354;
+#[path = "../memory/portions.rs"]
+mod m355;
+#[path = "../memory/prefer.rs"]
+mod m356;
+#[path = "../memory/price.rs"]
+mod m357;
+#[path = "../memory/purse.rs"]
+mod m358;
+#[path = "../memory/quotes.rs"]
+mod m359;
+#[path = "../memory/rates.rs"]
+mod m360;
+#[path = "../memory/recall.rs"]
+mod m361;
+#[path = "../memory/reject.rs"]
+mod m362;
+#[path = "../memory/relations.rs"]
+mod m363;
+#[path = "../memory/remedy.rs"]
+mod m364;
+#[path = "../memory/reminded.rs"]
+mod m365;
+#[path = "../memory/rename.rs"]
+mod m366;
+#[path = "../memory/repair.rs"]
+mod m367;
+#[path = "../memory/repeat.rs"]
+mod m368;
+#[path = "../memory/resize.rs"]
+mod m369;
+#[path = "../memory/returned.rs"]
+mod m370;
+#[path = "../memory/returns.rs"]
+mod m371;
+#[path = "../memory/saving.rs"]
+mod m372;
+#[path = "../memory/setback.rs"]
+mod m373;
+#[path = "../memory/size.rs"]
+mod m374;
+#[path = "../memory/spent.rs"]
+mod m375;
+#[path = "../memory/spoken.rs"]
+mod m376;
+#[path = "../memory/stands.rs"]
+mod m377;
+#[path = "../memory/store_lines.rs"]
+mod m378;
+#[path = "../memory/store_replies.rs"]
+mod m379;
+#[path = "../memory/stuck.rs"]
+mod m380;
+#[path = "../memory/surname.rs"]
+mod m381;
+#[path = "../memory/swap.rs"]
+mod m382;
+#[path = "../memory/taking.rs"]
+mod m383;
+#[path = "../memory/taste.rs"]
+mod m384;
+#[path = "../memory/the_verdict.rs"]
+mod m385;
+#[path = "../memory/the_years.rs"]
+mod m386;
+#[path = "../memory/their_feeling.rs"]
+mod m387;
+#[path = "../memory/thread.rs"]
+mod m388;
+#[path = "../memory/times.rs"]
+mod m389;
+#[path = "../memory/told.rs"]
+mod m390;
+#[path = "../memory/too_late.rs"]
+mod m391;
+#[path = "../memory/topics.rs"]
+mod m392;
+#[path = "../memory/tried.rs"]
+mod m393;
+#[path = "../memory/trips.rs"]
+mod m394;
+#[path = "../memory/warmth.rs"]
+mod m395;
+#[path = "../memory/whathurts.rs"]
+mod m396;
+#[path = "../memory/when.rs"]
+mod m397;
+#[path = "../memory/whereabout.rs"]
+mod m398;
+#[path = "../memory/whose_body.rs"]
+mod m399;
+#[path = "../memory/will_it_work.rs"]
+mod m400;
+#[path = "../memory/workplace.rs"]
+mod m401;
+#[path = "../memory/years_in.rs"]
+mod m402;
+#[path = "../modules/mod.rs"]
+mod m403;
+#[path = "../modules/a_cake_between_its_layers.rs"]
+mod m404;
+#[path = "../modules/a_check_with_you.rs"]
+mod m405;
+#[path = "../modules/a_count_of_packets.rs"]
+mod m406;
+#[path = "../modules/a_count_said.rs"]
+mod m407;
+#[path = "../modules/a_day_somebody_else_keeps.rs"]
+mod m408;
+#[path = "../modules/a_debt_said_flat.rs"]
+mod m409;
+#[path = "../modules/a_fact_asked_again.rs"]
+mod m410;
+#[path = "../modules/a_figure_beside_the_state.rs"]
+mod m411;
+#[path = "../modules/a_figure_of_a_dish.rs"]
+mod m412;
+#[path = "../modules/a_first_time.rs"]
+mod m413;
+#[path = "../modules/a_habit_is_raised.rs"]
+mod m414;
+#[path = "../modules/a_job_that_is_not_a_diy_job.rs"]
+mod m415;
+#[path = "../modules/a_letter_about_money.rs"]
+mod m416;
+#[path = "../modules/a_limit_over_the_answer.rs"]
+mod m417;
+#[path = "../modules/a_measure_asked_again.rs"]
+mod m418;
+#[path = "../modules/a_number_the_bot_knows.rs"]
+mod m419;
+#[path = "../modules/a_plan_the_thread_holds.rs"]
+mod m420;
+#[path = "../modules/a_question_about_somebody.rs"]
+mod m421;
+#[path = "../modules/a_return_brings_back_the_advice.rs"]
+mod m422;
+#[path = "../modules/a_shock_at_a_bill.rs"]
+mod m423;
+#[path = "../modules/a_thing_being_weighed.rs"]
+mod m424;
+#[path = "../modules/a_thing_wants_doing.rs"]
+mod m425;
+#[path = "../modules/a_will_it_work.rs"]
+mod m426;
+#[path = "../modules/aboutachild.rs"]
+mod m427;
+#[path = "../modules/after_a_lead_in.rs"]
+mod m428;
+#[path = "../modules/already.rs"]
+mod m429;
+#[path = "../modules/an_age_ahead.rs"]
+mod m430;
+#[path = "../modules/answers.rs"]
+mod m431;
+#[path = "../modules/arbiter.rs"]
+mod m432;
+#[path = "../modules/attribute_said_again.rs"]
+mod m433;
+#[path = "../modules/bulky.rs"]
+mod m434;
+#[path = "../modules/callback_about.rs"]
+mod m435;
+#[path = "../modules/carers_turn.rs"]
+mod m436;
+#[path = "../modules/chasing_a_body.rs"]
+mod m437;
+#[path = "../modules/chat.rs"]
+mod m438;
+#[path = "../modules/chat_replies.rs"]
+mod m439;
+#[path = "../modules/colour_on_the_body.rs"]
+mod m440;
+#[path = "../modules/confusing.rs"]
+mod m441;
+#[path = "../modules/detail_question.rs"]
+mod m442;
+#[path = "../modules/done_ask.rs"]
+mod m443;
+#[path = "../modules/doubt.rs"]
+mod m444;
+#[path = "../modules/dreams.rs"]
+mod m445;
+#[path = "../modules/familyask.rs"]
+mod m446;
+#[path = "../modules/favourites.rs"]
+mod m447;
+#[path = "../modules/figure_asked_again.rs"]
+mod m448;
+#[path = "../modules/first_line_open.rs"]
+mod m449;
+#[path = "../modules/greeting.rs"]
+mod m450;
+#[path = "../modules/grief.rs"]
+mod m451;
+#[path = "../modules/group_ages.rs"]
+mod m452;
+#[path = "../modules/hardpast.rs"]
+mod m453;
+#[path = "../modules/household.rs"]
+mod m454;
+#[path = "../modules/how_long_a_stay.rs"]
+mod m455;
+#[path = "../modules/intent.rs"]
+mod m456;
+#[path = "../modules/invitation.rs"]
+mod m457;
+#[path = "../modules/judge_ask.rs"]
+mod m458;
+#[path = "../modules/keeping.rs"]
+mod m459;
+#[path = "../modules/kid_tally.rs"]
+mod m460;
+#[path = "../modules/live_source.rs"]
+mod m461;
+#[path = "../modules/live_times.rs"]
+mod m462;
+#[path = "../modules/loss.rs"]
+mod m463;
+#[path = "../modules/memory_store.rs"]
+mod m464;
+#[path = "../modules/memory_tables.rs"]
+mod m465;
+#[path = "../modules/my_work.rs"]
+mod m466;
+#[path = "../modules/name_taken_back.rs"]
+mod m467;
+#[path = "../modules/near_me.rs"]
+mod m468;
+#[path = "../modules/night.rs"]
+mod m469;
+#[path = "../modules/no_advice.rs"]
+mod m470;
+#[path = "../modules/nudge.rs"]
+mod m471;
+#[path = "../modules/on_record.rs"]
+mod m472;
+#[path = "../modules/onsubject.rs"]
+mod m473;
+#[path = "../modules/pace.rs"]
+mod m474;
+#[path = "../modules/particles.rs"]
+mod m475;
+#[path = "../modules/recap.rs"]
+mod m476;
+#[path = "../modules/receiving_end.rs"]
+mod m477;
+#[path = "../modules/record_due.rs"]
+mod m478;
+#[path = "../modules/ruled_out.rs"]
+mod m479;
+#[path = "../modules/safety.rs"]
+mod m480;
+#[path = "../modules/safety_cards.rs"]
+mod m481;
+#[path = "../modules/safety_phrases.rs"]
+mod m482;
+#[path = "../modules/safety_tables.rs"]
+mod m483;
+#[path = "../modules/said_back.rs"]
+mod m484;
+#[path = "../modules/said_fact_back.rs"]
+mod m485;
+#[path = "../modules/saving_followup.rs"]
+mod m486;
+#[path = "../modules/since_it_began.rs"]
+mod m487;
+#[path = "../modules/steps.rs"]
+mod m488;
+#[path = "../modules/taking_asked_again.rs"]
+mod m489;
+#[path = "../modules/talkto.rs"]
+mod m490;
+#[path = "../modules/the_detail_the_thread_adds.rs"]
+mod m491;
+#[path = "../modules/the_kind_one_line_up.rs"]
+mod m492;
+#[path = "../modules/the_month_they_have.rs"]
+mod m493;
+#[path = "../modules/the_shape_of_the_answer.rs"]
+mod m494;
+#[path = "../modules/the_trouble_it_has.rs"]
+mod m495;
+#[path = "../modules/the_trouble_named.rs"]
+mod m496;
+#[path = "../modules/the_wait_about_a_body.rs"]
+mod m497;
+#[path = "../modules/their_life.rs"]
+mod m498;
+#[path = "../modules/their_pastime.rs"]
+mod m499;
+#[path = "../modules/their_taste.rs"]
+mod m500;
+#[path = "../modules/theirperson.rs"]
+mod m501;
+#[path = "../modules/thing_i_did_with.rs"]
+mod m502;
+#[path = "../modules/trip_date_said_again.rs"]
+mod m503;
+#[path = "../modules/understand.rs"]
+mod m504;
+#[path = "../modules/urgent.rs"]
+mod m505;
+#[path = "../modules/ward.rs"]
+mod m506;
+#[path = "../modules/what_decides_it.rs"]
+mod m507;
+#[path = "../modules/what_they_said.rs"]
+mod m508;
+#[path = "../modules/where_it_answers.rs"]
+mod m509;
+#[path = "../modules/who_to_see.rs"]
+mod m510;
+#[path = "../modules/words.rs"]
+mod m511;
+#[path = "../modules/years_in.rs"]
+mod m512;
+#[path = "../runtime.rs"]
+mod m513;
+#[path = "../understanding/mod.rs"]
+mod m514;
+#[path = "../understanding/attempts.rs"]
+mod m515;
+#[path = "../understanding/body.rs"]
+mod m516;
+#[path = "../understanding/breeds.rs"]
+mod m517;
+#[path = "../understanding/car_glass.rs"]
+mod m518;
+#[path = "../understanding/cars.rs"]
+mod m519;
+#[path = "../understanding/confusion.rs"]
+mod m520;
+#[path = "../understanding/kinds.rs"]
+mod m521;
+#[path = "../understanding/lexicon.rs"]
+mod m522;
+#[path = "../understanding/normalize.rs"]
+mod m523;
+#[path = "../understanding/references.rs"]
+mod m524;
+#[path = "../understanding/senses.rs"]
+mod m525;
+#[path = "../understanding/topics.rs"]
+mod m526;
 pub static MODULES: &[(&str, ModuleInit)] = &[
 ("bot",crate::INIT),
 ("bot.compose",m1::INIT),
@@ -640,135 +1180,405 @@ pub static MODULES: &[(&str, ModuleInit)] = &[
 ("bot.compose.whole",m124::INIT),
 ("bot.compose.why",m125::INIT),
 ("bot.compose.worn",m126::INIT),
-("bot.memory",m127::INIT),
-("bot.memory.a_year_of_birth",m128::INIT),
-("bot.memory.aboutthem",m129::INIT),
-("bot.memory.ack",m130::INIT),
-("bot.memory.again",m131::INIT),
-("bot.memory.already",m132::INIT),
-("bot.memory.amounts",m133::INIT),
-("bot.memory.another",m134::INIT),
-("bot.memory.asked_about",m135::INIT),
-("bot.memory.asleep",m136::INIT),
-("bot.memory.back_again",m137::INIT),
-("bot.memory.baking",m138::INIT),
-("bot.memory.callback",m139::INIT),
-("bot.memory.carried_on",m140::INIT),
-("bot.memory.carry",m141::INIT),
-("bot.memory.cause",m142::INIT),
-("bot.memory.change",m143::INIT),
-("bot.memory.choice",m144::INIT),
-("bot.memory.company",m145::INIT),
-("bot.memory.condition",m146::INIT),
-("bot.memory.corrected",m147::INIT),
-("bot.memory.counts",m148::INIT),
-("bot.memory.deadline",m149::INIT),
-("bot.memory.decided",m150::INIT),
-("bot.memory.detail",m151::INIT),
-("bot.memory.doing_it",m152::INIT),
-("bot.memory.doubt",m153::INIT),
-("bot.memory.dream",m154::INIT),
-("bot.memory.earlier",m155::INIT),
-("bot.memory.enough",m156::INIT),
-("bot.memory.facts",m157::INIT),
-("bot.memory.favourite",m158::INIT),
-("bot.memory.filler",m159::INIT),
-("bot.memory.goals",m160::INIT),
-("bot.memory.groupages",m161::INIT),
-("bot.memory.guest",m162::INIT),
-("bot.memory.healing",m163::INIT),
-("bot.memory.history",m164::INIT),
-("bot.memory.holds",m165::INIT),
-("bot.memory.hope",m166::INIT),
-("bot.memory.hours",m167::INIT),
-("bot.memory.household",m168::INIT),
-("bot.memory.kidcount",m169::INIT),
-("bot.memory.kinds",m170::INIT),
-("bot.memory.limit",m171::INIT),
-("bot.memory.limits",m172::INIT),
-("bot.memory.lineback",m173::INIT),
-("bot.memory.matters",m174::INIT),
-("bot.memory.meant",m175::INIT),
-("bot.memory.measure",m176::INIT),
-("bot.memory.more",m177::INIT),
-("bot.memory.named",m178::INIT),
-("bot.memory.narrow",m179::INIT),
-("bot.memory.newborn",m180::INIT),
-("bot.memory.not_a_trip",m181::INIT),
-("bot.memory.not_this",m182::INIT),
-("bot.memory.obstacle",m183::INIT),
-("bot.memory.onset",m184::INIT),
-("bot.memory.opening",m185::INIT),
-("bot.memory.outfit",m186::INIT),
-("bot.memory.outgoings",m187::INIT),
-("bot.memory.paragraph",m188::INIT),
-("bot.memory.passing_the_time",m189::INIT),
-("bot.memory.pending",m190::INIT),
-("bot.memory.people",m191::INIT),
-("bot.memory.pile",m192::INIT),
-("bot.memory.places",m193::INIT),
-("bot.memory.plan",m194::INIT),
-("bot.memory.plans",m195::INIT),
-("bot.memory.portions",m196::INIT),
-("bot.memory.prefer",m197::INIT),
-("bot.memory.price",m198::INIT),
-("bot.memory.purse",m199::INIT),
-("bot.memory.quotes",m200::INIT),
-("bot.memory.rates",m201::INIT),
-("bot.memory.recall",m202::INIT),
-("bot.memory.reject",m203::INIT),
-("bot.memory.relations",m204::INIT),
-("bot.memory.remedy",m205::INIT),
-("bot.memory.reminded",m206::INIT),
-("bot.memory.rename",m207::INIT),
-("bot.memory.repair",m208::INIT),
-("bot.memory.repeat",m209::INIT),
-("bot.memory.resize",m210::INIT),
-("bot.memory.returned",m211::INIT),
-("bot.memory.returns",m212::INIT),
-("bot.memory.saving",m213::INIT),
-("bot.memory.setback",m214::INIT),
-("bot.memory.size",m215::INIT),
-("bot.memory.spent",m216::INIT),
-("bot.memory.spoken",m217::INIT),
-("bot.memory.stands",m218::INIT),
-("bot.memory.store_lines",m219::INIT),
-("bot.memory.store_replies",m220::INIT),
-("bot.memory.stuck",m221::INIT),
-("bot.memory.surname",m222::INIT),
-("bot.memory.swap",m223::INIT),
-("bot.memory.taking",m224::INIT),
-("bot.memory.taste",m225::INIT),
-("bot.memory.the_verdict",m226::INIT),
-("bot.memory.the_years",m227::INIT),
-("bot.memory.their_feeling",m228::INIT),
-("bot.memory.thread",m229::INIT),
-("bot.memory.times",m230::INIT),
-("bot.memory.told",m231::INIT),
-("bot.memory.too_late",m232::INIT),
-("bot.memory.topics",m233::INIT),
-("bot.memory.tried",m234::INIT),
-("bot.memory.trips",m235::INIT),
-("bot.memory.warmth",m236::INIT),
-("bot.memory.whathurts",m237::INIT),
-("bot.memory.when",m238::INIT),
-("bot.memory.whereabout",m239::INIT),
-("bot.memory.whose_body",m240::INIT),
-("bot.memory.will_it_work",m241::INIT),
-("bot.memory.workplace",m242::INIT),
-("bot.memory.years_in",m243::INIT),
-("bot.understanding",m244::INIT),
-("bot.understanding.attempts",m245::INIT),
-("bot.understanding.body",m246::INIT),
-("bot.understanding.breeds",m247::INIT),
-("bot.understanding.car_glass",m248::INIT),
-("bot.understanding.cars",m249::INIT),
-("bot.understanding.confusion",m250::INIT),
-("bot.understanding.kinds",m251::INIT),
-("bot.understanding.lexicon",m252::INIT),
-("bot.understanding.normalize",m253::INIT),
-("bot.understanding.references",m254::INIT),
-("bot.understanding.senses",m255::INIT),
-("bot.understanding.topics",m256::INIT),
+("bot.knowledge",m127::INIT),
+("bot.knowledge.a_plain_noise_word_on_a_machine",m128::INIT),
+("bot.knowledge.affording",m129::INIT),
+("bot.knowledge.animals",m130::INIT),
+("bot.knowledge.appointments",m131::INIT),
+("bot.knowledge.babyfood",m132::INIT),
+("bot.knowledge.bake_faults",m133::INIT),
+("bot.knowledge.bikes",m134::INIT),
+("bot.knowledge.body",m135::INIT),
+("bot.knowledge.body_energy",m136::INIT),
+("bot.knowledge.build_jobs",m137::INIT),
+("bot.knowledge.business",m138::INIT),
+("bot.knowledge.cakes",m139::INIT),
+("bot.knowledge.caring",m140::INIT),
+("bot.knowledge.cars",m141::INIT),
+("bot.knowledge.child_work",m142::INIT),
+("bot.knowledge.chilli",m143::INIT),
+("bot.knowledge.cleaning",m144::INIT),
+("bot.knowledge.clothing",m145::INIT),
+("bot.knowledge.coats",m146::INIT),
+("bot.knowledge.comeback",m147::INIT),
+("bot.knowledge.complaints",m148::INIT),
+("bot.knowledge.conditions",m149::INIT),
+("bot.knowledge.consumer",m150::INIT),
+("bot.knowledge.containers_frost",m151::INIT),
+("bot.knowledge.cook_kit",m152::INIT),
+("bot.knowledge.cooking",m153::INIT),
+("bot.knowledge.cooking_entries",m154::INIT),
+("bot.knowledge.cooking_fats",m155::INIT),
+("bot.knowledge.cooking_gaps",m156::INIT),
+("bot.knowledge.cooking_more",m157::INIT),
+("bot.knowledge.cooking_tables",m158::INIT),
+("bot.knowledge.cooling",m159::INIT),
+("bot.knowledge.costs",m160::INIT),
+("bot.knowledge.creative",m161::INIT),
+("bot.knowledge.crisis_replies",m162::INIT),
+("bot.knowledge.dates",m163::INIT),
+("bot.knowledge.decorating",m164::INIT),
+("bot.knowledge.desk_setup",m165::INIT),
+("bot.knowledge.devices",m166::INIT),
+("bot.knowledge.differences",m167::INIT),
+("bot.knowledge.dish_verdicts",m168::INIT),
+("bot.knowledge.dishes",m169::INIT),
+("bot.knowledge.drinks",m170::INIT),
+("bot.knowledge.eithers",m171::INIT),
+("bot.knowledge.entertainment",m172::INIT),
+("bot.knowledge.everyday_lines",m173::INIT),
+("bot.knowledge.explains",m174::INIT),
+("bot.knowledge.fabrics",m175::INIT),
+("bot.knowledge.family",m176::INIT),
+("bot.knowledge.family_more",m177::INIT),
+("bot.knowledge.fears",m178::INIT),
+("bot.knowledge.fitness",m179::INIT),
+("bot.knowledge.fitweek",m180::INIT),
+("bot.knowledge.food_left_out",m181::INIT),
+("bot.knowledge.freshness",m182::INIT),
+("bot.knowledge.friends",m183::INIT),
+("bot.knowledge.fruit",m184::INIT),
+("bot.knowledge.fun",m185::INIT),
+("bot.knowledge.garden",m186::INIT),
+("bot.knowledge.garden_tools",m187::INIT),
+("bot.knowledge.geography",m188::INIT),
+("bot.knowledge.habits",m189::INIT),
+("bot.knowledge.health",m190::INIT),
+("bot.knowledge.history",m191::INIT),
+("bot.knowledge.home",m192::INIT),
+("bot.knowledge.home_craft",m193::INIT),
+("bot.knowledge.house_odds",m194::INIT),
+("bot.knowledge.how_it_works",m195::INIT),
+("bot.knowledge.icing",m196::INIT),
+("bot.knowledge.idioms",m197::INIT),
+("bot.knowledge.income_periods",m198::INIT),
+("bot.knowledge.ingredient_swaps",m199::INIT),
+("bot.knowledge.job_times",m200::INIT),
+("bot.knowledge.joint_time",m201::INIT),
+("bot.knowledge.joints",m202::INIT),
+("bot.knowledge.keeping",m203::INIT),
+("bot.knowledge.keeping_cooked",m204::INIT),
+("bot.knowledge.kept_animals",m205::INIT),
+("bot.knowledge.kit_lists",m206::INIT),
+("bot.knowledge.kitchen",m207::INIT),
+("bot.knowledge.kitchen_odds",m208::INIT),
+("bot.knowledge.kitchen_prep",m209::INIT),
+("bot.knowledge.kits_and_claims",m210::INIT),
+("bot.knowledge.land",m211::INIT),
+("bot.knowledge.language",m212::INIT),
+("bot.knowledge.left_on",m213::INIT),
+("bot.knowledge.lifeadmin",m214::INIT),
+("bot.knowledge.lookup",m215::INIT),
+("bot.knowledge.machine_door",m216::INIT),
+("bot.knowledge.materials",m217::INIT),
+("bot.knowledge.maths",m218::INIT),
+("bot.knowledge.meals",m219::INIT),
+("bot.knowledge.measures",m220::INIT),
+("bot.knowledge.meat_in_a_card",m221::INIT),
+("bot.knowledge.microwave_methods",m222::INIT),
+("bot.knowledge.money",m223::INIT),
+("bot.knowledge.money_words",m224::INIT),
+("bot.knowledge.music",m225::INIT),
+("bot.knowledge.nature",m226::INIT),
+("bot.knowledge.newborn",m227::INIT),
+("bot.knowledge.no_kit",m228::INIT),
+("bot.knowledge.notable",m229::INIT),
+("bot.knowledge.nursing",m230::INIT),
+("bot.knowledge.nutrition",m231::INIT),
+("bot.knowledge.occasions",m232::INIT),
+("bot.knowledge.odours",m233::INIT),
+("bot.knowledge.opinions",m234::INIT),
+("bot.knowledge.painting_faults",m235::INIT),
+("bot.knowledge.panic_talk",m236::INIT),
+("bot.knowledge.parking",m237::INIT),
+("bot.knowledge.pasta",m238::INIT),
+("bot.knowledge.pay",m239::INIT),
+("bot.knowledge.pensions",m240::INIT),
+("bot.knowledge.pets",m241::INIT),
+("bot.knowledge.pets_health",m242::INIT),
+("bot.knowledge.pharmacy",m243::INIT),
+("bot.knowledge.phone_use",m244::INIT),
+("bot.knowledge.photography",m245::INIT),
+("bot.knowledge.picking",m246::INIT),
+("bot.knowledge.picks",m247::INIT),
+("bot.knowledge.plans",m248::INIT),
+("bot.knowledge.power_heat",m249::INIT),
+("bot.knowledge.pregnancy",m250::INIT),
+("bot.knowledge.prices",m251::INIT),
+("bot.knowledge.procedures",m252::INIT),
+("bot.knowledge.quantity",m253::INIT),
+("bot.knowledge.rice",m254::INIT),
+("bot.knowledge.routines",m255::INIT),
+("bot.knowledge.rubbish",m256::INIT),
+("bot.knowledge.sauces",m257::INIT),
+("bot.knowledge.school_day",m258::INIT),
+("bot.knowledge.school_days",m259::INIT),
+("bot.knowledge.schoolmaths",m260::INIT),
+("bot.knowledge.science",m261::INIT),
+("bot.knowledge.seasoning",m262::INIT),
+("bot.knowledge.shopping",m263::INIT),
+("bot.knowledge.sleep",m264::INIT),
+("bot.knowledge.sleep_aids",m265::INIT),
+("bot.knowledge.spice_heat",m266::INIT),
+("bot.knowledge.sport",m267::INIT),
+("bot.knowledge.still_ok",m268::INIT),
+("bot.knowledge.study",m269::INIT),
+("bot.knowledge.swaps",m270::INIT),
+("bot.knowledge.takes",m271::INIT),
+("bot.knowledge.technology",m272::INIT),
+("bot.knowledge.tenancy",m273::INIT),
+("bot.knowledge.trades",m274::INIT),
+("bot.knowledge.travel",m275::INIT),
+("bot.knowledge.travel_health",m276::INIT),
+("bot.knowledge.units",m277::INIT),
+("bot.knowledge.vaccines",m278::INIT),
+("bot.knowledge.vegetables",m279::INIT),
+("bot.knowledge.warm_food",m280::INIT),
+("bot.knowledge.water_out",m281::INIT),
+("bot.knowledge.what_damages_what",m282::INIT),
+("bot.knowledge.whenbuy",m283::INIT),
+("bot.knowledge.wording",m284::INIT),
+("bot.knowledge.work",m285::INIT),
+("bot.memory",m286::INIT),
+("bot.memory.a_year_of_birth",m287::INIT),
+("bot.memory.aboutthem",m288::INIT),
+("bot.memory.ack",m289::INIT),
+("bot.memory.again",m290::INIT),
+("bot.memory.already",m291::INIT),
+("bot.memory.amounts",m292::INIT),
+("bot.memory.another",m293::INIT),
+("bot.memory.asked_about",m294::INIT),
+("bot.memory.asleep",m295::INIT),
+("bot.memory.back_again",m296::INIT),
+("bot.memory.baking",m297::INIT),
+("bot.memory.callback",m298::INIT),
+("bot.memory.carried_on",m299::INIT),
+("bot.memory.carry",m300::INIT),
+("bot.memory.cause",m301::INIT),
+("bot.memory.change",m302::INIT),
+("bot.memory.choice",m303::INIT),
+("bot.memory.company",m304::INIT),
+("bot.memory.condition",m305::INIT),
+("bot.memory.corrected",m306::INIT),
+("bot.memory.counts",m307::INIT),
+("bot.memory.deadline",m308::INIT),
+("bot.memory.decided",m309::INIT),
+("bot.memory.detail",m310::INIT),
+("bot.memory.doing_it",m311::INIT),
+("bot.memory.doubt",m312::INIT),
+("bot.memory.dream",m313::INIT),
+("bot.memory.earlier",m314::INIT),
+("bot.memory.enough",m315::INIT),
+("bot.memory.facts",m316::INIT),
+("bot.memory.favourite",m317::INIT),
+("bot.memory.filler",m318::INIT),
+("bot.memory.goals",m319::INIT),
+("bot.memory.groupages",m320::INIT),
+("bot.memory.guest",m321::INIT),
+("bot.memory.healing",m322::INIT),
+("bot.memory.history",m323::INIT),
+("bot.memory.holds",m324::INIT),
+("bot.memory.hope",m325::INIT),
+("bot.memory.hours",m326::INIT),
+("bot.memory.household",m327::INIT),
+("bot.memory.kidcount",m328::INIT),
+("bot.memory.kinds",m329::INIT),
+("bot.memory.limit",m330::INIT),
+("bot.memory.limits",m331::INIT),
+("bot.memory.lineback",m332::INIT),
+("bot.memory.matters",m333::INIT),
+("bot.memory.meant",m334::INIT),
+("bot.memory.measure",m335::INIT),
+("bot.memory.more",m336::INIT),
+("bot.memory.named",m337::INIT),
+("bot.memory.narrow",m338::INIT),
+("bot.memory.newborn",m339::INIT),
+("bot.memory.not_a_trip",m340::INIT),
+("bot.memory.not_this",m341::INIT),
+("bot.memory.obstacle",m342::INIT),
+("bot.memory.onset",m343::INIT),
+("bot.memory.opening",m344::INIT),
+("bot.memory.outfit",m345::INIT),
+("bot.memory.outgoings",m346::INIT),
+("bot.memory.paragraph",m347::INIT),
+("bot.memory.passing_the_time",m348::INIT),
+("bot.memory.pending",m349::INIT),
+("bot.memory.people",m350::INIT),
+("bot.memory.pile",m351::INIT),
+("bot.memory.places",m352::INIT),
+("bot.memory.plan",m353::INIT),
+("bot.memory.plans",m354::INIT),
+("bot.memory.portions",m355::INIT),
+("bot.memory.prefer",m356::INIT),
+("bot.memory.price",m357::INIT),
+("bot.memory.purse",m358::INIT),
+("bot.memory.quotes",m359::INIT),
+("bot.memory.rates",m360::INIT),
+("bot.memory.recall",m361::INIT),
+("bot.memory.reject",m362::INIT),
+("bot.memory.relations",m363::INIT),
+("bot.memory.remedy",m364::INIT),
+("bot.memory.reminded",m365::INIT),
+("bot.memory.rename",m366::INIT),
+("bot.memory.repair",m367::INIT),
+("bot.memory.repeat",m368::INIT),
+("bot.memory.resize",m369::INIT),
+("bot.memory.returned",m370::INIT),
+("bot.memory.returns",m371::INIT),
+("bot.memory.saving",m372::INIT),
+("bot.memory.setback",m373::INIT),
+("bot.memory.size",m374::INIT),
+("bot.memory.spent",m375::INIT),
+("bot.memory.spoken",m376::INIT),
+("bot.memory.stands",m377::INIT),
+("bot.memory.store_lines",m378::INIT),
+("bot.memory.store_replies",m379::INIT),
+("bot.memory.stuck",m380::INIT),
+("bot.memory.surname",m381::INIT),
+("bot.memory.swap",m382::INIT),
+("bot.memory.taking",m383::INIT),
+("bot.memory.taste",m384::INIT),
+("bot.memory.the_verdict",m385::INIT),
+("bot.memory.the_years",m386::INIT),
+("bot.memory.their_feeling",m387::INIT),
+("bot.memory.thread",m388::INIT),
+("bot.memory.times",m389::INIT),
+("bot.memory.told",m390::INIT),
+("bot.memory.too_late",m391::INIT),
+("bot.memory.topics",m392::INIT),
+("bot.memory.tried",m393::INIT),
+("bot.memory.trips",m394::INIT),
+("bot.memory.warmth",m395::INIT),
+("bot.memory.whathurts",m396::INIT),
+("bot.memory.when",m397::INIT),
+("bot.memory.whereabout",m398::INIT),
+("bot.memory.whose_body",m399::INIT),
+("bot.memory.will_it_work",m400::INIT),
+("bot.memory.workplace",m401::INIT),
+("bot.memory.years_in",m402::INIT),
+("bot.modules",m403::INIT),
+("bot.modules.a_cake_between_its_layers",m404::INIT),
+("bot.modules.a_check_with_you",m405::INIT),
+("bot.modules.a_count_of_packets",m406::INIT),
+("bot.modules.a_count_said",m407::INIT),
+("bot.modules.a_day_somebody_else_keeps",m408::INIT),
+("bot.modules.a_debt_said_flat",m409::INIT),
+("bot.modules.a_fact_asked_again",m410::INIT),
+("bot.modules.a_figure_beside_the_state",m411::INIT),
+("bot.modules.a_figure_of_a_dish",m412::INIT),
+("bot.modules.a_first_time",m413::INIT),
+("bot.modules.a_habit_is_raised",m414::INIT),
+("bot.modules.a_job_that_is_not_a_diy_job",m415::INIT),
+("bot.modules.a_letter_about_money",m416::INIT),
+("bot.modules.a_limit_over_the_answer",m417::INIT),
+("bot.modules.a_measure_asked_again",m418::INIT),
+("bot.modules.a_number_the_bot_knows",m419::INIT),
+("bot.modules.a_plan_the_thread_holds",m420::INIT),
+("bot.modules.a_question_about_somebody",m421::INIT),
+("bot.modules.a_return_brings_back_the_advice",m422::INIT),
+("bot.modules.a_shock_at_a_bill",m423::INIT),
+("bot.modules.a_thing_being_weighed",m424::INIT),
+("bot.modules.a_thing_wants_doing",m425::INIT),
+("bot.modules.a_will_it_work",m426::INIT),
+("bot.modules.aboutachild",m427::INIT),
+("bot.modules.after_a_lead_in",m428::INIT),
+("bot.modules.already",m429::INIT),
+("bot.modules.an_age_ahead",m430::INIT),
+("bot.modules.answers",m431::INIT),
+("bot.modules.arbiter",m432::INIT),
+("bot.modules.attribute_said_again",m433::INIT),
+("bot.modules.bulky",m434::INIT),
+("bot.modules.callback_about",m435::INIT),
+("bot.modules.carers_turn",m436::INIT),
+("bot.modules.chasing_a_body",m437::INIT),
+("bot.modules.chat",m438::INIT),
+("bot.modules.chat_replies",m439::INIT),
+("bot.modules.colour_on_the_body",m440::INIT),
+("bot.modules.confusing",m441::INIT),
+("bot.modules.detail_question",m442::INIT),
+("bot.modules.done_ask",m443::INIT),
+("bot.modules.doubt",m444::INIT),
+("bot.modules.dreams",m445::INIT),
+("bot.modules.familyask",m446::INIT),
+("bot.modules.favourites",m447::INIT),
+("bot.modules.figure_asked_again",m448::INIT),
+("bot.modules.first_line_open",m449::INIT),
+("bot.modules.greeting",m450::INIT),
+("bot.modules.grief",m451::INIT),
+("bot.modules.group_ages",m452::INIT),
+("bot.modules.hardpast",m453::INIT),
+("bot.modules.household",m454::INIT),
+("bot.modules.how_long_a_stay",m455::INIT),
+("bot.modules.intent",m456::INIT),
+("bot.modules.invitation",m457::INIT),
+("bot.modules.judge_ask",m458::INIT),
+("bot.modules.keeping",m459::INIT),
+("bot.modules.kid_tally",m460::INIT),
+("bot.modules.live_source",m461::INIT),
+("bot.modules.live_times",m462::INIT),
+("bot.modules.loss",m463::INIT),
+("bot.modules.memory_store",m464::INIT),
+("bot.modules.memory_tables",m465::INIT),
+("bot.modules.my_work",m466::INIT),
+("bot.modules.name_taken_back",m467::INIT),
+("bot.modules.near_me",m468::INIT),
+("bot.modules.night",m469::INIT),
+("bot.modules.no_advice",m470::INIT),
+("bot.modules.nudge",m471::INIT),
+("bot.modules.on_record",m472::INIT),
+("bot.modules.onsubject",m473::INIT),
+("bot.modules.pace",m474::INIT),
+("bot.modules.particles",m475::INIT),
+("bot.modules.recap",m476::INIT),
+("bot.modules.receiving_end",m477::INIT),
+("bot.modules.record_due",m478::INIT),
+("bot.modules.ruled_out",m479::INIT),
+("bot.modules.safety",m480::INIT),
+("bot.modules.safety_cards",m481::INIT),
+("bot.modules.safety_phrases",m482::INIT),
+("bot.modules.safety_tables",m483::INIT),
+("bot.modules.said_back",m484::INIT),
+("bot.modules.said_fact_back",m485::INIT),
+("bot.modules.saving_followup",m486::INIT),
+("bot.modules.since_it_began",m487::INIT),
+("bot.modules.steps",m488::INIT),
+("bot.modules.taking_asked_again",m489::INIT),
+("bot.modules.talkto",m490::INIT),
+("bot.modules.the_detail_the_thread_adds",m491::INIT),
+("bot.modules.the_kind_one_line_up",m492::INIT),
+("bot.modules.the_month_they_have",m493::INIT),
+("bot.modules.the_shape_of_the_answer",m494::INIT),
+("bot.modules.the_trouble_it_has",m495::INIT),
+("bot.modules.the_trouble_named",m496::INIT),
+("bot.modules.the_wait_about_a_body",m497::INIT),
+("bot.modules.their_life",m498::INIT),
+("bot.modules.their_pastime",m499::INIT),
+("bot.modules.their_taste",m500::INIT),
+("bot.modules.theirperson",m501::INIT),
+("bot.modules.thing_i_did_with",m502::INIT),
+("bot.modules.trip_date_said_again",m503::INIT),
+("bot.modules.understand",m504::INIT),
+("bot.modules.urgent",m505::INIT),
+("bot.modules.ward",m506::INIT),
+("bot.modules.what_decides_it",m507::INIT),
+("bot.modules.what_they_said",m508::INIT),
+("bot.modules.where_it_answers",m509::INIT),
+("bot.modules.who_to_see",m510::INIT),
+("bot.modules.words",m511::INIT),
+("bot.modules.years_in",m512::INIT),
+("bot.runtime",m513::INIT),
+("bot.understanding",m514::INIT),
+("bot.understanding.attempts",m515::INIT),
+("bot.understanding.body",m516::INIT),
+("bot.understanding.breeds",m517::INIT),
+("bot.understanding.car_glass",m518::INIT),
+("bot.understanding.cars",m519::INIT),
+("bot.understanding.confusion",m520::INIT),
+("bot.understanding.kinds",m521::INIT),
+("bot.understanding.lexicon",m522::INIT),
+("bot.understanding.normalize",m523::INIT),
+("bot.understanding.references",m524::INIT),
+("bot.understanding.senses",m525::INIT),
+("bot.understanding.topics",m526::INIT),
 ];
 pub fn register(rt: &mut Runtime) { for (name, init) in MODULES { rt.register_module(*name,*init); } }

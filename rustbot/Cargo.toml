@@ -19,3 +19,18 @@ libc = "0.2"
 [profile.release]
 lto = "thin"
 codegen-units = 1
+
+# Runtime-optimized execution for parity iteration without LTO.
+# Performance acceptance still uses the normal release profile.
+[profile.parity]
+inherits = "release"
+opt-level = 1
+lto = "off"
+codegen-units = 16
+debug = false
+
+[profile.parity.package.pyrt]
+opt-level = 3
+
+[profile.parity.package.bot]
+opt-level = 0

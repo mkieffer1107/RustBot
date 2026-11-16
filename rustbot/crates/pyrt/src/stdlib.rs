@@ -5,12 +5,12 @@ use crate::object::{CallArgs, IteratorObject, NativeFunction, NativeType, PyObje
 use crate::random::{PyRandom, RandomState};
 use crate::runtime::Runtime;
 use crate::{PyExc, PyResult, Value, canon_json, from_canon_json};
-use num_traits::{Signed, ToPrimitive};
+use num_traits::{Signed, ToPrimitive, Zero};
 use serde_json::{Value as Json, json};
 use std::any::Any;
 use std::cell::RefCell;
 use std::collections::{HashMap, HashSet};
-use std::rc::Rc;
+use std::rc::{Rc, Weak};
 
 pub fn register(runtime: &mut Runtime) {
     for (name, init) in [
@@ -2772,11 +2772,39 @@ fn init_datetime(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
     Ok(())
 }
 
-#[derive(Clone, Debug)]
-struct PatternObject(Rc<crate::regex::CompiledPattern>);
+#[derive(Debug)]
+struct PatternObject(
+    Rc<crate::regex::CompiledPattern>,
+    Value,
+    Weak<PatternObject>,
+);
 
-fn pattern_value(compiled: Rc<crate::regex::CompiledPattern>) -> Value {
-    Value::Object(Rc::new(PatternObject(compiled)))
+// Wrapper ownership is separate from engine caching. Weak entries do not keep
+// Python patterns alive; matches and bound methods retain their original owner.
+thread_local! {
+    static PATTERN_OWNERS: RefCell<HashMap<usize, Weak<PatternObject>>> = RefCell::new(HashMap::new());
+}
+fn pattern_value(compiled: Rc<crate::regex::CompiledPattern>, source: &Value) -> Value {
+    if matches!(source, Value::Object(object) if object.as_any().is::<PatternObject>()) {
+        return source.clone();
+    }
+    let identity = Rc::as_ptr(&compiled) as usize;
+    PATTERN_OWNERS.with_borrow_mut(|owners| {
+        if let Some(existing) = owners.get(&identity).and_then(Weak::upgrade) {
+            return Value::Object(existing);
+        }
+        if owners.len() >= 512 {
+            owners.retain(|_, value| value.strong_count() != 0);
+        }
+        let text = if matches!(source, Value::Str(_)) {
+            source.clone()
+        } else {
+            Value::from(compiled.pattern())
+        };
+        let owner = Rc::new_cyclic(|this| PatternObject(compiled, text, this.clone()));
+        owners.insert(identity, Rc::downgrade(&owner));
+        Value::Object(owner)
+    })
 }
 
 fn compile(value: &Value, flags: i64) -> PyResult<Rc<crate::regex::CompiledPattern>> {
@@ -2795,6 +2823,8 @@ fn compile(value: &Value, flags: i64) -> PyResult<Rc<crate::regex::CompiledPatte
 
 #[derive(Clone, Debug)]
 struct MatchObject {
+    owner: Value,
+    original: Value,
     compiled: Rc<crate::regex::CompiledPattern>,
     text: String,
     data: Json,
@@ -2983,8 +3013,8 @@ impl PyObject for MatchObject {
     fn get_attr(&self, _: &mut Runtime, name: &str) -> PyResult<Value> {
         match name {
             "lastindex" | "lastgroup" => return from_canon_json(&self.data[name]),
-            "string" => return Ok(Value::from(self.text.clone())),
-            "re" => return Ok(pattern_value(self.compiled.clone())),
+            "string" => return Ok(self.original.clone()),
+            "re" => return Ok(self.owner.clone()),
             "pos" => return Ok(Value::from(self.pos)),
             "endpos" => return Ok(Value::from(self.endpos)),
             "regs" => {
@@ -3087,7 +3117,8 @@ impl PyObject for MatchObject {
 
 fn match_value(
     compiled: Rc<crate::regex::CompiledPattern>,
-    text: &str,
+    owner: &Value,
+    original: &Value,
     json: Json,
     pos: i64,
     endpos: i64,
@@ -3100,15 +3131,17 @@ fn match_value(
         .cloned()
         .ok_or_else(|| PyExc::value_error("missing match data"))?;
     Ok(Value::Object(Rc::new(MatchObject {
+        owner: owner.clone(),
+        original: original.clone(),
         compiled,
-        text: text.into(),
+        text: original.as_str()?.into(),
         data,
         pos,
         endpos,
     })))
 }
 
-fn pattern_method(compiled: Rc<crate::regex::CompiledPattern>, name: &str) -> Value {
+fn pattern_method(compiled: Rc<crate::regex::CompiledPattern>, owner: Value, name: &str) -> Value {
     let name = name.to_owned();
     function(&format!("Pattern.{name}"), move |runtime, args| {
         if name == "sub" || name == "subn" {
@@ -3123,7 +3156,7 @@ fn pattern_method(compiled: Rc<crate::regex::CompiledPattern>, name: &str) -> Va
             if matches!(&args[0], Value::Object(o) if o.is_callable()) {
                 let end = text.chars().count() as i64;
                 let (output, replaced) = crate::regex::sub_with(&compiled, text, count, |json| {
-                    let matched = match_value(compiled.clone(), text, json, 0, end)?;
+                    let matched = match_value(compiled.clone(), &owner, &args[1], json, 0, end)?;
                     let value = runtime.call(&args[0], CallArgs::new(vec![matched]))?;
                     if matches!(value, Value::None) {
                         Ok(None)
@@ -3131,14 +3164,32 @@ fn pattern_method(compiled: Rc<crate::regex::CompiledPattern>, name: &str) -> Va
                         Ok(Some(value.as_str()?.into()))
                     }
                 })?;
-                return Ok(if name == "sub" {
-                    Value::from(output)
+                let output = if replaced == 0 {
+                    args[1].clone()
                 } else {
-                    Value::tuple(vec![Value::from(output), Value::from(replaced)])
+                    Value::from(output)
+                };
+                return Ok(if name == "sub" {
+                    output
+                } else {
+                    Value::tuple(vec![output, Value::from(replaced)])
                 });
             }
             let json_args = args.iter().map(canon_json).collect::<PyResult<Vec<_>>>()?;
-            return from_canon_json(&crate::regex::run_compiled(&compiled, &name, &json_args)?);
+            // subn exposes the real replacement count; equality of output text
+            // alone cannot decide whether Python preserves the input object.
+            let result = crate::regex::run_compiled(&compiled, "subn", &json_args)?;
+            let result = from_canon_json(&result)?.sequence()?;
+            let output = if result[1].as_int()?.is_zero() {
+                args[1].clone()
+            } else {
+                result[0].clone()
+            };
+            return Ok(if name == "sub" {
+                output
+            } else {
+                Value::tuple(vec![output, result[1].clone()])
+            });
         }
         if name == "split" {
             let args = bind(args, &["string", "maxsplit"], 1, vec![Value::from(0_i64)])?;
@@ -3172,11 +3223,11 @@ fn pattern_method(compiled: Rc<crate::regex::CompiledPattern>, name: &str) -> Va
                 .as_array()
                 .ok_or_else(|| PyExc::value_error("invalid match iteration"))?
                 .iter()
-                .map(|v| match_value(compiled.clone(), text, v.clone(), pos, end))
+                .map(|v| match_value(compiled.clone(), &owner, &args[0], v.clone(), pos, end))
                 .collect::<PyResult<Vec<_>>>()?;
             return Ok(IteratorObject::from_values(values));
         }
-        match_value(compiled.clone(), text, result, pos, end)
+        match_value(compiled.clone(), &owner, &args[0], result, pos, end)
     })
 }
 
@@ -3220,7 +3271,7 @@ impl PyObject for PatternObject {
     }
     fn get_attr(&self, _: &mut Runtime, name: &str) -> PyResult<Value> {
         match name {
-            "pattern" => Ok(Value::from(self.0.pattern())),
+            "pattern" => Ok(self.1.clone()),
             "flags" => Ok(Value::from(self.0.flags())),
             "groups" => Ok(Value::from(self.0.group_count())),
             "groupindex" => {
@@ -3244,7 +3295,11 @@ impl PyObject for PatternObject {
             ]
             .contains(&name) =>
             {
-                Ok(pattern_method(self.0.clone(), name))
+                let owner = self
+                    .2
+                    .upgrade()
+                    .ok_or_else(|| PyExc::runtime_error("pattern owner no longer exists"))?;
+                Ok(pattern_method(self.0.clone(), Value::Object(owner), name))
             }
             _ => Err(PyExc::attribute_error(format!(
                 "Pattern has no attribute '{name}'"
@@ -3328,7 +3383,10 @@ fn init_re(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
             {
                 return Ok(args[0].clone());
             }
-            Ok(pattern_value(compile(&args[0], integer(&args[1])?)?))
+            Ok(pattern_value(
+                compile(&args[0], integer(&args[1])?)?,
+                &args[0],
+            ))
         }),
     )?;
     for name in [
@@ -3366,7 +3424,11 @@ fn init_re(runtime: &mut Runtime, module: &Value) -> PyResult<()> {
                 let args = bind(args, names, required, defaults)?;
                 let compiled = compile(&args[0], integer(args.last().unwrap())?)?;
                 let forwarded = args[1..args.len() - 1].to_vec();
-                runtime.call(&pattern_method(compiled, name), CallArgs::new(forwarded))
+                let owner = pattern_value(compiled.clone(), &args[0]);
+                runtime.call(
+                    &pattern_method(compiled, owner, name),
+                    CallArgs::new(forwarded),
+                )
             }),
         )?;
     }

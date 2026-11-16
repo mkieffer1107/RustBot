@@ -28,6 +28,9 @@ impl PyStr {
     pub fn as_str(&self) -> &str {
         &self.0.text
     }
+    pub fn is_identical(&self, other: &Self) -> bool {
+        Rc::ptr_eq(&self.0, &other.0)
+    }
 
     fn offsets(&self) -> &[usize] {
         self.0.offsets.get_or_init(|| {
@@ -203,6 +206,7 @@ impl Value {
         match (self, other) {
             (Self::None, Self::None) => true,
             (Self::Bool(a), Self::Bool(b)) => a == b,
+            (Self::Str(a), Self::Str(b)) => a.is_identical(b),
             (Self::List(a), Self::List(b)) => Rc::ptr_eq(a, b),
             (Self::Tuple(a), Self::Tuple(b)) => Rc::ptr_eq(a, b),
             (Self::Dict(a), Self::Dict(b)) => Rc::ptr_eq(a, b),
