@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/pyrt", "crates/bot", "crates/cli"]
+members = ["crates/pyrt"]
 exclude = ["vendor/fancy-regex"]
 resolver = "2"
 

@@ -491,7 +491,31 @@ pub fn call(rt: &mut Runtime, name: &str, mut args: CallArgs) -> PyResult<Value>
                     .collect::<String>(),
             ))
         }
-        "list" | "tuple" | "set" | "frozenset" => {
+        "set" | "frozenset" => {
+            args.reject_keywords()?;
+            args.arity(0, 1)?;
+            // CPython's set_update_internal: merge from a set/frozenset (one
+            // presize, then table-order copy), presize once for an exact dict,
+            // else iterate. Element-by-element insertion grows the table in
+            // different steps and changes iteration order.
+            if name == "frozenset"
+                && let Some(Value::FrozenSet(_)) = args.positional.first()
+            {
+                return Ok(args.positional[0].clone());
+            }
+            let out = PySet::new();
+            if let Some(value) = args.positional.first() {
+                if matches!(value, Value::Set(_) | Value::FrozenSet(_) | Value::Dict(_)) {
+                    crate::containers::update_set_from(&out, value)?;
+                } else {
+                    for item in rt.collect(value)? {
+                        out.insert(item)?;
+                    }
+                }
+            }
+            Ok(if name == "set" { Value::Set(out) } else { Value::FrozenSet(out) })
+        }
+        "list" | "tuple" => {
             args.reject_keywords()?;
             args.arity(0, 1)?;
             let values = if let Some(value) = args.positional.first() {
@@ -501,9 +525,7 @@ pub fn call(rt: &mut Runtime, name: &str, mut args: CallArgs) -> PyResult<Value>
             };
             Ok(match name {
                 "list" => Value::list(values),
-                "tuple" => Value::tuple(values),
-                "set" => Value::Set(PySet::from_values(values)?),
-                _ => Value::FrozenSet(PySet::from_values(values)?),
+                _ => Value::tuple(values),
             })
         }
         "dict" => {

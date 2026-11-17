@@ -329,6 +329,9 @@ fn wrap_set(receiver: &Value, s: PySet) -> Value {
         Value::Set(s)
     }
 }
+pub(crate) fn update_set_from(target: &PySet, other: &Value) -> PyResult<()> {
+    update_set(target, other)
+}
 fn update_set(target: &PySet, other: &Value) -> PyResult<()> {
     if let Some(other) = as_set(other) {
         target.update_set(other)
