@@ -5,7 +5,7 @@
 //! Source tables are supplied separately so native and WASM builds can load
 //! the same generated norm.json and lines.json without embedding Python.
 use pyrt::{PyResult, runtime::TraceEvent};
-use serde_json::{Value as Json, json};
+use serde_json::{Map, Value as Json, json};
 use std::collections::{BTreeMap, HashSet, VecDeque};
 
 const MAX_CALLS_PER_FILE: usize = 40;
@@ -186,7 +186,7 @@ pub fn build_trace(
     sources: &SourceIndex,
 ) -> PyResult<Json> {
     let reply = reply_text(reply)?;
-    let mut calls: BTreeMap<String, Vec<Json>> = BTreeMap::new();
+    let mut calls = Map::new();
     let mut seen = HashSet::new();
     if winner.is_some() {
         for event in spans {
@@ -204,13 +204,18 @@ pub fn build_trace(
             if !seen.insert(identity) {
                 continue;
             }
-            let entries = calls.entry(span.file.to_owned()).or_default();
+            let entries = calls
+                .entry(span.file.to_owned())
+                .or_insert_with(|| json!([]))
+                .as_array_mut()
+                .expect("trace calls are arrays");
             if span.qualname != "<module>" && entries.len() < MAX_CALLS_PER_FILE {
                 entries.push(json!([span.first, span.last, span.qualname]));
             }
         }
     }
-    let files: Vec<String> = calls.keys().cloned().collect();
+    let mut files: Vec<String> = calls.keys().cloned().collect();
+    files.sort();
     let (source, line) = sources.answer_source(&reply, &files)?;
     let response = winner
         .and_then(|winner| {
@@ -386,6 +391,15 @@ mod tests {
         .unwrap();
         assert_eq!(value["reply"], "hello world");
         assert_eq!(value["files"], json!(["bot/a.py", "bot/z.py"]));
+        assert_eq!(
+            value["calls"]
+                .as_object()
+                .unwrap()
+                .keys()
+                .map(String::as_str)
+                .collect::<Vec<_>>(),
+            vec!["bot/z.py", "bot/a.py"]
+        );
         assert_eq!(value["calls"]["bot/a.py"].as_array().unwrap().len(), 40);
         assert_eq!(value["calls"]["bot/z.py"], json!([]));
         assert_eq!(value["respond"], json!(["bot/modules/demo.py", 2, 5]));

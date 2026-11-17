@@ -32,6 +32,7 @@ opt-level = 1
 lto = "off"
 codegen-units = 16
 debug = false
+incremental = true
 
 [profile.parity.package.pyrt]
 opt-level = 3

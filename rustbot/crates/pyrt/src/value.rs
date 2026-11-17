@@ -111,24 +111,55 @@ impl std::borrow::Borrow<str> for PyStr {
     }
 }
 
+// Only immutable builtins with equality represented exactly here are indexed.
+// All other keys force the existing general equality scan.
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+enum BuiltinKey {
+    Str(PyStr),
+    Int(BigInt),
+    Tuple(Vec<BuiltinKey>),
+}
+impl BuiltinKey {
+    fn from_value(value: &Value) -> Option<Self> {
+        Self::from_value_at(value, 0)
+    }
+    fn from_value_at(value: &Value, depth: usize) -> Option<Self> {
+        // Retain the existing recursive equality/error path for deep tuples.
+        if depth >= 128 {
+            return None;
+        }
+        match value {
+            Value::Str(text) => Some(Self::Str(text.clone())),
+            Value::Int(number) => Some(Self::Int(number.clone())),
+            Value::Bool(flag) => Some(Self::Int(BigInt::from(u8::from(*flag)))),
+            Value::Tuple(items) => Some(Self::Tuple(
+                items
+                    .iter()
+                    .map(|item| Self::from_value_at(item, depth + 1))
+                    .collect::<Option<Vec<_>>>()?,
+            )),
+            _ => None,
+        }
+    }
+}
 #[derive(Debug)]
-enum StringIndex {
+enum BuiltinIndex {
     Unbuilt,
     Mixed,
-    Strings(HashMap<PyStr, usize>),
+    Indexed(HashMap<BuiltinKey, usize>),
 }
 
-/// Ordered Python dictionary entries, with a lazy index for all-string keys.
+/// Ordered Python dictionary entries, with a lazy index for supported immutable builtin keys.
 #[derive(Debug)]
 pub struct DictData {
     entries: Vec<(Value, Value)>,
-    strings: RefCell<StringIndex>,
+    builtins: RefCell<BuiltinIndex>,
 }
 impl Default for DictData {
     fn default() -> Self {
         Self {
             entries: Vec::new(),
-            strings: RefCell::new(StringIndex::Unbuilt),
+            builtins: RefCell::new(BuiltinIndex::Unbuilt),
         }
     }
 }
@@ -136,7 +167,7 @@ impl Clone for DictData {
     fn clone(&self) -> Self {
         Self {
             entries: self.entries.clone(),
-            strings: RefCell::new(StringIndex::Unbuilt),
+            builtins: RefCell::new(BuiltinIndex::Unbuilt),
         }
     }
 }
@@ -148,7 +179,7 @@ impl Deref for DictData {
 }
 impl DerefMut for DictData {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        *self.strings.get_mut() = StringIndex::Unbuilt;
+        *self.builtins.get_mut() = BuiltinIndex::Unbuilt;
         &mut self.entries
     }
 }
@@ -156,7 +187,7 @@ impl FromIterator<(Value, Value)> for DictData {
     fn from_iter<I: IntoIterator<Item = (Value, Value)>>(iter: I) -> Self {
         Self {
             entries: iter.into_iter().collect(),
-            strings: RefCell::new(StringIndex::Unbuilt),
+            builtins: RefCell::new(BuiltinIndex::Unbuilt),
         }
     }
 }
@@ -183,31 +214,31 @@ impl<'a> IntoIterator for &'a mut DictData {
 }
 impl DictData {
     fn position(&self, key: &Value) -> PyResult<Option<usize>> {
-        if let Value::Str(text) = key
-            && self.entries.len() >= 32
+        if self.entries.len() >= 32
+            && let Some(query) = BuiltinKey::from_value(key)
         {
-            let mut index = self.strings.borrow_mut();
-            if matches!(*index, StringIndex::Unbuilt) {
-                // PyStr's lazily cached character offsets never change its text or hash.
+            let mut index = self.builtins.borrow_mut();
+            if matches!(*index, BuiltinIndex::Unbuilt) {
+                // PyStr's lazy offsets never mutate its text or hash.
                 #[allow(clippy::mutable_key_type)]
                 let mut positions = HashMap::with_capacity(self.entries.len());
                 let mut mixed = false;
                 for (i, (stored, _)) in self.entries.iter().enumerate() {
-                    if let Value::Str(stored) = stored {
-                        positions.entry(stored.clone()).or_insert(i);
+                    if let Some(stored) = BuiltinKey::from_value(stored) {
+                        positions.entry(stored).or_insert(i);
                     } else {
                         mixed = true;
                         break;
                     }
                 }
                 *index = if mixed {
-                    StringIndex::Mixed
+                    BuiltinIndex::Mixed
                 } else {
-                    StringIndex::Strings(positions)
+                    BuiltinIndex::Indexed(positions)
                 };
             }
-            if let StringIndex::Strings(positions) = &*index {
-                return Ok(positions.get(text.as_str()).copied());
+            if let BuiltinIndex::Indexed(positions) = &*index {
+                return Ok(positions.get(&query).copied());
             }
         }
         for (i, (stored, _)) in self.entries.iter().enumerate() {
@@ -218,12 +249,12 @@ impl DictData {
         Ok(None)
     }
     pub(crate) fn append_entry(&mut self, key: Value, value: Value) {
-        let index = self.strings.get_mut();
-        if let StringIndex::Strings(positions) = index {
-            if let Value::Str(text) = &key {
-                positions.insert(text.clone(), self.entries.len());
+        let index = self.builtins.get_mut();
+        if let BuiltinIndex::Indexed(positions) = index {
+            if let Some(key) = BuiltinKey::from_value(&key) {
+                positions.entry(key).or_insert(self.entries.len());
             } else {
-                *index = StringIndex::Mixed;
+                *index = BuiltinIndex::Mixed;
             }
         }
         self.entries.push((key, value));

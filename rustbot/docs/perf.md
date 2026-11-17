@@ -116,3 +116,35 @@ while the `trace.calls` file-key ordering still needs correction. These are
 diagnostic runs of one conversation, not full G3/G4 acceptance or repeated
 benchmarks. Artifacts use `dict-index-native-build.log`, `native-loader-dict-index*`
 and `native-raw-smoke-dict-index*` under `rustbot/target/`.
+
+## Indexing integer and tuple cache keys; exact trace order
+
+A bounded userspace CPU profile during the slow budget-query phase captured
+994 samples with none lost. Equality and identity checks accounted for about
+70% of leaf samples. Source inspection identified the integer-keyed
+`_KEY_FORMS[id(item)]` cache and mixed string/tuple `_WANTED_CACHE`, both of which
+bypassed the string-only index. IP-only sampling provides no caller attribution.
+
+The index now also supports arbitrary integers, booleans normalized with
+integers, and supported nested tuples. Floats, custom objects and other
+unsupported keys retain the original general lookup path. Trace shaping now
+preserves first-seen file order in `calls` while sorting `files` independently.
+Production validation passes 230 runtime tests, Clippy and all 94,123 corrected
+G1 cases; the actual trace-shaping source passes six focused tests and Clippy.
+
+The full native verification build took 596.896 seconds and peaked at
+21,066,572 KiB compiler RSS. Incremental caching is enabled for future verification
+builds; normal release settings are unchanged. Ordered loader metadata and RNG
+state match Python. Loading takes 15.020 seconds; the command takes 15.773 seconds
+and peaks at 1,771,232 KiB RSS. Sampled maxima were 1,545,816 KiB anonymous and
+223,916 KiB file-backed RSS; these are not exact or necessarily simultaneous
+component peaks.
+
+The same three-turn conversation matches Python in every decision and memory
+field in 42.375 seconds, versus 235.104 with the string-only index and 441.390
+before it. A separate traced run matches every trace field, including call-file
+key order, in 42.885 seconds. Peak direct-child rusage is 2,098,168 KiB plain and
+2,212,008 KiB traced. These are individual diagnostic runs of one conversation;
+full-corpus parity and G4 remain pending. Artifacts use
+`trace-builtin-native-build.log`, `native-loader-trace-builtin*` and
+`native-raw-smoke-trace-builtin*` under `rustbot/target/`.

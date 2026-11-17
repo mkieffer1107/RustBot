@@ -14,8 +14,9 @@ and browser gates still need their own acceptance results. See
 The runtime includes:
 
 - Arbitrary precision integers, floats, code-point strings, mutable aliased
-  containers, CPython64 zero-seed hashes/set iteration, canonical JSON, and
-  memoized container/user-instance copies.
+  containers, ordered dictionary indexes for supported immutable builtin keys,
+  CPython64 zero-seed hashes/set iteration, canonical JSON, and memoized
+  container/user-instance copies.
 - Native function argument binding, lexical frames, modules/imports, classes,
   exceptions, lazy iterators/comprehensions/generators, object protocols, and
   private source/code identities for UI traces.
